@@ -1,0 +1,26 @@
+{
+  "name": "devportal",
+  "version": "1.0.0",
+  "description": "Front Page to the Community Projects to Contributors",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "serverless-http": "^1.5.5"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magento/devportal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/magento/devportal/issues"
+  },
+  "homepage": "https://github.com/magento/devportal#readme"
+}

@@ -1,0 +1,17 @@
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+
+package:
+  individually: true
+  exclude:
+    - coverage/**
+    - .circleci/**
+
+service: test-endpoint
+
+functions:
+  - ${file(./handlers/projects/projects.yml)}
+  - ${file(./handlers/users/users.yml)}

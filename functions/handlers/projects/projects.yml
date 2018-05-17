@@ -1,0 +1,7 @@
+projects:
+    handler: handlers/projects/handler.handler
+    events:
+    - http:
+        path: /projects/
+        method: get
+        cors: true

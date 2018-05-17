@@ -1,0 +1,7 @@
+users:
+    handler: handlers/users/handler.handler
+    events:
+    - http:
+        path: /users/
+        method: get
+        cors: true
