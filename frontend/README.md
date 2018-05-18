@@ -10,4 +10,4 @@
 2. `webpack`
 
 ### Example
-- [DevPortal Sandbox](http://crowdsourcing.magento.com.s3-website-us-east-1.amazonaws.com/)
+- Community Portal see: index.html
