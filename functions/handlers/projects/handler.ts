@@ -11,3 +11,5 @@ app.get('/projects/', function (req, res) {
 })
 
 module.exports.handler = serverless(app);
+
+export {}; // for TypeScript to recognize local scoping

@@ -12,6 +12,10 @@ package:
 
 service: test-endpoint
 
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+
 functions:
   - ${file(./handlers/projects/projects.yml)}
   - ${file(./handlers/users/users.yml)}
