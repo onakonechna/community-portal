@@ -2,3 +2,5 @@ node_modules
 .serverless
 jspm_packages
 .webpack
+bundle.js
+

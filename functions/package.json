@@ -11,12 +11,14 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.22",
+    "@types/jest": "^22.2.3",
     "@types/node": "^8.0.57",
-    "webpack": "^3.6.0",
+    "jest": "^22.4.3",
     "serverless-webpack": "^4.0.0",
-    "typescript": "^2.5.2",
+    "ts-jest": "^22.4.6",
     "ts-loader": "^2.3.7",
-    "jest": "^22.4.3"
+    "typescript": "^2.5.2",
+    "webpack": "^3.6.0"
   },
   "scripts": {
     "test": "jest"
@@ -30,5 +32,19 @@
   "bugs": {
     "url": "https://github.com/magento/devportal/issues"
   },
-  "homepage": "https://github.com/magento/devportal#readme"
+  "homepage": "https://github.com/magento/devportal#readme",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }
