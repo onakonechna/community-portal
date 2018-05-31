@@ -1,0 +1,36 @@
+version: 1
+jobs:
+  build:
+    working_directory: ~/community-portal/functions
+
+    docker:
+      - image: circleci/nopde:10.3
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - dependencies-cache
+
+      - run:
+          name: Install dependencies
+          command: |
+            sudo npm i -g serverless
+            npm install
+        
+      - run:
+          name: run tests
+          command: npm run test --coverage
+
+      - run:
+          name: deploy application
+          command: sls deploy
+          
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-cache-{{ checksum "package.json" }}
+
