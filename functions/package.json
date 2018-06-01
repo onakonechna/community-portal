@@ -12,7 +12,9 @@
     "serverless-http": "^1.5.5"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "jest": "^22.4.3",
+    "ts-jest": "^22.4.6",
     "serverless-dynamodb-local": "^0.2.30",
     "serverless-offline": "^3.25.0"
   },
@@ -28,5 +30,19 @@
   "bugs": {
     "url": "https://github.com/magento/devportal/issues"
   },
-  "homepage": "https://github.com/magento/devportal#readme"
+  "homepage": "https://github.com/magento/devportal#readme",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }
