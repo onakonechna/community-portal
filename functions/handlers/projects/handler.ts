@@ -1,11 +1,12 @@
 'use strict';
 
+import express = require('express');
+
 const serverless = require('serverless-http');
-const express = require('express')
 const project = require('./../../src/projects/projects');
 const app = express()
 
-app.get('/projects/', function (req, res) {
+app.get('/projects/', function (req:express.Request, res:express.Response) {
   var projectsService = new project();
   res.send(projectsService.getProjects())
 })
