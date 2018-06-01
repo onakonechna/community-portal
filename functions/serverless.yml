@@ -3,6 +3,16 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - lambda: InvokeFunction
+        - lambda: InvokeAsync
+        - lambda: GetFunction
+        - lambda: CreateFunction
+        - lambda: deleteFunction
+        - lambda: updateFunctionCode 
+      Resource: "*" 
 
 package:
   individually: true
