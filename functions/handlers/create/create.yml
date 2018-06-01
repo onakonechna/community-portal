@@ -1,0 +1,7 @@
+create:
+    handler: handlers/create/handler.handler
+    events:
+    - http:
+        path: /create/
+        method: post
+        cors: true

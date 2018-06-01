@@ -4,11 +4,17 @@
   "description": "Front Page to the Community Projects to Contributors",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.249.1",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "package.json": "^2.0.1",
+    "serverless": "^1.27.3",
     "serverless-http": "^1.5.5"
   },
   "devDependencies": {
-    "jest": "^22.4.3"
+    "jest": "^22.4.3",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.0"
   },
   "scripts": {
     "test": "jest"

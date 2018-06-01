@@ -1,8 +1,27 @@
+custom:
+  tableName: community-portal-test
+  dynamodb:
+    start:
+      migrate: true
+
 provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
+  environment:
+    TEST_TABLE: ${self:custom.tableName}
 
 package:
   individually: true
@@ -15,3 +34,28 @@ service: test-endpoint
 functions:
   - ${file(./handlers/projects/projects.yml)}
   - ${file(./handlers/users/users.yml)}
+  - ${file(./handlers/create/create.yml)}
+  - ${file(./handlers/read/read.yml)}
+
+resources:
+  Resources:
+    TestDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: projectId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: projectId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        TableName: ${self:custom.tableName}
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline #serverless-offline needs to be last in the list
