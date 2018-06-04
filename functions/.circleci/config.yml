@@ -24,6 +24,7 @@ jobs:
           name: run tests
           command: |
             cd functions
+            npm test
 
       - run:
           name: deploy application
@@ -36,7 +37,7 @@ jobs:
             else 
               sls deploy --state dev;
             fi
-            
+
       - save_cache:
           paths:
             - node_modules
