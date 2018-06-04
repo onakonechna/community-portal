@@ -13,7 +13,7 @@ jobs:
       - restore_cache:
           keys:
             - dependencies-cache-{{ checksum "./package.json" }}
-            - dependencies-cachep
+            - dependencies-cache
 
       - run:
           name: Install dependencies
