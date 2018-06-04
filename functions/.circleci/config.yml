@@ -1,45 +1,41 @@
 version: 1
 jobs:
   build:
-    working_directory: ~/community-portal
+    working_directory: ~/community-portal/functions
 
     docker:
       - image: circleci/node:10.3
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/community-portal/
+
       - restore_cache:
           keys:
-            - dependencies-cache-{{ checksum "./functions/package.json" }}
+            - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cachep
 
       - run:
           name: Install dependencies
-          command: |
-            sudo npm i -g serverless
-            cd functions
-            npm install
+          command: npm install
         
       - run:
           name: run tests
-          command: |
-            cd functions
-            npm test
+          command: npm test
 
       - run:
           name: deploy application
           command: |
-            cd functions
-            if ["${CIRCLE_BRANCH}" == "staging"] then
-              sls deploy --stage staging;
-            elif ["${CIRCLE_BRANCH}" == "master"] then
-              sls deploy --state prod;
-            else 
-              sls deploy --state dev;
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              node_modules/.bin/sls deploy --stage staging
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              node_modules/.bin/sls deploy --state prod
+            else  
+              node_modules/.bin/sls deploy --state dev
             fi
-
+          
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-cache-{{ checksum "./functions/package.json" }}
+          key: dependencies-cache-{{ checksum "./package.json" }}
 
