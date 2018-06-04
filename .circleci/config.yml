@@ -29,9 +29,9 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               node_modules/.bin/sls deploy --stage staging
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-              node_modules/.bin/sls deploy --state prod
+              node_modules/.bin/sls deploy --stage prod
             else  
-              node_modules/.bin/sls deploy --state dev
+              node_modules/.bin/sls deploy --stage dev
             fi
           
       - save_cache:
