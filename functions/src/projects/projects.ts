@@ -14,3 +14,5 @@ class Project {
 }
 
 module.exports = Project;
+
+export {}; // for TypeScript to recognize local scoping

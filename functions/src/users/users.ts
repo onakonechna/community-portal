@@ -15,3 +15,5 @@ class Users {
 }
 
 module.exports = Users;
+
+export {}; // for TypeScript to recognize local scoping

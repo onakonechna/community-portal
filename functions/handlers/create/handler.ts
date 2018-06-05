@@ -15,7 +15,6 @@ if (IS_OFFLINE === 'true') {
     region: 'localhost',
     endpoint: 'http://localhost:8000',
   });
-  console.log(dynamoDb);
 } else {
   dynamoDb = new awsSdk.DynamoDB.DocumentClient();
 }
@@ -38,7 +37,6 @@ app.post('/create', (req:express.Request, res:express.Response) => {
 
   dynamoDb.put(params, (error:Error) => {
     if (error) {
-      console.log(error);
       res.status(400).json({ error: 'Could not create project' });
       return;
     }
@@ -47,3 +45,5 @@ app.post('/create', (req:express.Request, res:express.Response) => {
 });
 
 module.exports.handler = serverless(app);
+
+export {}; // for TypeScript to recognize local scoping

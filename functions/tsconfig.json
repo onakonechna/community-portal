@@ -17,6 +17,10 @@
   ],
   "exclude": [
       "node_modules",
+      "jestTestData",
       "**/*.spec.ts"
+  ],
+  "files": [
+      "jestTestData/tslintMissingSemicolon.ts"
   ]
 }
