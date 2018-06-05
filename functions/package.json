@@ -7,7 +7,10 @@
     "aws-sdk": "^2.249.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+<<<<<<< HEAD
     "jsonwebtoken": "^8.2.2",
+=======
+>>>>>>> 9fb041564a844333f0306bcc479a05da435c7096
     "serverless": "^1.27.3",
     "serverless-http": "^1.5.5"
   },
