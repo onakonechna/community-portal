@@ -1,4 +1,4 @@
-import jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 class tokenRequests {
     getToken(githubId: string) {
@@ -10,3 +10,5 @@ class tokenRequests {
 }
 
 module.exports = tokenRequests;
+
+export {}; // for TypeScript to recognize local scoping

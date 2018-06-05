@@ -15,3 +15,5 @@ app.post('/getToken/', function (req:express.Request, res:express.Response) {
 })
 
 module.exports.handler = serverless(app);
+
+export {}; // for TypeScript to recognize local scoping

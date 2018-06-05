@@ -23,14 +23,13 @@ const buildIAMPolicy = (githubId: string, effect: string, resource: string, cont
   return policy;
 };
 
-module.exports.handler =  function(event:any, context:any, callback:any) {
+module.exports.handler = function(event:any, context:any, callback:any) {
   var token = event.authorizationToken;
 
   try {
     // Verify JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const githubId = decoded.githubId;
-    console.log(decoded)
 
     const effect = 'Allow';
     const authorizerContext = { githubId: githubId };
@@ -40,7 +39,6 @@ module.exports.handler =  function(event:any, context:any, callback:any) {
 
     callback(null, policyDocument);
   } catch (e) {
-    console.log(e);
     callback('Unauthorized'); // Return a 401 Unauthorized response
   }
 };
