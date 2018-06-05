@@ -22,6 +22,8 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
   environment:
     TEST_TABLE: ${self:custom.tableName}
+    JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    JWT_EXPIRATION_TIME: 5m
 
 package:
   individually: true
