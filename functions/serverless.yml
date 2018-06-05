@@ -38,6 +38,7 @@ functions:
   - ${file(./handlers/users/users.yml)}
   - ${file(./handlers/create/create.yml)}
   - ${file(./handlers/read/read.yml)}
+  - ${file(./handlers/getToken/getToken.yml)}
 
 resources:
   Resources:

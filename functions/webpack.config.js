@@ -1,9 +1,8 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
 
-const IS_OFFLINE = process.env.IS_OFFLINE;
-
-const config = {
+module.exports = {
+  entry: slsw.lib.entries,
   devtool: 'source-map',
   resolve: {
     extensions: [
@@ -26,17 +25,3 @@ const config = {
     ],
   },
 };
-
-// serverless-offline does not support packaging individually
-// config object requires entry to be defined
-if (IS_OFFLINE === true){
-  const entries = {};
-
-  Object.keys(slsw.lib.entries).forEach(key => (
-    entries[key] = ['./source-map-install.js', slsw.lib.entries[key]]
-  ));
-
-  config.entry = entries
-}
-
-module.exports = config
