@@ -9,8 +9,7 @@
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.2",
     "serverless": "^1.27.3",
-    "serverless-http": "^1.5.5",
-    "source-map-support": "^0.5.0"
+    "serverless-http": "^1.5.5"
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.22",
