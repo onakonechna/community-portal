@@ -1,9 +1,13 @@
-const jwt = require('jsonwebtoken');
+interface getProjectParams {
+    project_id: string;
+    per_page?: number;
+    page?: number;
+}
 
 class Project {
-    getProjects(event:any) {
+    getProjects(event:getProjectParams) {
         return {
-            message: jwt.sign({githubId: 'pelican2014'}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME}),// 'Go Serverless v1.0! Your function executed successfully!',
+            message: 'Go Serverless v1.0! Your function executed successfully!',
             input: event,
         };
     }

@@ -3,4 +3,4 @@ getToken:
     events:
     - http:
         path: /getToken/
-        method: get
+        method: post
