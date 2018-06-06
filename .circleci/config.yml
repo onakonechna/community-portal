@@ -14,10 +14,15 @@ jobs:
           keys:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
+
       - run:
           name: Install dependencies
           command: npm install
-        
+
+      - run:    
+          name: Install Java
+          command: 'sudo apt-get update && sudo apt-get install default-jre default-jdk'
+      
       - run:
           name: Setup Local DynamoDB
           command: |
