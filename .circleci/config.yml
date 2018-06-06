@@ -25,10 +25,7 @@ jobs:
       
       - run:
           name: Setup Local DynamoDB
-          command: |
-            node_modules/.bin/sls plugin install -n serverless-dynamodb-local
-            node_modules/.bin/sls plugin install -n serverless-offline
-            node_modules/.bin/sls dynamodb install 
+          command: node_modules/.bin/sls dynamodb install 
 
       - run:
           name: Start Local DynamoDB      
