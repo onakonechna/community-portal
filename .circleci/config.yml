@@ -17,7 +17,7 @@ jobs:
 
       - run:
           name: Setup Local DynamoDB
-          command: node_modules/bin/sls offline start
+          command: node_modules/.bin/sls offline start
 
       - run:
           name: Install dependencies
