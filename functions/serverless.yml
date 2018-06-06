@@ -26,7 +26,7 @@ provider:
     JWT_EXPIRATION_TIME: 5m
 
 package:
-  individually: true
+  individually: false
   exclude:
     - coverage/**
     - .circleci/**
