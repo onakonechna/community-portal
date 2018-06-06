@@ -5,14 +5,14 @@ const options = {};
 const program = Linter.createProgram("tsconfig.json", "jestTestData/");
 
 const configurationFilePath = 'tslint.json';
-const configuration = Configuration.findConfiguration(configurationFilePath, filePath).results;
+const configuration = Configuration.findConfiguration(configurationFilePath).results;
 
 let filePath;
 let fileContents;
 let linter;
 
 describe('tslint tests', () => {
-  filePath = 'jestTestData/tslintMissingSemicolon.ts';
+  filePath = 'tests/tslint/fixtures/tslintMissingSemicolon.ts';
   fileContents = fs.readFileSync(filePath, 'utf8');
   linter = new Linter(options, program);
   linter.lint(filePath, fileContents, configuration);
@@ -23,7 +23,7 @@ describe('tslint tests', () => {
     expect(missingSemicolonResult.failures[0].failure).toBe('Missing semicolon');
   });
 
-  filePath = 'jestTestData/tslintVarAssignment.ts';
+  filePath = 'tests/tslint/fixtures/tslintVarAssignment.ts';
   fileContents = fs.readFileSync(filePath, 'utf8');
   linter = new Linter(options, program);
   linter.lint(filePath, fileContents, configuration);
