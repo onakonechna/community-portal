@@ -1,3 +1,5 @@
+import awsLambda = require('aws-lambda');
+
 const jwt = require('jsonwebtoken');
 
 interface contextSpecs {
@@ -23,7 +25,10 @@ const buildIAMPolicy = (githubId: string, effect: string, resource: string, cont
   return policy;
 };
 
-module.exports.handler = function(event:any, context:any, callback:any) {
+// Override aws-lambda type definition to support string errors (string error supported in latest Github version but not in npm version as of 06-06-2018)
+type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
+
+module.exports.handler = function(event: awsLambda.CustomAuthorizerEvent, context: awsLambda.APIGatewayEventRequestContext, callback: Callback) {
   var token = event.authorizationToken;
 
   try {
