@@ -1,8 +1,8 @@
 import { Linter, Configuration } from 'tslint';
 import * as fs from 'fs';
 
-const options = {};
-const program = Linter.createProgram("tsconfig.json", "tests/tslint/fixtures");
+const options = { fix: false };
+const program = Linter.createProgram("tests/tslint/fixtures/tslintTsconfig.json");
 
 const configurationFilePath = 'tslint.json';
 const configuration = Configuration.findConfiguration(configurationFilePath).results;

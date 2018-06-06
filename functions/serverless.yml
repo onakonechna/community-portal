@@ -18,12 +18,12 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-        - lambda: InvokeFunction
-        - lambda: InvokeAsync
-        - lambda: GetFunction
-        - lambda: CreateFunction
-        - lambda: deleteFunction
-        - lambda: updateFunctionCode 
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+        - lambda:GetFunction
+        - lambda:CreateFunction
+        - lambda:deleteFunction
+        - lambda:updateFunctionCode 
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
   environment:
@@ -32,7 +32,7 @@ provider:
     JWT_EXPIRATION_TIME: 5m
 
 package:
-  individually: true
+  individually: false
   exclude:
     - coverage/**
     - .circleci/**
@@ -50,7 +50,7 @@ resources:
   Resources:
     TestDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+      DeletionPolicy: Delete
       Properties:
         AttributeDefinitions:
           -
@@ -68,4 +68,4 @@ resources:
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-offline #serverless-offline needs to be last in the list
+  - serverless-offline 
