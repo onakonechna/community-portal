@@ -22,7 +22,7 @@
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "serverless-dynamodb-local": "^0.2.30",
-    "serverless-offline": "^3.25.3",
+    "serverless-offline": "^3.25.4",
     "serverless-webpack": "^4.4.0",
     "ts-jest": "^22.4.6",
     "ts-loader": "^2.3.7",
