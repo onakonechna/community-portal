@@ -2,7 +2,7 @@ import { Linter, Configuration } from 'tslint';
 import * as fs from 'fs';
 
 const options = {};
-const program = Linter.createProgram("tsconfig.json", "jestTestData/");
+const program = Linter.createProgram("tsconfig.json", "tests/tslint/fixtures");
 
 const configurationFilePath = 'tslint.json';
 const configuration = Configuration.findConfiguration(configurationFilePath).results;
