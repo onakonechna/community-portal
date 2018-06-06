@@ -24,7 +24,7 @@ jobs:
             node_modules/.bin/sls plugin install -n serverless-dynamodb-local
             node_modules/.bin/sls plugin install -n serverless-offline
             node_modules/.bin/sls dynamodb install 
-            node_modules/.bin/sls offline start
+            node_modules/.bin/sls offline start -r us-east-1
 
       - run:
           name: run tests
