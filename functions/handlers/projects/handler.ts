@@ -4,10 +4,10 @@ const serverless = require('serverless-http');
 const project = require('./../../src/projects/projects');
 const app = express();
 
-app.get('/projects/', function (req:express.Request, res:express.Response) {
-  var projectsService = new project();
+app.get('/projects/', (req:express.Request, res:express.Response) => {
+  const projectsService = new project();
   res.send(projectsService.getProjects());
-})
+});
 
 module.exports.handler = serverless(app);
 

@@ -6,8 +6,12 @@ interface contextSpecs {
   githubId: string;
 }
 
-const buildIAMPolicy = (githubId: string, effect: string, resource: string, context: contextSpecs) => {
+const buildIAMPolicy = function (githubId: string,
+                                 effect: string,
+                                 resource: string,
+                                 context: contextSpecs) {
   const policy = {
+    context,
     principalId: githubId,
     policyDocument: {
       Version: '2012-10-17',
@@ -19,17 +23,19 @@ const buildIAMPolicy = (githubId: string, effect: string, resource: string, cont
         },
       ],
     },
-    context,
   };
 
   return policy;
 };
 
-// Override aws-lambda type definition to support string errors (string error supported in latest Github version but not in npm version as of 06-06-2018)
+// Override aws-lambda type definition to support string errors
+// string error supported in latest Github version but not in npm version as of 06-06-2018
 type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
 
-module.exports.handler = function(event: awsLambda.CustomAuthorizerEvent, context: awsLambda.APIGatewayEventRequestContext, callback: Callback) {
-  var token = event.authorizationToken;
+module.exports.handler = function (event: awsLambda.CustomAuthorizerEvent,
+                                   context: awsLambda.APIGatewayEventRequestContext,
+                                   callback: Callback) {
+  const token = event.authorizationToken;
 
   try {
     // Verify JWT
@@ -37,7 +43,7 @@ module.exports.handler = function(event: awsLambda.CustomAuthorizerEvent, contex
     const githubId = decoded.githubId;
 
     const effect = 'Allow';
-    const authorizerContext = { githubId: githubId };
+    const authorizerContext = { githubId };
 
     // Return an IAM policy document for the current endpoint
     const policyDocument = buildIAMPolicy(githubId, effect, event.methodArn, authorizerContext);
