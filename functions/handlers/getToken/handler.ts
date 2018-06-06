@@ -11,7 +11,7 @@ app.use(bodyParser.json({ strict: false }));
 app.post('/getToken/', function (req:express.Request, res:express.Response) {
   const { githubId } = req.body;
   var TokenRequest = new tokenRequests();
-  res.send(TokenRequest.getToken(githubId));
+  res.send(TokenRequest.getToken(githubId, process.env.JWT_SECRET, process.env.JWT_EXPIRATION_TIME));
 })
 
 module.exports.handler = serverless(app);
