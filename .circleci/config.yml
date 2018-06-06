@@ -14,6 +14,17 @@ jobs:
           keys:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
+      
+      - run:    
+          name: Install Java
+          command: 'sudo apt-get update && sudo apt-get install default-jre default-jdk'
+
+      - run:
+          name: setup container
+          command: |
+            curl -k -L -o dynamodb-local.tgz http://dynamodb-local.s3-website-us-east-1.amazonaws.com/dynamodb_local_latest.tar.gz
+            tar -xzf dynamodb-local.tgz
+            java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 
       - run:
           name: Install dependencies
