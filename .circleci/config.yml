@@ -16,6 +16,10 @@ jobs:
             - dependencies-cache
 
       - run:
+          name: Setup Local DynamoDB
+          command: node_modules/bin/sls offline start
+
+      - run:
           name: Install dependencies
           command: npm install
         
