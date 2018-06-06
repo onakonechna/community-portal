@@ -25,13 +25,13 @@ class ProjectsGrid extends React.Component {
             'Content-Type': 'application/json'
           }  
         }
-        axios.get('https://3c0juindy8.execute-api.us-east-1.amazonaws.com/Prod/projects', headers)
-        .then(response => {
-          //var response = data
+        // axios.get('https://3c0juindy8.execute-api.us-east-1.amazonaws.com/Prod/projects', headers)
+        // .then(response => {
+          var response = data
           console.log(response)
           var projects = [];
           console.log(response.hasOwnProperty('data'))
-          response.data.map(project => {
+          response.map(project => {
             //console.log(project);
             var projectMap = {
               "id": project.ident,
@@ -69,14 +69,14 @@ class ProjectsGrid extends React.Component {
             }
           )
           console.log(this.state)
-        }).catch(error => {
-            console.log(error)
-            // this.setState(
-            //   {
-            //     success: true,
-            //     loading: false,
-            //   })
-          })    
+        // }).catch(error => {
+        //     console.log(error)
+        //     // this.setState(
+        //     //   {
+        //     //     success: true,
+        //     //     loading: false,
+        //     //   })
+        //   })    
       }
     
       componentDidMount() {

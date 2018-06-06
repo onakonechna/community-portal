@@ -12,11 +12,6 @@
     ]
   },
   "include": [
-      "src/**/*",
-      "handlers/**/*"
-  ],
-  "exclude": [
-      "node_modules",
-      "**/*.spec.ts"
+      "/"
   ]
 }

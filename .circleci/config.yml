@@ -1,0 +1,59 @@
+version: 1
+jobs:
+  build:
+    working_directory: ~/community-portal/functions
+
+    docker:
+      - image: circleci/node:10.3
+
+    steps:
+      - checkout:
+          path: ~/community-portal/
+
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "./package.json" }}
+            - dependencies-cache
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - run:    
+          name: Install Java
+          command: 'sudo apt-get update && sudo apt-get install default-jre default-jdk'
+      
+      - run:
+          name: Setup Local DynamoDB
+          command: |
+            node_modules/.bin/sls plugin install -n serverless-dynamodb-local
+            node_modules/.bin/sls plugin install -n serverless-offline
+            node_modules/.bin/sls dynamodb install 
+
+      - run:
+          name: Start Local DynamoDB      
+          command: node_modules/.bin/sls offline start -r us-east-1
+          background: true
+
+      - run: sleep 15
+
+      - run:
+          name: run tests
+          command: npm test
+
+      - run:
+          name: deploy application
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              node_modules/.bin/sls deploy --stage staging
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              node_modules/.bin/sls deploy --stage prod
+            else  
+              node_modules/.bin/sls deploy --stage dev
+            fi
+          
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-cache-{{ checksum "./package.json" }}
+

@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "^2.249.1",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.2",
@@ -15,12 +16,13 @@
     "@types/aws-lambda": "0.0.22",
     "@types/express": "^4.11.1",
     "@types/jest": "^22.2.3",
-    "@types/node": "^8.0.57",
+    "@types/node": "^8.10.18",
+    "axios": "^0.18.0",
     "jest": "^22.4.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "serverless-dynamodb-local": "^0.2.30",
-    "serverless-offline": "^3.25.3",
+    "serverless-offline": "^3.25.4",
     "serverless-webpack": "^4.4.0",
     "ts-jest": "^22.4.6",
     "ts-loader": "^2.3.7",
@@ -46,7 +48,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/tests/((?!/fixtures/).)*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
