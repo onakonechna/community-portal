@@ -35,7 +35,7 @@ jobs:
           command: node_modules/.bin/sls offline start -r us-east-1
           background: true
 
-      - run: sleep 15
+      - run: sleep 20
 
       - run:
           name: run tests
