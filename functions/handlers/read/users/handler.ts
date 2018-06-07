@@ -1,7 +1,7 @@
 import express = require('express');
 
 const serverless = require('serverless-http');
-const users = require('./../../src/users/users');
+const users = require('./../../../src/users/users');
 const app = express();
 
 app.get('/users/', (req:express.Request, res:express.Response) => {

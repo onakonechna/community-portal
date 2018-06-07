@@ -3,7 +3,7 @@ import express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const app = express();
-const utils = require('./../../lib/utils');
+const utils = require('./../../../lib/utils');
 
 const dynamoDb = utils.dynamoDb;
 const TEST_TABLE = process.env.TEST_TABLE;

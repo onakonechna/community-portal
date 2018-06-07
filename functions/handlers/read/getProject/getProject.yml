@@ -1,5 +1,5 @@
 read:
-    handler: handlers/read/handler.handler
+    handler: handlers/read/getProject/handler.handler
     events:
     - http:
         path: /project/{projectId}

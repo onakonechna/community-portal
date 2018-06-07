@@ -1,5 +1,5 @@
 create:
-    handler: handlers/create/handler.handler
+    handler: handlers/create/createProject/handler.handler
     events:
     - http:
         path: /create/
@@ -12,4 +12,4 @@ create:
             identityValidationExpression: .*
             type: token
 createAuth:
-    handler: handlers/create/auth.handler
+    handler: handlers/create/createProject/auth.handler

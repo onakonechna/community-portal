@@ -3,7 +3,7 @@ import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
-const tokenRequests = require('./../../src/tokenRequests/tokenRequests');
+const tokenRequests = require('./../../../src/tokenRequests/tokenRequests');
 const app = express();
 
 app.use(bodyParser.json({ strict: false }));

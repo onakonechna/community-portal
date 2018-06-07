@@ -1,5 +1,5 @@
 projects:
-    handler: handlers/projects/handler.handler
+    handler: handlers/read/projects/handler.handler
     timeout: 10
     events:
     - http:

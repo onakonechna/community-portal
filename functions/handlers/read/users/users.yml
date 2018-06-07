@@ -1,5 +1,5 @@
 users:
-    handler: handlers/users/handler.handler
+    handler: handlers/read/users/handler.handler
     timeout: 10
     events:
     - http:

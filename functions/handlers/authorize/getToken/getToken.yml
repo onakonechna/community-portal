@@ -1,5 +1,5 @@
 getToken:
-    handler: handlers/getToken/handler.handler
+    handler: handlers/authorize/getToken/handler.handler
     events:
     - http:
         path: /getToken/
