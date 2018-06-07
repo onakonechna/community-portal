@@ -1,5 +1,4 @@
 custom:
-  tableName: community-portal-test
   dynamodb:
     start:
       migrate: true
@@ -25,9 +24,9 @@ provider:
         - lambda:deleteFunction
         - lambda:updateFunctionCode
       Resource:
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/community-portal-test"
   environment:
-    TEST_TABLE: ${self:custom.tableName}
+    TEST_TABLE: community-portal-test
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     JWT_EXPIRATION_TIME: 5m
 
@@ -48,22 +47,7 @@ functions:
 
 resources:
   Resources:
-    TestDynamoDBTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: projectId
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: projectId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
-        TableName: ${self:custom.tableName}
+    ${file(./schema.yml)}
 
 plugins:
   - serverless-webpack
