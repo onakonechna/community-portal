@@ -23,7 +23,7 @@ provider:
         - lambda:GetFunction
         - lambda:CreateFunction
         - lambda:deleteFunction
-        - lambda:updateFunctionCode 
+        - lambda: updateFunctionCode 
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
   environment:
@@ -45,12 +45,12 @@ functions:
   - ${file(./handlers/create/create.yml)}
   - ${file(./handlers/read/read.yml)}
   - ${file(./handlers/getToken/getToken.yml)}
-
+  
 resources:
   Resources:
     TestDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Delete
+      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
           -
@@ -68,4 +68,4 @@ resources:
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-offline 
+  - serverless-offline #serverless-offline needs to be last in the list
