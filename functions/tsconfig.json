@@ -13,7 +13,8 @@
   },
   "include": [
       "src/**/*",
-      "handlers/**/*"
+      "handlers/**/*",
+      "lib/**/*"
   ],
   "exclude": [
       "node_modules",
