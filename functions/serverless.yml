@@ -23,7 +23,7 @@ provider:
         - lambda:GetFunction
         - lambda:CreateFunction
         - lambda:deleteFunction
-        - lambda: updateFunctionCode 
+        - lambda:updateFunctionCode 
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TEST_TABLE}"
   environment:
@@ -45,7 +45,7 @@ functions:
   - ${file(./handlers/create/create.yml)}
   - ${file(./handlers/read/read.yml)}
   - ${file(./handlers/getToken/getToken.yml)}
-  
+
 resources:
   Resources:
     TestDynamoDBTable:
