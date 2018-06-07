@@ -4,6 +4,8 @@
   "description": "Simple Crowdsourcing platform based on GitHub",
   "main": "src/app.js",
   "scripts": {
+    "build": "webpack -p",
+    "dev": "webpack -d --watch",
     "test": "jest"
   },
   "repository": {
@@ -36,7 +38,8 @@
     "typescript": "^2.8.4",
     "url-loader": "^0.5.9",
     "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.3"
+    "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
     "axios": "^0.17.1",

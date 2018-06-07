@@ -7,7 +7,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { 
+            {
                 // test: path.join(__dirname, 'es6'),
                 include: path.resolve(__dirname, './src'),
                 exclude: /node_modules/,
@@ -15,7 +15,7 @@ module.exports = {
                 query: {
                     presets:['react'],
                     plugins: [
-                      
+
                     ]
                 },
             }
