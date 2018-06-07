@@ -47,7 +47,7 @@ functions:
 
 resources:
   Resources:
-    ${file(./schema.yml)}
+    ${file(./schema.json)}
 
 plugins:
   - serverless-webpack
