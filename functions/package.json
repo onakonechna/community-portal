@@ -4,11 +4,33 @@
   "description": "Front Page to the Community Projects to Contributors",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.249.1",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.2",
+    "serverless": "^1.27.3",
     "serverless-http": "^1.5.5"
   },
   "devDependencies": {
-    "jest": "^22.4.3"
+    "@types/aws-lambda": "0.0.22",
+    "@types/express": "^4.11.1",
+    "@types/jest": "^22.2.3",
+    "@types/node": "^8.10.18",
+    "axios": "^0.18.0",
+    "jest": "^22.4.3",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.3",
+    "serverless-webpack": "^5.1.5",
+    "ts-jest": "^22.4.6",
+    "ts-loader": "^4.3.1",
+    "tslint": "^5.10.0",
+    "tslint-config-airbnb": "^5.9.2",
+    "typescript": "^2.9.1",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^3.0.3"
   },
   "scripts": {
     "test": "jest"
@@ -22,5 +44,19 @@
   "bugs": {
     "url": "https://github.com/magento/devportal/issues"
   },
-  "homepage": "https://github.com/magento/devportal#readme"
+  "homepage": "https://github.com/magento/devportal#readme",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/((?!/fixtures/).)*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }

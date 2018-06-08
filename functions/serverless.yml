@@ -1,11 +1,20 @@
+custom:
+  dynamodb:
+    start:
+      migrate: true
+
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
+  stage: {$opt:stage, 'dev'}
   region: us-east-1
+  environment:
+    TEST_TABLE: community-portal-test
+    JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    JWT_EXPIRATION_TIME: 5m
 
 package:
-  individually: true
+  individually: false
   exclude:
     - coverage/**
     - .circleci/**
@@ -13,5 +22,21 @@ package:
 service: test-endpoint
 
 functions:
-  - ${file(./handlers/projects/projects.yml)}
-  - ${file(./handlers/users/users.yml)}
+  - ${file(./handlers/authorizer/authorizer.yml)}
+  - ${file(./handlers/project/create/create.yml)}
+  - ${file(./handlers/project/get/get.yml)}
+  - ${file(./handlers/project/projects/projects.yml)}
+  - ${file(./handlers/token/get/get.yml)}
+  - ${file(./handlers/user/users/users.yml)}
+
+# Add references to defined tables and roles here before deployment
+resources:
+  Resources:
+    testDynamoDBTable: ${file(./schema.json):testDynamoDBTable}
+    getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
+    createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline # serverless-offline needs to be last in the list

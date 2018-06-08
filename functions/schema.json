@@ -1,0 +1,25 @@
+{
+  "testDynamoDBTable": {
+    "Type": "AWS::DynamoDB::Table",
+    "DeletionPolicy": "Retain",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+        "AttributeName": "projectId",
+        "AttributeType": "S"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "projectId",
+          "KeyType": "HASH"
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      },
+      "TableName": "community-portal-test"
+    }
+  }
+}
