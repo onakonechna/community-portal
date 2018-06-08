@@ -1,2 +1,0 @@
-createProjectAuth:
-    handler: handlers/create/createProject/auth.handler

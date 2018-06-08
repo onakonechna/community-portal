@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.json({ strict: false }));
 
-app.post('/getToken/', (req:express.Request, res:express.Response) => {
+app.post('/token/get/', (req:express.Request, res:express.Response) => {
   const { githubId } = req.body;
   const tokenRequest = new tokenRequests();
   res.send(tokenRequest.getToken(githubId,

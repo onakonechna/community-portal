@@ -12,7 +12,7 @@ const TEST_TABLE = process.env.TEST_TABLE;
 app.use(bodyParser.json({ strict: false }));
 
 // Get Project endpoint
-app.get('/project/:projectId', (req:express.Request, res:express.Response) => {
+app.get('/project/id/:projectId/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: TEST_TABLE,
     Key: {

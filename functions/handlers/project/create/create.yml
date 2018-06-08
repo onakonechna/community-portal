@@ -1,9 +1,9 @@
 createProject:
   role: createProjectRole
-  handler: handlers/create/createProject/handler.handler
+  handler: handlers/project/create/handler.handler
   events:
   - http:
-      path: /create/
+      path: /project/create/
       method: post
       cors: true
       authorizer:

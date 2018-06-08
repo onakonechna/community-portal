@@ -11,7 +11,7 @@ const TEST_TABLE = process.env.TEST_TABLE;
 app.use(bodyParser.json({ strict: false }));
 
 // Create Project endpoint
-app.post('/create', (req:express.Request, res:express.Response) => {
+app.post('/project/create/', (req:express.Request, res:express.Response) => {
   const { projectId } = req.body;
   if (typeof projectId !== 'string') {
     res.status(400).json({ error: '"projectId" must be a string' });

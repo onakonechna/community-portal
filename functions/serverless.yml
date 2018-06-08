@@ -22,19 +22,19 @@ package:
 service: test-endpoint
 
 functions:
-  - ${file(./handlers/read/projects/projects.yml)}
-  - ${file(./handlers/read/users/users.yml)}
-  - ${file(./handlers/read/getProject/getProject.yml)}
-  - ${file(./handlers/create/createProject/createProject.yml)}
-  - ${file(./handlers/create/createProject/createProjectAuth.yml)}
-  - ${file(./handlers/authorize/getToken/getToken.yml)}
+  - ${file(./handlers/project/create/create.yml)}
+  - ${file(./handlers/project/create/auth.yml)}
+  - ${file(./handlers/project/get/get.yml)}
+  - ${file(./handlers/project/projects/projects.yml)}
+  - ${file(./handlers/token/get/get.yml)}
+  - ${file(./handlers/user/users/users.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
   Resources:
     testDynamoDBTable: ${file(./schema.json):testDynamoDBTable}
-    createProjectRole: ${file(./handlers/create/createProject/role.yml):createProjectRole}
-    getProjectRole: ${file(./handlers/read/getProject/role.yml):getProjectRole}
+    getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
+    createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
 
 plugins:
   - serverless-webpack
