@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const getTokenOptions = {
   method: 'POST',
-  url: 'http://localhost:3000/getToken',
+  url: 'http://localhost:3000/token/get',
   data: {
     githubId: 'dummyId',
   }
@@ -10,7 +10,7 @@ const getTokenOptions = {
 
 const getOptions = {
   method: 'GET',
-  url: 'http://localhost:3000/project/42',
+  url: 'http://localhost:3000/project/id/42',
 };
 
 test('CREATE works with token authorization', () => {
@@ -20,7 +20,7 @@ test('CREATE works with token authorization', () => {
     .then((response) => {
       const postOptions = {
         method: 'POST',
-        url: 'http://localhost:3000/create',
+        url: 'http://localhost:3000/project/create',
         data: {
           projectId: '42',
         },
