@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import ProjectCard from './projectCard';
+
 import Grid from '@material-ui/core/Grid';
 // import axios from 'axios';
 const projectsData = require('../data/projects.json');
@@ -55,7 +57,7 @@ class ProjectsGrid extends React.Component<IProps, IState> {
             >
                 {this.state.projects.map(project => (
                     <Grid item key={project.id}>
-                        <p>{project.title}</p>
+                        <ProjectCard project={project} />
                     </Grid>
                 ))}
             </Grid>
