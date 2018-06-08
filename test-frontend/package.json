@@ -4,10 +4,9 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^1.2.0",
+    "@material-ui/icons": "^1.1.0",
     "axios": "^0.18.0",
-    "material-ui": "^0.20.1",
     "material-ui-chip-input": "^0.19.0",
-    "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts-ts": "2.16.0",
@@ -15,6 +14,7 @@
   },
   "scripts": {
     "start": "PORT=3030 react-scripts-ts start",
+    "dev": "nodemon -w ./ -x npm run start -e ts,tsx",
     "build": "react-scripts-ts build",
     "test": "jest",
     "eject": "react-scripts-ts eject"
@@ -48,7 +48,8 @@
       ".+\\.(css|styl|less|sass|scss)$": "./node_modules/jest-css-modules-transform",
       "^.+\\.svg$": "jest-svg-transformer"
     },
-    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/tests/*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": ["/build/"],
     "moduleFileExtensions": [
       "ts",
       "tsx",
