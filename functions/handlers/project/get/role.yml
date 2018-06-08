@@ -10,7 +10,7 @@ getProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getToken
+      - PolicyName: getProjectRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
