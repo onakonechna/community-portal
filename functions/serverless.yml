@@ -22,8 +22,8 @@ package:
 service: test-endpoint
 
 functions:
+  - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/project/create/create.yml)}
-  - ${file(./handlers/project/create/auth.yml)}
   - ${file(./handlers/project/get/get.yml)}
   - ${file(./handlers/project/projects/projects.yml)}
   - ${file(./handlers/token/get/get.yml)}

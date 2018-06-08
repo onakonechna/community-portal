@@ -7,7 +7,7 @@ createProject:
       method: post
       cors: true
       authorizer:
-        name: createProjectAuth
+        name: authorizer
         resultTtlInSeconds: 300
         identitySource: method.request.header.Authorization
         identityValidationExpression: .*
