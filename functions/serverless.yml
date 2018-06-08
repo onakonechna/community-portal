@@ -8,23 +8,6 @@ provider:
   runtime: nodejs8.10
   stage: {$opt:stage, 'dev'}
   region: us-east-1
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-        - lambda:InvokeFunction
-        - lambda:InvokeAsync
-        - lambda:GetFunction
-        - lambda:CreateFunction
-        - lambda:deleteFunction
-        - lambda:updateFunctionCode
-      Resource:
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/community-portal-test"
   environment:
     TEST_TABLE: community-portal-test
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
@@ -43,13 +26,17 @@ functions:
   - ${file(./handlers/read/users/users.yml)}
   - ${file(./handlers/read/getProject/getProject.yml)}
   - ${file(./handlers/create/createProject/createProject.yml)}
+  - ${file(./handlers/create/createProject/createProjectAuth.yml)}
   - ${file(./handlers/authorize/getToken/getToken.yml)}
 
+# Add references to defined tables and roles here before deployment
 resources:
   Resources:
-    ${file(./schema.json)}
+    testDynamoDBTable: ${file(./schema.json):testDynamoDBTable}
+    createProjectRole: ${file(./handlers/create/createProject/role.yml):createProjectRole}
+    getProjectRole: ${file(./handlers/read/getProject/role.yml):getProjectRole}
 
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-offline #serverless-offline needs to be last in the list
+  - serverless-offline # serverless-offline needs to be last in the list

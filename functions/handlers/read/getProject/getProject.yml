@@ -1,11 +1,12 @@
-read:
-    handler: handlers/read/getProject/handler.handler
-    events:
-    - http:
-        path: /project/{projectId}
-        method: get
-        cors: true
-        request:
-            parameters:
-              paths:
-                projectId: true
+getProject:
+  role: getProjectRole
+  handler: handlers/read/getProject/handler.handler
+  events:
+  - http:
+      path: /project/{projectId}
+      method: get
+      cors: true
+      request:
+        parameters:
+          paths:
+            projectId: true

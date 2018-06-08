@@ -1,5 +1,5 @@
 {
-  "TestDynamoDBTable": {
+  "testDynamoDBTable": {
     "Type": "AWS::DynamoDB::Table",
     "DeletionPolicy": "Retain",
     "Properties": {
