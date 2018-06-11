@@ -10,6 +10,7 @@
     "member-access": false,
     "no-console": false,
     "no-var-requires": false,
+    "object-literal-sort-keys": false,
     "jsx-boolean-value": false,
     "jsx-no-bind": false
   }

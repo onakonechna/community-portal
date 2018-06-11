@@ -7,7 +7,7 @@
         "github": "https://github.com/athensbird/hello-world-ci",
         "slack_link": "slack",
         "size": "M",
-        "technologies": ["java", "Machine Learning", "AWS"],
+        "technologies": ["Java", "Machine Learning", "AWS", "Docker"],
         "backers": []
     },
     {
@@ -18,7 +18,18 @@
         "github": "https://github.com/athensbird/pwa-newsfeed",
         "slack_link": "slack",
         "size": "S",
-        "technologies": ["Javascript", "Service Worker"],
+        "technologies": ["JavaScript", "Service Worker"],
+        "backers": []
+    },
+    {
+        "id": "AWGUq_g1yiLInPEYs234",
+        "name": "TypeScript",
+        "description": "A TypeScript based on Mobile App",
+        "estimated": 80,
+        "github": "https://github.com/athensbird/earthhack",
+        "slack_link": "slack",
+        "size": "L",
+        "technologies": ["TypeScript", "React Native", "Android"],
         "backers": []
     }
 ]

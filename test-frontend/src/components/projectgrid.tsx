@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 const projectsData = require('../data/projects.json');
 const samples = require('../data/sampleProjects.json');
 
+
 interface IContributor {
 	name: string,
 	pledge?: number
@@ -87,22 +88,24 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 	
 	render() {
 		return (
-			<Grid 
-				container
-				direction='row'
-				justify='flex-start'
-				alignItems='flex-start'
-				spacing={8}
-			>
-				{this.state.projects.map(project => (
-					<Grid item key={project.id}>
-						<ProjectCard 
-							project={project} 
-							handler={this.updateGrid.bind(this)}
-						/>
-					</Grid>
-				))}
-			</Grid>
+			<div style={{ padding: '40px 80px'}}>
+				<Grid 
+					container
+					direction='row'
+					justify-content='center'
+					alignItems='flex-start'
+					spacing={32}
+				>
+					{this.state.projects.map(project => (
+						<Grid item key={project.id}>
+							<ProjectCard 
+								project={project} 
+								handler={this.updateGrid.bind(this)}
+							/>
+						</Grid>
+					))}
+				</Grid>
+			</div>
 		)
 	}
 }
