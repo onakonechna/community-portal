@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import AddProjectDialog from './addProjectDialog';
 import ProjectCard from './projectCard';
 
 import Grid from '@material-ui/core/Grid';
@@ -28,8 +29,8 @@ interface IProject {
 	pledged?: number,
 	due_date?: string,
 	hours_goal?: number,
-	git_link: string,
-	slack_link?: string,
+	github: string,
+	slack?: string,
 	size?: string,
 	backers: [{
 		name?: string,
@@ -105,6 +106,7 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 						</Grid>
 					))}
 				</Grid>
+				<AddProjectDialog />
 			</div>
 		)
 	}
