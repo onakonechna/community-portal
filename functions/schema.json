@@ -9,6 +9,10 @@
           "AttributeType": "S"
         },
         {
+          "AttributeName": "field",
+          "AttributeType": "S"
+        },
+        {
           "AttributeName": "data",
           "AttributeType": "S"
         },
@@ -59,11 +63,91 @@
           "KeyType": "RANGE"
         }
       ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "ProjectsGSI",
+          "KeySchema": [
+            { 
+               "AttributeName": "field",
+               "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "NonKeyAttributes": ["data", "created", "updated", "pledged", "time_spent", "upvoted", "bookmarked", "joined"],
+            "ProjectionType": "INCLUDE"
+          },
+          "ProvisionedThroughput": { 
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+          }
+        }
+      ],
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 5,
         "WriteCapacityUnits": 5
       },
       "TableName": "community-portal-projects"
+    }
+  },
+  "Users": {
+    "Type": "AWS::DynamoDB::Table",
+    "DeletionPolicy": "Retain",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "user_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "field",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "data",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "created",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "updated",
+          "AttributeType": "S"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "user_id",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "field",
+          "KeyType": "RANGE"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "UsersGSI",
+          "KeySchema": [
+            { 
+               "AttributeName": "field",
+               "KeyType": "HASH"
+            }
+          ],
+          "Projection": { 
+            "ProjectionType": "KEYS_ONLY"
+          },
+          "ProvisionedThroughput": { 
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      },
+      "TableName": "community-portal-users"
     }
   }
 }
