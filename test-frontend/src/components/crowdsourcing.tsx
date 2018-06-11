@@ -7,8 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const MyTypography: any = Typography;
-
 const Crowdsourcing = () => (
     <div>
         <AppBar position="static" color="primary">
@@ -16,9 +14,9 @@ const Crowdsourcing = () => (
             <IconButton color="inherit" aria-label="Menu">
                 <MenuIcon />
             </IconButton>
-            <MyTypography type="title" color="inherit" >
+            <Typography type="title" color="inherit" >
                 Magento Community Engineering Crowdsourcing!!
-            </MyTypography>
+            </Typography>
             <Button color="inherit">Login</Button>
             </Toolbar>
         </AppBar>

@@ -1,0 +1,24 @@
+[
+    {
+        "id": "AWGUq_g1yiLINyEYs231",
+        "name": "Cryptocurrency",
+        "description": "Bitcoin 2.0",
+        "estimated": 50,
+        "github": "https://github.com/athensbird/hello-world-ci",
+        "slack_link": "slack",
+        "size": "M",
+        "technologies": ["java", "Machine Learning", "AWS"],
+        "backers": []
+    },
+    {
+        "id": "AWGUq_g1yiLINyEYs234",
+        "name": "PWS",
+        "description": "Progressive Web Application",
+        "estimated": 35,
+        "github": "https://github.com/athensbird/pwa-newsfeed",
+        "slack_link": "slack",
+        "size": "S",
+        "technologies": ["Javascript", "Service Worker"],
+        "backers": []
+    }
+]
