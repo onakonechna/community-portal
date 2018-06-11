@@ -1,25 +1,69 @@
 {
-  "testDynamoDBTable": {
+  "Projects": {
     "Type": "AWS::DynamoDB::Table",
     "DeletionPolicy": "Retain",
     "Properties": {
       "AttributeDefinitions": [
         {
-        "AttributeName": "projectId",
-        "AttributeType": "S"
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "data",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "created",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "updated",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "pledged",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "time_spent",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "upvoted",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "bookmarked",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "joined",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "description",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "timestamp",
+          "AttributeType": "S"
         }
       ],
       "KeySchema": [
         {
-          "AttributeName": "projectId",
+          "AttributeName": "project_id",
           "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "field",
+          "KeyType": "RANGE"
         }
       ],
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 5,
         "WriteCapacityUnits": 5
       },
-      "TableName": "community-portal-test"
+      "TableName": "community-portal-projects"
     }
   }
 }
