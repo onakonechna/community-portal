@@ -6,13 +6,11 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "project_id",
-          "AttributeType": "S",
-          "AttributeValue": "S"
+          "AttributeType": "S"
         },
         {
           "AttributeName": "field",
-          "AttributeType": "S",
-          "AttributeValue": "S"
+          "AttributeType": "S"
         },
         {
           "AttributeName": "data",
@@ -66,16 +64,10 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "user_id",
-          "AttributeType": "S",
-          "AttributeValue": "S"
+          "AttributeType": "S"
         },
         {
           "AttributeName": "field",
-          "AttributeType": "S",
-          "AttributeValue": "S"
-        },
-        {
-          "AttributeName": "data",
           "AttributeType": "S"
         }
       ],
@@ -103,13 +95,7 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "tag_name",
-          "AttributeType": "S",
-          "AttributeValue": "S"
-        },
-        {
-          "AttributeName": "projects",
-          "AttributeType": "S",
-          "AttributeValue": "L"
+          "AttributeType": "S"
         }
       ],
       "KeySchema": [
@@ -132,18 +118,7 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "skill_name",
-          "AttributeType": "S",
-          "AttributeValue": "S"
-        },
-        {
-          "AttributeName": "users",
-          "AttributeType": "S",
-          "AttributeValue": "L"
-        },
-        {
-          "AttributeName": "projects",
-          "AttributeType": "S",
-          "AttributeValue": "L"
+          "AttributeType": "S"
         }
       ],
       "KeySchema": [

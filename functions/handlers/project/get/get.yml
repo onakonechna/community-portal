@@ -3,7 +3,7 @@ getProject:
   handler: handlers/project/get/handler.handler
   events:
   - http:
-      path: /project/id/{projectId}
+      path: /project/id/{project_id}
       method: get
       cors: true
       request:

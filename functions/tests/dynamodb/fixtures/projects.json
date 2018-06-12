@@ -1,0 +1,20 @@
+[
+  {
+    "project_id": "test",
+    "name": "test",
+    "description": "This is a test project.",
+    "status": "open",
+    "upvotes": 0,
+    "estimated_history": {"1528832648": 32},
+    "pledged_history": {"1528832648": 0},
+    "completed_history": {"1528832648": 0},
+    "owner": "tester",
+    "tags": ["test"],
+    "skills": ["JavaScript"],
+    "size": "M",
+    "technologies": ["serverless", "DynamoDB"],
+    "github_address": "https://github.com/magento-engcom/community-portal/",
+    "slack_channel": "test",
+    "due": 1528850000
+  }
+]

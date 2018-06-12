@@ -9,7 +9,7 @@ provider:
   stage: {$opt:stage, 'dev'}
   region: us-east-1
   environment:
-    PROJECTS_TABLE: community-portal-project
+    PROJECTS_TABLE: community-portal-projects
     USERS_TABLE: community-portal-users
     TAGS_TABLE: community-portal-tags
     SKILLS_TABLE: community-portal-skills

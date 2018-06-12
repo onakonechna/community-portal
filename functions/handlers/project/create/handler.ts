@@ -5,32 +5,73 @@ const bodyParser = require('body-parser');
 const app = express();
 const utils = require('./../../../lib/utils');
 
+// import { projectParamsInterface } from './../../../lib/interfaces';
+// remove this later
+interface projectParamsInterface {
+  TableName: string;
+  Item: {
+    project_id: string,
+    field: string,
+    data?: string | number,
+    nested?: any
+  };
+}
+
 const dynamoDb = utils.dynamoDb;
-const TEST_TABLE = process.env.TEST_TABLE;
+const entries = utils.entries;
+const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
 
 // Create Project endpoint
 app.post('/project/create/', (req:express.Request, res:express.Response) => {
-  const { projectId } = req.body;
-  if (typeof projectId !== 'string') {
-    res.status(400).json({ error: '"projectId" must be a string' });
+  const projects = req.body;
+  const promises = [];
+
+  for (let i = 0; i < projects.length; i++){
+
+    // validate
+
+    for (let [key, value] of entries(projects[i])){
+      if (key === 'project_id'){
+        continue;
+      }
+
+      const params: projectParamsInterface = {
+        TableName: PROJECTS_TABLE,
+        Item: {
+          project_id: projects[i].project_id,
+          field: key
+        },
+      };
+
+      if (typeof value === 'object'){
+        params.Item['nested'] = value;
+      } else {
+        params.Item['data'] = value;
+      }
+
+      console.log(params);
+
+      promises.push(
+        dynamoDb.put(params).promise()
+      );
+    }
   }
 
-  const params = {
-    TableName: TEST_TABLE,
-    Item: {
-      projectId,
-    },
-  };
-
-  dynamoDb.put(params, (error:Error) => {
-    if (error) {
+  Promise.all(promises)
+    .then((values: any) => {
+      res.json({ message: 'Project created successfully' });
+    })
+    .catch((reason: any) => {
+      console.log(reason);
       res.status(400).json({ error: 'Could not create project' });
       return;
-    }
-    res.json(params);
-  });
+    });
+
+  // if (typeof project_id !== 'string') {
+  //   res.status(400).json({ error: '"project_id" must be a string' });
+  // }
 });
 
 module.exports.handler = serverless(app);

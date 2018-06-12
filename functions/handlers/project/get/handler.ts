@@ -7,16 +7,16 @@ const app = express();
 const utils = require('./../../../lib/utils');
 
 const dynamoDb = utils.dynamoDb;
-const TEST_TABLE = process.env.TEST_TABLE;
+const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
 
 // Get Project endpoint
-app.get('/project/id/:projectId/', (req:express.Request, res:express.Response) => {
+app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) => {
   const params = {
-    TableName: TEST_TABLE,
+    TableName: PROJECTS_TABLE,
     Key: {
-      projectId: req.params.projectId,
+      project_id: req.params.project_id,
     },
   };
 
@@ -26,8 +26,8 @@ app.get('/project/id/:projectId/', (req:express.Request, res:express.Response) =
       res.status(400).json({ error: 'Could not get project' });
     }
     if (result.Item) {
-      const { projectId } = result.Item;
-      res.json({ projectId });
+      const { project_id } = result.Item;
+      res.json({ project_id });
     } else {
       res.status(404).json({ error: 'Project not found' });
     }

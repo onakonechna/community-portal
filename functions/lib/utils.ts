@@ -11,4 +11,14 @@ if (IS_OFFLINE === 'true') {
 } else {
   dynamoDb = new awsSdk.DynamoDB.DocumentClient();
 }
+
+
+// Helper iterator
+function* entries(obj: any) {
+   for (let key of Object.keys(obj)) {
+     yield [key, obj[key]];
+   }
+}
+
 module.exports.dynamoDb = dynamoDb;
+module.exports.entries = entries;
