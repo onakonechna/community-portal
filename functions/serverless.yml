@@ -11,6 +11,8 @@ provider:
   environment:
     PROJECTS_TABLE: community-portal-project
     USERS_TABLE: community-portal-users
+    TAGS_TABLE: community-portal-tags
+    SKILLS_TABLE: community-portal-skills
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     JWT_EXPIRATION_TIME: 5m
 
@@ -35,6 +37,8 @@ resources:
   Resources:
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
+    TagsTable: ${file(./schema.json):Tags}
+    SkillsTable: ${file(./schema.json):Skills}
     getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
     createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
 
