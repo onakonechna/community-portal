@@ -6,50 +6,16 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "project_id",
-          "AttributeType": "S"
+          "AttributeType": "S",
+          "AttributeValue": "S"
         },
         {
           "AttributeName": "field",
-          "AttributeType": "S"
+          "AttributeType": "S",
+          "AttributeValue": "S"
         },
         {
           "AttributeName": "data",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "created",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "updated",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "pledged",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "time_spent",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "upvoted",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "bookmarked",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "joined",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "description",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "timestamp",
           "AttributeType": "S"
         }
       ],
@@ -67,16 +33,20 @@
         {
           "IndexName": "ProjectsGSI",
           "KeySchema": [
-            { 
+            {
                "AttributeName": "field",
                "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "data",
+               "KeyType": "RANGE"
             }
           ],
           "Projection": {
-            "NonKeyAttributes": ["data", "created", "updated", "pledged", "time_spent", "upvoted", "bookmarked", "joined"],
+            "NonKeyAttributes": ["data"],
             "ProjectionType": "INCLUDE"
           },
-          "ProvisionedThroughput": { 
+          "ProvisionedThroughput": {
             "ReadCapacityUnits": 5,
             "WriteCapacityUnits": 5
           }
@@ -96,22 +66,16 @@
       "AttributeDefinitions": [
         {
           "AttributeName": "user_id",
-          "AttributeType": "S"
+          "AttributeType": "S",
+          "AttributeValue": "S"
         },
         {
           "AttributeName": "field",
-          "AttributeType": "S"
+          "AttributeType": "S",
+          "AttributeValue": "S"
         },
         {
           "AttributeName": "data",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "created",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "updated",
           "AttributeType": "S"
         }
       ],
@@ -125,29 +89,74 @@
           "KeyType": "RANGE"
         }
       ],
-      "GlobalSecondaryIndexes": [
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      },
+      "TableName": "community-portal-users"
+    }
+  },
+  "Tags": {
+    "Type": "AWS::DynamoDB::Table",
+    "DeletionPolicy": "Retain",
+    "Properties": {
+      "AttributeDefinitions": [
         {
-          "IndexName": "UsersGSI",
-          "KeySchema": [
-            { 
-               "AttributeName": "field",
-               "KeyType": "HASH"
-            }
-          ],
-          "Projection": { 
-            "ProjectionType": "KEYS_ONLY"
-          },
-          "ProvisionedThroughput": { 
-            "ReadCapacityUnits": 5,
-            "WriteCapacityUnits": 5
-          }
+          "AttributeName": "tag_name",
+          "AttributeType": "S",
+          "AttributeValue": "S"
+        },
+        {
+          "AttributeName": "projects",
+          "AttributeType": "S",
+          "AttributeValue": "L"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "tag_name",
+          "KeyType": "HASH"
         }
       ],
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 5,
         "WriteCapacityUnits": 5
       },
-      "TableName": "community-portal-users"
+      "TableName": "community-portal-tags"
+    }
+  },
+  "Skills": {
+    "Type": "AWS::DynamoDB::Table",
+    "DeletionPolicy": "Retain",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "skill_name",
+          "AttributeType": "S",
+          "AttributeValue": "S"
+        },
+        {
+          "AttributeName": "users",
+          "AttributeType": "S",
+          "AttributeValue": "L"
+        },
+        {
+          "AttributeName": "projects",
+          "AttributeType": "S",
+          "AttributeValue": "L"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "skill_name",
+          "KeyType": "HASH"
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      },
+      "TableName": "community-portal-skills"
     }
   }
 }

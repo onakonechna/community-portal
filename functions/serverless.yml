@@ -9,7 +9,8 @@ provider:
   stage: {$opt:stage, 'dev'}
   region: us-east-1
   environment:
-    TEST_TABLE: community-portal-test
+    PROJECTS_TABLE: community-portal-project
+    USERS_TABLE: community-portal-users
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     JWT_EXPIRATION_TIME: 5m
 
@@ -32,7 +33,8 @@ functions:
 # Add references to defined tables and roles here before deployment
 resources:
   Resources:
-    testDynamoDBTable: ${file(./schema.json):testDynamoDBTable}
+    ProjectsTable: ${file(./schema.json):Projects}
+    UsersTable: ${file(./schema.json):Users}
     getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
     createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
 
