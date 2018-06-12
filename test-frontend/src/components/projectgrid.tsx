@@ -106,7 +106,7 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 						</Grid>
 					))}
 				</Grid>
-				<AddProjectDialog />
+				<AddProjectDialog handler={this.updateGrid.bind(this)}/>
 			</div>
 		)
 	}

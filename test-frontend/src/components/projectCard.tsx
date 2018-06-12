@@ -17,9 +17,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+
 const styles = {
   avatar: {
     margin: 10
+  },
+  centered: {
+    align: 'center', 
+    display: 'flex',
+    justifyContent: 'center'
   },
   chip: {
     'margin': '5px 10px'
@@ -32,7 +38,7 @@ const styles = {
     display: 'flex',
     'flex-direction': 'column', 
     marginTop: 30
-  },
+  }
 }
 
 interface IProps {
@@ -74,7 +80,7 @@ function ProjectCard(props: IProps) {
             title="Contemplative Reptile"
           />
           <CardContent>
-            <Typography type="headline" component="h2">
+            <Typography className={classes.centered}>
               {props.project.title}
             </Typography>
             <Typography component="p">
