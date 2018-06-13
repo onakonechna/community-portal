@@ -32,9 +32,24 @@ function putProject(project){
     });
 }
 
-for (let i = 0; i < projects.length; i++){
-  putProject(projects[i])
+function likeProject(project_id){
+  const likeProjectOptions = {
+    method: 'POST',
+    url: 'http://localhost:3000/user/likeProject',
+    data: { project_id },
+  };
+
+  axios(likeProjectOptions)
+    .then((response) => {
+      console.log(response.data);
+    });
 }
+
+// for (let i = 0; i < projects.length; i++){
+//   putProject(projects[i])
+// }
+
+likeProject('test21');
 
 //
 // test('CREATE works with token authorization', () => {

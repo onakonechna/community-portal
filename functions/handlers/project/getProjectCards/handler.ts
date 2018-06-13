@@ -12,7 +12,6 @@ const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
 app.use(bodyParser.json({ strict: false }));
 
-// Get Project endpoint
 app.get('/project/cards/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,

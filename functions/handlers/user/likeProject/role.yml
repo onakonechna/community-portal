@@ -1,4 +1,4 @@
-createProjectRole:
+likeProjectRole:
   Type: AWS::IAM::Role
   Properties:
     AssumeRolePolicyDocument:
@@ -10,12 +10,17 @@ createProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: createProjectRole
+      - PolicyName: likeProjectRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:PutItem
+                - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/community-portal-projects"
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/community-portal-users"

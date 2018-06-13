@@ -33,6 +33,7 @@ functions:
   - ${file(./handlers/project/projects/projects.yml)}
   - ${file(./handlers/token/get/get.yml)}
   - ${file(./handlers/user/users/users.yml)}
+  - ${file(./handlers/user/likeProject/likeProject.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -44,6 +45,7 @@ resources:
     getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
     getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
     createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
+    likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
 
 plugins:
   - serverless-webpack

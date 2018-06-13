@@ -10,8 +10,12 @@ const createProjectSchema = {
     due: { type: 'integer' },
     estimated: { type: 'integer' },
     github_address: { type: 'string' },
-    technologies: { items: { type: 'string' } },
+    technologies: { items: { type: 'string' }, },
+    tags: { items: { type: 'string' }, },
+    skills: { items: { type: 'string' }, },
+    slack_channel: { type: 'string' },
   },
+  additionalProperties: false,
   required: ['project_id', 'name', 'description', 'size', 'due', 'github_address', 'estimated', 'technologies'],
 };
 createProjectValidator.addSchema(createProjectSchema, 'createProjectSchema');

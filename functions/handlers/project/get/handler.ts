@@ -11,7 +11,6 @@ const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
 
-// Get Project endpoint
 app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,
