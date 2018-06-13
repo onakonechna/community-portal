@@ -37,7 +37,20 @@
             }
           ],
           "Projection": {
-            "ProjectionType": "KEYS_ONLY"
+            "ProjectionType": "INCLUDE",
+            "NonKeyAttributes": [
+              "description",
+              "status",
+              "estimated",
+              "pledged",
+              "completed",
+              "upvotes",
+              "owner",
+              "size",
+              "tags",
+              "pledgers",
+              "contributors"
+            ]
           },
           "ProvisionedThroughput": {
             "ReadCapacityUnits": 5,

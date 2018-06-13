@@ -45,11 +45,11 @@ function likeProject(project_id){
     });
 }
 
-// for (let i = 0; i < projects.length; i++){
-//   putProject(projects[i])
-// }
+for (let i = 0; i < projects.length; i++){
+  putProject(projects[i])
+}
 
-likeProject('test21');
+// likeProject('test21');
 
 //
 // test('CREATE works with token authorization', () => {
