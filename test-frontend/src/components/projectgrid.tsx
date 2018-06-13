@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
+import { loadProjects } from '../actions';
 import AddProjectDialog from './addProjectDialog';
 import ProjectCard from './projectCard';
 
@@ -16,7 +18,9 @@ interface IContributor {
 
 interface IProps {
 	temp?: string,
-	project?: {}
+	project?: {},
+	loadProjects: () => void,
+	handler?: () => void
 }
 
 interface IProject {
@@ -58,12 +62,8 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 	}
 
 	public updateGrid() {
+		this.props.loadProjects();
 		console.log('Updating Grid');
-		// const headers = {
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	}
-		// }
 		const projects: any = [];
 		samples.map((project: any) => {
 			let pledged = 20;
@@ -112,4 +112,18 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 	}
 }
 
-export default ProjectsGrid;
+const mapStateToProps = (state: any) => {
+	return {
+		text: state.project
+	}
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadProjects: () => dispatch(loadProjects())
+	}
+}
+
+export default connect(
+	mapStateToProps, mapDispatchToProps
+)(ProjectsGrid);

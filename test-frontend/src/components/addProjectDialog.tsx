@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import axios from 'axios';
 
+import { addProject } from '../actions';
 import AddProjectButton from './addProjectButton';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -23,9 +26,13 @@ const styles = (theme: any) => ({
 	}
 });
 
+   interface IDispatchProps {
+	  addProject: any
+   }
+
   interface IProps {
-			classes: any,
-			handler: () => void
+	classes?: any,
+	handler: () => void
   }
 
   interface IState {
@@ -49,8 +56,8 @@ const styles = (theme: any) => ({
       label: string
   }
 
-  class AddProjectDialog extends React.Component<IProps, IState> {
-      constructor(props: IProps) {
+  class AddProjectDialog extends React.Component<IDispatchProps & IProps, IState> {
+      constructor(props: IDispatchProps & IProps) {
 					super(props);
           const state = {
             open: false,
@@ -132,7 +139,7 @@ const styles = (theme: any) => ({
 						],
 						"technologies_List": tech
 					}
-					
+					this.props.addProject();
 					const headers = {
 						headers:  
 						{
@@ -177,131 +184,149 @@ const styles = (theme: any) => ({
       render() {
 					const { classes } = this.props;
 					const { loading, success } = this.state;
-          return (
-						<div>
-							<AddProjectButton onClick={this.handleClickOpen} />
-							<Dialog
-								open={this.state.open}
-								onClose={this.handleClose}
-								fullWidth={true}
-								maxWidth={'md'}
+		return (
+				<div>
+					<AddProjectButton onClick={this.handleClickOpen} />
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						fullWidth={true}
+						maxWidth={'md'}
+					>
+						<DialogTitle id="fyorm-dialog-title">Create Project</DialogTitle>
+						<DialogContent>
+							<TextField 
+								autoFocus
+								margin="dense"
+								id="name"
+								label="Input Project Title"
+								type="text"
+								value={this.state.name}
+								onChange={this.handleChange('name')}
+								fullWidth
+							/>
+							<TextField
+								required
+								id="description"
+								label="Input Project Description"
+								multiline
+								rows="4"
+								value={this.state.description}
+								onChange={this.handleChange('description')}
+								margin="normal"
+								fullWidth
+							/>
+							<TextField
+								required
+								margin="dense"
+								id="technologies"
+								label="Input Technologies for this Project (Separate by space)"
+								onChange={this.handleChange("technologies")}
+								value={this.state.technologiesString}
+								type="text"
+								fullWidth
+							/>
+							{/* <ChipInput 
+								required
+								margin="dense"
+								id="technologies1"
+								label="Input Technologies for this Project (Separate by space)"
+								onChange={this.handleChange("technologies")}
+								value={this.state.technologiesString}
+								type="text"
+								fullWidth
+							/> */}
+							<TextField
+								required
+								id="due"
+								label="Due Date"
+								type="date"
+								className={classes.textField}
+								onChange={this.handleChange("due")}
+								value={this.state.due}
+								InputLabelProps={{
+									shrink: true,
+								}}
+							/>
+							<TextField
+								required
+								margin="dense"
+								id="name"
+								label="Goal (total hours)"
+								type="text"
+								onChange={this.handleChange("goal")}
+								value={this.state.goal}
+							/>
+							<FormControl component="fieldset">
+								<FormLabel component="legend">Size</FormLabel>
+								<RadioGroup 
+									aria-label="size"
+									name="size"
+									value={this.state.size}
+									onChange={this.handleChange("size")}
+								>
+									<FormControlLabel value="S" control={<Radio />} label="Small"/>
+									<FormControlLabel value="M" control={<Radio />} label="Medium"/>
+									<FormControlLabel value="L" control={<Radio />} label="Large"/>
+									<FormControlLabel value="XL" control={<Radio />} label="Extra Large"/>
+								</RadioGroup>
+							</FormControl>
+							<TextField
+								required
+									margin="dense"
+									id="github"
+									label="Input GitHub Address"
+									onChange={this.handleChange("github")}
+									value={this.state.github}
+									type="text"
+								fullWidth
+								/>
+							<TextField
+								required
+									margin="dense"
+									id="slack"
+									label="Input Slack Channel"
+									type="text"
+									onChange={this.handleChange("slack")}
+									value={this.state.slack}
+									fullWidth
+								/>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={this.handleClose} color="primary">
+								{success ? "Done" : "Cancel"}
+							</Button>
+							<Button
+								color="primary"
+								disabled={loading}
+								onClick={this.handleSave}
 							>
-								<DialogTitle id="fyorm-dialog-title">Create Project</DialogTitle>
-								<DialogContent>
-									<TextField 
-										autoFocus
-										margin="dense"
-										id="name"
-										label="Input Project Title"
-										type="text"
-										value={this.state.name}
-										onChange={this.handleChange('name')}
-										fullWidth
-									/>
-									<TextField
-										required
-										id="description"
-										label="Input Project Description"
-										multiline
-										rows="4"
-										value={this.state.description}
-										onChange={this.handleChange('description')}
-										margin="normal"
-										fullWidth
-									/>
-									<TextField
-										required
-										margin="dense"
-										id="technologies"
-										label="Input Technologies for this Project (Separate by space)"
-										onChange={this.handleChange("technologies")}
-										value={this.state.technologiesString}
-										type="text"
-										fullWidth
-									/>
-									{/* <ChipInput 
-										required
-										margin="dense"
-										id="technologies1"
-										label="Input Technologies for this Project (Separate by space)"
-										onChange={this.handleChange("technologies")}
-										value={this.state.technologiesString}
-										type="text"
-										fullWidth
-									/> */}
-									<TextField
-										required
-										id="due"
-										label="Due Date"
-										type="date"
-										className={classes.textField}
-										onChange={this.handleChange("due")}
-										value={this.state.due}
-										InputLabelProps={{
-											shrink: true,
-										}}
-									/>
-									<TextField
-										required
-										margin="dense"
-										id="name"
-										label="Goal (total hours)"
-										type="text"
-										onChange={this.handleChange("goal")}
-										value={this.state.goal}
-									/>
-									<FormControl component="fieldset">
-										<FormLabel component="legend">Size</FormLabel>
-										<RadioGroup 
-											aria-label="size"
-											name="size"
-											value={this.state.size}
-											onChange={this.handleChange("size")}
-										>
-											<FormControlLabel value="S" control={<Radio />} label="Small"/>
-											<FormControlLabel value="M" control={<Radio />} label="Medium"/>
-											<FormControlLabel value="L" control={<Radio />} label="Large"/>
-											<FormControlLabel value="XL" control={<Radio />} label="Extra Large"/>
-										</RadioGroup>
-									</FormControl>
-									<TextField
-										required
-											margin="dense"
-											id="github"
-											label="Input GitHub Address"
-											onChange={this.handleChange("github")}
-											value={this.state.github}
-											type="text"
-											fullWidth
-										/>
-									<TextField
-										required
-											margin="dense"
-											id="slack"
-											label="Input Slack Channel"
-											type="text"
-											onChange={this.handleChange("slack")}
-											value={this.state.slack}
-											fullWidth
-										/>
-								</DialogContent>
-								<DialogActions>
-									<Button onClick={this.handleClose} color="primary">
-										{success ? "Done" : "Cancel"}
-									</Button>
-									<Button
-										color="primary"
-										disabled={loading}
-									>
-										{success ? "Saved" : "Save"}
-									</Button>
-									{loading && <CircularProgress size={24} />}
-								</DialogActions>
-							</Dialog>  
-						</div>  
-          )
+								{success ? "Saved" : "Save"}
+							</Button>
+							{loading && <CircularProgress size={24} />}
+						</DialogActions>
+					</Dialog>  
+				</div>  
+		)
       }
   }
 
-  export default withStyles(styles)(AddProjectDialog);
+const mapStateToProps = (state: any) => {
+	return {
 
+	}
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		addProject: (project: any) => dispatch(addProject(project))
+	}
+}
+
+
+export default compose<{}, IProps>(
+	withStyles(styles, {
+		name: 'AddProjectDialog'
+	}),
+	connect<{}, IDispatchProps, IProps>(mapStateToProps, mapDispatchToProps)
+)(AddProjectDialog);

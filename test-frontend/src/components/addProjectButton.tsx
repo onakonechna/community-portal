@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 
 interface IProps {
-    classes: any,
-    onClick: () => void
+	classes: any,
+	onClick: () => void
 }
 
 const styles = {
@@ -16,19 +16,19 @@ const styles = {
     },
   };
 
-  function AddProjetButton(props: IProps) {
-      const { classes } = props;
-      return (
-          <div>
-              <Button 
-                color='primary'
-                aria-label='add'
-                onClick={props.onClick} 
-                className={classes.button} >
-                  <Add />
-              </Button>
-          </div>
-      )
-  }
+function AddProjetButton(props: IProps) {
+	const { classes } = props;
+	return (
+		<div>
+			<Button 
+				color='primary'
+				aria-label='add'
+				onClick={props.onClick} 
+				className={classes.button}>
+				<Add />
+			</Button>
+		</div>
+	)
+}
   
-  export default withStyles(styles)(AddProjetButton);
+export default withStyles(styles)(AddProjetButton);
