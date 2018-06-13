@@ -18,7 +18,6 @@ interface projectParamsInterface {
 }
 
 const dynamoDb = utils.dynamoDb;
-const entries = utils.entries;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
@@ -61,11 +60,11 @@ app.post('/project/create/', (req:express.Request, res:express.Response) => {
 
   Promise.all(promises)
     .then((values: any) => {
-      res.json({ message: 'Project created successfully' });
+      res.json({ message: 'Projects created successfully' });
     })
     .catch((reason: any) => {
       console.log(reason);
-      res.status(400).json({ error: 'Could not create project' });
+      res.status(400).json({ error: 'Could not create projects' });
       return;
     });
 

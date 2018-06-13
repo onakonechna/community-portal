@@ -15,19 +15,23 @@ app.use(bodyParser.json({ strict: false }));
 app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,
-    Key: {
-      project_id: req.params.project_id,
-    },
+    // ProjectionExpression: 'project_id',
+    KeyConditionExpression: 'project_id = :project_id',
+    ExpressionAttributeValues: {
+      ':project_id': req.params.project_id
+    }
   };
 
-  dynamoDb.get(params, (error:Error, result:any) => {
+  console.log(params);
+
+  dynamoDb.query(params, (error: Error, result: any) => {
     if (error) {
       console.log(error);
       res.status(400).json({ error: 'Could not get project' });
     }
-    if (result.Item) {
-      const { project_id } = result.Item;
-      res.json({ project_id });
+    if (result.Items) {
+      const { project_id } = result.Items;
+      res.json(result);
     } else {
       res.status(404).json({ error: 'Project not found' });
     }

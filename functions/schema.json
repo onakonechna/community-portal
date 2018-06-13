@@ -9,22 +9,18 @@
           "AttributeType": "S"
         },
         {
-          "AttributeName": "field",
+          "AttributeName": "status",
           "AttributeType": "S"
         },
         {
-          "AttributeName": "data",
-          "AttributeType": "S"
+          "AttributeName": "upvotes",
+          "AttributeType": "N"
         }
       ],
       "KeySchema": [
         {
           "AttributeName": "project_id",
           "KeyType": "HASH"
-        },
-        {
-          "AttributeName": "field",
-          "KeyType": "RANGE"
         }
       ],
       "GlobalSecondaryIndexes": [
@@ -32,17 +28,16 @@
           "IndexName": "ProjectsGSI",
           "KeySchema": [
             {
-               "AttributeName": "field",
+               "AttributeName": "status",
                "KeyType": "HASH"
             },
             {
-               "AttributeName": "data",
+               "AttributeName": "upvotes",
                "KeyType": "RANGE"
             }
           ],
           "Projection": {
-            "NonKeyAttributes": ["data"],
-            "ProjectionType": "INCLUDE"
+            "ProjectionType": "KEYS_ONLY"
           },
           "ProvisionedThroughput": {
             "ReadCapacityUnits": 5,
@@ -65,20 +60,12 @@
         {
           "AttributeName": "user_id",
           "AttributeType": "S"
-        },
-        {
-          "AttributeName": "field",
-          "AttributeType": "S"
         }
       ],
       "KeySchema": [
         {
           "AttributeName": "user_id",
           "KeyType": "HASH"
-        },
-        {
-          "AttributeName": "field",
-          "KeyType": "RANGE"
         }
       ],
       "ProvisionedThroughput": {
