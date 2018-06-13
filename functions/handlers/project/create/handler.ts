@@ -5,65 +5,31 @@ const bodyParser = require('body-parser');
 const app = express();
 const utils = require('./../../../lib/utils');
 
-// import { projectParamsInterface } from './../../../lib/interfaces';
-// remove this later
-interface projectParamsInterface {
-  TableName: string;
-  Item: {
-    project_id: string,
-    field: string,
-    data?: string | number,
-    nested?: any
-  };
-}
-
 const dynamoDb = utils.dynamoDb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
+
+// const validator = utils.validator;
 
 app.use(bodyParser.json({ strict: false }));
 
 // Create Project endpoint
 app.post('/project/create/', (req:express.Request, res:express.Response) => {
-  const projects = req.body;
-  const promises = [];
+  const project = req.body;
 
-  for (let i = 0; i < projects.length; i++){
+  // validate input
 
-    // validate
+  const params = {
+    TableName: PROJECTS_TABLE,
+    Item: project,
+  };
 
-    for (let [key, value] of entries(projects[i])){
-      if (key === 'project_id'){
-        continue;
-      }
+  const request = dynamoDb.put(params).promise()
 
-      const params: projectParamsInterface = {
-        TableName: PROJECTS_TABLE,
-        Item: {
-          project_id: projects[i].project_id,
-          field: key
-        },
-      };
-
-      if (typeof value === 'object'){
-        params.Item['nested'] = value;
-      } else {
-        params.Item['data'] = value;
-      }
-
-      console.log(params);
-
-      promises.push(
-        dynamoDb.put(params).promise()
-      );
-    }
-  }
-
-  Promise.all(promises)
-    .then((values: any) => {
-      res.json({ message: 'Projects created successfully' });
+  request
+    .then((response: any) => {
+      res.json({ message: 'Project created successfully', project_id: project.project_id });
     })
-    .catch((reason: any) => {
-      console.log(reason);
+    .catch((error: Error) => {
       res.status(400).json({ error: 'Could not create projects' });
       return;
     });

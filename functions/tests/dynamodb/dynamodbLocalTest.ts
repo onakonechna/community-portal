@@ -1,5 +1,5 @@
 const axios = require('axios');
-const data = require('./fixtures/projects.json')
+const projects = require('./fixtures/projects.json')
 
 const getTokenOptions = {
   method: 'POST',
@@ -14,22 +14,28 @@ const getOptions = {
   url: 'http://localhost:3000/project/id/42',
 };
 
-axios(getTokenOptions)
-  .then((response) => {
-    const postOptions = {
-      method: 'POST',
-      url: 'http://localhost:3000/project/create',
-      data: data,
-      headers: {
-        Authorization: response.data.message,
-      }
-    };
-    console.log(response.data.message);
-    return axios(postOptions);
-  })
-  .then((response) => {
-    console.log(response.data);
-  });
+function putProject(project){
+  axios(getTokenOptions)
+    .then((response) => {
+      const postOptions = {
+        method: 'POST',
+        url: 'http://localhost:3000/project/create',
+        data: project,
+        headers: {
+          Authorization: response.data.message,
+        }
+      };
+      return axios(postOptions);
+    })
+    .then((response) => {
+      console.log(response.data);
+    });
+}
+
+for (let i = 0; i < projects.length; i++){
+  putProject(projects[i])
+}
+
 //
 // test('CREATE works with token authorization', () => {
 //   expect.assertions(1);
