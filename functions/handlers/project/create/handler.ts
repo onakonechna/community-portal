@@ -2,40 +2,42 @@ import express = require('express');
 
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
-const djv = require('djv');
 const app = express();
-const utils = require('./../../../lib/utils');
-
-const dynamodb = utils.dynamodb;
+const { dynamodb } = require('./../../../lib/utils');
+const { createProjectValidator } = require('./../../../lib/validators');
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
 
 // Create Project endpoint
 app.post('/project/create/', (req:express.Request, res:express.Response) => {
-  const project = req.body;
+  const data = req.body;
 
   // validate input
+  const valid = createProjectValidator.validate('createProjectSchema', data);
+
+  if (!valid) {
+    res.status(400).json({ errors: createProjectValidator.errors });
+    return;
+  }
+
+  // append additional data
+  data.status = 'open';
 
   const params = {
     TableName: PROJECTS_TABLE,
-    Item: project,
+    Item: data,
   };
 
   const request = dynamodb.put(params).promise();
 
   request
     .then((response: any) => {
-      res.json({ message: 'Project created successfully', project_id: project.project_id });
+      res.json({ message: 'Project created successfully', project_id: data.project_id });
     })
     .catch((error: Error) => {
       res.status(400).json({ error: 'Could not create projects' });
-      return;
     });
-
-  // if (typeof project_id !== 'string') {
-  //   res.status(400).json({ error: '"project_id" must be a string' });
-  // }
 });
 
 module.exports.handler = serverless(app);

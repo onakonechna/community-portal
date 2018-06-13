@@ -25,7 +25,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "ProjectsGSI",
+          "IndexName": "community-portal-projects-status-upvotes-index",
           "KeySchema": [
             {
                "AttributeName": "status",

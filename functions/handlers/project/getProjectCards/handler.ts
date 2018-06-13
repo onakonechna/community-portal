@@ -8,28 +8,38 @@ const utils = require('./../../../lib/utils');
 
 const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
+const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
 app.use(bodyParser.json({ strict: false }));
 
 // Get Project endpoint
-app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) => {
+app.get('/project/cards/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,
+    IndexName: PROJECTS_INDEX,
     // ProjectionExpression: 'project_id',
-    Key: {
-      project_id: req.params.project_id,
+    KeyConditionExpression: '#status = :status',
+    ExpressionAttributeNames: {
+      '#status': 'status',
     },
+    ExpressionAttributeValues: {
+      ':status': 'open',
+    },
+    ScanIndexForward: false,
+    Limit: 10,
   };
 
-  dynamodb.get(params, (error: Error, result: any) => {
+  dynamodb.query(params, (error: Error, result: any) => {
     if (error) {
       console.log(error);
-      res.status(400).json({ error: 'Could not get project' });
+      res.status(400).json({ error: 'Could not get project cards' });
+      return;
     }
-    if (result.Item) {
-      res.json(result.Item);
+
+    if (result.Items) {
+      res.json(result.Items);
     } else {
-      res.status(404).json({ error: 'Project not found' });
+      res.status(404).json({ error: 'No project found' });
     }
   });
 });

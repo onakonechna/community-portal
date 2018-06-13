@@ -10,6 +10,7 @@ provider:
   region: us-east-1
   environment:
     PROJECTS_TABLE: community-portal-projects
+    PROJECTS_INDEX: community-portal-projects-status-upvotes-index
     USERS_TABLE: community-portal-users
     TAGS_TABLE: community-portal-tags
     SKILLS_TABLE: community-portal-skills
@@ -27,6 +28,7 @@ service: test-endpoint
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/project/create/create.yml)}
+  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/get/get.yml)}
   - ${file(./handlers/project/projects/projects.yml)}
   - ${file(./handlers/token/get/get.yml)}
@@ -39,6 +41,7 @@ resources:
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
     SkillsTable: ${file(./schema.json):Skills}
+    getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
     getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
     createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
 

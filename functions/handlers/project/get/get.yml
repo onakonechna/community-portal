@@ -9,4 +9,4 @@ getProject:
       request:
         parameters:
           paths:
-            projectId: true
+            project_id: true
