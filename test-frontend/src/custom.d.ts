@@ -7,3 +7,4 @@ declare module "material-ui-chip-input" {
     const value: any;
     export default value;
 }
+

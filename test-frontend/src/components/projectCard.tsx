@@ -91,19 +91,19 @@ function ProjectCard(props: IProps) {
             ))}
             <div className={classes.row}>
               <div className={classes.sidebar}>
-                <Typography type="caption">
+                <Typography>
                   Project Size: {props.project.size}
                 </Typography>
-                <Typography type="caption">
+                <Typography>
                   Current Contributors:
                 </Typography>
-                <Typography type="caption">
+                <Typography>
                   Open for: days
                 </Typography>
-                <Typography type="caption">
+                <Typography>
                   Goal: {props.project.estimated} hours
                 </Typography>
-                <Typography type="caption">
+                <Typography>
                   Pledged: {props.project.pledged} hours
                 </Typography>
               </div>

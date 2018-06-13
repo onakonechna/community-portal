@@ -14,7 +14,7 @@ const Crowdsourcing = () => (
             <IconButton color="inherit" aria-label="Menu">
                 <MenuIcon />
             </IconButton>
-            <Typography type="title" color="inherit" >
+            <Typography color="inherit" >
                 Magento Community Engineering Crowdsourcing!!
             </Typography>
             <Button color="inherit">Login</Button>
