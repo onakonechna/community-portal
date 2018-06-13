@@ -12,6 +12,8 @@ import MenuIcon from 'material-ui-icons/Menu';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
+import GitHubLogin from './github-auth-button';
+import axios from 'axios';
 
 const styles = {
     root: {
@@ -34,7 +36,13 @@ const styles = {
     },
   };
 
-
+const onSuccess = response => {
+    axios.post('https://6jnjfkm37a.execute-api.us-east-1.amazonaws.com/dev/authorize', {code: response}, {'Content-Type': 'application/json'})
+        .then(data => {
+            console.log(data);
+        });
+};
+const onFailure = response => console.error(response);
 
 const Crowdsourcing = () => (
     <div className={styles.root}>
@@ -47,6 +55,12 @@ const Crowdsourcing = () => (
             Magento Community Engineering Crowdsourcing
           </Typography>
           <Button color="inherit">Login</Button>
+            <GitHubLogin
+                clientId=""
+                scope=""
+                redirectUri=""
+                onSuccess={onSuccess}
+                onFailure={onFailure}/>
         </Toolbar>
       </AppBar>
     <ProjectsGrid />

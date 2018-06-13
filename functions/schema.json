@@ -21,5 +21,27 @@
       },
       "TableName": "community-portal-test"
     }
+  },
+  "usersTable": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "id",
+          "AttributeType": "N"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      },
+      "TableName": "users"
+    }
   }
 }

@@ -1,0 +1,34 @@
+authorizationRole:
+  Type: AWS::IAM::Role
+  Properties:
+    AssumeRolePolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: authorizationRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:CreateTable
+                - dynamodb:UntagResource
+                - dynamodb:UpdateTimeToLive
+                - dynamodb:UpdateTable
+                - dynamodb:CreateTable
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - lambda:InvokeFunction
+                - lambda:InvokeAsync
+                - lambda:GetFunction
+                - lambda:CreateFunction
+                - lambda:deleteFunction
+                - lambda:updateFunctionCode
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/users"
