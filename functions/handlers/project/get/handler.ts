@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const utils = require('./../../../lib/utils');
 
-const dynamoDb = utils.dynamoDb;
+const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
@@ -24,7 +24,7 @@ app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) 
 
   console.log(params);
 
-  dynamoDb.query(params, (error: Error, result: any) => {
+  dynamodb.query(params, (error: Error, result: any) => {
     if (error) {
       console.log(error);
       res.status(400).json({ error: 'Could not get project' });

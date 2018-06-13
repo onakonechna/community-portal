@@ -2,13 +2,12 @@ import express = require('express');
 
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
+const djv = require('djv');
 const app = express();
 const utils = require('./../../../lib/utils');
 
-const dynamoDb = utils.dynamoDb;
+const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
-
-// const validator = utils.validator;
 
 app.use(bodyParser.json({ strict: false }));
 
@@ -23,7 +22,7 @@ app.post('/project/create/', (req:express.Request, res:express.Response) => {
     Item: project,
   };
 
-  const request = dynamoDb.put(params).promise()
+  const request = dynamodb.put(params).promise();
 
   request
     .then((response: any) => {

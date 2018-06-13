@@ -11,7 +11,7 @@ const getTokenOptions = {
 
 const getOptions = {
   method: 'GET',
-  url: 'http://localhost:3000/project/id/42',
+  url: 'http://localhost:3000/project/id/test1',
 };
 
 function putProject(project){

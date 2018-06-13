@@ -4,10 +4,10 @@
   "description": "Front Page to the Community Projects to Contributors",
   "main": "index.js",
   "dependencies": {
+    "ajv": "^6.5.1",
     "aws-sdk": "^2.249.1",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "djv": "^2.0.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.2",
     "serverless": "^1.27.3",
