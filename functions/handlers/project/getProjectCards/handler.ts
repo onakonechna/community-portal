@@ -30,7 +30,6 @@ app.get('/project/cards/', (req:express.Request, res:express.Response) => {
 
   dynamodb.query(params, (error: Error, result: any) => {
     if (error) {
-      console.log(error);
       res.status(400).json({ error: 'Could not get project cards' });
       return;
     }

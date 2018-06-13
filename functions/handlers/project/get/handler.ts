@@ -22,7 +22,6 @@ app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) 
 
   dynamodb.get(params, (error: Error, result: any) => {
     if (error) {
-      console.log(error);
       res.status(400).json({ error: 'Could not get project' });
     }
     if (result.Item) {

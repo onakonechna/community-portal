@@ -7,12 +7,11 @@ const app = express();
 const utils = require('./../../../lib/utils');
 
 const dynamodb = utils.dynamodb;
-const USERS_TABLE = process.env.USERS_TABLE;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
 
-app.post('/user/likeProject/', (req:express.Request, res:express.Response) => {
+app.post('/project/update/status/', (req:express.Request, res:express.Response) => {
   const data = req.body;
 
   // validate input
@@ -25,11 +24,13 @@ app.post('/user/likeProject/', (req:express.Request, res:express.Response) => {
 
   const params = {
     TableName: PROJECTS_TABLE,
-    Key: data,
+    Key: {
+      project_id: data.project_id
+    },
     AttributeUpdates: {
-      upvotes: {
-        Action: 'ADD',
-        Value: 1,
+      status: {
+        Action: 'PUT',
+        Value: data.status,
       },
     },
   };
@@ -38,10 +39,11 @@ app.post('/user/likeProject/', (req:express.Request, res:express.Response) => {
 
   request
     .then((response: any) => {
-      res.json({ message: 'Project upvoted successfully', project_id: data.project_id });
+      res.json({ message: 'Project status updated successfully', project_id: data.project_id });
     })
     .catch((error: Error) => {
-      res.status(400).json({ error: 'Could not upvote projects' });
+      console.log(error);
+      res.status(400).json({ error: 'Could not update project status' });
     });
 });
 
