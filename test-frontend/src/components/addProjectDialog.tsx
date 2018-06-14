@@ -10,17 +10,19 @@ import { withStyles } from '@material-ui/core/styles';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-// import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
-// import ChipInput from 'material-ui-chip-input'
 
 const styles = (theme: any) => ({
+	chip: {
+		'margin': '5px 5px'
+	},
 	textField: {
-    width: 200,
+   		width: 200,
 	}
 });
 
@@ -56,120 +58,120 @@ const styles = (theme: any) => ({
 
   class AddProjectDialog extends React.Component<IDispatchProps & IProps, IState> {
       constructor(props: IDispatchProps & IProps) {
-					super(props);
+		  super(props);
           const state = {
             open: false,
             technologies: [],
             technologiesString: '',
             size:'S',
             success: false,
-						loading: false,
-						name: '',
-						description: '',
-						due: '',
-						goal: 0,
-						github: '',
-						slack: ''
+			loading: false,
+			name: '',
+			description: '',
+			due: '',
+			goal: 0,
+			github: '',
+			slack: ''
           };
-					this.state = state;
-					this.handleClickOpen = this.handleClickOpen.bind(this);
-					this.handleChange = this.handleChange.bind(this);
-					this.handleClose = this.handleClose.bind(this);
-					this.handleSave = this.handleSave.bind(this);
-			}
+		  this.state = state;
+		  this.handleClickOpen = this.handleClickOpen.bind(this);
+		  this.handleChange = this.handleChange.bind(this);
+		  this.handleClose = this.handleClose.bind(this);
+		  this.handleSave = this.handleSave.bind(this);
+		}
 
-			handleChange(field: string) {
-				return (event: any) => {
-					if (field === "technologies") {
-						if (event.target.value.slice(-1) === " ") {
-							const technologies = this.state.technologies;
-							technologies[technologies.length] = {key: technologies.length, label: event.target.value}
-							this.setState({
-									technologies,
-									"technologiesString": "",
-								});
-						} else {
-							this.setState({
-								"technologiesString": event.target.value,
-							});
-						}
+		handleChange(field: string) {
+			return (event: any) => {
+				if (field === "technologies") {
+					if (event.target.value.slice(-1) === " ") {
+						const technologies = this.state.technologies;
+						technologies[technologies.length] = {key: technologies.length, label: event.target.value}
+						this.setState({
+							technologies,
+							"technologiesString": "",
+						});
 					} else {
 						this.setState({
-							[field]: event.target.value,
+							"technologiesString": event.target.value,
 						});
 					}
-				}
-			}
-
-			handleClickOpen() {
-				this.setState({ open: true });
-			};
-
-			handleClose() {
-				this.setState({ open: false });
-			}
-
-			handleSave() {
-				console.log(this.state)
-				if (!this.state.loading) {
+				} else {
 					this.setState({
-							success: false,
-							loading: true,
+						[field]: event.target.value,
 					});
-
-					const tech: ITech[] = [];
-					this.state.technologies.map(technology => {
-						tech.push({"label":technology.label})
-					})
-
-					const data = {
-						"name": this.state.name,
-						"description": this.state.description,
-
-						"slack": this.state.slack,
-						"github": this.state.github,
-						"size": this.state.size,
-						"created": this.state.created,
-
-						"due": this.state.due,
-						"estimate": this.state.goal,
-						"child_List": [
-						],
-						"technologies_List": tech
-					}
-					this.props.addProject(data)
-						.then((response: any) => {
-							this.setState({
-									success: true,
-									loading: false,
-								});
-								this.props.handler();
-								const state = {
-									open: false,
-									technologies: [
-										{ key: 0, label: 'Angular' },
-										{ key: 1, label: 'jQuery' },
-										{ key: 2, label: 'Polymer' },
-										{ key: 3, label: 'React' },
-										{ key: 4, label: 'Vue.js' },
-									],
-									"technologiesString": "",
-									"size": "S",
-									success: false,
-									loading: false,
-								};
-								this.setState(state);
-							})
-						.catch((error: any) => {
-							this.setState(
-								{
-									success: false,
-									loading: false,
-								})
-							console.log(error);
-						});
 				}
-			};
+			}
+		}
+
+		handleClickOpen() {
+			this.setState({ open: true });
+		};
+
+		handleClose() {
+			this.setState({ open: false });
+		}
+
+		handleSave() {
+			console.log(this.state)
+			if (!this.state.loading) {
+				this.setState({
+						success: false,
+						loading: true,
+				});
+
+				const tech: ITech[] = [];
+				this.state.technologies.map(technology => {
+					tech.push({"label":technology.label})
+				})
+
+				const data = {
+					"name": this.state.name,
+					"description": this.state.description,
+
+					"slack": this.state.slack,
+					"github": this.state.github,
+					"size": this.state.size,
+					"created": this.state.created,
+
+					"due": this.state.due,
+					"estimate": this.state.goal,
+					"child_List": [
+					],
+					"technologies_List": tech
+				}
+				this.props.addProject(data)
+					.then((response: any) => {
+						this.setState({
+								success: true,
+								loading: false,
+							});
+							this.props.handler();
+							const state = {
+								open: false,
+								technologies: [
+									{ key: 0, label: 'Angular' },
+									{ key: 1, label: 'jQuery' },
+									{ key: 2, label: 'Polymer' },
+									{ key: 3, label: 'React' },
+									{ key: 4, label: 'Vue.js' },
+								],
+								technologiesString: "",
+								size: "S",
+								success: false,
+								loading: false,
+							};
+							this.setState(state);
+						})
+					.catch((error: any) => {
+						this.setState(
+							{
+								success: false,
+								loading: false,
+							})
+						console.log(error);
+					});
+			}
+		};
 
       render() {
 					const { classes } = this.props;
@@ -206,6 +208,9 @@ const styles = (theme: any) => ({
 								margin="normal"
 								fullWidth
 							/>
+							 {this.state.technologies.map(technology => (
+              					<Chip className={classes.chip} key={technology.key} label={technology.label}/>
+           					 ))}
 							<TextField
 								required
 								margin="dense"
@@ -216,16 +221,6 @@ const styles = (theme: any) => ({
 								type="text"
 								fullWidth
 							/>
-							{/* <ChipInput
-								required
-								margin="dense"
-								id="technologies1"
-								label="Input Technologies for this Project (Separate by space)"
-								onChange={this.handleChange("technologies")}
-								value={this.state.technologiesString}
-								type="text"
-								fullWidth
-							/> */}
 							<TextField
 								required
 								id="due"

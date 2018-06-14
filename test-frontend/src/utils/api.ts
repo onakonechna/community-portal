@@ -1,6 +1,8 @@
-const API = 'http://localhost:5000';
+// const API = 'http://localhost:5000';
+const API = 'https://boebm330qg.execute-api.us-east-1.amazonaws.com/demo';
 
 const headers = {
+    mode: 'cors' as "cors",
     headers: {
       'Authorization' : 'OAuth2',
       Accept: 'application/json',
@@ -29,9 +31,9 @@ export const saveProject = (project:any) => {
 }
 
 export const fetchProjects = () => {
-    return fetch(`${API}/projects`, headers)
-            .then(res => res.json())
-            .catch(err => {
+    return fetch(`${API}/project/cards`, headers)
+            .then((res:any) => res.json())
+            .catch((err:any) => {
                 console.log(err);
             })
-}   
+}
