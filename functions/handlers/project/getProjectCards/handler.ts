@@ -2,6 +2,7 @@ import express = require('express');
 import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const app = express();
 const utils = require('./../../../lib/utils');
@@ -10,13 +11,13 @@ const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
+app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 app.get('/project/cards/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,
     IndexName: PROJECTS_INDEX,
-    // ProjectionExpression: 'project_id',
     KeyConditionExpression: '#status = :status',
     ExpressionAttributeNames: {
       '#status': 'status',
@@ -29,6 +30,7 @@ app.get('/project/cards/', (req:express.Request, res:express.Response) => {
   };
 
   dynamodb.query(params, (error: Error, result: any) => {
+    res.set('Access-Control-Allow-Headers', '')
     if (error) {
       res.status(400).json({ error: 'Could not get project cards' });
       return;

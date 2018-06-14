@@ -2,6 +2,15 @@ custom:
   dynamodb:
     start:
       migrate: true
+  functions:
+    public: # update later
+      - getProjectCards
+      - updateProjectStatus
+      - getProject
+      - projects
+      - getToken
+      - users
+      - likeProject
 
 provider:
   name: aws
