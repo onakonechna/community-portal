@@ -37,13 +37,12 @@ const styles = {
   };
 
 const onSuccess = response => {
-    axios.post('https://6jnjfkm37a.execute-api.us-east-1.amazonaws.com/dev/authorize', {code: response}, {'Content-Type': 'application/json'})
+    axios.post('https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev/authorize', {code: response}, {'Content-Type': 'application/json'})
         .then(data => {
             console.log(data);
         });
 };
 const onFailure = response => console.error(response);
-
 const Crowdsourcing = () => (
     <div className={styles.root}>
     <AppBar position="static" color="primary">
@@ -56,9 +55,9 @@ const Crowdsourcing = () => (
           </Typography>
           <Button color="inherit">Login</Button>
             <GitHubLogin
-                clientId=""
-                scope=""
-                redirectUri=""
+                clientId="" //Github auth application client_id
+                scope="" //Github permission scopes
+                redirectUri="" // Callback url, as example domain.com/auth
                 onSuccess={onSuccess}
                 onFailure={onFailure}/>
         </Toolbar>

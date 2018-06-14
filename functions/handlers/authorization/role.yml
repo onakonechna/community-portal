@@ -16,16 +16,9 @@ authorizationRole:
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:CreateTable
-                - dynamodb:UntagResource
-                - dynamodb:UpdateTimeToLive
-                - dynamodb:UpdateTable
-                - dynamodb:CreateTable
                 - dynamodb:PutItem
                 - dynamodb:UpdateItem
                 - dynamodb:DeleteItem
-                - lambda:InvokeFunction
-                - lambda:InvokeAsync
                 - lambda:GetFunction
                 - lambda:CreateFunction
                 - lambda:deleteFunction

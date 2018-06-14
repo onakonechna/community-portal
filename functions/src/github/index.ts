@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 
 class GithubService {
-    getGithubToken(code) {
+    getGithubToken(code:string) {
         const options = {
             url: 'https://github.com/login/oauth/access_token',
             json: true,
@@ -16,7 +16,7 @@ class GithubService {
         return rp.post(options);
     }
 
-    getUserDataByToken(token) {
+    getUserDataByToken(token:string) {
         const options = {
             url: 'https://api.github.com/user',
             json: true,

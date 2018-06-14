@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 class Authorization {
-    createJWT(data) {
+    createJWT(data:any) {
         return jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION_TIME });
     }
 
-    verifyJWT(token) {
-        return new Promise((resolve, reject) => {
-            jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+    verifyJWT(token:string) {
+        return new Promise((resolve: any, reject:any) => {
+            jwt.verify(token, process.env.JWT_SECRET, (err:Error, payload:string) => {
                 if (err) {
                     reject(err);
                 } else {

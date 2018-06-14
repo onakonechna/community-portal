@@ -1,5 +1,6 @@
+import express = require('express');
+
 const serverless = require('serverless-http');
-const express = require('express');
 const GithubService = require('./../../src/github/index');
 const UserService = require('./../../src/users/users');
 const AuthorizationService = require('./../../src/authorization/index');
@@ -12,13 +13,13 @@ const bodyParser = require('body-parser');
 'use strict';
 
 app.use(bodyParser.json({ strict: false }));
-app.post('/authorize/', function (req, res) {
+app.post('/authorize/', (req:express.Request, res:express.Response) => {
     res.set({ 'Access-Control-Allow-Origin': '*'});
     githubService.getGithubToken(req.body.code)
-        .then(data => {
+        .then((data: any) => {
             const token = data['access_token'];
             githubService.getUserDataByToken(token)
-                .then(body => {
+                .then((body: any) => {
                     userService.createUser(
                         token,
                         body.id,
@@ -30,10 +31,10 @@ app.post('/authorize/', function (req, res) {
                         body.html_url,
                         body.url
                     ).then(
-                        user => res.json({ token: authorizationService.createJWT(user) }),
-                        err => console.log(err));
-                }, err => console.log(err));
-        }, err => console.log(err));
+                        (user:any) => res.json({ token: authorizationService.createJWT(user) }),
+                        (err:Error) => console.log(err));
+                }, (err:Error) => console.log(err));
+        }, (err:Error) => console.log(err));
 });
 
 module.exports.handler = serverless(app);
