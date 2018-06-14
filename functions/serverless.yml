@@ -36,14 +36,14 @@ service: test-endpoint
 
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
-  - ${file(./handlers/project/create/create.yml)}
-  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
-  - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/project/get/get.yml)}
+  - ${file(./handlers/project/create/createProject/createProject.yml)}
+  - ${file(./handlers/project/get/getProjectCards/getProjectCards.yml)}
+  - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
+  - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/project/projects/projects.yml)}
   - ${file(./handlers/token/get/get.yml)}
   - ${file(./handlers/user/users/users.yml)}
-  - ${file(./handlers/user/likeProject/likeProject.yml)}
+  - ${file(./handlers/user/update/likeProject/likeProject.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -52,11 +52,11 @@ resources:
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
     SkillsTable: ${file(./schema.json):Skills}
-    getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
-    updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
-    getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
-    createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
-    likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
+    createProjectRole: ${file(./handlers/project/create/createProject/role.yml):createProjectRole}
+    getProjectCardsRole: ${file(./handlers/project/get/getProjectCards/role.yml):getProjectCardsRole}
+    getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
+    updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
+    likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
 
 plugins:
   - serverless-webpack

@@ -4,7 +4,7 @@ import awsSdk = require('aws-sdk');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const app = express();
-const utils = require('./../../../lib/utils');
+const utils = require('./../../../../lib/utils');
 
 const dynamodb = utils.dynamodb;
 const USERS_TABLE = process.env.USERS_TABLE;

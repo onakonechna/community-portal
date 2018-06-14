@@ -5,7 +5,7 @@ const serverless = require('serverless-http');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const app = express();
-const utils = require('./../../../lib/utils');
+const utils = require('./../../../../lib/utils');
 
 const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;

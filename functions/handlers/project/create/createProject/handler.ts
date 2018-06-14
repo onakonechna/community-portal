@@ -3,8 +3,8 @@ import express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const app = express();
-const { dynamodb } = require('./../../../lib/utils');
-const { createProjectValidator } = require('./../../../lib/validators');
+const { dynamodb } = require('./../../../../lib/utils');
+const { createProjectValidator } = require('./../../../../lib/validators');
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));

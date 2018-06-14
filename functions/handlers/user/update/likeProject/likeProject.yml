@@ -1,5 +1,5 @@
 likeProject:
-    handler: handlers/user/likeProject/handler.handler
+    handler: handlers/user/update/likeProject/handler.handler
     timeout: 10
     events:
     - http:

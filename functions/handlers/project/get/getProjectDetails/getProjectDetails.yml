@@ -1,6 +1,6 @@
-getProject:
-  role: getProjectRole
-  handler: handlers/project/get/handler.handler
+getProjectDetails:
+  role: getProjectDetailsRole
+  handler: handlers/project/get/getProjectDetails/handler.handler
   events:
   - http:
       path: /project/id/{project_id}

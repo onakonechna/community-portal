@@ -1,6 +1,6 @@
 createProject:
   role: createProjectRole
-  handler: handlers/project/create/handler.handler
+  handler: handlers/project/create/createProject/handler.handler
   events:
   - http:
       path: /project/create/
