@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import './App.css';
 import Crowdsourcing from './components/crowdsourcing';
@@ -10,9 +10,7 @@ class App extends React.Component {
     return (
       <div>
         <Crowdsourcing />
-        <Switch>
-          <Route path='/projects' component={ProjectsGrid}/>
-        </Switch>
+        <Route path='/projects' component={ProjectsGrid}/>
       </div>
     );
   }

@@ -9,6 +9,7 @@
   "rules": {
     "member-access": false,
     "no-console": false,
+    "no-angle-bracket-type-assertion": false,
     "no-var-requires": false,
     "object-literal-sort-keys": false,
     "jsx-boolean-value": false,
