@@ -249,6 +249,7 @@ const styles = (theme: any) => ({
 									name="size"
 									value={this.state.size}
 									onChange={this.handleChange("size")}
+									style = {{flexDirection: 'row'}}
 								>
 									<FormControlLabel value="S" control={<Radio />} label="Small"/>
 									<FormControlLabel value="M" control={<Radio />} label="Medium"/>
