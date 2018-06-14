@@ -4,7 +4,7 @@ const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const app = express();
 const { dynamodb } = require('./../../../../lib/utils');
-const { createProjectValidator } = require('./../../../../lib/validators');
+const { validator } = require('./../../../../lib/validator');
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(bodyParser.json({ strict: false }));
@@ -14,10 +14,10 @@ app.post('/project/create/', (req:express.Request, res:express.Response) => {
   const data = req.body;
 
   // validate input
-  const valid = createProjectValidator.validate('createProjectSchema', data);
+  const valid = validator.validate('createProjectSchema', data);
 
   if (!valid) {
-    res.status(400).json({ errors: createProjectValidator.errors });
+    res.status(400).json({ errors: validator.errors });
     return;
   }
 

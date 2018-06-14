@@ -4,6 +4,7 @@ import awsSdk = require('aws-sdk');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const app = express();
+const { validator } = require('./../../../../lib/validator');
 const utils = require('./../../../../lib/utils');
 
 const dynamodb = utils.dynamodb;
@@ -15,12 +16,12 @@ app.post('/project/update/status/', (req:express.Request, res:express.Response) 
   const data = req.body;
 
   // validate input
-  // const valid = createProjectValidator.validate('createProjectSchema', data);
+  const valid = validator.validate('updateProjectStatusSchema', data);
 
-  // if (!valid) {
-  //   res.status(400).json({ errors: createProjectValidator.errors });
-  //   return;
-  // }
+  if (!valid) {
+    res.status(400).json({ errors: validator.errors });
+    return;
+  }
 
   const params = {
     TableName: PROJECTS_TABLE,
