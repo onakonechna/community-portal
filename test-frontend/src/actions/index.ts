@@ -15,13 +15,12 @@ export const addProject = (project: {}) => {
     const projectBody = {
         ...project,
         id: uuid(),
-        estimate: Date.now()
+        created: Date.now()
       };
     return (dispatch:any) => {
-        saveProject(projectBody)
+        return saveProject(projectBody)
           .then(() => {
               dispatch(loadProjects());
-              return;
           })
     }
 }

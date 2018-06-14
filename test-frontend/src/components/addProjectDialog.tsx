@@ -2,8 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import axios from 'axios';
-
 import { addProject } from '../actions';
 import AddProjectButton from './addProjectButton';
 
@@ -139,45 +137,37 @@ const styles = (theme: any) => ({
 						],
 						"technologies_List": tech
 					}
-					this.props.addProject(data);
-					const headers = {
-						headers:
-						{
-							'Authorization': 'CALiveAPICreator thS3Wxrp2n9mnjVDQ0ap:1',
-							'Content-Type': 'application/json'
-						}
-					}
-					axios.post('http://localhost:3030/rest/default/mkeze/v1/project_with_contributors', JSON.stringify(data), headers)
-					.then(response => {
-						this.setState({
-								success: true,
-								loading: false,
-							});
-							this.props.handler();
-							const state = {
-								open: false,
-								technologies: [
-									{ key: 0, label: 'Angular' },
-									{ key: 1, label: 'jQuery' },
-									{ key: 2, label: 'Polymer' },
-									{ key: 3, label: 'React' },
-									{ key: 4, label: 'Vue.js' },
-								],
-								"technologiesString": "",
-								"size": "S",
-								success: false,
-								loading: false,
-							};
-							this.setState(state);
-						})
-					.catch(error => {
-						this.setState(
-							{
-								success: false,
-								loading: false,
+					this.props.addProject(data)
+						.then((response: any) => {
+							this.setState({
+									success: true,
+									loading: false,
+								});
+								this.props.handler();
+								const state = {
+									open: false,
+									technologies: [
+										{ key: 0, label: 'Angular' },
+										{ key: 1, label: 'jQuery' },
+										{ key: 2, label: 'Polymer' },
+										{ key: 3, label: 'React' },
+										{ key: 4, label: 'Vue.js' },
+									],
+									"technologiesString": "",
+									"size": "S",
+									success: false,
+									loading: false,
+								};
+								this.setState(state);
 							})
-						console.log(error);
-					});
+						.catch((error: any) => {
+							this.setState(
+								{
+									success: false,
+									loading: false,
+								})
+							console.log(error);
+						});
 				}
 			};
 
