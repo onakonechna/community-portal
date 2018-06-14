@@ -2,6 +2,7 @@ import express = require('express');
 import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const { validator } = require('./../../../../lib/validator');
@@ -10,6 +11,7 @@ const utils = require('./../../../../lib/utils');
 const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
+app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 app.post('/project/update/status/', (req:express.Request, res:express.Response) => {

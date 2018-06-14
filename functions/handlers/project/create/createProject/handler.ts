@@ -1,12 +1,14 @@
 import express = require('express');
 
 const serverless = require('serverless-http');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const { dynamodb } = require('./../../../../lib/utils');
 const { validator } = require('./../../../../lib/validator');
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
+app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 // Create Project endpoint

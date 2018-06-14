@@ -2,6 +2,7 @@ import express = require('express');
 import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const { validator } = require('./../../../../lib/validator');
@@ -11,6 +12,7 @@ const dynamodb = utils.dynamodb;
 const USERS_TABLE = process.env.USERS_TABLE;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
+app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 app.post('/user/likeProject/', (req:express.Request, res:express.Response) => {
