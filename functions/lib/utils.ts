@@ -12,18 +12,16 @@ if (IS_OFFLINE === 'true') {
   dynamodb = new awsSdk.DynamoDB.DocumentClient();
 }
 
-
 // Helper iterator
 // Usage:
 // for (let [key, value] of entries(myObj)) {
 //    // do something with key|value
 // }
 function* entries(obj: any) {
-   for (let key of Object.keys(obj)) {
-     yield [key, obj[key]];
-   }
+  for (const key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
 }
-
 
 module.exports.dynamodb = dynamodb;
 module.exports.entries = entries;

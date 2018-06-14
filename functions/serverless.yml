@@ -6,9 +6,9 @@ custom:
     public: # update later
       - getProjectCards
       - updateProjectStatus
-      - getProject
-      - projects
+      - getProjectDetails
       - getToken
+      - projects
       - users
       - likeProject
 

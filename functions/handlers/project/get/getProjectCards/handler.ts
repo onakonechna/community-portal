@@ -2,7 +2,7 @@ import express = require('express');
 import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
-const cors = require('cors')
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const utils = require('./../../../../lib/utils');
@@ -30,7 +30,7 @@ app.get('/project/cards/', (req:express.Request, res:express.Response) => {
   };
 
   dynamodb.query(params, (error: Error, result: any) => {
-    res.set('Access-Control-Allow-Headers', '')
+    res.set('Access-Control-Allow-Headers', '');
     if (error) {
       res.status(400).json({ error: 'Could not get project cards' });
       return;

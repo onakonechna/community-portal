@@ -26,7 +26,7 @@ app.post('/project/update/status/', (req:express.Request, res:express.Response) 
   const params = {
     TableName: PROJECTS_TABLE,
     Key: {
-      project_id: data.project_id
+      project_id: data.project_id,
     },
     AttributeUpdates: {
       status: {
