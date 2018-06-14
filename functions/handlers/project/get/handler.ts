@@ -14,7 +14,6 @@ app.use(bodyParser.json({ strict: false }));
 app.get('/project/id/:project_id/', (req:express.Request, res:express.Response) => {
   const params = {
     TableName: PROJECTS_TABLE,
-    // ProjectionExpression: 'project_id',
     Key: {
       project_id: req.params.project_id,
     },
