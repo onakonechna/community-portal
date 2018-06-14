@@ -4,6 +4,7 @@ import {
 } from '../utils/api';
 
 import { Dispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 
 export const ADD_PROJECT = 'ADD_PROJECT';
 export const ADD_USER = 'ADD_USER'
@@ -11,8 +12,13 @@ export const LOAD_PROJECT = 'LOAD_PROJECT';
 export const PROJECTS_LOADED = 'PROJECTS_LOADED';
 
 export const addProject = (project: {}) => {
+    const projectBody = {
+        ...project,
+        id: uuid(),
+        estimate: Date.now()
+      };
     return (dispatch:any) => {
-        saveProject(project)
+        saveProject(projectBody)
           .then(() => {
               dispatch(loadProjects());
               return;

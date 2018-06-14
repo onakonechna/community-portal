@@ -8,12 +8,16 @@ import ProjectCard from './projectCard';
 import Grid from '@material-ui/core/Grid';
 // import axios from 'axios';
 const projectsData = require('../data/projects.json');
-const samples = require('../data/sampleProjects.json');
+// const samples = require('../data/sampleProjects.json');
 
 
 interface IContributor {
 	name: string,
 	pledge?: number
+}
+
+interface IStateProps {
+	projects: any
 }
 
 interface IProps {
@@ -40,23 +44,20 @@ interface IProject {
 		name?: string,
 		pledge?: number
 	}],
-	created_date: string 
+	created_date: string
 }
 
 interface IState {
 	projects: IProject[]
 }
 
-class ProjectsGrid extends React.Component<IProps, IState> {
-	public static defaultProps: Partial<IProps> = {
-		temp: 'hola'
-		};
+class ProjectsGrid extends React.Component<IProps & IStateProps, IState> {
 
 	public state: IState = {
 		projects: projectsData
 	};
 
-	constructor(props: IProps) {
+	constructor(props: IProps & IStateProps) {
 		super(props);
 		this.updateGrid.bind(this);
 	}
@@ -65,19 +66,23 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 		this.props.loadProjects();
 		console.log('Updating Grid');
 		const projects: any = [];
-		samples.map((project: any) => {
+		if (this.props.projects.length > 1) {
+			this.props.projects.map((project: any) => {
 			let pledged = 20;
-		  project.child_List = project.child_List ? project.child_List : []
-			project.child_List.map((contributor: IContributor) => {
-				pledged += contributor.pledge!;
-				project.backers.push({
-					name: contributor.name,
-					pledge: contributor.pledge
-				})
-			});
-			project.pledged = pledged;
-			projects.push(project);
-		})
+			  project.child_List = project.child_List ? project.child_List : []
+				project.child_List.map((contributor: IContributor) => {
+					pledged += contributor.pledge!;
+					project.backers.push({
+						name: contributor.name,
+						pledge: contributor.pledge
+					})
+				});
+				project.pledged = pledged;
+				projects.push(project);
+				console.log('Updated Grid');
+			})
+		}
+
 		this.setState({ projects }, () => {
 			console.log(this.state);
 		});
@@ -86,21 +91,21 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 	componentDidMount() {
 		this.updateGrid();
 	}
-	
+
 	render() {
 		return (
 			<div style={{ padding: '40px 80px'}}>
-				<Grid 
+				<Grid
 					container
 					direction='row'
 					justify-content='center'
 					alignItems='flex-start'
 					spacing={32}
 				>
-					{this.state.projects.map(project => (
+					{this.props.projects[1] && this.props.projects.map((project: any) => (
 						<Grid item key={project.id}>
-							<ProjectCard 
-								project={project} 
+							<ProjectCard
+								project={project}
 								handler={this.updateGrid.bind(this)}
 							/>
 						</Grid>
@@ -114,7 +119,7 @@ class ProjectsGrid extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: any) => {
 	return {
-		text: state.project
+		projects: state.project
 	}
 }
 

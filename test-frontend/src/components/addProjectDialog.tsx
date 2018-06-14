@@ -118,32 +118,32 @@ const styles = (theme: any) => ({
 							success: false,
 							loading: true,
 					});
-	
+
 					const tech: ITech[] = [];
 					this.state.technologies.map(technology => {
 						tech.push({"label":technology.label})
 					})
-	
+
 					const data = {
 						"name": this.state.name,
 						"description": this.state.description,
-						
+
 						"slack": this.state.slack,
 						"github": this.state.github,
 						"size": this.state.size,
 						"created": this.state.created,
-						
+
 						"due": this.state.due,
 						"estimate": this.state.goal,
 						"child_List": [
 						],
 						"technologies_List": tech
 					}
-					this.props.addProject();
+					this.props.addProject(data);
 					const headers = {
-						headers:  
+						headers:
 						{
-							'Authorization': 'CALiveAPICreator thS3Wxrp2n9mnjVDQ0ap:1', 
+							'Authorization': 'CALiveAPICreator thS3Wxrp2n9mnjVDQ0ap:1',
 							'Content-Type': 'application/json'
 						}
 					}
@@ -195,7 +195,7 @@ const styles = (theme: any) => ({
 					>
 						<DialogTitle id="fyorm-dialog-title">Create Project</DialogTitle>
 						<DialogContent>
-							<TextField 
+							<TextField
 								autoFocus
 								margin="dense"
 								id="name"
@@ -226,7 +226,7 @@ const styles = (theme: any) => ({
 								type="text"
 								fullWidth
 							/>
-							{/* <ChipInput 
+							{/* <ChipInput
 								required
 								margin="dense"
 								id="technologies1"
@@ -259,7 +259,7 @@ const styles = (theme: any) => ({
 							/>
 							<FormControl component="fieldset">
 								<FormLabel component="legend">Size</FormLabel>
-								<RadioGroup 
+								<RadioGroup
 									aria-label="size"
 									name="size"
 									value={this.state.size}
@@ -305,8 +305,8 @@ const styles = (theme: any) => ({
 							</Button>
 							{loading && <CircularProgress size={24} />}
 						</DialogActions>
-					</Dialog>  
-				</div>  
+					</Dialog>
+				</div>
 		)
       }
   }

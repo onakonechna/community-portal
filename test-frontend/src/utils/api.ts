@@ -1,4 +1,4 @@
-const API = 'http://localhost:3030';
+const API = 'http://localhost:5000';
 
 const headers = {
     headers: {
@@ -14,6 +14,7 @@ const postHeaders = (body:any) => {
     body: JSON.stringify(body),
     headers: {
       method: 'POST',
+      'Authorization' : 'OAuth2',
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }
@@ -21,7 +22,7 @@ const postHeaders = (body:any) => {
 }
 
 export const saveProject = (project:any) => {
-  console.log('save project triggered!');
+  console.log(project);
   return fetch(`${API}/projects`, postHeaders(project))
       .then(res => res.json())
       .catch(err => err)
