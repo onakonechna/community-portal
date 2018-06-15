@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 
-import './App.css';
-import Crowdsourcing from './components/crowdsourcing';
+import HeadBar from './components/headBar';
 import ProjectsGrid from './components/projectGrid';
 
 class App extends React.Component {
   public render() {
     return (
       <div>
-        <Crowdsourcing />
+        <HeadBar />
         <Route path='/projects' component={ProjectsGrid}/>
       </div>
     );

@@ -1,22 +1,23 @@
 import { combineReducers } from 'redux';
-import { 
-	ADD_PROJECT,
-	ADD_USER,
-	PROJECTS_LOADED 
-} from './actions';
 
-function user (state = [], action:any) {
-	if (action.type === ADD_USER) {
-		return action.users;
-	} else {return state}
+import { ActionTypes, TypeKeys } from './actions';
+
+function user (state = [], action:ActionTypes) {
+	switch(action.type) {
+		case TypeKeys.ADD_USER:
+			return action.users;
+		default:
+			return state;
+	}
+
 }
 
-function project (state = [{'text':'test'}], action:any) {
+function project (state = [{'text':'test'}], action:ActionTypes) {
 	switch(action.type) {
-		case PROJECTS_LOADED:
+		case TypeKeys.PROJECTS_LOADED:
 			console.log('project loaded!');
 			return action.projects;
-		case ADD_PROJECT:
+		case TypeKeys.ADD_PROJECT:
 			return [
 				...state,
 				action.project

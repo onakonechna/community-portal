@@ -11,24 +11,24 @@ interface IProps {
 }
 
 const styles = {
-    button: {
-			margin: 'auto, 20px, auto, 20px'
-    },
-  };
+	button: {
+		margin: 'auto, 20px, auto, 20px'
+	},
+};
 
-function AddProjetButton(props: IProps) {
+function AddProjectButton(props: IProps) {
 	const { classes } = props;
 	return (
 		<div>
-			<Button 
+			<Button
 				color='primary'
 				aria-label='add'
-				onClick={props.onClick} 
+				onClick={props.onClick}
 				className={classes.button}>
 				<Add />
 			</Button>
 		</div>
 	)
 }
-  
-export default withStyles(styles)(AddProjetButton);
+
+export default withStyles(styles)(AddProjectButton);

@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const Crowdsourcing = () => (
+const HeadBar = () => (
     <div>
         <AppBar position="static" color="primary">
             <Toolbar>
@@ -15,7 +15,7 @@ const Crowdsourcing = () => (
                 <MenuIcon />
             </IconButton>
             <Typography color="inherit" >
-                Magento Community Engineering Crowdsourcing!!
+                Magento Opensource
             </Typography>
             <Button color="inherit">Login</Button>
             </Toolbar>
@@ -24,5 +24,5 @@ const Crowdsourcing = () => (
 
 );
 
-export default Crowdsourcing;
+export default HeadBar;
 

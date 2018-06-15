@@ -11,16 +11,16 @@ const projectsData = require('../data/projects.json');
 // const samples = require('../data/sampleProjects.json');
 
 
-interface IContributor {
-	name: string,
-	pledge?: number
-}
+// interface IContributor {
+// 	name: string,
+// 	pledge?: number
+// }
 
-interface IStateProps {
+interface GridStateProps {
 	projects: any
 }
 
-interface IProps {
+interface GridProps {
 	temp?: string,
 	project?: {},
 	loadProjects: () => void,
@@ -47,17 +47,17 @@ interface IProject {
 	created_date: string
 }
 
-interface IState {
+interface GridState {
 	projects: IProject[]
 }
 
-class ProjectsGrid extends React.Component<IProps & IStateProps, IState> {
+class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState> {
 
-	public state: IState = {
+	public state: GridState = {
 		projects: projectsData
 	};
 
-	constructor(props: IProps & IStateProps) {
+	constructor(props: GridProps & GridStateProps) {
 		super(props);
 		this.updateGrid.bind(this);
 	}
@@ -66,22 +66,22 @@ class ProjectsGrid extends React.Component<IProps & IStateProps, IState> {
 		this.props.loadProjects();
 		console.log('Updating Grid');
 		const projects: any = [];
-		if (this.props.projects.length > 1) {
-			this.props.projects.map((project: any) => {
-			let pledged = 20;
-			  project.child_List = project.child_List ? project.child_List : []
-				project.child_List.map((contributor: IContributor) => {
-					pledged += contributor.pledge!;
-					project.backers.push({
-						name: contributor.name,
-						pledge: contributor.pledge
-					})
-				});
-				project.pledged = pledged;
-				projects.push(project);
-				console.log('Updated Grid');
-			})
-		}
+		// if (this.props.projects.length > 1) {
+		// 	this.props.projects.map((project: any) => {
+		// 		let pledged = 20;
+		// 		project.child_List = project.child_List ? project.child_List : []
+		// 		project.child_List.map((contributor: IContributor) => {
+		// 			pledged += contributor.pledge!;
+		// 			project.backers.push({
+		// 				name: contributor.name,
+		// 				pledge: contributor.pledge
+		// 			})
+		// 		});
+		// 		project.pledged = pledged;
+		// 		projects.push(project);
+		// 		console.log('Updated Grid');
+		// 	})
+		// }
 
 		this.setState({ projects }, () => {
 			console.log(this.state);
@@ -94,7 +94,7 @@ class ProjectsGrid extends React.Component<IProps & IStateProps, IState> {
 
 	render() {
 		return (
-			<div style={{ padding: '40px 80px'}}>
+			<div style={{ padding: '40px 80px' }}>
 				<Grid
 					container
 					direction='row'
@@ -111,7 +111,7 @@ class ProjectsGrid extends React.Component<IProps & IStateProps, IState> {
 						</Grid>
 					))}
 				</Grid>
-				<AddProjectDialog handler={this.updateGrid.bind(this)}/>
+				<AddProjectDialog handler={this.updateGrid} />
 			</div>
 		)
 	}

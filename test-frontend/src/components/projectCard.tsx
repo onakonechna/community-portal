@@ -41,7 +41,7 @@ const styles = {
   }
 }
 
-interface IProps {
+interface CardProps {
     project: {
       id: string,
       name?: string,
@@ -71,7 +71,7 @@ function getPercentage(pledged: number, estimated: number) {
   return (pledged / estimated) * 100;
 }
 
-function ProjectCard(props: IProps) {
+function ProjectCard(props: CardProps) {
   const { classes } = props;
     return (
        <Card>
