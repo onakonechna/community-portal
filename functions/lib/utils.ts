@@ -23,5 +23,7 @@ function* entries(obj: any) {
   }
 }
 
-module.exports.dynamodb = dynamodb;
-module.exports.entries = entries;
+export {
+  dynamodb,
+  entries,
+};

@@ -50,4 +50,4 @@ validator.addSchema(createProjectSchema, 'createProjectSchema');
 validator.addSchema(updateProjectStatusSchema, 'updateProjectStatusSchema');
 validator.addSchema(projectIdOnlySchema, 'projectIdOnlySchema');
 
-module.exports.validator = validator;
+export default validator;

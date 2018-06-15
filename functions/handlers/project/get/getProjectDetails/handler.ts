@@ -1,14 +1,13 @@
 import express = require('express');
 import awsSdk = require('aws-sdk');
 
+import validator from './../../../../lib/validator';
+import { dynamodb } from './../../../../lib/utils';
+
 const serverless = require('serverless-http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const { validator } = require('./../../../../lib/validator');
-const utils = require('./../../../../lib/utils');
-
-const dynamodb = utils.dynamodb;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 
 app.use(cors());
