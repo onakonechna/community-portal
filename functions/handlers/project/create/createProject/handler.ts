@@ -26,6 +26,7 @@ app.post('/project/create/', (req:express.Request, res:express.Response) => {
   // append additional data
   data.status = 'open';
   data.upvotes = 0;
+  data.created = new Date().getTime();
 
   const params = {
     TableName: PROJECTS_TABLE,

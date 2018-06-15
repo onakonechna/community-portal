@@ -39,6 +39,7 @@
           "Projection": {
             "ProjectionType": "INCLUDE",
             "NonKeyAttributes": [
+              "created",
               "description",
               "status",
               "estimated",
