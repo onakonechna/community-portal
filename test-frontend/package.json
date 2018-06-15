@@ -60,12 +60,13 @@
     "url-loader": "^1.0.1"
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/jestSetup.ts",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       ".+\\.(css|styl|less|sass|scss)$": "./node_modules/jest-css-modules-transform",
       "^.+\\.svg$": "jest-svg-transformer"
     },
-    "testRegex": "(/tests/*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?|ts?)$",
     "testPathIgnorePatterns": [
       "/build/"
     ],
