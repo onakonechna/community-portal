@@ -19,11 +19,11 @@ provider:
   stage: {$opt:stage, 'dev'}
   region: us-east-1
   environment:
-    PROJECTS_TABLE: community-portal-projects
-    PROJECTS_INDEX: community-portal-projects-status-upvotes-index
-    USERS_TABLE: community-portal-users
-    TAGS_TABLE: community-portal-tags
-    SKILLS_TABLE: community-portal-skills
+    PROJECTS_TABLE: projects
+    PROJECTS_INDEX: projects-index
+    USERS_TABLE: users
+    TAGS_TABLE: tags
+    SKILLS_TABLE: skills
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     JWT_EXPIRATION_TIME: 5m
 

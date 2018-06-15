@@ -1,7 +1,6 @@
 {
   "Projects": {
     "Type": "AWS::DynamoDB::Table",
-    "DeletionPolicy": "Retain",
     "Properties": {
       "AttributeDefinitions": [
         {
@@ -25,7 +24,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "community-portal-projects-status-upvotes-index",
+          "IndexName": "projects-index",
           "KeySchema": [
             {
                "AttributeName": "status",
@@ -37,42 +36,31 @@
             }
           ],
           "Projection": {
-            "ProjectionType": "INCLUDE",
-            "NonKeyAttributes": [
-              "created",
-              "description",
-              "status",
-              "estimated",
-              "pledged",
-              "completed",
-              "upvotes",
-              "owner",
-              "size",
-              "tags",
-              "pledgers",
-              "contributors"
-            ]
+            "ProjectionType": "ALL"
           },
           "ProvisionedThroughput": {
-            "ReadCapacityUnits": 5,
-            "WriteCapacityUnits": 5
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
           }
         }
       ],
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 5,
-        "WriteCapacityUnits": 5
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
       },
-      "TableName": "community-portal-projects"
+      "TableName": "projects"
     }
   },
   "Users": {
     "Type": "AWS::DynamoDB::Table",
-    "DeletionPolicy": "Retain",
     "Properties": {
       "AttributeDefinitions": [
         {
           "AttributeName": "user_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "token",
           "AttributeType": "S"
         }
       ],
@@ -82,16 +70,37 @@
           "KeyType": "HASH"
         }
       ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "users-index",
+          "KeySchema": [
+            {
+               "AttributeName": "user_id",
+               "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "token",
+               "KeyType": "RANGE"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 5,
-        "WriteCapacityUnits": 5
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
       },
-      "TableName": "community-portal-users"
+      "TableName": "users"
     }
   },
   "Tags": {
     "Type": "AWS::DynamoDB::Table",
-    "DeletionPolicy": "Retain",
     "Properties": {
       "AttributeDefinitions": [
         {
@@ -109,12 +118,11 @@
         "ReadCapacityUnits": 5,
         "WriteCapacityUnits": 5
       },
-      "TableName": "community-portal-tags"
+      "TableName": "tags"
     }
   },
   "Skills": {
     "Type": "AWS::DynamoDB::Table",
-    "DeletionPolicy": "Retain",
     "Properties": {
       "AttributeDefinitions": [
         {
@@ -129,10 +137,166 @@
         }
       ],
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 5,
-        "WriteCapacityUnits": 5
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
       },
-      "TableName": "community-portal-skills"
+      "TableName": "skills"
+    }
+  },
+  "PullRequests": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "pull_request_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "updated",
+          "AttributeType": "N"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "pull_request_id",
+          "KeyType": "HASH"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "pull-requests-index",
+          "KeySchema": [
+            {
+               "AttributeName": "project_id",
+               "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "updated",
+               "KeyType": "RANGE"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "pull-requests"
+    }
+  },
+  "Epics": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "epic_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "updated",
+          "AttributeType": "N"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "epic_id",
+          "KeyType": "HASH"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "epics-index",
+          "KeySchema": [
+            {
+               "AttributeName": "project_id",
+               "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "updated",
+               "KeyType": "RANGE"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "epics"
+    }
+  },
+  "Issues": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "issue_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "updated",
+          "AttributeType": "N"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "issue_id",
+          "KeyType": "HASH"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "issues-index",
+          "KeySchema": [
+            {
+               "AttributeName": "project_id",
+               "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "updated",
+               "KeyType": "RANGE"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "issues"
     }
   }
 }
