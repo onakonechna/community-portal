@@ -1,5 +1,3 @@
-const validator = require('ajv')();
-
 // API-endpoint-related JSON validation schemas
 const createProjectSchema = {
   properties: {
@@ -46,8 +44,11 @@ const projectIdOnlySchema = {
   required: ['project_id'],
 };
 
-validator.addSchema(createProjectSchema, 'createProjectSchema');
-validator.addSchema(updateProjectStatusSchema, 'updateProjectStatusSchema');
-validator.addSchema(projectIdOnlySchema, 'projectIdOnlySchema');
+// Put all schemas together
+const validationSchemas: any = {
+  createProjectSchema,
+  updateProjectStatusSchema,
+  projectIdOnlySchema,
+};
 
-export default validator;
+export default validationSchemas;

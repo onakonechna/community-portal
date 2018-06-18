@@ -1,17 +1,3 @@
-import awsSdk = require('aws-sdk');
-const IS_OFFLINE = process.env.IS_OFFLINE;
-
-// Create a DynamoDB connection
-let dynamodb: awsSdk.DynamoDB.DocumentClient;
-if (IS_OFFLINE === 'true') {
-  dynamodb = new awsSdk.DynamoDB.DocumentClient({
-    region: 'localhost',
-    endpoint: 'http://localhost:8000',
-  });
-} else {
-  dynamodb = new awsSdk.DynamoDB.DocumentClient();
-}
-
 // Helper iterator
 // Usage:
 // for (let [key, value] of entries(myObj)) {
@@ -24,6 +10,5 @@ function* entries(obj: any) {
 }
 
 export {
-  dynamodb,
   entries,
 };
