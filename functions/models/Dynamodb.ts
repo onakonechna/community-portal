@@ -73,7 +73,7 @@ export default class Dynamodb {
     };
     return this.client.update(params).promise();
   }
-
+  
   likeProject(data: Object) {
     const params = {
       TableName: PROJECTS_TABLE,
