@@ -37,7 +37,8 @@
     "webpack-cli": "^3.0.3"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "deploy": "sls deploy"
   },
   "repository": {
     "type": "git",

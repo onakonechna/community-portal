@@ -96,7 +96,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "users"
+      "TableName": "users-temp"
     }
   },
   "Tags": {

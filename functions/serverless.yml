@@ -16,16 +16,16 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: {$opt:stage, 'dev'}
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
     PROJECTS_TABLE: projects
     PROJECTS_INDEX: projects-index
-    USERS_TABLE: users
+    USERS_TABLE: users-temp
     TAGS_TABLE: tags
     SKILLS_TABLE: skills
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
-    JWT_EXPIRATION_TIME: 5m
+    JWT_EXPIRATION_TIME: 1d
 
 package:
   individually: false

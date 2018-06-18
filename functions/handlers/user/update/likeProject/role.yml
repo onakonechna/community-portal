@@ -18,9 +18,9 @@ likeProjectRole:
               Action:
                 - dynamodb:UpdateItem
               Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/projects"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
             - Effect: Allow
               Action:
                 - dynamodb:UpdateItem
               Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/users"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
