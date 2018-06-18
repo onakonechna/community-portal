@@ -18,4 +18,4 @@ getProjectDetailsRole:
               Action:
                 - dynamodb:GetItem
               Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/projects"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
