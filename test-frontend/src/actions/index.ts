@@ -39,8 +39,7 @@ export type ActionTypes =
 export const addProject = (project: {}) => {
 	const projectBody = {
 		...project,
-		project_id: uuid(),
-		created: Date.now()
+		project_id: uuid()
 	};
 	return (dispatch: Dispatch) => {
 		return saveProject(projectBody)

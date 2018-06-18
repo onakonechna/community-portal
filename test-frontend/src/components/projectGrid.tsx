@@ -59,33 +59,11 @@ class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState
 
 	constructor(props: GridProps & GridStateProps) {
 		super(props);
-		this.updateGrid.bind(this);
+		this.updateGrid = this.updateGrid.bind(this);
 	}
 
 	public updateGrid() {
 		this.props.loadProjects();
-		console.log('Updating Grid');
-		const projects: any = [];
-		// if (this.props.projects.length > 1) {
-		// 	this.props.projects.map((project: any) => {
-		// 		let pledged = 20;
-		// 		project.child_List = project.child_List ? project.child_List : []
-		// 		project.child_List.map((contributor: IContributor) => {
-		// 			pledged += contributor.pledge!;
-		// 			project.backers.push({
-		// 				name: contributor.name,
-		// 				pledge: contributor.pledge
-		// 			})
-		// 		});
-		// 		project.pledged = pledged;
-		// 		projects.push(project);
-		// 		console.log('Updated Grid');
-		// 	})
-		// }
-
-		this.setState({ projects }, () => {
-			console.log(this.state);
-		});
 	}
 
 	componentDidMount() {
@@ -102,7 +80,7 @@ class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState
 					alignItems='flex-start'
 					spacing={32}
 				>
-					{this.props.projects[1] && this.props.projects.map((project: any) => (
+					{this.props.projects && this.props.projects.map((project: any) => (
 						<Grid item key={project.project_id}>
 							<ProjectCard
 								project={project}
@@ -111,7 +89,7 @@ class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState
 						</Grid>
 					))}
 				</Grid>
-				<AddProjectDialog handler={this.updateGrid} />
+				<AddProjectDialog handler={this.updateGrid}/>
 			</div>
 		)
 	}

@@ -51,6 +51,7 @@
     "jest": "^23.1.0",
     "jest-css-modules-transform": "^2.0.0",
     "jest-svg-transformer": "^1.0.0",
+    "jsonwebtoken": "^8.3.0",
     "nodemon": "^1.17.5",
     "react-test-renderer": "^16.4.1",
     "redux-devtools-extension": "^2.13.2",

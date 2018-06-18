@@ -53,7 +53,7 @@ interface DialogState {
 
 interface Technology {
 	key?: number,
-	label: string
+	type: string
 }
 
 class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, DialogState> {
@@ -78,6 +78,7 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 		this.handleChange = this.handleChange.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this.handleTechSubmission = this.handleTechSubmission.bind(this);
 	}
 
 	handleChange(field: string) {
@@ -85,15 +86,22 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 			if (field === "technologies") {
 				if (event.target.value.slice(-1) === " ") {
 					const technologies = this.state.technologies;
-					technologies[technologies.length] = { key: technologies.length, label: event.target.value }
+					technologies[technologies.length] = { key: technologies.length, type: event.target.value.slice(0, -1) }
+					// technologies[technologies.length] = event.target.value;
 					this.setState({
 						technologies,
-						"technologiesString": "",
+						"technologiesString": '',
 					});
 				} else {
 					this.setState({
 						"technologiesString": event.target.value,
 					});
+				}
+			} else if (field === "goal") {
+				if (event.target.value === 'NaN') {
+					this.setState({goal: 0})
+				} else {
+					this.setState({goal: parseInt(event.target.value, 10)})
 				}
 			} else {
 				this.setState({
@@ -110,6 +118,11 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 	handleClose() {
 		this.setState({ open: false });
 	}
+	handleTechSubmission(technologies: Technology[]) {
+		return technologies.map(tech => {
+			return tech.type;
+		})
+	}
 
 	handleSave() {
 		console.log(this.state)
@@ -121,15 +134,15 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 
 			const tech: Technology[] = [];
 			this.state.technologies.map(technology => {
-				tech.push({ "label": technology.label })
+				tech.push({ "type": technology.type })
 			})
 
 			const data = {
 				"name": this.state.name,
 				"description": this.state.description,
 				"size": this.state.size,
-				"due": this.state.due,
-				"technologies": tech,
+				"due": new Date(this.state.due).getTime() / 1000,
+				"technologies": this.handleTechSubmission(tech),
 				"github_address": this.state.github,
 				"estimated": this.state.goal,
 				"slack_channel": this.state.slack
@@ -140,14 +153,19 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 						success: true,
 						loading: false,
 					});
-					this.props.handler();
 					const state = {
 						open: false,
 						technologies: [],
-						technologiesString: "",
+						technologiesString: '',
 						size: "S",
 						success: false,
 						loading: false,
+						name: '',
+						description: '',
+						due: '',
+						goal: 0,
+						github: '',
+						slack: ""
 					};
 					this.setState(state);
 				})
@@ -198,7 +216,7 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 							fullWidth
 						/>
 						{this.state.technologies.map(technology => (
-							<Chip className={classes.chip} key={technology.key} label={technology.label} />
+							<Chip className={classes.chip} key={technology.key} label={technology.type} />
 						))}
 						<TextField
 							required
@@ -227,7 +245,7 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 							margin="dense"
 							id="name"
 							label="Goal (total hours)"
-							type="text"
+							type="number"
 							onChange={this.handleChange("goal")}
 							value={this.state.goal}
 						/>
