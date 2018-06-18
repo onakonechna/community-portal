@@ -127,17 +127,12 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 			const data = {
 				"name": this.state.name,
 				"description": this.state.description,
-
-				"slack": this.state.slack,
-				"github": this.state.github,
 				"size": this.state.size,
-				"created": this.state.created,
-
 				"due": this.state.due,
-				"estimate": this.state.goal,
-				"child_List": [
-				],
-				"technologies_List": tech
+				"technologies": tech,
+				"github_address": this.state.github,
+				"estimated": this.state.goal,
+				"slack_channel": this.state.slack
 			}
 			this.props.addProject(data)
 				.then((response: any) => {

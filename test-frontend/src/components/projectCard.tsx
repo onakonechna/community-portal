@@ -43,22 +43,30 @@ const styles = {
 
 interface CardProps {
     project: {
-      id: string,
+      project_id: string,
       name?: string,
-      title?: string,
       description: string,
-      technologies: [string],
+      status: string,
       estimated?: number,
       pledged?: number,
+      upvotes: number,
+      owner: string,
+      size?: string,
+      tags: [string],
+      technologies: [string],
+      pledgers?: [{
+        name?: string,
+        pledge?: number
+      }],
+      contributors?: [{
+        name?: string,
+        contributed?: number
+      }]
+      completed?: number,
       due_date?: string,
       hours_goal?: number,
       github?: string,
       slack?: string,
-      size?: string,
-      backers?: [{
-        name?: string,
-        pledge?: number
-      }],
       created_date?: string 
     },
     handler?: () => void,
@@ -81,7 +89,7 @@ function ProjectCard(props: CardProps) {
           />
           <CardContent>
             <Typography className={classes.centered}>
-              {props.project.title}
+              {props.project.name}
             </Typography>
             <Typography component="p">
               {props.project.description}

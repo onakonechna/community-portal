@@ -103,7 +103,7 @@ class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState
 					spacing={32}
 				>
 					{this.props.projects[1] && this.props.projects.map((project: any) => (
-						<Grid item key={project.id}>
+						<Grid item key={project.project_id}>
 							<ProjectCard
 								project={project}
 								handler={this.updateGrid.bind(this)}
