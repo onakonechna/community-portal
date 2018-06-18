@@ -1,35 +1,224 @@
 [
     {
-        "id": "AWGUq_g1yiLINyEYs231",
-        "name": "Cryptocurrency",
-        "description": "Bitcoin 2.0",
-        "estimated": 50,
-        "github": "https://github.com/athensbird/hello-world-ci",
-        "slack_link": "slack",
         "size": "M",
-        "technologies": ["Java", "Machine Learning", "AWS", "Docker"],
-        "backers": []
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887396,
+        "name": "test1",
+        "due": 1528850000,
+        "updated": 1529341887396,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test1",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
     },
     {
-        "id": "AWGUq_g1yiLINyEYs234",
-        "name": "PWS",
-        "description": "Progressive Web Application",
-        "estimated": 35,
-        "github": "https://github.com/athensbird/pwa-newsfeed",
-        "slack_link": "slack",
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887707,
+        "name": "test8",
+        "due": 1528850000,
+        "updated": 1529341887707,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test8",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
+    },
+    {
         "size": "S",
-        "technologies": ["JavaScript", "Service Worker"],
-        "backers": []
+        "upvotes": 0,
+        "estimated": 20,
+        "status": "open",
+        "created": 1529351574835,
+        "name": "test",
+        "due": 1514764800,
+        "updated": 1529351574835,
+        "technologies": [
+            "jasmine",
+            "jest",
+            "enzyme"
+        ],
+        "project_id": "4b3a7bc6-e305-44c0-9e48-6819c7107235",
+        "slack_channel": "slack",
+        "description": "testing for fun",
+        "github_address": "git"
     },
     {
-        "id": "AWGUq_g1yiLInPEYs234",
-        "name": "TypeScript",
-        "description": "A TypeScript based on Mobile App",
-        "estimated": 80,
-        "github": "https://github.com/athensbird/earthhack",
-        "slack_link": "slack",
-        "size": "L",
-        "technologies": ["TypeScript", "React Native", "Android"],
-        "backers": []
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341886725,
+        "name": "test7",
+        "due": 1528850000,
+        "updated": 1529341886725,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test7",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
+    },
+    {
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887008,
+        "name": "test11",
+        "due": 1528850000,
+        "updated": 1529341887008,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test11",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
+    },
+    {
+        "size": "S",
+        "upvotes": 0,
+        "estimated": 20,
+        "status": "open",
+        "created": 1529355986011,
+        "name": "hallo",
+        "due": 1514764800,
+        "updated": 1529355986011,
+        "technologies": [
+            "aws"
+        ],
+        "project_id": "149c15d4-326d-401e-8dc3-af1fd60c6b47",
+        "slack_channel": "s",
+        "description": "hello",
+        "github_address": "g"
+    },
+    {
+        "size": "S",
+        "upvotes": 0,
+        "estimated": 23,
+        "status": "open",
+        "created": 1529351955569,
+        "name": "testing",
+        "due": 1514764800,
+        "updated": 1529351955569,
+        "technologies": [
+            "javca",
+            "java"
+        ],
+        "project_id": "8e4d08f5-a4ca-4fa5-986e-f138067c0279",
+        "slack_channel": "slack",
+        "description": "testing for fun II",
+        "github_address": "github"
+    },
+    {
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887517,
+        "name": "test18",
+        "due": 1528850000,
+        "updated": 1529341887517,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test18",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
+    },
+    {
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887633,
+        "name": "test25",
+        "due": 1528850000,
+        "updated": 1529341887633,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test25",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
+    },
+    {
+        "size": "M",
+        "upvotes": 0,
+        "estimated": 32,
+        "status": "open",
+        "created": 1529341887607,
+        "name": "test12",
+        "due": 1528850000,
+        "updated": 1529341887607,
+        "technologies": [
+            "serverless",
+            "DynamoDB"
+        ],
+        "skills": [
+            "JavaScript"
+        ],
+        "project_id": "test12",
+        "slack_channel": "test",
+        "description": "This is a test project.",
+        "tags": [
+            "test"
+        ],
+        "github_address": "https://github.com/magento-engcom/community-portal/"
     }
 ]

@@ -31,8 +31,7 @@ interface IDispatchProps {
 }
 
 interface DialogProps {
-	classes?: any,
-	handler: () => void
+	classes?: any
 }
 
 interface DialogState {
@@ -56,7 +55,7 @@ interface Technology {
 	type: string
 }
 
-class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, DialogState> {
+export class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, DialogState> {
 	constructor(props: IDispatchProps & DialogProps) {
 		super(props);
 		const state = {
@@ -87,7 +86,6 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 				if (event.target.value.slice(-1) === " ") {
 					const technologies = this.state.technologies;
 					technologies[technologies.length] = { key: technologies.length, type: event.target.value.slice(0, -1) }
-					// technologies[technologies.length] = event.target.value;
 					this.setState({
 						technologies,
 						"technologiesString": '',
@@ -192,7 +190,7 @@ class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, Dia
 					fullWidth={true}
 					maxWidth={'md'}
 				>
-					<DialogTitle id="fyorm-dialog-title">Create Project</DialogTitle>
+					<DialogTitle id="form-dialog-title">Create Project</DialogTitle>
 					<DialogContent>
 						<TextField
 							autoFocus

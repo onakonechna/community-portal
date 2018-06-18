@@ -51,7 +51,7 @@ interface GridState {
 	projects: IProject[]
 }
 
-class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState> {
+export class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState> {
 
 	public state: GridState = {
 		projects: projectsData
@@ -84,12 +84,12 @@ class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState
 						<Grid item key={project.project_id}>
 							<ProjectCard
 								project={project}
-								handler={this.updateGrid.bind(this)}
+								handler={this.updateGrid}
 							/>
 						</Grid>
 					))}
 				</Grid>
-				<AddProjectDialog handler={this.updateGrid}/>
+				<AddProjectDialog />
 			</div>
 		)
 	}
