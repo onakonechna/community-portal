@@ -1,18 +1,14 @@
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 
-import { addProject } from '../src/actions';
+import { addProject, loadProjects } from '../src/actions';
 import { AddProjectDialog } from '../src/components/addProjectDialog';
 import HeadBar from '../src/components/headBar';
 
-// import { createMount } from '@material-ui/core/test-utils';
-
-// import { ProjectsGrid } from '../src/components/projectGrid';
-// const samples = require('../src/data/sampleProjects.json');
-
+import { ProjectsGrid } from '../src/components/projectGrid';
+const samples = require('../src/data/sampleProjects.json');
 
 describe('HeadBar Test Suite', () => {
- 
   it('should render without throwing an error', () => {
     const hasButton = shallow(<HeadBar />).contains(<span/>);
     expect(hasButton).toBeFalsy();
@@ -26,15 +22,13 @@ describe('HeadBar Test Suite', () => {
   })
 })
 
-// describe('ProjectGrid Test Suite', () => {
-//   it('should render the project grid', () => {
-//     const wrapper = mount(<ProjectsGrid projects={samples} loadProjects={loadProjects} />);
-//     const dialog = wrapper.find('Dialog');
-//     console.log(dialog.debug());
-
-//     expect(dialog).toBeTruthy();
-//   })
-// })
+describe('ProjectGrid Test Suite', () => {
+  it('should render the project grid', () => {
+    const wrapper = shallow(<ProjectsGrid projects={samples} loadProjects={loadProjects} />);
+    const grids = wrapper.findWhere(g => g.name() === 'WithStyles(Grid)' && g.prop('item') === true);
+    expect(grids.length).toEqual(10);
+  })
+})
 
 describe('AddProjectGrid Test Suite', () => {
   let wrapper: any;
@@ -47,11 +41,24 @@ describe('AddProjectGrid Test Suite', () => {
     chip: 'chip',
     textField: 'textfield'
   };
+
   it('test AddProjectDialog open button', () => {
     const allButtons = wrapper.findWhere((b: any) => b.name() === 'Button');
     const radio = wrapper.find('RadioGroup');
     expect(allButtons.length).toEqual(3);
     expect(radio).toBeTruthy();
+  })
+
+  it('goal input should work', () => {
+    const goalInput = wrapper.findWhere((n: any) => n.name() === 'input' && n.prop('id') === 'goal');
+    goalInput.simulate('change', {target: {name: "updateName", value: 20}});
+    expect(wrapper.state('goal')).toEqual(20);
+  })
+
+  it('radio button should work', () => {
+    const radio = wrapper.findWhere((r:any) => r.name() === 'RadioGroup');
+    radio.props().onChange({target: {value: 'L'}});
+    expect(wrapper.state('size')).toEqual('L');
   })
 })
 

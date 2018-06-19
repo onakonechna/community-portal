@@ -241,7 +241,7 @@ export class AddProjectDialog extends React.Component<IDispatchProps & DialogPro
 						<TextField
 							required
 							margin="dense"
-							id="name"
+							id="goal"
 							label="Goal (total hours)"
 							type="number"
 							onChange={this.handleChange("goal")}

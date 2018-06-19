@@ -34,7 +34,9 @@ export interface OtherAction {
 export type ActionTypes = 
 	| AddProjectAction
 	| AddUserAction
-	| ProjectLoadedAction;
+	| ProjectLoadedAction
+	| OtherAction
+
 
 export const addProject = (project: {}) => {
 	const projectBody = {
@@ -51,10 +53,9 @@ export const addProject = (project: {}) => {
 
 export const loadProjects: (any) = () => {
 	return (dispatch: Dispatch) => {
-		fetchProjects()
+		return fetchProjects()
 			.then(projects => {
 				dispatch(projectsLoaded(projects))
-				return;
 			})
 			.catch((err: any) => {
 				console.log(err);

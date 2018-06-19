@@ -13,7 +13,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import Grade from '@material-ui/icons/Grade';
 import Share from '@material-ui/icons/Share';
 
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -123,12 +123,12 @@ function ProjectCard(props: CardProps) {
                 value={getPercentage(props.project.pledged!, props.project.estimated!)}
               />
             </div>
-            <div className={classes.row}>
+            {/* <div className={classes.row}>
               <Avatar alt="Remy Sharp" src={require("../static/images/cards/uxceo-128.jpg")} className={classes.avatar}/>
               <Avatar alt="Remy Sharp" src={require("../static/images/cards/mayer.jpg")} className={classes.avatar}/>
               <Avatar alt="Remy Sharp" src={require("../static/images/cards/sheryl.jpg")} className={classes.avatar}/>
               <Avatar alt="Remy Sharp" src={require("../static/images/cards/musk.jpeg")} className={classes.avatar}/>
-            </div>
+            </div> */}
           </CardContent>
           <CardActions>
             <Button>View</Button>
