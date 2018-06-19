@@ -1,4 +1,4 @@
-import {CustomAuthorizerEvent, APIGatewayEventRequestContext} from 'aws-lambda';
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 const jwt = require('jsonwebtoken');
 
