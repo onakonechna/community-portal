@@ -2,19 +2,19 @@ const IS_OFFLINE = process.env.IS_OFFLINE;
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
-import awsSdk = require('aws-sdk');
+import { DynamoDB } from 'aws-sdk';
 
 export default class Dynamodb {
-  private client: awsSdk.DynamoDB.DocumentClient;
+  private client: DynamoDB.DocumentClient;
 
   constructor() {
     if (IS_OFFLINE === 'true') {
-      this.client = new awsSdk.DynamoDB.DocumentClient({
+      this.client = new DynamoDB.DocumentClient({
         region: 'localhost',
         endpoint: 'http://localhost:8000',
       });
     } else {
-      this.client = new awsSdk.DynamoDB.DocumentClient();
+      this.client = new DynamoDB.DocumentClient();
     }
   }
 
@@ -73,7 +73,7 @@ export default class Dynamodb {
     };
     return this.client.update(params).promise();
   }
-  
+
   likeProject(data: Object) {
     const params = {
       TableName: PROJECTS_TABLE,

@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 
 const serverless = require('serverless-http');
 const GithubService = require('./../../src/github/index');

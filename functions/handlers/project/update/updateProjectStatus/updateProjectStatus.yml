@@ -3,6 +3,6 @@ updateProjectStatus:
   handler: handlers/project/update/updateProjectStatus/handler.handler
   events:
   - http:
-      path: /project/update/status
+      path: /project/status
       method: post
       cors: true

@@ -3,6 +3,6 @@ projects:
     timeout: 10
     events:
     - http:
-        path: /projects/
+        path: /project/
         method: get
         cors: true

@@ -3,7 +3,7 @@ createProject:
   handler: handlers/project/create/createProject/handler.handler
   events:
   - http:
-      path: /project/create/
+      path: /project/
       method: post
       cors: true
       authorizer:
