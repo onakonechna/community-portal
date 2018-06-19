@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from "express";
 import RequestHandler from './RequestHandler';
 
 const serverless = require('serverless-http');
@@ -17,22 +17,22 @@ export default class EndpointMaker {
   make(endpoint: string) {
     switch (endpoint) {
       case 'createProject':
-        this.app.post('/project/create/', (req: express.Request, res: express.Response) => {
+        this.app.post('/project/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).createProject();
         });
         break;
       case 'getProjectCards':
-        this.app.get('/project/cards/', (req: express.Request, res: express.Response) => {
+        this.app.get('/projects/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).getProjectCards();
         });
         break;
       case 'getProjectDetails':
-        this.app.get('/project/id/:project_id/', (req: express.Request, res: express.Response) => {
+        this.app.get('/project/:project_id/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).getProjectDetails();
         });
         break;
       case 'updateProjectStatus':
-        this.app.post('/project/update/status/', (req: express.Request, res: express.Response) => {
+        this.app.post('/project/status/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).updateProjectStatus();
         });
         break;

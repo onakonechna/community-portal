@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from "express";
 import Validator from './Validator';
 import Dynamodb from './Dynamodb';
 
@@ -15,6 +15,7 @@ function createDynamodbResponse(
       res.status(statusCode).json(payload);
     })
     .catch((error: Error) => {
+      console.log(error);
       res.status(400).json({ error });
     });
 }
