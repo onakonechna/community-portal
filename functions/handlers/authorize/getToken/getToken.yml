@@ -1,6 +1,0 @@
-getToken:
-    handler: handlers/authorize/getToken/handler.handler
-    events:
-    - http:
-        path: /getToken/
-        method: post
