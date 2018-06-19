@@ -1,4 +1,7 @@
 custom:
+  github:
+    client_id: '' #github auth app client_id
+    client_secret: '' #github auth app client_secret
   dynamodb:
     start:
       migrate: true
@@ -26,6 +29,8 @@ provider:
     SKILLS_TABLE: skills
     JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     JWT_EXPIRATION_TIME: 1d
+    GITHUB_CLIENT_ID: ${self:custom.github.client_id}
+    GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
 
 package:
   individually: false
@@ -45,6 +50,7 @@ functions:
   - ${file(./handlers/token/get/get.yml)}
   - ${file(./handlers/user/users/users.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
+  - ${file(./handlers/authorization/authorization.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -58,6 +64,7 @@ resources:
     getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
     updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
+    authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
   - serverless-webpack

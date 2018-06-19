@@ -115,8 +115,8 @@
         }
       ],
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 5,
-        "WriteCapacityUnits": 5
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
       },
       "TableName": "tags"
     }
@@ -297,6 +297,28 @@
         "WriteCapacityUnits": 2
       },
       "TableName": "issues"
+    }
+  },
+  "usersTable": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "id",
+          "AttributeType": "N"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "users"
     }
   }
 }

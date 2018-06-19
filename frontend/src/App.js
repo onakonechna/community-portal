@@ -9,6 +9,7 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import Auth from './Auth';
 
 var custtom = {
   50: '#e8f5e9',
@@ -49,8 +50,8 @@ const App = () => (
       </ul>
 
       <hr/> */}
-
-      <Route exact path="" component={Crowdsourcing}/>
+      <Route exact path="/" component={Crowdsourcing}/>
+      <Route exact path="/auth" component={Auth}/>
     </div>
   </Router>
   </MuiThemeProvider>
