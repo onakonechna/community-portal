@@ -82,12 +82,12 @@ jobs:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
 
-  workflows:
-    version: 1
-    build_and_deploy:
-      jobs:
-        - build_frontend
-        - build_functions
+workflows:
+  version: 1
+  build_and_deploy:
+    jobs:
+      - build_frontend
+      - build_functions
 
 
 
