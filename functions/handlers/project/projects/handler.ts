@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 
 const serverless = require('serverless-http');
 const project = require('./../../../src/projects/projects');

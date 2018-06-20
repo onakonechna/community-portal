@@ -1,4 +1,4 @@
-import awsLambda = require('aws-lambda');
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 const jwt = require('jsonwebtoken');
 
@@ -32,8 +32,8 @@ const buildIAMPolicy = function (githubId: string,
 // string error supported in latest Github version but not in npm version as of 06-06-2018
 type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
 
-module.exports.handler = function (event: awsLambda.CustomAuthorizerEvent,
-                                   context: awsLambda.APIGatewayEventRequestContext,
+module.exports.handler = function (event: CustomAuthorizerEvent,
+                                   context: APIGatewayEventRequestContext,
                                    callback: Callback) {
   const token = event.authorizationToken;
 

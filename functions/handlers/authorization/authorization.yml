@@ -1,0 +1,8 @@
+authorization:
+    role: authorizationRole
+    handler: handlers/authorization/handler.handler
+    events:
+    - http:
+        path: /authorize/
+        method: post
+        cors: true

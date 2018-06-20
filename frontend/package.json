@@ -1,58 +1,83 @@
 {
-  "name": "crowdsourcing",
-  "version": "1.0.0",
-  "description": "Simple Crowdsourcing platform based on GitHub",
-  "main": "src/app.js",
+  "name": "test-community-portal",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.2.1",
+    "@material-ui/icons": "^1.1.0",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
+    "axios": "^0.18.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "2.16.0",
+    "recompose": "^0.27.1",
+    "redux": "^4.0.0",
+    "typesafe-actions": "^2.0.4",
+    "uuid": "^3.2.1",
+    "webpack": "^3.12.0"
+  },
   "scripts": {
-    "test": "jest"
+    "start": "PORT=3030 react-scripts-ts start",
+    "dev": "nodemon -w ./ -x npm run start -e ts,tsx",
+    "build": "react-scripts-ts build",
+    "test": "jest",
+    "eject": "react-scripts-ts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vrann/crowdsourcing.git"
-  },
-  "keywords": [
-    "project",
-    "management"
-  ],
-  "author": "vrann",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vrann/crowdsourcing/issues"
-  },
-  "homepage": "https://github.com/vrann/crowdsourcing#readme",
   "devDependencies": {
-    "@types/jest": "^22.2.3",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "@types/enzyme": "^3.1.10",
+    "@types/fetch-mock": "^6.0.3",
+    "@types/jest": "^23.0.2",
+    "@types/material-ui": "^0.20.8",
+    "@types/node": "^10.3.2",
+    "@types/qs": "^6.5.1",
+    "@types/react": "^16.3.17",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-redux": "^6.0.2",
+    "@types/react-router": "^4.0.26",
+    "@types/react-router-dom": "^4.2.7",
+    "@types/recompose": "^0.26.1",
+    "@types/redux-mock-store": "0.0.13",
+    "@types/uuid": "^3.4.3",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.0.1",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^0.11.2",
-    "jest": "^22.4.3",
-    "style-loader": "^0.18.2",
+    "css-loader": "^0.28.11",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "fetch-mock": "^6.4.4",
+    "file-loader": "^1.1.11",
+    "jest": "^23.1.0",
+    "jest-css-modules-transform": "^2.0.0",
+    "jest-svg-transformer": "^1.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "nodemon": "^1.17.5",
+    "react-test-renderer": "^16.4.1",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-mock-store": "^1.5.3",
+    "redux-thunk": "^2.3.0",
+    "style-loader": "^0.21.0",
     "ts-jest": "^22.4.6",
-    "typescript": "^2.8.4",
-    "url-loader": "^0.5.9",
-    "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.3"
-  },
-  "dependencies": {
-    "axios": "^0.17.1",
-    "material-ui": "^1.0.0-beta.30",
-    "material-ui-chip-input": "^0.18.5",
-    "material-ui-icons": "^1.0.0-beta.17",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2",
-    "rickshaw": "^1.6.4"
+    "tslint-config-airbnb": "^5.9.2",
+    "typescript": "^2.9.1",
+    "url-loader": "^1.0.1"
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/jestSetup.ts",
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest",
+      ".+\\.(css|styl|less|sass|scss)$": "./node_modules/jest-css-modules-transform",
+      "^.+\\.svg$": "jest-svg-transformer"
     },
-    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?|ts?)$",
+    "testPathIgnorePatterns": [
+      "/build/"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -61,5 +86,8 @@
       "json",
       "node"
     ]
+  },
+  "nodemonConfig": {
+    "ignore": "test/*"
   }
 }

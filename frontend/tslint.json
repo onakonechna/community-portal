@@ -1,0 +1,22 @@
+{
+  "extends": "tslint-config-airbnb",
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "align": false,
+    "interface-name": false,
+    "import-name": false,
+    "max-line-length": false,
+    "member-access": false,
+    "no-angle-bracket-type-assertion": false,
+    "no-shadowed-variable": false,
+    "no-this-assignment": false,
+    "no-var-requires": false,
+    "object-literal-sort-keys": false,
+    "jsx-boolean-value": false
+  }
+}

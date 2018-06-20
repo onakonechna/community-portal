@@ -1,17 +1,47 @@
 custom:
+  jwt:
+    secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    expiration_time: 20d
+  github:
+    client_id: '668e0b6c450cc783f267' #github auth app client_id
+    client_secret: 'f8998271c8e88e2980a02ed5ce38c6dca854e7a7' #github auth app client_secret
   dynamodb:
     start:
       migrate: true
+  functions:
+    # Add lambda functions for public endpoints here so Jest will not complain
+    public: # remove non-public functions after authorizer integration
+      - getProjectCards
+      - updateProjectStatus
+      - getProjectDetails
+      - getToken
+      - projects
+      - users
+      - likeProject
+      - authorization
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: {$opt:stage, 'dev'}
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
-    TEST_TABLE: community-portal-test
-    JWT_SECRET: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
-    JWT_EXPIRATION_TIME: 5m
+    PROJECTS_TABLE: projects
+    PROJECTS_INDEX: projects-index
+    USERS_TABLE: users
+    USERS_INDEX: users-index
+    TAGS_TABLE: tags
+    SKILLS_TABLE: skills
+    PULL_REQUESTS_TABLE: pull-requests
+    PULL_REQUESTS_INDEX: pull-requests-index
+    EPICS_TABLE: epics
+    EPICS_INDEX: epics-index
+    ISSUES_TABLE: issues
+    ISSUES_INDEX: issues-index
+    JWT_SECRET: ${self:custom.jwt.secret}
+    JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
+    GITHUB_CLIENT_ID: ${self:custom.github.client_id}
+    GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
 
 package:
   individually: false
@@ -23,18 +53,32 @@ service: test-endpoint
 
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
-  - ${file(./handlers/project/create/create.yml)}
-  - ${file(./handlers/project/get/get.yml)}
+  - ${file(./handlers/authorization/authorization.yml)}
+  - ${file(./handlers/project/create/createProject/createProject.yml)}
+  - ${file(./handlers/project/get/getProjectCards/getProjectCards.yml)}
+  - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
+  - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/project/projects/projects.yml)}
   - ${file(./handlers/token/get/get.yml)}
   - ${file(./handlers/user/users/users.yml)}
+  - ${file(./handlers/user/update/likeProject/likeProject.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
   Resources:
-    testDynamoDBTable: ${file(./schema.json):testDynamoDBTable}
-    getProjectRole: ${file(./handlers/project/get/role.yml):getProjectRole}
-    createProjectRole: ${file(./handlers/project/create/role.yml):createProjectRole}
+    ProjectsTable: ${file(./schema.json):Projects}
+    UsersTable: ${file(./schema.json):Users}
+    TagsTable: ${file(./schema.json):Tags}
+    SkillsTable: ${file(./schema.json):Skills}
+    PullRequestsTable: ${file(./schema.json):PullRequests}
+    EpicsTable: ${file(./schema.json):Epics}
+    IssuesTable: ${file(./schema.json):Issues}
+    createProjectRole: ${file(./handlers/project/create/createProject/role.yml):createProjectRole}
+    getProjectCardsRole: ${file(./handlers/project/get/getProjectCards/role.yml):getProjectCardsRole}
+    getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
+    updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
+    likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
+    authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
   - serverless-webpack

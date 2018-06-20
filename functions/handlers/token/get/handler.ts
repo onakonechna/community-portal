@@ -2,10 +2,12 @@ import express = require('express');
 import awsSdk = require('aws-sdk');
 
 const serverless = require('serverless-http');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const tokenRequests = require('./../../../src/tokenRequests/tokenRequests');
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 app.post('/token/get/', (req:express.Request, res:express.Response) => {
