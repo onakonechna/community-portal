@@ -18,6 +18,7 @@ custom:
       - projects
       - users
       - likeProject
+      - authorization
 
 provider:
   name: aws
