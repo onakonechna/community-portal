@@ -1,6 +1,6 @@
-import qs from 'qs';
+import * as qs from 'qs';
 
-const toQuery = (params, delimiter = '&') => {
+const toQuery = (params: any, delimiter = '&') => {
     const keys = Object.keys(params);
 
     return keys.reduce((str, key, index) => {
@@ -15,7 +15,23 @@ const toQuery = (params, delimiter = '&') => {
 };
 
 class GithubAuthModal {
-    constructor(id, url, options = {}) {
+    public static open(id: string, url: string, options = {}) {
+        const popup = new this(id, url, options);
+
+        popup.open();
+        popup.poll();
+
+        return popup;
+    }
+
+    private id: string;
+    private url: string;
+    private options: any;
+    private window: any;
+    private promise: Promise<any>;
+    private iid: number | null;
+
+    constructor(id: string, url: string, options = {}) {
         this.id = id;
         this.url = url;
         this.options = options;
@@ -33,7 +49,7 @@ class GithubAuthModal {
 
     poll() {
         this.promise = new Promise((resolve, reject) => {
-            this._iid = window.setInterval(() => {
+            this.iid = window.setInterval(() => {
                 try {
                     const popup = this.window;
 
@@ -61,27 +77,18 @@ class GithubAuthModal {
     }
 
     cancel() {
-        if (this._iid) {
-            window.clearInterval(this._iid);
-            this._iid = null;
+        if (this.iid) {
+            window.clearInterval(this.iid);
+            this.iid = null;
         }
     }
 
-    then(...args) {
+    then(...args: any[]) {
         return this.promise.then(...args);
     }
 
-    catch(...args) {
+    catch(...args: any[]) {
         return this.promise.then(...args);
-    }
-
-    static open(...args) {
-        const popup = new this(...args);
-
-        popup.open();
-        popup.poll();
-
-        return popup;
     }
 }
 

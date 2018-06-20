@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Auth from './components/auth';
 import Crowdsourcing from './components/crowdsourcing'
