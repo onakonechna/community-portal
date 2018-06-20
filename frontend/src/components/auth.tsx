@@ -2,9 +2,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-// interface IAuthProps {
-// }
-
 interface IAuthState {
   size: number;
 }

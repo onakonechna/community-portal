@@ -1,6 +1,8 @@
 import * as React from 'react';
 import GithubAuthModal from './github-auth-modal';
 
+import Button from '@material-ui/core/Button';
+
 const toQuery = (params: any, delimiter = '&') => {
   const keys = Object.keys(params);
 
@@ -15,7 +17,7 @@ const toQuery = (params: any, delimiter = '&') => {
   }, '');
 };
 
-interface IGitHubLoginProps {
+interface IGithubLoginProps {
   clientId: string;
   redirectUri: string;
   scope: string;
@@ -27,9 +29,9 @@ interface IGitHubLoginProps {
   onRequest?: any;
 }
 
-class GitHubLogin extends React.Component<IGitHubLoginProps, {}> {
-  public static defaultProps: Partial<IGitHubLoginProps> = {
-    buttonText: 'Sign in with GitHub',
+class GithubLogin extends React.Component<IGithubLoginProps, {}> {
+  public static defaultProps: Partial<IGithubLoginProps> = {
+    buttonText: 'LOGIN',
     onFailure: () => { return; },
     onRequest: () => { return; },
     onSuccess: () => { return; },
@@ -81,8 +83,8 @@ class GitHubLogin extends React.Component<IGitHubLoginProps, {}> {
       attrs.className = className;
     }
 
-    return <button {...attrs}>{children || buttonText}</button>;
+    return <Button {...attrs}>{children || buttonText}</Button>;
   }
 }
 
-export default GitHubLogin;
+export default GithubLogin;
