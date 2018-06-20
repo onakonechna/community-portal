@@ -1,5 +1,5 @@
-// const hostAddr = 'https://boebm330qg.execute-api.us-east-1.amazonaws.com/demo';
-const hostAddr = 'http://localhost:3000';
+const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+// const hostAddr = 'http://localhost:3000';
 
 const axios = require('axios');
 const projects = require('./fixtures/projects.json');
