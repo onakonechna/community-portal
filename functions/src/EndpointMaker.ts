@@ -1,4 +1,4 @@
-import * as express from "express";
+import * as express from 'express';
 import RequestHandler from './RequestHandler';
 
 const serverless = require('serverless-http');

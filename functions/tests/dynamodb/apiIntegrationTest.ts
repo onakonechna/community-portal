@@ -7,7 +7,7 @@ const projects = require('./fixtures/projects.json');
 function getProjectCards(){
   const getCardsOptions = {
     method: 'GET',
-    url: hostAddr + '/project/cards',
+    url: hostAddr + '/projects',
   };
 
   return axios(getCardsOptions);
@@ -16,7 +16,7 @@ function getProjectCards(){
 function getProjectDetails(project_id){
   const getDetailsOptions = {
     method: 'GET',
-    url: hostAddr + '/project/id/' + project_id,
+    url: hostAddr + '/project/' + project_id,
   };
 
   return axios(getDetailsOptions);
@@ -35,7 +35,7 @@ function putProject(project){
     .then((response) => {
       const postOptions = {
         method: 'POST',
-        url: hostAddr + '/project/create',
+        url: hostAddr + '/project',
         data: project,
         headers: {
           Authorization: response.data.message,
@@ -58,7 +58,7 @@ function likeProject(project_id){
 function updateProjectStatus(project_id, status){
   const likeProjectOptions = {
     method: 'POST',
-    url: hostAddr +  '/project/update/status',
+    url: hostAddr +  '/project/status',
     data: { project_id, status },
   };
 
