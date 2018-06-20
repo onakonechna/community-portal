@@ -1,4 +1,4 @@
-import { TypeKeys } from '../src/actions';
+import {  OtherAction, ProjectLoadedAction, TypeKeys } from '../src/actions';
 import projectReducer from '../src/reducers/project';
 
 describe("test reducer", () => {
@@ -27,12 +27,12 @@ describe("test reducer", () => {
     }
   ];
 
-  const loadAction = {
+  const loadAction: ProjectLoadedAction = {
     type: TypeKeys.PROJECTS_LOADED,
     projects
   }
 
-  const defaultAction = {
+  const defaultAction: OtherAction = {
     type: TypeKeys.OTHER_ACTION
   }
 
