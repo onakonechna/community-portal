@@ -1,5 +1,5 @@
 // export const API = 'http://localhost:5000';
-export const API = 'https://boebm330qg.execute-api.us-east-1.amazonaws.com/demo';
+export const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 
 // import getToken from './tokenRequests';
 
