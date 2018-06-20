@@ -1,7 +1,7 @@
 import { API, headers } from './config';
 
 const fetchProjects = () => {
-  return fetch(`${API}/project/cards`, headers)
+  return fetch(`${API}/projects`, headers)
           .then((res:any) => res.json())
           .catch((err:any) => {
               console.log(err);
