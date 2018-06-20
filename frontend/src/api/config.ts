@@ -10,9 +10,7 @@ export const headers = {
 };
 
 export const postHeaders = (body:any) => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQ\
-                iOjE1Mjk1MDg2OTUsImV4cCI6MTUyOTU5NTA5NX0.5Tdum\
-                _i-NhiDWMpUiIIwmLNMAu1oWb0JBRBHhJHUKjo';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1Mjk1MDg2OTUsImV4cCI6MTUyOTU5NTA5NX0.5Tdum_i-NhiDWMpUiIIwmLNMAu1oWb0JBRBHhJHUKjo';
   return {
     method: 'POST',
     body: JSON.stringify(body),

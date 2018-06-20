@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EditProjectDialog from './editProjectDialog';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -69,6 +70,8 @@ interface CardProps {
     created_date?: string,
   };
   handler?: () => void;
+  toggleEdit?: () => void;
+  editOpen: boolean;
   classes: any;
 }
 
@@ -102,16 +105,16 @@ function projectCard(props: CardProps) {
             </Typography>
             <Typography>
               Current Contributors:
-                </Typography>
+            </Typography>
             <Typography>
               Open for: days
-                </Typography>
+            </Typography>
             <Typography>
               Goal: {props.project.estimated} hours
-                </Typography>
+            </Typography>
             <Typography>
               Pledged: {props.project.pledged} hours
-                </Typography>
+            </Typography>
           </div>
 
           <CircularProgress
@@ -119,6 +122,11 @@ function projectCard(props: CardProps) {
             color="secondary"
             size={150}
             value={getPercentage(props.project.pledged!, props.project.estimated!)}
+          />
+          <EditProjectDialog
+            open={props.editOpen}
+            toggleEdit={props.toggleEdit}
+            project={props.project}
           />
         </div>
       </CardContent>
@@ -132,7 +140,10 @@ function projectCard(props: CardProps) {
             </SvgIcon>
           </IconButton>
         </a>
-        <IconButton aria-label="Edit">
+        <IconButton
+          aria-label="Edit"
+          onClick={props.toggleEdit}
+        >
           <Edit />
         </IconButton>
         <IconButton aria-label="Share">
