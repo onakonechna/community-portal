@@ -20,7 +20,7 @@ class Users {
 
   createUser(
     token:string,
-    id:string,
+    user_id:string,
     name:string,
     email:string,
     company:string,
@@ -29,7 +29,7 @@ class Users {
     html_url:string,
     url:string,
   ) {
-    const data = { token, id, name, email, company, avatar_url, location, html_url, url };
+    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id: String(user_id) };
     const params = {
       TableName: 'users',
       Item: data,

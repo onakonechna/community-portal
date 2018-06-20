@@ -6,11 +6,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-// import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import axios from 'axios';
 import GitHubLogin from './github-auth-button';
+
+import { API } from './../api/config';
 
 const styles = {
     root: {
@@ -34,7 +35,7 @@ const styles = {
   };
 
 const onSuccess = (response: any) => {
-    axios.post('https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev/authorize', {code: response})
+    axios.post(`${API}/authorize`, {code: response})
         .then(data => {
             console.log(data);
         });

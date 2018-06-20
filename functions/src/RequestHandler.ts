@@ -46,7 +46,7 @@ export default class RequestHandler {
   }
 
   createProject() {
-    if (!this.validate(this.req.body, 'createProjectSchema')) { return; }
+    if (!this.validate(this.req.body, 'createProjectSchema')) return;
     const request = new Dynamodb().createProject(this.req.body);
     const getResponse = (): [number, IMessage] => {
       return [200, {
