@@ -6,49 +6,49 @@ import { connect } from 'react-redux';
 // }
 
 interface IAuthState {
-  size: number,
+  size: number;
 }
 
 class Auth extends React.Component<{}, IAuthState> {
-    constructor(props: any) {
-        super(props);
+  constructor(props: any) {
+    super(props);
 
-        this.state = {
-            size: 150
-        }
-    }
+    this.state = {
+      size: 150,
+    };
+  }
 
-    componentDidMount() {
-        this.setState({
-            size: window.innerWidth / 3
-        });
-    }
+  componentDidMount() {
+    this.setState({
+      size: window.innerWidth / 3,
+    });
+  }
 
-    render() {
-        return (
-            <CircularProgress
-                style={{
-                    position: 'absolute',
-                    top: (window.innerHeight / 2) - (this.state.size / 2),
-                    left: (window.innerWidth / 2) - (this.state.size / 2)
-                }}
-                size={this.state.size}
-                color="primary"
-            />
-        );
-    }
+  render() {
+    return (
+      <CircularProgress
+        style={{
+          position: 'absolute',
+          top: (window.innerHeight / 2) - (this.state.size / 2),
+          left: (window.innerWidth / 2) - (this.state.size / 2),
+        }}
+        size={this.state.size}
+        color="primary"
+      />
+    );
+  }
 }
 
 const mapStateToProps = (state: any) => {
-	return {
-	}
-}
+  return {
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
-	return {
-	}
-}
+  return {
+  };
+};
 
 export default connect(
-	mapStateToProps, mapDispatchToProps
+  mapStateToProps, mapDispatchToProps,
 )(Auth);
