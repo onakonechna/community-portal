@@ -1,6 +1,34 @@
 version: 1
 jobs:
-  build:
+  build_frontend:
+    working_directory: ~/community-portal/frontend
+
+    docker:
+      - image: circleci/node:10.3
+
+    steps:
+      - checkout: 
+          path: ~/community-portal/
+
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "./package.json" }}
+            - dependencies-cache
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - run:
+          name: run frontend tests
+          command: npm test
+          
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-cache-{{ checksum "./package.json" }}
+
+  build_functions:
     working_directory: ~/community-portal/functions
 
     docker:
@@ -35,7 +63,7 @@ jobs:
       - run: sleep 20
 
       - run:
-          name: run tests
+          name: run backend tests
           command: npm test
 
       - run:
@@ -53,4 +81,14 @@ jobs:
           paths:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
+
+  workflows:
+    version: 1
+    build_and_deploy:
+      jobs:
+        - build_frontend
+        - build_functions
+
+
+
 
