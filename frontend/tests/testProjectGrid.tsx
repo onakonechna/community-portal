@@ -19,16 +19,17 @@ describe('HeadBar Test Suite', () => {
     const paper = wrapper.find('Paper');
 
     expect(paper.props().elevation).toBe(4);
-  })
-})
+  });
+});
 
 describe('ProjectGrid Test Suite', () => {
   it('should render the project grid', () => {
     const wrapper = shallow(<ProjectsGrid projects={samples} loadProjects={loadProjects} />);
-    const grids = wrapper.findWhere(g => g.name() === 'WithStyles(Grid)' && g.prop('item') === true);
+    const grids = wrapper.findWhere(g =>
+      g.name() === 'WithStyles(Grid)' && g.prop('item') === true);
     expect(grids.length).toEqual(10);
-  })
-})
+  });
+});
 
 describe('AddProjectGrid Test Suite', () => {
   let wrapper: any;
@@ -36,10 +37,10 @@ describe('AddProjectGrid Test Suite', () => {
     wrapper = mount(<AddProjectDialog classes={classes} addProject={addProject}/>);
     const toggleButton = wrapper.findWhere((b: any) => b.name() === 'Button');
     toggleButton.simulate('click');
-  })
+  });
   const classes = {
     chip: 'chip',
-    textField: 'textfield'
+    textField: 'textfield',
   };
 
   it('test AddProjectDialog open button', () => {
@@ -47,18 +48,18 @@ describe('AddProjectGrid Test Suite', () => {
     const radio = wrapper.find('RadioGroup');
     expect(allButtons.length).toEqual(3);
     expect(radio).toBeTruthy();
-  })
+  });
 
   it('goal input should work', () => {
-    const goalInput = wrapper.findWhere((n: any) => n.name() === 'input' && n.prop('id') === 'goal');
-    goalInput.simulate('change', {target: {name: "updateName", value: 20}});
+    const goalInput = wrapper.findWhere(
+      (n: any) => n.name() === 'input' && n.prop('id') === 'goal');
+    goalInput.simulate('change', { target: { name: 'updateName', value: 20 } });
     expect(wrapper.state('goal')).toEqual(20);
-  })
+  });
 
   it('radio button should work', () => {
     const radio = wrapper.findWhere((r:any) => r.name() === 'RadioGroup');
-    radio.props().onChange({target: {value: 'L'}});
+    radio.props().onChange({ target: { value: 'L' } });
     expect(wrapper.state('size')).toEqual('L');
-  })
-})
-
+  });
+});

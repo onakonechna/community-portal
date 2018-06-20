@@ -15,68 +15,67 @@ import { withStyles } from '@material-ui/core/styles';
 // import TextField from '@material-ui/core/TextField';
 
 const styles = (theme: any) => ({
-	chip: {
-		'margin': '5px 5px'
-	},
-	textField: {
-		width: 200,
-	}
+  chip: {
+    margin: '5px 5px',
+  },
+  textField: {
+    width: 200,
+  },
 });
 
 interface EditDialogProps {
-	classes?: any
+  classes?: any;
 }
 
 interface EditDialogState {
-	open: boolean,
-	success: boolean,
-	loading: boolean,
-	technologies: Technology[],
-	technologiesString: string,
-	size: string,
-	name: string,
-	description: string,
-	due: string,
-	goal: number,
-	github: string,
-	slack: string,
-	[key: string]: boolean | string | number | Technology[]
+  open: boolean;
+  success: boolean;
+  loading: boolean;
+  technologies: Technology[];
+  technologiesString: string;
+  size: string;
+  name: string;
+  description: string;
+  due: string;
+  goal: number;
+  github: string;
+  slack: string;
+  [key: string]: boolean | string | number | Technology[];
 }
 
 interface Technology {
-	key?: number,
-	type: string
+  key?: number;
+  type: string;
 }
 
 export class EditProjectDialog extends React.Component<EditDialogProps, EditDialogState> {
-    constructor(props: EditDialogProps) {
-        super(props);
+  constructor(props: EditDialogProps) {
+    super(props);
 
-    }
+  }
 
-    render(){
-        return(
-					<div>sth</div>
-				)
-    }
+  render() {
+    return (
+      <div>sth</div>
+    );
+  }
 }
 
 const mapStateToProps = (state: any) => {
-	return {
+  return {
 
-	}
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
-	return {
+  return {
 
-	}
-}
+  };
+};
 
 export default compose<{}, EditDialogProps>(
-	withStyles(styles, {
-		name: 'EditProjectDialog'
-	}),
-	connect<{}, {}, EditDialogProps>(mapStateToProps, mapDispatchToProps)
+  withStyles(styles, {
+    name: 'EditProjectDialog',
+  }),
+  connect<{}, {}, EditDialogProps>(mapStateToProps, mapDispatchToProps),
 )(EditProjectDialog);
-

@@ -8,5 +8,5 @@ describe('sample test', () => {
     // ReactDOM.render(<App />, div);
     // ReactDOM.unmountComponentAtNode(div);
     expect(1).toBe(1);
-  });  
-})
+  });
+});
