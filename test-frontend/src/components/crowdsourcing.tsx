@@ -52,9 +52,9 @@ const Crowdsourcing = () => (
             </Typography>
             <Button color="inherit">Login</Button>
               <GitHubLogin
-                  clientId="" // Github auth application client_id
+                  clientId="668e0b6c450cc783f267" // Github auth application client_id
                   scope="" // Github permission scopes
-                  redirectUri="" // Callback url, as example domain.com/auth
+                  redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
                   onSuccess={onSuccess}
                   onFailure={onFailure}/>
           </Toolbar>
