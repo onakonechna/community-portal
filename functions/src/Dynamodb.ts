@@ -44,8 +44,7 @@ export default class Dynamodb {
       ExpressionAttributeValues: {
         ':status': 'open',
       },
-      ScanIndexForward: false,
-      Limit: 10,
+      ScanIndexForward: false
     };
     return this.client.query(params).promise();
   }
