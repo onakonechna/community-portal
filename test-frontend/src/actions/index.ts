@@ -31,7 +31,7 @@ export interface OtherAction {
 	type: TypeKeys.OTHER_ACTION
 }
 
-export type ActionTypes = 
+export type ActionTypes =
 	| AddProjectAction
 	| AddUserAction
 	| ProjectLoadedAction

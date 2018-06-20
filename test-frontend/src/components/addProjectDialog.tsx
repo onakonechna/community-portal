@@ -123,7 +123,6 @@ export class AddProjectDialog extends React.Component<IDispatchProps & DialogPro
 	}
 
 	handleSave() {
-		console.log(this.state)
 		if (!this.state.loading) {
 			this.setState({
 				success: false,

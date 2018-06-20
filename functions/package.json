@@ -39,7 +39,8 @@
   "scripts": {
     "test": "jest",
     "start": "sls offline start",
-    "deploy": "sls deploy"
+    "deploy": "sls deploy",
+    "lint": "tslint --project tsconfig.json"
   },
   "repository": {
     "type": "git",
