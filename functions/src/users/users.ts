@@ -11,7 +11,7 @@ interface usersParams {
   page?: number;
 }
 
-export default class Users {
+class Users {
   getUsers(event:usersParams) {
     return {
       message: 'Go Serverless v1.0! Your function executed successfully!',
@@ -46,3 +46,5 @@ export default class Users {
     });
   }
 }
+
+module.exports = Users;

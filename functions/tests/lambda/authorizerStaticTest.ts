@@ -42,6 +42,7 @@ describe('authorizer yaml definition static test', () => {
         for (let j = 0; j < events.length; j++) {
           Object.keys(events[j]).map((name) => {
             if (name === 'http' && !(_.includes(publicFuncNames, funcName)) {
+              console.log(funcName);
               expect(events[j].http.authorizer).toEqual(authorizerSnippet);
             }
           };
