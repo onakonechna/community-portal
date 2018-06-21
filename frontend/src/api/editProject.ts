@@ -1,6 +1,7 @@
 import { API, putHeaders } from './config';
 
 export const editProject = (project:any) => {
+  console.log(project);
   return fetch(`${API}/project/edit`, putHeaders(project))
     .then(res => res.json())
     .catch(err => err);
