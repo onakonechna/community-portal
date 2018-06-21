@@ -10,7 +10,7 @@ interface ProjectInterface extends ResourceInterface {
   upvote(data: any): Object;
 }
 
-export default class Project extends BaseResource implements ProjectInterface {
+export default class ProjectResource extends BaseResource implements ProjectInterface {
 
   create(data: any): Object {
     // append additional data

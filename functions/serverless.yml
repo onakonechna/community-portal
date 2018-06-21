@@ -11,14 +11,11 @@ custom:
   functions:
     # Add lambda functions for public endpoints here so Jest will not complain
     public: # remove non-public functions after authorizer integration
+      - authorization
       - getProjectCards
       - getProjectDetails
       - updateProjectStatus
-      - getToken
-      - projects
-      - users
       - likeProject
-      - authorization
 
 provider:
   name: aws
@@ -59,9 +56,6 @@ functions:
   - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/update/editProject/editProject.yml)}
   - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/project/projects/projects.yml)}
-  - ${file(./handlers/token/get/get.yml)}
-  - ${file(./handlers/user/users/users.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
 
 # Add references to defined tables and roles here before deployment

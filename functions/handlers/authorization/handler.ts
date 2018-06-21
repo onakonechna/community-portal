@@ -5,12 +5,13 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const authorizationServiceModule = require('./../../src/authorization/index');
-const authorizationService = new authorizationServiceModule();
-const githubServiceModule = require('./../../src/github/index');
-const githubService = new githubServiceModule();
-const userServiceModule = require('./../../src/users/users');
-const userService = new userServiceModule();
+const AuthorizationService = require('./../../src/services/authorizationService');
+const GithubService = require('./../../src/services/githubService');
+const UserService = require('./../../src/services/userService');
+
+const authorizationService = new AuthorizationService();
+const githubService = new GithubService();
+const userService = new UserService();
 
 app.use(cors());
 app.use(bodyParser.json({ strict: false }));
@@ -21,9 +22,11 @@ app.post('/authorize/', (req:express.Request, res:express.Response) => {
       const token = data['access_token'];
       githubService.getUserDataByToken(token)
         .then((body: any) => {
+          // store user ID as a string
+          body.id = String(body.id);
           userService.createUser(
                 token,
-                String(body.id),
+                body.id,
                 body.name,
                 body.email,
                 body.company,
@@ -32,7 +35,7 @@ app.post('/authorize/', (req:express.Request, res:express.Response) => {
                 body.html_url,
                 body.url,
             ).then(
-                (user:any) => res.json({ token: authorizationService.createJWT(user) }),
+                (user:any) => res.json({ token: authorizationService.create(user) }),
                 (err:Error) => console.log(err));
         },    (err:Error) => console.log(err));
     },    (err:Error) => console.log(err));

@@ -1,8 +1,0 @@
-users:
-    handler: handlers/user/users/handler.handler
-    timeout: 10
-    events:
-    - http:
-        path: /users/
-        method: get
-        cors: true

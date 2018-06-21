@@ -3,24 +3,11 @@ const dynamoDb = new awsSdk.DynamoDB.DocumentClient({
   region: 'us-east-1',
 });
 
-interface usersParams {
-  q: string;
-  sort?: string;
-  order?: string;
-  per_page?: number;
-  page?: number;
-}
-
-class Users {
-  getUsers(event:usersParams) {
-    return {
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-    };
-  }
+class User {
 
   createUser(
     token:string,
-    user_id:string,
+    id:string,
     name:string,
     email:string,
     company:string,
@@ -29,7 +16,7 @@ class Users {
     html_url:string,
     url:string,
   ) {
-    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id: String(user_id) };
+    const data = { token, name, email, company, avatar_url, location, html_url, url, id };
     const params = {
       TableName: 'users',
       Item: data,
@@ -47,4 +34,4 @@ class Users {
   }
 }
 
-module.exports = Users;
+module.exports = User;

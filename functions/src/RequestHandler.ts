@@ -1,6 +1,7 @@
 import * as express from 'express';
 import Validator from './Validator';
-import Dynamodb from './Dynamodb';
+import ProjectResource from './resources/projectResource/projectResource'
+// import Dynamodb from './Dynamodb';
 
 interface IMessage {
   message: string;
@@ -47,7 +48,7 @@ export default class RequestHandler {
 
   createProject() {
     if (!this.validate(this.req.body, 'createProjectSchema')) return;
-    const request = new Dynamodb().createProject(this.req.body);
+    const request = new ProjectResource().create(this.req.body);
     const getResponse = (): [number, IMessage] => {
       return [200, {
         message: 'Project created successfully',
@@ -59,7 +60,7 @@ export default class RequestHandler {
   }
 
   getProjectCards() {
-    const request = new Dynamodb().getProjectCards(this.req.body);
+    const request = new ProjectResource().get(this.req.body);
     const getResponse = (result: any): [number, Object] => {
       if (result.Items) {
         return [200, result.Items];
@@ -72,7 +73,7 @@ export default class RequestHandler {
 
   getProjectDetails() {
     if (!this.validate(this.req.params, 'projectIdOnlySchema')) return;
-    const request = new Dynamodb().getProjectDetails(this.req.params);
+    const request = new ProjectResource().getById(this.req.params);
     const getResponse = (result: any): [number, Object] => {
       if (result.Item) {
         return [200, result.Item];
@@ -85,7 +86,7 @@ export default class RequestHandler {
 
   editProject() {
     if (!this.validate(this.req.body, 'editProjectSchema')) return;
-    const request = new Dynamodb().editProject(this.req.body);
+    const request = new ProjectResource().update(this.req.body);
     const getResponse = (): [number, IMessage] => [200, {
       message: 'Project edited successfully',
       project_id: this.req.body.project_id,
@@ -96,7 +97,7 @@ export default class RequestHandler {
 
   updateProjectStatus() {
     if (!this.validate(this.req.body, 'updateProjectStatusSchema')) return;
-    const request = new Dynamodb().updateProjectStatus(this.req.body);
+    const request = new ProjectResource().updateStatus(this.req.body);
     const getResponse = (): [number, IMessage] => [200, {
       message: 'Project status updated successfully',
       project_id: this.req.body.project_id,
@@ -107,7 +108,7 @@ export default class RequestHandler {
 
   likeProject() {
     if (!this.validate(this.req.body, 'projectIdOnlySchema')) return;
-    const request = new Dynamodb().likeProject(this.req.body);
+    const request = new ProjectResource().upvote(this.req.body);
     const getResponse = (): [number, IMessage] => [200, {
       message: 'Project upvoted successfully',
       project_id: this.req.body.project_id,
