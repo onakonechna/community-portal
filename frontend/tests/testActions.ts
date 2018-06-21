@@ -40,15 +40,31 @@ describe('test actions', () => {
 
   it('test addProject action', () => {
     fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.post(`${API}/project`, projectList[0]);
+    fetchMock.post(`${API}/project`, projectList);
     // const expectedAction = {
     //   type: actions.TypeKeys.PROJECTS_LOADED,
     // };
     const expectedAction: any = [];
 
-    return store.dispatch<any>(actions.addProject(projectList[0]))
+    return store.dispatch<any>(actions.addProject(projectList))
       .then(() => {
+        console.log(store.getActions());
         expect(store.getActions()).toEqual(expectedAction);
+      });
+  });
+
+  it('test editProject action', () => {
+    fetchMock.get(`${API}/projects`, projectList);
+    fetchMock.put(`${API}/project/edit`, projectList);
+
+    const expectedAction = {
+      type: actions.TypeKeys.PROJECTS_LOADED,
+      projects: projectList,
+    };
+
+    return store.dispatch<any>(actions.editProjectBody(projectList[0]))
+      .then(() => {
+        expect(store.getActions()[0]).toEqual(expectedAction);
       });
   });
 

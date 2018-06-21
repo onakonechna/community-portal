@@ -9,11 +9,6 @@ import Grid from '@material-ui/core/Grid';
 
 const projectsData = require('../data/projects.json');
 
-// interface IContributor {
-// 	name: string,
-// 	pledge?: number
-// }
-
 interface GridStateProps {
   projects: any;
 }
@@ -60,7 +55,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
     this.updateGrid = this.updateGrid.bind(this);
   }
 
-  public updateGrid() {
+  updateGrid() {
     this.props.loadProjects();
   }
 

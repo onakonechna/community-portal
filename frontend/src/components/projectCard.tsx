@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EditProjectDialog from './editProjectDialog';
 
 import LikeProjectButton from './likeProjectButton';
 
@@ -70,7 +71,12 @@ interface CardProps {
     created_date?: string,
   };
   handler?: () => void;
+  toggleEdit?: () => void;
   classes: any;
+}
+
+interface CardState {
+  editOpen: boolean;
 }
 
 function getPercentage(pledged: number, estimated: number) {
@@ -78,76 +84,94 @@ function getPercentage(pledged: number, estimated: number) {
   return (pledged / estimated) * 100;
 }
 
-function projectCard(props: CardProps) {
-  const { classes } = props;
-  return (
-    <Card>
-      <CardMedia
-        image="static/images/cards/circuit.png"
-        title="Contemplative Reptile"
-      />
-      <CardContent>
-        <Typography className={classes.centered}>
-          {props.project.name}
-        </Typography>
-        <Typography component="p">
-          {props.project.description}
-        </Typography>
-        {props.project.technologies.map(technology => (
-          <Chip className={classes.chip} key={technology} label={technology} />
-        ))}
-        <div className={classes.row}>
-          <div className={classes.sidebar}>
-            <Typography>
-              Project Size: {props.project.size}
-            </Typography>
-            <Typography>
-              Current Contributors:
-            </Typography>
-            <Typography>
-              Open for: days
-            </Typography>
-            <Typography>
-              Goal: {props.project.estimated} hours
-            </Typography>
-            <Typography>
-              Pledged: {props.project.pledged} hours
-            </Typography>
-            <Typography>
-              Upvotes: {props.project.upvotes}
-            </Typography>
-          </div>
+class projectCard extends React.Component<CardProps, CardState>{
 
-          <CircularProgress
-            variant="determinate"
-            color="secondary"
-            size={150}
-            value={getPercentage(props.project.pledged!, props.project.estimated!)}
+  constructor(props: CardProps) {
+    super(props);
+    this.state = { editOpen: false };
+    this.toggleEdit = this.toggleEdit.bind(this);
+  }
+
+  public toggleEdit() {
+    this.setState({ editOpen: !this.state.editOpen });
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+          <EditProjectDialog
+            open={this.state.editOpen}
+            toggleEdit={this.toggleEdit}
+            project={this.props.project}
           />
-        </div>
-      </CardContent>
-      <CardActions>
-        <Button>View</Button>
-        <Button>Pledge</Button>
-        <a href={props.project.github_address}>
-          <IconButton aria-label="Git">
-            <SvgIcon>
-              <path d="M12.007 0C6.12 0 1.1 4.27.157 10.08c-.944 5.813 2.468 11.45 8.054 13.312.19.064.397.033.555-.084.16-.117.25-.304.244-.5v-2.042c-3.33.735-4.037-1.56-4.037-1.56-.22-.726-.694-1.35-1.334-1.756-1.096-.75.074-.735.074-.735.773.103 1.454.557 1.846 1.23.694 1.21 2.23 1.638 3.45.96.056-.61.327-1.178.766-1.605-2.67-.3-5.462-1.335-5.462-6.002-.02-1.193.42-2.35 1.23-3.226-.327-1.015-.27-2.116.166-3.09 0 0 1.006-.33 3.3 1.23 1.966-.538 4.04-.538 6.003 0 2.295-1.5 3.3-1.23 3.3-1.23.445 1.006.49 2.144.12 3.18.81.877 1.25 2.033 1.23 3.226 0 4.607-2.805 5.627-5.476 5.927.578.583.88 1.386.825 2.206v3.29c-.005.2.092.393.26.507.164.115.377.14.565.063 5.568-1.88 8.956-7.514 8.007-13.313C22.892 4.267 17.884.007 12.008 0z" />
-            </SvgIcon>
-          </IconButton>
-        </a>
-        <IconButton aria-label="Edit">
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="Share">
-          <Share />
-        </IconButton>
-        <IconButton aria-label="Like">
-          <LikeProjectButton project_id={props.project.project_id} />
-        </IconButton>
-      </CardActions>
-    </Card>
-  );
+        <Card>
+          <CardMedia
+            image="static/images/cards/circuit.png"
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography className={classes.centered}>
+              {this.props.project.name}
+            </Typography>
+            <Typography component="p">
+              {this.props.project.description}
+            </Typography>
+            {this.props.project.technologies.map(technology => (
+              <Chip className={classes.chip} key={technology} label={technology} />
+            ))}
+            <div className={classes.row}>
+              <div className={classes.sidebar}>
+                <Typography>
+                  Project Size: {this.props.project.size}
+                </Typography>
+                <Typography>
+                  Current Contributors:
+              </Typography>
+                <Typography>
+                  Open for: days
+              </Typography>
+                <Typography>
+                  Goal: {this.props.project.estimated} hours
+              </Typography>
+                <Typography>
+                  Pledged: {this.props.project.pledged} hours
+              </Typography>
+              </div>
+
+              <CircularProgress
+                variant="determinate"
+                color="secondary"
+                size={150}
+                value={getPercentage(this.props.project.pledged!, this.props.project.estimated!)}
+              />
+            </div>
+          </CardContent>
+          <CardActions>
+            <Button>View</Button>
+            <Button>Pledge</Button>
+            <a href={this.props.project.github_address}>
+              <IconButton aria-label="Git">
+                <SvgIcon>
+                  <path d="M12.007 0C6.12 0 1.1 4.27.157 10.08c-.944 5.813 2.468 11.45 8.054 13.312.19.064.397.033.555-.084.16-.117.25-.304.244-.5v-2.042c-3.33.735-4.037-1.56-4.037-1.56-.22-.726-.694-1.35-1.334-1.756-1.096-.75.074-.735.074-.735.773.103 1.454.557 1.846 1.23.694 1.21 2.23 1.638 3.45.96.056-.61.327-1.178.766-1.605-2.67-.3-5.462-1.335-5.462-6.002-.02-1.193.42-2.35 1.23-3.226-.327-1.015-.27-2.116.166-3.09 0 0 1.006-.33 3.3 1.23 1.966-.538 4.04-.538 6.003 0 2.295-1.5 3.3-1.23 3.3-1.23.445 1.006.49 2.144.12 3.18.81.877 1.25 2.033 1.23 3.226 0 4.607-2.805 5.627-5.476 5.927.578.583.88 1.386.825 2.206v3.29c-.005.2.092.393.26.507.164.115.377.14.565.063 5.568-1.88 8.956-7.514 8.007-13.313C22.892 4.267 17.884.007 12.008 0z" />
+                </SvgIcon>
+              </IconButton>
+            </a>
+            <IconButton
+              aria-label="Edit"
+              onClick={this.toggleEdit}
+            >
+              <Edit />
+            </IconButton>
+            <IconButton aria-label="Share">
+              <Share />
+            </IconButton>
+            <LikeProjectButton project_id={this.props.project.project_id} />
+          </CardActions>
+        </Card>
+      </div>
+    );
+  }
 }
 
 export default withStyles(styles)(projectCard);
