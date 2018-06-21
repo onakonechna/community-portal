@@ -171,11 +171,10 @@ export class AddProjectDialog extends React.Component<IDispatchProps & DialogPro
           this.setState(state);
         })
         .catch((error: any) => {
-          this.setState(
-            {
-              success: false,
-              loading: false,
-            });
+          this.setState({
+            success: false,
+            loading: false,
+          });
           console.log(error);
         });
     }
