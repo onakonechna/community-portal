@@ -55,7 +55,7 @@ function editProject(data){
     .then((response) => {
       const postOptions = {
         data,
-        method: 'POST',
+        method: 'PUT',
         url: hostAddr + '/project/edit',
         headers: {
           Authorization: response.data.message,
@@ -77,7 +77,7 @@ function likeProject(project_id){
 
 function updateProjectStatus(project_id, status){
   const likeProjectOptions = {
-    method: 'POST',
+    method: 'PUT',
     url: hostAddr +  '/project/status',
     data: { project_id, status },
   };

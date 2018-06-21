@@ -4,7 +4,7 @@ editProject:
   events:
   - http:
       path: /project/edit
-      method: post
+      method: put
       cors: true
       authorizer:
         name: authorizer

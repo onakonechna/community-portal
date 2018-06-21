@@ -32,12 +32,12 @@ export default class EndpointMaker {
         });
         break;
       case 'editProject':
-        this.app.post('/project/edit/', (req: express.Request, res: express.Response) => {
+        this.app.put('/project/edit/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).editProject();
         });
         break;
       case 'updateProjectStatus':
-        this.app.post('/project/status/', (req: express.Request, res: express.Response) => {
+        this.app.put('/project/status/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).updateProjectStatus();
         });
         break;
