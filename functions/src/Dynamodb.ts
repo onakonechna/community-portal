@@ -3,6 +3,7 @@ const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
 import { DynamoDB } from 'aws-sdk';
+import * as _ from 'lodash';
 
 export default class Dynamodb {
   private client: DynamoDB.DocumentClient;
@@ -55,6 +56,29 @@ export default class Dynamodb {
       Key: data,
     };
     return this.client.get(params).promise();
+  }
+
+  editProject(data: any) {
+    const { project_id } = data;
+    delete data['project_id'];
+
+    let AttributeUpdates: any = {};
+
+    _.forOwn(data, (value: any, key: string) => {
+      AttributeUpdates[key] = {
+        Action: 'PUT',
+        Value: value
+      }
+    });
+
+    const params = {
+      AttributeUpdates,
+      TableName: PROJECTS_TABLE,
+      Key: {
+        project_id
+      },
+    };
+    return this.client.update(params).promise();
   }
 
   updateProjectStatus(data: any) {
