@@ -103,16 +103,19 @@ function projectCard(props: CardProps) {
             </Typography>
             <Typography>
               Current Contributors:
-                </Typography>
+            </Typography>
             <Typography>
               Open for: days
-                </Typography>
+            </Typography>
             <Typography>
               Goal: {props.project.estimated} hours
-                </Typography>
+            </Typography>
             <Typography>
               Pledged: {props.project.pledged} hours
-                </Typography>
+            </Typography>
+            <Typography>
+              Upvotes: {props.project.upvotes}
+            </Typography>
           </div>
 
           <CircularProgress
