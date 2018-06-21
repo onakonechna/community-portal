@@ -83,6 +83,17 @@ export default class RequestHandler {
     createDynamodbResponse(request, this.res, getResponse, error);
   }
 
+  editProject() {
+    if (!this.validate(this.req.body, 'editProjectSchema')) return;
+    const request = new Dynamodb().editProject(this.req.body);
+    const getResponse = (): [number, IMessage] => [200, {
+      message: 'Project edited successfully',
+      project_id: this.req.body.project_id,
+    }];
+    const error = 'Could not edit project';
+    createDynamodbResponse(request, this.res, getResponse, error);
+  }
+
   updateProjectStatus() {
     if (!this.validate(this.req.body, 'updateProjectStatusSchema')) return;
     const request = new Dynamodb().updateProjectStatus(this.req.body);

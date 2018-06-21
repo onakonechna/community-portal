@@ -1,5 +1,6 @@
 import fetchProjects from '../api/fetchProjects';
 import { editProject, editProjectStatus } from  '../api/editProject';
+import upvoteProject from '../api/upvoteProject';
 import saveProject from '../api/saveProject';
 
 import { Dispatch } from 'react-redux';
@@ -69,7 +70,13 @@ export const editProjectBody = (project: {}) => {
 
 export const editProjectStatusAction = (id: string, status: string) => {
   return (dispatch: Dispatch) => {
-    return editProjectStatus(id, status)
+    return editProjectStatus(id, status);
+  };
+};
+
+export const likeProject = (id: string) => {
+  return (dispatch: Dispatch) => {
+    return upvoteProject(id)
       .then(() => {
         dispatch(loadProjects());
       });
@@ -79,12 +86,12 @@ export const editProjectStatusAction = (id: string, status: string) => {
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
-   .then((projects) => {
-     dispatch(projectsLoaded(projects));
-   })
-   .catch((err: any) => {
-     console.log(err);
-   });
+      .then((projects) => {
+        dispatch(projectsLoaded(projects));
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 };
 

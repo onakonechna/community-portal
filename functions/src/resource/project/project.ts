@@ -1,31 +1,25 @@
-const IS_OFFLINE = process.env.IS_OFFLINE;
+import * as _ from 'lodash';
+import BaseResource from './../baseResource';
+import ResourceInterface from './../resourceInterface';
+
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
-import { DynamoDB } from 'aws-sdk';
-import * as _ from 'lodash';
+interface ProjectInterface extends ResourceInterface {
+  updateStatus(data: any): Object;
+  upvote(data: any): Object;
+}
 
-export default class Dynamodb {
-  private client: DynamoDB.DocumentClient;
+export default class Project extends BaseResource implements ProjectInterface {
 
-  constructor() {
-    if (IS_OFFLINE === 'true') {
-      this.client = new DynamoDB.DocumentClient({
-        region: 'localhost',
-        endpoint: 'http://localhost:8000',
-      });
-    } else {
-      this.client = new DynamoDB.DocumentClient();
-    }
-  }
-
-  createProject(data: any) {
+  create(data: any): Object {
     // append additional data
     const unixTimestamp = new Date().getTime();
     data.status = 'open';
     data.upvotes = 0;
     data.created = unixTimestamp;
     data.updated = unixTimestamp;
+    data.completed = 0;
 
     const params = {
       TableName: PROJECTS_TABLE,
@@ -34,7 +28,7 @@ export default class Dynamodb {
     return this.client.put(params).promise();
   }
 
-  getProjectCards(data: Object) {
+  get(data: any): Object {
     const params = {
       TableName: PROJECTS_TABLE,
       IndexName: PROJECTS_INDEX,
@@ -50,7 +44,7 @@ export default class Dynamodb {
     return this.client.query(params).promise();
   }
 
-  getProjectDetails(data: Object) {
+  getById(data: any): Object {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: data,
@@ -58,7 +52,7 @@ export default class Dynamodb {
     return this.client.get(params).promise();
   }
 
-  editProject(data: any) {
+  update(data: any): Object {
     const { project_id } = data;
     delete data['project_id'];
 
@@ -81,7 +75,7 @@ export default class Dynamodb {
     return this.client.update(params).promise();
   }
 
-  updateProjectStatus(data: any) {
+  updateStatus(data: any): Object {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: {
@@ -97,7 +91,7 @@ export default class Dynamodb {
     return this.client.update(params).promise();
   }
 
-  likeProject(data: Object) {
+  upvote(data: any): Object {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: data,
@@ -109,5 +103,13 @@ export default class Dynamodb {
       },
     };
     return this.client.update(params).promise();
+  }
+
+  delete(data: any): Object {
+    const params = {
+      TableName: PROJECTS_TABLE,
+      Key: data,
+    };
+    return this.client.delete(params).promise();
   }
 }

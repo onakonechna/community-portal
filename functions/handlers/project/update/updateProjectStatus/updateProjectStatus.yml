@@ -4,5 +4,5 @@ updateProjectStatus:
   events:
   - http:
       path: /project/status
-      method: post
+      method: put
       cors: true

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-class Authorization {
+class authorization {
   createJWT(data:any) {
     return jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION_TIME });
   }
@@ -18,4 +18,4 @@ class Authorization {
   }
 }
 
-module.exports = Authorization;
+export default authorization;

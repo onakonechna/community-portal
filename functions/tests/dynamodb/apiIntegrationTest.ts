@@ -22,21 +22,41 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-function putProject(project){
-  const getTokenOptions = {
-    method: 'POST',
-    url: hostAddr + '/token/get',
-    data: {
-      githubId: 'test_id',
-    },
-  };
+const getTokenOptions = {
+  method: 'POST',
+  url: hostAddr + '/token/get',
+  data: {
+    githubId: 'test_id',
+  },
+};
 
+function putProject(project){
   return axios(getTokenOptions)
     .then((response) => {
       const postOptions = {
         method: 'POST',
         url: hostAddr + '/project',
         data: project,
+        headers: {
+          Authorization: response.data.message,
+        }
+      };
+      return axios(postOptions);
+    })
+}
+
+const test21EditData = {
+  project_id: 'test21',
+  description: 'edited',
+}
+
+function editProject(data){
+  return axios(getTokenOptions)
+    .then((response) => {
+      const postOptions = {
+        data,
+        method: 'PUT',
+        url: hostAddr + '/project/edit',
         headers: {
           Authorization: response.data.message,
         }
@@ -57,7 +77,7 @@ function likeProject(project_id){
 
 function updateProjectStatus(project_id, status){
   const likeProjectOptions = {
-    method: 'POST',
+    method: 'PUT',
     url: hostAddr +  '/project/status',
     data: { project_id, status },
   };
@@ -122,12 +142,24 @@ describe('getProjectCards endpoint', () => {
   });
 });
 
+describe('editProject endpoint', () => {
+  it('should edit project details', () => {
+    expect.assertions(1);
+
+    return editProject(test21EditData)
+      .then((response) => {
+        expect(response.data.message).toBe('Project edited successfully');
+      });
+  });
+});
+
 describe('getProjectDetails endpoint', () => {
   it('should get project details', () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
     return getProjectDetails('test21')
       .then((response) => {
         expect(response.data.status).toBe('closed');
+        expect(response.data.description).toBe('edited');
       });
 });

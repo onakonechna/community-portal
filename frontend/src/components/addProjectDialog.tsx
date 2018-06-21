@@ -29,7 +29,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IDispatchProps {
+interface DispatchProps {
   addProject: any;
 }
 
@@ -58,8 +58,8 @@ interface Technology {
   type: string;
 }
 
-export class AddProjectDialog extends React.Component<IDispatchProps & DialogProps, DialogState> {
-  constructor(props: IDispatchProps & DialogProps) {
+export class AddProjectDialog extends React.Component<DispatchProps & DialogProps, DialogState> {
+  constructor(props: DispatchProps & DialogProps) {
     super(props);
     const state = {
       open: false,
@@ -320,5 +320,5 @@ export default compose<{}, DialogProps>(
   withStyles(styles, {
     name: 'AddProjectDialog',
   }),
-  connect<{}, IDispatchProps, DialogProps>(mapStateToProps, mapDispatchToProps),
+  connect<{}, DispatchProps, DialogProps>(mapStateToProps, mapDispatchToProps),
 )(AddProjectDialog);

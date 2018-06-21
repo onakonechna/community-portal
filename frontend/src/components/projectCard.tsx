@@ -1,6 +1,8 @@
 import * as React from 'react';
 import EditProjectDialog from './editProjectDialog';
 
+import LikeProjectButton from './likeProjectButton';
+
 import { withStyles } from '@material-ui/core/styles';
 
 import { CardActions, CardContent, CardMedia } from '@material-ui/core';
@@ -11,7 +13,6 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 
 import Edit from '@material-ui/icons/Edit';
-import Favorite from '@material-ui/icons/Favorite';
 import Share from '@material-ui/icons/Share';
 
 // import Avatar from '@material-ui/core/Avatar';
@@ -165,9 +166,7 @@ class projectCard extends React.Component<CardProps, CardState>{
             <IconButton aria-label="Share">
               <Share />
             </IconButton>
-            <IconButton aria-label="Like">
-              <Favorite />
-            </IconButton>
+            <LikeProjectButton project_id={this.props.project.project_id} />
           </CardActions>
         </Card>
       </div>
