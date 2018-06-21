@@ -62,6 +62,7 @@ functions:
   - ${file(./handlers/token/get/get.yml)}
   - ${file(./handlers/user/users/users.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
+  - ${file(./handlers/github/pullrequest/pullrequest.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:

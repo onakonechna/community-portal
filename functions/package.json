@@ -4,6 +4,8 @@
   "description": "Front Page to the Community Projects to Contributors",
   "main": "index.js",
   "dependencies": {
+    "@octokit/rest": "^15.8.1",
+    "cross-fetch": "^2.2.1",
     "ajv": "^6.5.1",
     "aws-sdk": "^2.249.1",
     "axios": "^0.18.0",

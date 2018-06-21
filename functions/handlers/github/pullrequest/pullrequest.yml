@@ -1,0 +1,3 @@
+pullrequests:
+    handler: handlers/github/pullrequest/handler.handler
+    timeout: 10

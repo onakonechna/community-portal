@@ -4,3 +4,7 @@ jspm_packages
 .webpack
 bundle.js
 npm-debug.log
+dist
+config.json
+aws-config.json
+.DS_Store

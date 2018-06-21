@@ -1,0 +1,35 @@
+{
+  "name": "community-portal",
+  "version": "1.0.0",
+  "description": "Community Portal is an application which manages the community projects and its participants.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magento-engcom/community-portal.git"
+  },
+  "keywords": [
+    "Magento",
+    "Community"
+  ],
+  "author": "engcom",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/magento-engcom/community-portal/issues"
+  },
+  "homepage": "https://github.com/magento-engcom/community-portal#readme",
+  "dependencies": {
+    "@octokit/rest": "^15.2.7",
+    "@types/node": "^10.0.4",
+    "aws-sdk": "^2.235.1",
+    "jest": "^22.4.3",
+    "log4js": "^2.5.3",
+    "rxjs": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.0.6",
+    "jest": "^22.4.3"
+  }
+}

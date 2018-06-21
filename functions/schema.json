@@ -298,5 +298,27 @@
       },
       "TableName": "issues"
     }
-  }
+  }, "PullRequests": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+         "AttributeDefinitions": [
+            {
+               "AttributeName": "id",
+               "AttributeType": "N"
+            }
+         ],
+         "KeySchema": [
+            {
+               "AttributeName": "id",
+               "KeyType": "HASH"
+            }
+         ],
+         "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+         },
+         "TableName": "pull_requests"
+      }
+   }
 }
