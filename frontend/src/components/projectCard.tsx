@@ -1,5 +1,6 @@
 import * as React from 'react';
 import EditProjectDialog from './editProjectDialog';
+import PledgeDialog from './pledgeDialog';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -76,6 +77,7 @@ interface CardProps {
 
 interface CardState {
   editOpen: boolean;
+  pledgeOpen: boolean;
 }
 
 function getPercentage(pledged: number, estimated: number) {
@@ -83,16 +85,24 @@ function getPercentage(pledged: number, estimated: number) {
   return (pledged / estimated) * 100;
 }
 
-class projectCard extends React.Component<CardProps, CardState>{
+export class projectCard extends React.Component<CardProps, CardState>{
 
   constructor(props: CardProps) {
     super(props);
-    this.state = { editOpen: false };
+    this.state = {
+      editOpen: false,
+      pledgeOpen: false,
+    };
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.togglePledge = this.togglePledge.bind(this);
   }
 
-  public toggleEdit() {
+  toggleEdit() {
     this.setState({ editOpen: !this.state.editOpen });
+  }
+
+  togglePledge() {
+    this.setState({ pledgeOpen: !this.state.pledgeOpen });
   }
 
   render() {
@@ -103,6 +113,11 @@ class projectCard extends React.Component<CardProps, CardState>{
             open={this.state.editOpen}
             toggleEdit={this.toggleEdit}
             project={this.props.project}
+          />
+          <PledgeDialog
+            open={this.state.pledgeOpen}
+            project={this.props.project}
+            toggle={this.togglePledge}
           />
         <Card>
           <CardMedia
@@ -148,7 +163,7 @@ class projectCard extends React.Component<CardProps, CardState>{
           </CardContent>
           <CardActions>
             <Button>View</Button>
-            <Button>Pledge</Button>
+            <Button onClick={this.togglePledge}>Pledge</Button>
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
                 <SvgIcon>
