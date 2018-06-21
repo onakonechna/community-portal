@@ -242,11 +242,11 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
             />
           </DialogContent>
           <DialogActions>
+            <Button onClick={this.props.toggleEdit}>
+              {this.state.success ? 'Done' : 'Cancel'}
+            </Button>
             <Button onClick={this.handleSubmit}>
               {this.state.success ? 'Saved' : 'Save'}
-            </Button>
-            <Button onClick={this.props.toggleEdit}>
-              {this.state.sucess ? 'Done' : 'Cancel'}
             </Button>
             {this.state.loading && <CircularProgress size={24} />}
           </DialogActions>

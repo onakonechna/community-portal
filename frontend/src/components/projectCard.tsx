@@ -91,7 +91,7 @@ class projectCard extends React.Component<CardProps, CardState>{
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
-  toggleEdit() {
+  public toggleEdit() {
     this.setState({ editOpen: !this.state.editOpen });
   }
 
