@@ -42,28 +42,21 @@ interface IProject {
 
 interface GridState {
   projects: IProject[];
-  editOpen: boolean;
 }
 
 export class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState> {
 
   public state: GridState = {
     projects: projectsData,
-    editOpen: false,
   };
 
   constructor(props: GridProps & GridStateProps) {
     super(props);
     this.updateGrid = this.updateGrid.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   updateGrid() {
     this.props.loadProjects();
-  }
-
-  toggleEdit() {
-    this.setState({ editOpen: !this.state.editOpen });
   }
 
   componentDidMount() {
@@ -85,8 +78,6 @@ export class ProjectsGrid extends React.Component<GridProps & GridStateProps, Gr
               <ProjectCard
                 project={project}
                 handler={this.updateGrid}
-                toggleEdit={this.toggleEdit}
-                editOpen={this.state.editOpen}
               />
             </Grid>
           ))}

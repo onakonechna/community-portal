@@ -1,4 +1,5 @@
 import fetchProjects from '../api/fetchProjects';
+import { editProject, editProjectStatus } from  '../api/editProject';
 import saveProject from '../api/saveProject';
 
 import { Dispatch } from 'react-redux';
@@ -7,6 +8,7 @@ import { v4 as uuid } from 'uuid';
 export enum TypeKeys {
  ADD_PROJECT = 'ADD_PROJECT',
  ADD_USER = 'ADD_USER',
+ EDIT_PROJECT = 'EDIT_PROJECT',
  LOAD_PROJECT = 'LOAD_PROJECT',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  OTHER_ACTION = '__any__other__action__type',
@@ -22,6 +24,11 @@ export interface AddProjectAction {
   project: any;
 }
 
+export interface EditProjectAction {
+  type: TypeKeys.EDIT_PROJECT;
+  project: any;
+}
+
 export interface ProjectLoadedAction {
   type: TypeKeys.PROJECTS_LOADED;
   projects: any;
@@ -34,6 +41,7 @@ export interface OtherAction {
 export type ActionTypes =
  | AddProjectAction
  | AddUserAction
+ | EditProjectAction
  | ProjectLoadedAction
  | OtherAction;
 
@@ -44,9 +52,27 @@ export const addProject = (project: {}) => {
   };
   return (dispatch: Dispatch) => {
     return saveProject(projectBody)
-   .then(() => {
-     dispatch(loadProjects());
-   });
+      .then(() => {
+        dispatch(loadProjects());
+      });
+  };
+};
+
+export const editProjectBody = (project: {}) => {
+  return (dispatch: Dispatch) => {
+    return editProject(project)
+      .then(() => {
+        dispatch(loadProjects());
+      });
+  };
+};
+
+export const editProjectStatusAction = (id: string, status: string) => {
+  return (dispatch: Dispatch) => {
+    return editProjectStatus(id, status)
+      .then(() => {
+        dispatch(loadProjects());
+      });
   };
 };
 
