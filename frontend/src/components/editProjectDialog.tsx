@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Chip from '@material-ui/core/Chip';
 
 import Radio from '@material-ui/core/Radio';
@@ -30,12 +31,11 @@ interface DispatchProps {
 interface EditDialogProps {
   classes?: any;
   open: boolean;
-  toggleEdit?: () => void;
+  toggleEdit: () => void;
   project?: any;
 }
 
 interface EditDialogState {
-  open: boolean;
   success: boolean;
   loading: boolean;
   technologies: Technology[];
@@ -60,7 +60,6 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     super(props);
     const { project } = this.props;
     this.state = {
-      open: false,
       success: false,
       loading: false,
       technologies: project.technologies,
@@ -125,9 +124,10 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.props.editProject(body)
       .then((res: any) => {
         this.setState({
-          open: false,
           success: true,
           loading: false,
+        }, () => {
+          this.props.toggleEdit();
         });
       })
       .catch((err: any) => {
@@ -242,8 +242,13 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleSubmit}>Submit</Button>
-            <Button onClick={this.props.toggleEdit}>Close Me</Button>
+            <Button onClick={this.handleSubmit}>
+              {this.state.success ? 'Saved' : 'Save'}
+            </Button>
+            <Button onClick={this.props.toggleEdit}>
+              {this.state.sucess ? 'Done' : 'Cancel'}
+            </Button>
+            {this.state.loading && <CircularProgress size={24} />}
           </DialogActions>
         </Dialog>
       </div>
