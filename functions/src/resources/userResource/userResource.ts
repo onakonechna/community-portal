@@ -1,5 +1,5 @@
-const awsSdk = require('aws-sdk');
-const dynamoDb = new awsSdk.DynamoDB.DocumentClient({
+import { DynamoDB } from 'aws-sdk';
+const dynamoDb = new DynamoDB.DocumentClient({
   region: 'us-east-1',
 });
 
@@ -16,7 +16,7 @@ class User {
     html_url:string,
     url:string,
   ) {
-    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id: String(user_id) };
+    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id };
     const params = {
       TableName: 'users',
       Item: data,

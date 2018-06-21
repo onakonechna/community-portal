@@ -1,8 +1,24 @@
+import * as axios from 'axios';
+import * as jwt from 'jsonwebtoken';
+
+const yaml = require('js-yaml');
+const fs = require('fs');
+
+function loadYAML(filename) {
+  try {
+    return yaml.safeLoad(fs.readFileSync(filename), 'utf8');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const projects = require('./fixtures/projects.json');
+const config = loadYAML('./serverless.yml');
+const token = jwt.sign({ user_id: 'test_id' }, config.custom.jwt.secret, { expiresIn: '1d' });
+// console.log(config.custom.jwt.secret);
+
 // const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
-
-const axios = require('axios');
-const projects = require('./fixtures/projects.json');
 
 function getProjectCards(){
   const getCardsOptions = {
@@ -22,27 +38,16 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-const getTokenOptions = {
-  method: 'POST',
-  url: hostAddr + '/token/get',
-  data: {
-    githubId: 'test_id',
-  },
-};
-
 function putProject(project){
-  return axios(getTokenOptions)
-    .then((response) => {
-      const postOptions = {
-        method: 'POST',
-        url: hostAddr + '/project',
-        data: project,
-        headers: {
-          Authorization: response.data.message,
-        }
-      };
-      return axios(postOptions);
-    })
+  const postOptions = {
+    method: 'POST',
+    url: hostAddr + '/project',
+    data: project,
+    headers: {
+      Authorization: token,
+    }
+  };
+  return axios(postOptions);
 }
 
 const test21EditData = {
@@ -51,18 +56,15 @@ const test21EditData = {
 }
 
 function editProject(data){
-  return axios(getTokenOptions)
-    .then((response) => {
-      const postOptions = {
-        data,
-        method: 'PUT',
-        url: hostAddr + '/project/edit',
-        headers: {
-          Authorization: response.data.message,
-        }
-      };
-      return axios(postOptions);
-    })
+  const postOptions = {
+    data,
+    method: 'PUT',
+    url: hostAddr + '/project/edit',
+    headers: {
+      Authorization: token,
+    }
+  };
+  return axios(postOptions);
 }
 
 function likeProject(project_id){

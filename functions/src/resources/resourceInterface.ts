@@ -1,9 +1,9 @@
 export default interface ResourceInterface {
 
-   create(data: any): Object;
-   get(data: any): Object;
-   getById(data: any): Object;
-   update(data: any): Object;
-   delete(data: any): Object;
+   create(data: any): Promise<Object>;
+   get(data: any): Promise<Object>;
+   getById(data: any): Promise<Object>;
+   update(data: any): Promise<Object>;
+   delete(data: any): Promise<Object>;
 
 }

@@ -3,7 +3,7 @@ import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda
 const jwt = require('jsonwebtoken');
 
 interface contextSpecs {
-  githubId: string;
+  user_id: string;
 }
 
 const buildIAMPolicy = function (githubId: string,
@@ -40,13 +40,13 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
   try {
     // Verify JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const githubId = decoded.githubId;
+    const { user_id } = decoded;
 
     const effect = 'Allow';
-    const authorizerContext = { githubId };
+    const authorizerContext = { user_id };
 
     // Return an IAM policy document for the current endpoint
-    const policyDocument = buildIAMPolicy(githubId, effect, event.methodArn, authorizerContext);
+    const policyDocument = buildIAMPolicy(user_id, effect, event.methodArn, authorizerContext);
 
     callback(null, policyDocument);
   } catch (e) {

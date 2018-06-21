@@ -3,7 +3,7 @@ import { DynamoDB } from 'aws-sdk';
 const IS_OFFLINE = process.env.IS_OFFLINE;
 
 export default class baseResource {
-  private client: DynamoDB.DocumentClient;
+  protected client: DynamoDB.DocumentClient;
 
   constructor() {
     if (IS_OFFLINE === 'true') {
