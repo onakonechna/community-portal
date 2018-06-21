@@ -1,4 +1,5 @@
 import fetchProjects from '../api/fetchProjects';
+import upvoteProject from '../api/upvoteProject';
 import saveProject from '../api/saveProject';
 
 import { Dispatch } from 'react-redux';
@@ -44,21 +45,30 @@ export const addProject = (project: {}) => {
   };
   return (dispatch: Dispatch) => {
     return saveProject(projectBody)
-   .then(() => {
-     dispatch(loadProjects());
-   });
+      .then(() => {
+        dispatch(loadProjects());
+      });
+  };
+};
+
+export const likeProject = (id: string) => {
+  return (dispatch: Dispatch) => {
+    return upvoteProject(id)
+      .then(() => {
+        dispatch(loadProjects());
+      });
   };
 };
 
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
-   .then((projects) => {
-     dispatch(projectsLoaded(projects));
-   })
-   .catch((err: any) => {
-     console.log(err);
-   });
+      .then((projects) => {
+        dispatch(projectsLoaded(projects));
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 };
 
