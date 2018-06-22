@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import DatabaseConnection from './../DatabaseConnection';
-import ResourceInterface from './../resourceInterface';
+import ResourceInterface from './../ResourceInterface';
 
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;

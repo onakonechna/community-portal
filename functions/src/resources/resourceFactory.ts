@@ -1,4 +1,4 @@
-import ResourceInterface from './resourceInterface';
+import ResourceInterface from './ResourceInterface';
 
 export default class ResourceFactory {
   private config: any;

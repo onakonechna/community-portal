@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Validator from './Validator';
-import ProjectResource from './resources/projectResource/projectResource';
+import ProjectResource from './resources/ProjectResource/ProjectResource';
 
 
 interface IMessage {

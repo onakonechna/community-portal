@@ -1,4 +1,4 @@
-import ResourceFactory from './resourceFactory';
+import ResourceFactory from './ResourceFactory';
 
 describe('ResourceFactory test', () => {
   it('check that factory loads connection instance by config', () => {

@@ -1,5 +1,5 @@
-import BaseController from './../baseController';
-import { ControllerInterface, ControllerHandlers } from './../controllerInterface';
+import ControllerBase from './../ControllerBase';
+import { ControllerInterface, ControllerHandlers } from './../ControllerInterface';
 
 interface ProjectControllerInterface extends ResourceInterface {
   createProject(): ControllerHandlers;

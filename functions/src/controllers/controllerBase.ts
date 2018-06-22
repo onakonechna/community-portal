@@ -1,4 +1,4 @@
-import ResourceFactory from './../resources/resourceFactory';
+import ResourceFactory from './../resources/ResourceFactory';
 import Validator from './Validator';
 
 export default class ControllerBase {
