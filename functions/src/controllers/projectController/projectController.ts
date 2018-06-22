@@ -1,7 +1,7 @@
 import { ControllerInterface, ControllerHandlers } from './../ControllerInterface';
 import Validator from './../Validator';
 
-interface ProjectControllerInterface extends ResourceInterface {
+interface ProjectControllerInterface {
   create(project_id: string): ControllerHandlers;
   get(): ControllerHandlers;
   getById(project_id: string): ControllerHandlers;

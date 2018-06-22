@@ -96,17 +96,7 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   upvote(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Key: data,
-      AttributeUpdates: {
-        upvotes: {
-          Action: 'ADD',
-          Value: 1,
-        },
-      },
-    };
-    return this.db.update(params).promise();
+    // invoke DatabaseAdapter methods
   }
 
   delete(data: any): Promise<any> {
