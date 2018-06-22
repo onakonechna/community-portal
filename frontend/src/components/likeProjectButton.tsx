@@ -40,15 +40,15 @@ class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps
   }
 
   render() {
-  	return (
-  		<div>
-  			<IconButton
-  				aria-label="like"
-  				onClick={this.likeProject}>
-  				<Favorite />
-  			</IconButton>
-  		</div>
-  	);
+    return (
+      <div>
+        <IconButton
+          aria-label="like"
+          onClick={this.likeProject}>
+          <Favorite />
+        </IconButton>
+      </div>
+    );
   }
 }
 
