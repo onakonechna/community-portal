@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { addProject } from '../actions';
-import AddProjectButton from './addProjectButton';
+import AddProjectButton from './AddProjectButton';
 
 import { withStyles } from '@material-ui/core/styles';
 

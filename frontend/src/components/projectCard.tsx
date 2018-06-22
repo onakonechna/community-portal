@@ -1,7 +1,7 @@
 import * as React from 'react';
-import EditProjectDialog from './editProjectDialog';
+import EditProjectDialog from './EditProjectDialog';
 
-import LikeProjectButton from './likeProjectButton';
+import LikeProjectButton from './LikeProjectButton';
 
 import { withStyles } from '@material-ui/core/styles';
 

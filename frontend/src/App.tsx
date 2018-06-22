@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 
-import Auth from './components/auth';
-import HeadBar from './components/headBar';
-import ProjectGrid from './components/projectGrid';
+import Auth from './components/Auth';
+import HeadBar from './components/HeadBar';
+import ProjectGrid from './components/ProjectGrid';
 
 class App extends React.Component {
   public render() {

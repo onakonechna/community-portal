@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { loadProjects } from '../actions';
-import AddProjectDialog from './addProjectDialog';
-import ProjectCard from './projectCard';
+import AddProjectDialog from './AddProjectDialog';
+import ProjectCard from './ProjectCard';
 
 import Grid from '@material-ui/core/Grid';
 
