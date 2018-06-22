@@ -5,7 +5,7 @@ import { addProject, loadProjects } from '../src/actions';
 import { AddProjectDialog } from '../src/components/addProjectDialog';
 import HeadBar from '../src/components/headBar';
 
-import { ProjectGrid } from '../src/components/projectGrid';
+import { ProjectGrid } from '../src/components/ProjectGrid';
 const samples = require('../src/data/sampleProjects.json');
 
 describe('HeadBar Test Suite', () => {
