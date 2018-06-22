@@ -79,37 +79,50 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleTechSubmission = this.handleTechSubmission.bind(this);
   }
 
   handleChange(field: string) {
     return (event: any) => {
+      const newItem = event.target.value;
       if (field === 'technologies') {
-        if (event.target.value.slice(-1) === ' ') {
+        if (newItem.slice(-1) === ' ') {
           const technologies = this.state.technologies;
+          const techList = technologies.map(t => t.type);
+          if (techList.indexOf(newItem.slice(0, -1)) !== -1) return;
           technologies[technologies.length] =
-          { key: technologies.length, type: event.target.value.slice(0, -1) };
+          { key: technologies.length, type: newItem.slice(0, -1) };
           this.setState({
             technologies,
             technologiesString: '',
           });
         } else {
           this.setState({
-            technologiesString: event.target.value,
+            technologiesString: newItem,
           });
         }
       } else if (field === 'goal') {
-        if (event.target.value === 'NaN') {
+        if (newItem === 'NaN') {
           this.setState({ goal: 0 });
         } else {
-          this.setState({ goal: parseInt(event.target.value, 10) });
+          this.setState({ goal: parseInt(newItem, 10) });
         }
       } else {
         this.setState({
-          [field]: event.target.value,
+          [field]: newItem,
         });
       }
+    };
+  }
+
+  handleDelete(tech:string) {
+    return () => {
+      const technologies = this.state.technologies.filter((t) => {
+        return t.type !== tech;
+      });
+      this.setState({ technologies });
     };
   }
 
@@ -216,7 +229,12 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               fullWidth
             />
             {this.state.technologies.map(technology => (
-              <Chip className={classes.chip} key={technology.key} label={technology.type} />
+              <Chip
+                className={classes.chip}
+                onDelete={this.handleDelete(technology.type)}
+                key={technology.key}
+                label={technology.type}
+                />
             ))}
             <TextField
               required
