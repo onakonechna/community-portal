@@ -9,7 +9,14 @@ import Favorite from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 
 interface LikeProjectProps {
+  classes?: any;
+  liked: boolean;
   project_id: string;
+  upvotes: number;
+}
+
+interface LikeProjectState {
+  liked: boolean;
 }
 
 interface DispatchProps {
@@ -17,46 +24,45 @@ interface DispatchProps {
 }
 
 const styles = {
-	// button: {
-	// 	margin: 'auto, 20px, auto, 20px'
-	// },
+  likeButton: {},
 };
 
-class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps, {}> {
+class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps, LikeProjectState> {
   constructor(props: LikeProjectProps & DispatchProps) {
     super(props);
+    this.state = {
+      liked: this.props.liked,
+    };
     this.likeProject = this.likeProject.bind(this);
   }
 
   likeProject() {
     const { project_id } = this.props;
-    this.props.likeProject(project_id)
+    if (!this.state.liked) {
+      this.props.likeProject(project_id)
       .then((response: any) => {
-        console.log(response);
+        this.setState({ liked: true });
       })
       .catch((error: any) => {
         console.log(error);
       });
+    }
   }
 
   render() {
+    const { upvotes } = this.props;
   	return (
-  		<div>
-  			<IconButton
-  				aria-label="like"
-  				onClick={this.likeProject}>
-  				<Favorite />
-  			</IconButton>
-  		</div>
+      <IconButton
+        aria-label="like"
+        onClick={this.likeProject}>
+        <Favorite
+          style={{ color: this.state.liked ? '#FF2B00' : 'gray' }}
+        />
+        <span>{upvotes}</span>
+      </IconButton>
   	);
   }
 }
-
-const mapStateToProps = (state: any) => {
-  return {
-
-  };
-};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -68,5 +74,5 @@ export default compose<{}, LikeProjectProps>(
   withStyles(styles, {
     name: 'LikeProjectButton',
   }),
-  connect<{}, DispatchProps, LikeProjectProps>(mapStateToProps, mapDispatchToProps),
+  connect<{}, DispatchProps, LikeProjectProps>(null, mapDispatchToProps),
 )(LikeProjectButton);
