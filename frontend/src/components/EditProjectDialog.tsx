@@ -38,7 +38,7 @@ interface EditDialogProps {
 interface EditDialogState {
   success: boolean;
   loading: boolean;
-  technologies: Technology[];
+  technologies: string[];
   technologiesString: string;
   size: string;
   name: string;
@@ -47,12 +47,7 @@ interface EditDialogState {
   goal: number;
   github: string;
   slack: string;
-  [key: string]: boolean | string | number | Technology[];
-}
-
-interface Technology {
-  key?: number;
-  type: string;
+  [key: string]: boolean | string | number | string[];
 }
 
 export class EditProjectDialog extends React.Component<DispatchProps & EditDialogProps, EditDialogState> {
@@ -73,35 +68,47 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       slack: project.slack_channel,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(field: string) {
     return (event: any) => {
+      const newItem = event.target.value;
       if (field === 'technologies') {
-        if (event.target.value.slice(-1) === ' ') {
+        if (newItem.slice(-1) === ' ') {
           const technologies = this.state.technologies;
-          technologies[technologies.length] = event.target.value.slice(0, -1);
+          if (technologies.indexOf(newItem.slice(0, -1)) !== -1) return;
+          technologies[technologies.length] = newItem.slice(0, -1);
           this.setState({
             technologies,
             technologiesString: '',
           });
         } else {
           this.setState({
-            technologiesString: event.target.value,
+            technologiesString: newItem,
           });
         }
       } else if (field === 'goal') {
-        if (event.target.value === 'NaN') {
+        if (newItem === 'NaN') {
           this.setState({ goal: 0 });
         } else {
-          this.setState({ goal: parseInt(event.target.value, 10) });
+          this.setState({ goal: parseInt(newItem, 10) });
         }
       } else {
         this.setState({
-          [field]: event.target.value,
+          [field]: newItem,
         });
       }
+    };
+  }
+
+  handleDelete(tech:string) {
+    return () => {
+      const technologies = this.state.technologies.filter((t) => {
+        return t !== tech;
+      });
+      this.setState({ technologies });
     };
   }
 
@@ -172,7 +179,11 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               fullWidth
             />
             {this.state.technologies.map(technology => (
-              <Chip className={classes.chip} key={`${project_id}-${technology}`} label={technology} />
+              <Chip
+                className={classes.chip}
+                onDelete={this.handleDelete(technology)}
+                key={`${project_id}-${technology}`}
+                label={technology} />
             ))}
             <TextField
               required
