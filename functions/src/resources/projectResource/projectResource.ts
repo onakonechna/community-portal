@@ -13,7 +13,7 @@ interface ProjectResourceInterface extends ResourceInterface {
 export default class ProjectResource implements ProjectResourceInterface {
 
   constructor(db: DatabaseConnection) {
-    this.db = db;
+    this.db = db.connect();
   }
 
   create(data: any): Promise<any> {
@@ -29,7 +29,7 @@ export default class ProjectResource implements ProjectResourceInterface {
       TableName: PROJECTS_TABLE,
       Item: data,
     };
-    return this.db.connect().put(params).promise();
+    return this.db.put(params).promise();
   }
 
   get(data: any): Promise<any> {
@@ -45,7 +45,7 @@ export default class ProjectResource implements ProjectResourceInterface {
       },
       ScanIndexForward: false
     };
-    return this.db.connect().query(params).promise();
+    return this.db.query(params).promise();
   }
 
   getById(data: any): Promise<any> {
@@ -53,7 +53,7 @@ export default class ProjectResource implements ProjectResourceInterface {
       TableName: PROJECTS_TABLE,
       Key: data,
     };
-    return this.db.connect().get(params).promise();
+    return this.db.get(params).promise();
   }
 
   update(data: any): Promise<any> {
@@ -76,7 +76,7 @@ export default class ProjectResource implements ProjectResourceInterface {
         project_id
       },
     };
-    return this.db.connect().update(params).promise();
+    return this.db.update(params).promise();
   }
 
   updateStatus(data: any): Promise<any> {
@@ -92,7 +92,7 @@ export default class ProjectResource implements ProjectResourceInterface {
         },
       },
     };
-    return this.db.connect().update(params).promise();
+    return this.db.update(params).promise();
   }
 
   upvote(data: any): Promise<any> {
@@ -106,7 +106,7 @@ export default class ProjectResource implements ProjectResourceInterface {
         },
       },
     };
-    return this.db.connect().update(params).promise();
+    return this.db.update(params).promise();
   }
 
   delete(data: any): Promise<any> {
@@ -114,6 +114,6 @@ export default class ProjectResource implements ProjectResourceInterface {
       TableName: PROJECTS_TABLE,
       Key: data,
     };
-    return this.db.connect().delete(params).promise();
+    return this.db.delete(params).promise();
   }
 }

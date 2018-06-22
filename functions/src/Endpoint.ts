@@ -1,9 +1,9 @@
 import * as express from 'express';
 import RequestHandler from './RequestHandler';
 
-const serverless = require('serverless-http');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import * as serverless from 'serverless-http';
+import * as cors from 'cors';
+import * as bodyParser 'body-parser';
 
 const corsOptions = {
   "origin": "*",
@@ -12,7 +12,7 @@ const corsOptions = {
   "optionsSuccessStatus": 204,
 };
 
-export default class EndpointMaker {
+export default class Endpoint {
   private app: any;
 
   constructor() {
@@ -39,12 +39,12 @@ export default class EndpointMaker {
         });
         break;
       case 'editProject':
-        this.app.put('/project/edit/', (req: express.Request, res: express.Response) => {
+        this.app.put('/project/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).editProject();
         });
         break;
       case 'updateProjectStatus':
-        this.app.put('/project/status/', (req: express.Request, res: express.Response) => {
+        this.app.put('/project/', (req: express.Request, res: express.Response) => {
           new RequestHandler(req, res).updateProjectStatus();
         });
         break;
