@@ -181,7 +181,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
             <IconButton aria-label="Share">
               <Share />
             </IconButton>
-            <LikeProjectButton project_id={this.props.project.project_id} />
+            <LikeProjectButton upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
           </CardActions>
         </Card>
       </div>

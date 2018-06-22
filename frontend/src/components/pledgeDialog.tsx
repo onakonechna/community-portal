@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
 import TextField from '@material-ui/core/TextField';
+import { pledgeProjectAction } from '../actions';
 
 interface PledgeProps {
   classes?: any;
@@ -11,15 +13,25 @@ interface PledgeProps {
   toggle?: () => void;
 }
 
+interface PledgeDispatchProps {
+  pledgeProject: any;
+}
+
 interface PledgeState {
   hours?: number;
 }
 
-export default class PledgeDialog extends React.Component<PledgeProps, PledgeState> {
-  constructor(props: PledgeProps) {
+export interface PledgeBody {
+  project_id: string;
+  hours: number;
+}
+
+export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchProps, PledgeState> {
+  constructor(props: PledgeProps & PledgeDispatchProps) {
     super(props);
     this.state = { hours: 0 };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event: any) {
@@ -27,6 +39,16 @@ export default class PledgeDialog extends React.Component<PledgeProps, PledgeSta
       this.setState({ hours: 0 });
     } else {
       this.setState({ hours: parseInt(event.target.value, 10) });
+    }
+  }
+
+  handleSubmit(event:any) {
+    const body = {
+      project_id: this.props.project.project_id,
+      hours: this.state.hours,
+    };
+    if (body.hours != null && body.hours !== 0) {
+      this.props.pledgeProject(body);
     }
   }
 
@@ -50,7 +72,7 @@ export default class PledgeDialog extends React.Component<PledgeProps, PledgeSta
           <Button onClick={this.props.toggle}>
             Cancel
           </Button>
-          <Button>
+          <Button onClick={this.handleSubmit}>
             Pledge
           </Button>
         </DialogActions>
@@ -58,3 +80,11 @@ export default class PledgeDialog extends React.Component<PledgeProps, PledgeSta
     );
   }
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    pledgeProject: (body: PledgeBody) => dispatch(pledgeProjectAction(body)),
+  };
+};
+
+export default connect<{}, PledgeDispatchProps, PledgeProps>(null, mapDispatchToProps)(PledgeDialog);

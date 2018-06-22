@@ -9,7 +9,9 @@ import Favorite from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 
 interface LikeProjectProps {
+  classes?: any;
   project_id: string;
+  upvotes: number;
 }
 
 interface DispatchProps {
@@ -17,9 +19,9 @@ interface DispatchProps {
 }
 
 const styles = {
-	// button: {
-	// 	margin: 'auto, 20px, auto, 20px'
-	// },
+  span: {
+    'margin-left': '5px',
+  },
 };
 
 class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps, {}> {
@@ -40,14 +42,14 @@ class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps
   }
 
   render() {
+    const { upvotes } = this.props;
   	return (
-  		<div>
-  			<IconButton
-  				aria-label="like"
-  				onClick={this.likeProject}>
-  				<Favorite />
-  			</IconButton>
-  		</div>
+      <IconButton
+        aria-label="like"
+        onClick={this.likeProject}>
+        <Favorite />
+        <span>{upvotes}</span>
+      </IconButton>
   	);
   }
 }
