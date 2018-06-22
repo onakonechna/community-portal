@@ -1,26 +1,13 @@
-const awsSdk = require('aws-sdk');
-const dynamoDb = new awsSdk.DynamoDB.DocumentClient({
+import { DynamoDB } from 'aws-sdk';
+const dynamoDb = new DynamoDB.DocumentClient({
   region: 'us-east-1',
 });
 
-interface usersParams {
-  q: string;
-  sort?: string;
-  order?: string;
-  per_page?: number;
-  page?: number;
-}
-
-class Users {
-  getUsers(event:usersParams) {
-    return {
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-    };
-  }
+class User {
 
   createUser(
     token:string,
-    id:string,
+    user_id:string,
     name:string,
     email:string,
     company:string,
@@ -29,7 +16,7 @@ class Users {
     html_url:string,
     url:string,
   ) {
-    const data = { token, id, name, email, company, avatar_url, location, html_url, url };
+    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id };
     const params = {
       TableName: 'users',
       Item: data,
@@ -47,4 +34,4 @@ class Users {
   }
 }
 
-module.exports = Users;
+module.exports = User;

@@ -44,7 +44,7 @@ interface GridState {
   projects: IProject[];
 }
 
-export class ProjectsGrid extends React.Component<GridProps & GridStateProps, GridState> {
+export class ProjectGrid extends React.Component<GridProps & GridStateProps, GridState> {
 
   public state: GridState = {
     projects: projectsData,
@@ -102,4 +102,4 @@ const mapDispatchToProps = (dispatch: any) => {
 
 export default connect(
   mapStateToProps, mapDispatchToProps,
-)(ProjectsGrid);
+)(ProjectGrid);

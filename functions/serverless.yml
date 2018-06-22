@@ -11,14 +11,11 @@ custom:
   functions:
     # Add lambda functions for public endpoints here so Jest will not complain
     public: # remove non-public functions after authorizer integration
-      - getProjectCards
-      - updateProjectStatus
-      - getProjectDetails
-      - getToken
-      - projects
-      - users
-      - likeProject
       - authorization
+      - getProjectCards
+      - getProjectDetails
+      - updateProjectStatus
+      - likeProject
 
 provider:
   name: aws
@@ -57,10 +54,8 @@ functions:
   - ${file(./handlers/project/create/createProject/createProject.yml)}
   - ${file(./handlers/project/get/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
+  - ${file(./handlers/project/update/editProject/editProject.yml)}
   - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/project/projects/projects.yml)}
-  - ${file(./handlers/token/get/get.yml)}
-  - ${file(./handlers/user/users/users.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
 
 # Add references to defined tables and roles here before deployment
@@ -76,6 +71,7 @@ resources:
     createProjectRole: ${file(./handlers/project/create/createProject/role.yml):createProjectRole}
     getProjectCardsRole: ${file(./handlers/project/get/getProjectCards/role.yml):getProjectCardsRole}
     getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
+    editProjectRole: ${file(./handlers/project/update/editProject/role.yml):editProjectRole}
     updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}

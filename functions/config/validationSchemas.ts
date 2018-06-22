@@ -26,6 +26,27 @@ const createProjectSchema = {
   ],
 };
 
+const editProjectSchema = {
+  properties: {
+    project_id: { type: 'string' },
+    name: { type: 'string' },
+    description: { type: 'string' },
+    size: { type: 'string', enum: ['S', 'M', 'L', 'XL'] },
+    due: { type: 'integer' },
+    estimated: { type: 'integer' },
+    completed: { type: 'integer' },
+    technologies: { items: { type: 'string' } },
+    tags: { items: { type: 'string' } },
+    skills: { items: { type: 'string' } },
+    github_address: { type: 'string' },
+    slack_channel: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: [
+    'project_id',
+  ],
+};
+
 const updateProjectStatusSchema = {
   properties: {
     project_id: { type: 'string' },
@@ -47,6 +68,7 @@ const projectIdOnlySchema = {
 // Put all schemas together
 const validationSchemas: any = {
   createProjectSchema,
+  editProjectSchema,
   updateProjectStatusSchema,
   projectIdOnlySchema,
 };

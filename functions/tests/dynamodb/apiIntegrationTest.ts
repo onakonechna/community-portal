@@ -1,8 +1,24 @@
+import * as axios from 'axios';
+import * as jwt from 'jsonwebtoken';
+
+const yaml = require('js-yaml');
+const fs = require('fs');
+
+function loadYAML(filename) {
+  try {
+    return yaml.safeLoad(fs.readFileSync(filename), 'utf8');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const projects = require('./fixtures/projects.json');
+const config = loadYAML('./serverless.yml');
+const token = jwt.sign({ user_id: 'test_id' }, config.custom.jwt.secret, { expiresIn: '1d' });
+// console.log(config.custom.jwt.secret);
+
 // const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
-
-const axios = require('axios');
-const projects = require('./fixtures/projects.json');
 
 function getProjectCards(){
   const getCardsOptions = {
@@ -23,26 +39,32 @@ function getProjectDetails(project_id){
 }
 
 function putProject(project){
-  const getTokenOptions = {
+  const postOptions = {
     method: 'POST',
-    url: hostAddr + '/token/get',
-    data: {
-      githubId: 'test_id',
-    },
+    url: hostAddr + '/project',
+    data: project,
+    headers: {
+      Authorization: token,
+    }
   };
+  return axios(postOptions);
+}
 
-  return axios(getTokenOptions)
-    .then((response) => {
-      const postOptions = {
-        method: 'POST',
-        url: hostAddr + '/project',
-        data: project,
-        headers: {
-          Authorization: response.data.message,
-        }
-      };
-      return axios(postOptions);
-    })
+const test21EditData = {
+  project_id: 'test21',
+  description: 'edited',
+}
+
+function editProject(data){
+  const postOptions = {
+    data,
+    method: 'PUT',
+    url: hostAddr + '/project/edit',
+    headers: {
+      Authorization: token,
+    }
+  };
+  return axios(postOptions);
 }
 
 function likeProject(project_id){
@@ -57,7 +79,7 @@ function likeProject(project_id){
 
 function updateProjectStatus(project_id, status){
   const likeProjectOptions = {
-    method: 'POST',
+    method: 'PUT',
     url: hostAddr +  '/project/status',
     data: { project_id, status },
   };
@@ -122,12 +144,24 @@ describe('getProjectCards endpoint', () => {
   });
 });
 
+describe('editProject endpoint', () => {
+  it('should edit project details', () => {
+    expect.assertions(1);
+
+    return editProject(test21EditData)
+      .then((response) => {
+        expect(response.data.message).toBe('Project edited successfully');
+      });
+  });
+});
+
 describe('getProjectDetails endpoint', () => {
   it('should get project details', () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
     return getProjectDetails('test21')
       .then((response) => {
         expect(response.data.status).toBe('closed');
+        expect(response.data.description).toBe('edited');
       });
 });
