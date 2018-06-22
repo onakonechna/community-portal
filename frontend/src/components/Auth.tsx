@@ -1,6 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 interface IAuthState {
   size: number;
@@ -36,16 +35,4 @@ class Auth extends React.Component<{}, IAuthState> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-  };
-};
-
-export default connect(
-  mapStateToProps, mapDispatchToProps,
-)(Auth);
+export default Auth;

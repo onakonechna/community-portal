@@ -79,11 +79,13 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
         if (newItem.slice(-1) === ' ') {
           const technologies = this.state.technologies;
           if (technologies.indexOf(newItem.slice(0, -1)) !== -1) return;
-          technologies[technologies.length] = newItem.slice(0, -1);
-          this.setState({
-            technologies,
+          this.setState((prevState:EditDialogState) => ({
+            technologies: [
+              ...prevState.technologies,
+              newItem.slice(0, -1),
+            ],
             technologiesString: '',
-          });
+          }));
         } else {
           this.setState({
             technologiesString: newItem,
@@ -267,11 +269,6 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-  };
-};
-
 const mapDispatchToProps = (dispatch: any) => {
   return {
     editProject: (project: any) => dispatch(editProjectBody(project)),
@@ -282,5 +279,5 @@ export default compose<{}, EditDialogProps>(
   withStyles(styles, {
     name: 'EditProjectDialog',
   }),
-  connect<{}, DispatchProps, EditDialogProps>(mapStateToProps, mapDispatchToProps),
+  connect<{}, DispatchProps, EditDialogProps>(null, mapDispatchToProps),
 )(EditProjectDialog);

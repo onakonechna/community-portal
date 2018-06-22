@@ -92,12 +92,13 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
           const technologies = this.state.technologies;
           const techList = technologies.map(t => t.type);
           if (techList.indexOf(newItem.slice(0, -1)) !== -1) return;
-          technologies[technologies.length] =
-          { key: technologies.length, type: newItem.slice(0, -1) };
-          this.setState({
-            technologies,
+          this.setState((prevState:DialogState) => ({
+            technologies: [
+              ...prevState.technologies,
+              { key: prevState.technologies.length, type: newItem.slice(0, -1) },
+            ],
             technologiesString: '',
-          });
+          }));
         } else {
           this.setState({
             technologiesString: newItem,
@@ -141,10 +142,10 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
 
   handleSave() {
     if (!this.state.loading) {
-      this.setState({
+      this.setState((prevState:DialogState) => ({
         success: false,
         loading: true,
-      });
+      }));
 
       const tech: Technology[] = [];
       this.state.technologies.map((technology) => {
@@ -322,12 +323,6 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-
-  };
-};
-
 const mapDispatchToProps = (dispatch: any) => {
   return {
     addProject: (project: any) => dispatch(addProject(project)),
@@ -338,5 +333,5 @@ export default compose<{}, DialogProps>(
   withStyles(styles, {
     name: 'AddProjectDialog',
   }),
-  connect<{}, DispatchProps, DialogProps>(mapStateToProps, mapDispatchToProps),
+  connect<{}, DispatchProps, DialogProps>(null, mapDispatchToProps),
 )(AddProjectDialog);
