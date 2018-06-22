@@ -1,5 +1,6 @@
 import fetchProjects from '../api/fetchProjects';
 import { editProject, editProjectStatus } from  '../api/editProject';
+import pledgeProject from '../api/pledgeProject';
 import upvoteProject from '../api/upvoteProject';
 import saveProject from '../api/saveProject';
 
@@ -34,6 +35,10 @@ export interface ProjectLoadedAction {
   type: TypeKeys.PROJECTS_LOADED;
   projects: any;
 }
+
+// export interface PledgeProjectAction {
+//   type: TypeKeys.PLEDGE_PROJECT;
+// }
 
 export interface OtherAction {
   type: TypeKeys.OTHER_ACTION;
@@ -91,6 +96,15 @@ export const loadProjects: (any) = () => {
       })
       .catch((err: any) => {
         console.log(err);
+      });
+  };
+};
+
+export const pledgeProjectAction = (body: any) => {
+  return (dispatch: Dispatch) => {
+    return pledgeProject(body)
+      .then(() => {
+        dispatch(loadProjects());
       });
   };
 };
