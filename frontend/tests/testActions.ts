@@ -48,7 +48,6 @@ describe('test actions', () => {
 
     return store.dispatch<any>(actions.addProject(projectList))
       .then(() => {
-        console.log(store.getActions());
         expect(store.getActions()).toEqual(expectedAction);
       });
   });

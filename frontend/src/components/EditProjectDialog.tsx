@@ -132,11 +132,14 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
     this.props.editProject(body)
       .then((res: any) => {
-        this.setState({
+        this.setState((prevState:EditDialogState) => ({
           success: true,
           loading: false,
-        }, () => {
+        }), () => {
           this.props.toggleEdit();
+          this.setState((prevState:EditDialogState) => ({
+            success: false,
+          }));
         });
       })
       .catch((err: any) => {
