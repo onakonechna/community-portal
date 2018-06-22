@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import BaseResource from './../baseResource';
+import DatabaseConnection from './../DatabaseConnection';
 import ResourceInterface from './../resourceInterface';
 
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
@@ -10,7 +10,11 @@ interface ProjectResourceInterface extends ResourceInterface {
   upvote(data: any): Promise<any>;
 }
 
-export default class ProjectResource extends BaseResource implements ProjectResourceInterface {
+export default class ProjectResource implements ProjectResourceInterface {
+
+  constructor(db: DatabaseConnection) {
+    this.db = db;
+  }
 
   create(data: any): Promise<any> {
     // append additional data
@@ -25,7 +29,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
       TableName: PROJECTS_TABLE,
       Item: data,
     };
-    return this.client.put(params).promise();
+    return this.db.connect().put(params).promise();
   }
 
   get(data: any): Promise<any> {
@@ -41,7 +45,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
       },
       ScanIndexForward: false
     };
-    return this.client.query(params).promise();
+    return this.db.connect().query(params).promise();
   }
 
   getById(data: any): Promise<any> {
@@ -49,7 +53,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
       TableName: PROJECTS_TABLE,
       Key: data,
     };
-    return this.client.get(params).promise();
+    return this.db.connect().get(params).promise();
   }
 
   update(data: any): Promise<any> {
@@ -72,7 +76,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
         project_id
       },
     };
-    return this.client.update(params).promise();
+    return this.db.connect().update(params).promise();
   }
 
   updateStatus(data: any): Promise<any> {
@@ -88,7 +92,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
         },
       },
     };
-    return this.client.update(params).promise();
+    return this.db.connect().update(params).promise();
   }
 
   upvote(data: any): Promise<any> {
@@ -102,7 +106,7 @@ export default class ProjectResource extends BaseResource implements ProjectReso
         },
       },
     };
-    return this.client.update(params).promise();
+    return this.db.connect().update(params).promise();
   }
 
   delete(data: any): Promise<any> {
@@ -110,6 +114,6 @@ export default class ProjectResource extends BaseResource implements ProjectReso
       TableName: PROJECTS_TABLE,
       Key: data,
     };
-    return this.client.delete(params).promise();
+    return this.db.connect().delete(params).promise();
   }
 }

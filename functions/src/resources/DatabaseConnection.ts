@@ -2,17 +2,17 @@ import { DynamoDB } from 'aws-sdk';
 
 const IS_OFFLINE = process.env.IS_OFFLINE;
 
-export default class baseResource {
-  protected client: DynamoDB.DocumentClient;
+export default class DatabaseConnection {
+  private client: DynamoDB.DocumentClient;
 
-  constructor() {
+  connect() {
     if (IS_OFFLINE === 'true') {
-      this.client = new DynamoDB.DocumentClient({
+      return new DynamoDB.DocumentClient({
         region: 'localhost',
         endpoint: 'http://localhost:8000',
       });
     } else {
-      this.client = new DynamoDB.DocumentClient();
+      return new DynamoDB.DocumentClient();
     }
   }
 }
