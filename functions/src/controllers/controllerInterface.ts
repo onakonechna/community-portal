@@ -1,13 +1,13 @@
-interface ResourceInterface {
+interface ControllerInterface {
   validate(data: any, schemaName: string): boolean;
 }
 
 interface ControllerHandlers {
-  resolve: (request: Promise<any>) => {status: number, payload: any};
-  reject: (request: Promise<any>) => {status: number, payload: any};
+  resolve: (result: any) => {status: number, payload: any};
+  reject: (error: Error) => {status: number, payload: any};
 }
 
 export {
-  ResourceInterface,
+  ControllerInterface,
   ControllerHandlers,
 }

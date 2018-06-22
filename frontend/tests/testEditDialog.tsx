@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 
 import { editProjectBody } from '../src/actions';
-import { EditProjectDialog } from '../src/components/editProjectDialog';
+import { EditProjectDialog } from '../src/components/EditProjectDialog';
 const samples = require('../src/data/sampleProjects.json');
 
 describe('EditProjectDialog Test Suite', () => {
