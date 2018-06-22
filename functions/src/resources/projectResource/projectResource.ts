@@ -5,14 +5,14 @@ import ResourceInterface from './../resourceInterface';
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
-interface ProjectInterface extends ResourceInterface {
-  updateStatus(data: any): Promise<Object>;
-  upvote(data: any): Promise<Object>;
+interface ProjectResourceInterface extends ResourceInterface {
+  updateStatus(data: any): Promise<any>;
+  upvote(data: any): Promise<any>;
 }
 
-export default class ProjectResource extends BaseResource implements ProjectInterface {
+export default class ProjectResource extends BaseResource implements ProjectResourceInterface {
 
-  create(data: any): Promise<Object> {
+  create(data: any): Promise<any> {
     // append additional data
     const unixTimestamp = new Date().getTime();
     data.status = 'open';
@@ -28,7 +28,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.put(params).promise();
   }
 
-  get(data: any): Promise<Object> {
+  get(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       IndexName: PROJECTS_INDEX,
@@ -44,7 +44,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.query(params).promise();
   }
 
-  getById(data: any): Promise<Object> {
+  getById(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: data,
@@ -52,7 +52,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.get(params).promise();
   }
 
-  update(data: any): Promise<Object> {
+  update(data: any): Promise<any> {
     const { project_id } = data;
     delete data['project_id'];
 
@@ -75,7 +75,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.update(params).promise();
   }
 
-  updateStatus(data: any): Promise<Object> {
+  updateStatus(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: {
@@ -91,7 +91,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.update(params).promise();
   }
 
-  upvote(data: any): Promise<Object> {
+  upvote(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: data,
@@ -105,7 +105,7 @@ export default class ProjectResource extends BaseResource implements ProjectInte
     return this.client.update(params).promise();
   }
 
-  delete(data: any): Promise<Object> {
+  delete(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       Key: data,

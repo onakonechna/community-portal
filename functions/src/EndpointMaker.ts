@@ -5,12 +5,19 @@ const serverless = require('serverless-http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const corsOptions = {
+  "origin": "*",
+  "methods": "GET,PUT,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204,
+};
+
 export default class EndpointMaker {
   private app: any;
 
   constructor() {
     this.app = express();
-    this.app.use(cors());
+    this.app.use(cors(corsOptions));
     this.app.use(bodyParser.json({ strict: false }));
   }
 

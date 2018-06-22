@@ -1,7 +1,5 @@
-describe('projects-lambda-test', () => {
-  it('projects function should return a string', () => {
-    const project = require('./project');
-    const p1 = new project();
-    expect(typeof p1.getProjects().message).toBe('string');
+describe('projectResource-test', () => {
+  it('replace me with an actual test', () => {
+    expect(1).toBe(1);
   });
 });

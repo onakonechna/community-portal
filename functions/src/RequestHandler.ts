@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Validator from './Validator';
-import ProjectResource from './resources/projectResource/projectResource'
-// import Dynamodb from './Dynamodb';
+import ProjectResource from './resources/projectResource/projectResource';
+
 
 interface IMessage {
   message: string;
