@@ -3,8 +3,8 @@ interface ControllerInterface {
 }
 
 interface ControllerHandlers {
-  resolve: (result: any) => {status: number, payload: any};
-  reject: (error: Error) => {status: number, payload: any};
+  transform: (result: any) => any;
+  terminate: (error: Error) => {status: number, payload: any};
 }
 
 export {

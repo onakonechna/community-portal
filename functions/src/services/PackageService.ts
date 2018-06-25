@@ -10,11 +10,24 @@
 //
 // }
 
+import * as _ from 'lodash';
 import * as path from 'path';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
 
+// dataDependencies:
+// a list of retrieved data fields returned by
+// the resolve function for each controller method in previous data flow(s)
+// used to feed intermediary data from previous data flow(s)
+// into the current data flow
+// you can ignore dataDependencies if the current data flow does not depend on any
+// previously retrieved data
+// (the intermediary data fields are stored in this.dataStore)
+// (make sure that they do not overwrite each other)
+// (check the naming in the object returned by resolve for each controller method)
+
 interface DataFlowDefinition {
+  dataDependencies: string[];
   validationMap: any;
   controller: string;
   method: string;
@@ -24,6 +37,7 @@ interface DataFlowDefinition {
 }
 
 interface DataFlow {
+  dataDependencies: string[];
   controller: any;
   controllerMethod: string;
   target: any; // resource (expand to include Github APIs in the future)
@@ -89,7 +103,10 @@ export default class PackageService {
       targetMethod = dataFlowDefinition.methodMap[controllerMethod];
     }
 
+    const { dataDependencies } = DataFlowDefinition;
+
     const dataFlow = {
+      dataDependencies,
       controller,
       controllerMethod,
       target,
@@ -120,13 +137,40 @@ export default class PackageService {
   integrate() {
     if (this.dataFlows.length === 0) {
       throw 'No dataflow has been added';
+
     }
     if (this.endpoint === undefined) {
       throw 'An endpoint must be specified';
     }
-    for (let i = 0; i < (this.dataFlows.length - 1); i++) {
 
+    let data = this.getInitialData(xxx);
+    let chainedPromise = this.getPromise(data, this.dataFLows[0]);
+
+    let nextDataFlow: DataFlow;
+    for (let i = 0; i < (this.dataFlows.length - 1); i++) {
+      nextDataFlow = this.dataFlows[i+1];
+      chainedPromise = this.chainPromise(chainedPromise, nextDataFlow);
     }
+  }
+
+  getPromise(data:any, dataFlow: DataFlow) {
+    return dataFlow.target[dataFlow.targetMethod](data);
+  }
+
+  chainPromise(curentData???: any, dataFlow: DataFlow, nextDataFlow: DataFlow) {
+    const promise = dataFlow.target[dataFlow.targetMethod](???);
+    const { transform, terminate } = dataFlow.controller[dataFlow.controllerMethod]();
+
+    return promise
+      .then((result: any) => {
+        const data = transform(result);
+        _.assign(self.dataStore, data);
+        return nextDataFlow???
+      })
+      .catch((error: Error) => {
+        const { status, payload } = terminate(error);
+
+      })
   }
 
 }
