@@ -14,7 +14,7 @@ interface GridStateProps {
 }
 
 interface GridProps {
-  temp?: string;
+  user?: any;
   project?: {};
   loadProjects: () => void;
   handler?: () => void;
@@ -64,6 +64,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 
   render() {
+    const { role } = this.props.user;
     return (
       <div style={{ padding: '40px 80px' }}>
         <Grid
@@ -76,6 +77,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
           {this.props.projects && this.props.projects.map((project: any) => (
             <Grid item key={project.project_id}>
               <ProjectCard
+                role={role}
                 project={project}
                 handler={this.updateGrid}
               />
@@ -91,6 +93,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 const mapStateToProps = (state: any) => {
   return {
     projects: state.project,
+    user: state.user,
   };
 };
 

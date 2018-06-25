@@ -1,6 +1,9 @@
 import * as React from 'react';
+import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
+import EditButton from './buttons/EditButton';
+import PledgeButton from './buttons/PledgeButton';
 
 import LikeProjectButton from './LikeProjectButton';
 
@@ -13,7 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 
-import Edit from '@material-ui/icons/Edit';
 import Share from '@material-ui/icons/Share';
 
 // import Avatar from '@material-ui/core/Avatar';
@@ -71,6 +73,7 @@ interface CardProps {
     slack?: string,
     created_date?: string,
   };
+  role: String;
   handler?: () => void;
   toggleEdit?: () => void;
   classes: any;
@@ -108,6 +111,8 @@ export class projectCard extends React.Component<CardProps, CardState>{
 
   render() {
     const { classes } = this.props;
+    const Edit = WithAuth(['owner', 'user'])(EditButton, this.toggleEdit);
+    const Pledge = WithAuth(['owner', 'user'])(PledgeButton, this.togglePledge);
     return (
       <div>
           <EditProjectDialog
@@ -164,7 +169,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
           </CardContent>
           <CardActions>
             <Button>View</Button>
-            <Button onClick={this.togglePledge}>Pledge</Button>
+            <Pledge />
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
                 <SvgIcon>
@@ -172,12 +177,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
                 </SvgIcon>
               </IconButton>
             </a>
-            <IconButton
-              aria-label="Edit"
-              onClick={this.toggleEdit}
-            >
-              <Edit />
-            </IconButton>
+            <Edit />
             <IconButton aria-label="Share">
               <Share />
             </IconButton>
