@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 
 interface WithAuthProps {
   user?: any;
+  handler: any;
 }
 
-const Authorization = (allowedRoles:any) => (WrappedComponent:any, passedProp:any) => {
+const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
   class WithAuth extends React.Component<WithAuthProps, {}> {
     constructor(props: WithAuthProps) {
       super(props);
@@ -13,7 +14,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any, passedProp:an
     render() {
       const { role } = this.props.user;
       if (allowedRoles.includes(role)) {
-        return <WrappedComponent passedProp={passedProp} />;
+        return <WrappedComponent handler={this.props.handler} />;
       }
       return null;
     }

@@ -72,8 +72,8 @@ interface CardProps {
     github_address: string,
     slack?: string,
     created_date?: string,
+    pledge: any;
   };
-  role: String;
   handler?: () => void;
   toggleEdit?: () => void;
   classes: any;
@@ -88,6 +88,9 @@ function getPercentage(pledged: number, estimated: number) {
   if (!pledged || !estimated || pledged === 0) { return 1; }
   return (pledged / estimated) * 100;
 }
+
+const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
+const Edit = WithAuth(['owner', 'user'])(EditButton);
 
 export class projectCard extends React.Component<CardProps, CardState>{
 
@@ -111,8 +114,6 @@ export class projectCard extends React.Component<CardProps, CardState>{
 
   render() {
     const { classes } = this.props;
-    const Edit = WithAuth(['owner', 'user'])(EditButton, this.toggleEdit);
-    const Pledge = WithAuth(['owner', 'user'])(PledgeButton, this.togglePledge);
     return (
       <div>
           <EditProjectDialog
@@ -169,7 +170,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
           </CardContent>
           <CardActions>
             <Button>View</Button>
-            <Pledge />
+            <Pledge handler={this.togglePledge} />
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
                 <SvgIcon>
@@ -177,7 +178,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
                 </SvgIcon>
               </IconButton>
             </a>
-            <Edit />
+            <Edit handler={this.toggleEdit}/>
             <IconButton aria-label="Share">
               <Share />
             </IconButton>

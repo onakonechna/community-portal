@@ -6,8 +6,8 @@ import Edit from '@material-ui/icons/Edit';
 export default function editButton(props:any) {
   return (
     <IconButton
-    aria-label="Edit"
-    onClick={props.passedProp}
+      aria-label="Edit"
+      onClick={props.handler}
     >
       <Edit />
     </IconButton>

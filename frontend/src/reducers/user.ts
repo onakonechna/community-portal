@@ -2,7 +2,7 @@ import { ActionTypes, TypeKeys } from '../actions';
 
 const testUser = {
   name: 'Mark',
-  role: 'owner',
+  role: 'user',
 };
 
 export default function user(state = testUser, action:ActionTypes) {

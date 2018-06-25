@@ -3,6 +3,6 @@ import Button from '@material-ui/core/Button';
 
 export default function pledgeButton(props:any) {
   return (
-    <Button onClick={props.passedProp}>Pledge</Button>
+    <Button onClick={props.handler}>Pledge</Button>
   );
 }
