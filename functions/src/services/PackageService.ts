@@ -1,19 +1,8 @@
-// package(controller: any) {
-//   const methods = getMethods(controller);
-//   for (let i=0; i < methods.length; i++) {
-//     let method = methods[i];
-//     controller[method] = this.process(method);
-//   }
-// }
-//
-// process(promise: Promise<any>) {
-//
-// }
-
 import * as _ from 'lodash';
 import * as path from 'path';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
+import Validator from './../Validator';
 
 // dataDependencies:
 // a list of retrieved data fields returned by
@@ -27,21 +16,22 @@ import DatabaseConnection from './../resources/DatabaseConnection';
 // (check the naming in the object returned by resolve for each controller method)
 
 interface DataFlowDefinition {
-  dataDependencies: string[];
-  validationMap: any;
-  controller: string;
-  method: string;
-  methodMap: any;
-  target: string; // resource (expand to include Github APIs in the future)
-  targetType: string; // resource or webEndpoint
+  controller: string; // compulsory
+  method: string; // compulsory
+  target: string; // compulsory: resource (expand to include Github APIs in the future)
+  targetType: string; // compulsory: resource or webEndpoint
+  dataDependencies: string[]; // optional
+  validationMap: any; // optional
+  methodMap: any; // optional: a map of methods on controller to methods on target
 }
 
 interface DataFlow {
   dataDependencies: string[];
   controller: any;
   controllerMethod: string;
-  target: any; // resource (expand to include Github APIs in the future)
-  targetMethod: string; // resource or webEndpoint
+  validator: Validator;
+  target: any;
+  targetMethod: string;
 }
 
 import Endpoint from './../Endpoint';
@@ -55,6 +45,7 @@ export default class PackageService {
   private webEndpointMapRoot: string;
   private dataFlows: DataFlow[];
   private dataStore: any;
+  private initialData: any;
 
   constructor(controllerMap: any, resourceMap: any, webEndpointMap: any) {
     this.controllerMap = controllerMap;
@@ -68,7 +59,7 @@ export default class PackageService {
     this.endpoint = endpoint;
   }
 
-  // set the relatve path to the config files
+  // set the relative path to the config files
   // file paths to the objects in the maps will be resolved relative to the root
   setControllerMapPath(configPath: string) {
     this.controllerMapRoot = configPath;
@@ -83,7 +74,7 @@ export default class PackageService {
   }
 
   addDataFlow(dataFlowDefinition: DataFlowDefinition) {
-    const controller = this.createController(dataFlowDefinition.controller, dataFlowDefinition.validationMap);
+    const controller = this.createController(dataFlowDefinition.controller);
     let target: any;
     if (dataFlowDefinition.targetType === 'resource') {
       target = this.createResource();
@@ -104,11 +95,13 @@ export default class PackageService {
     }
 
     const { dataDependencies } = DataFlowDefinition;
+    const validator = new Validator(dataFlowDefinition.validationMap[controllerMethod]);
 
     const dataFlow = {
       dataDependencies,
       controller,
       controllerMethod,
+      validator,
       target,
       targetMethod,
     }
@@ -116,13 +109,13 @@ export default class PackageService {
     this.dataFlows.push(dataFlow);
   }
 
-  createController(controller: string, validationMap: any) {
+  createController(controller: string) {
     let controllerPath = this.controllerMap[controller];
     if (this.hasOwnProperty('controllerMapRoot')){
       controllerPath = path.join(this.controllerMapRoot, controllerPath);
     }
     const Controller = require(controllerPath);
-    return new Controller(validationMap);
+    return new Controller();
   }
 
   createResource(resource: string) {
@@ -134,43 +127,101 @@ export default class PackageService {
     return new Controller(new DatabaseConnection());
   }
 
-  integrate() {
+  executeDataFlows(resolve: any, reject: any) {
+    if (this.initialData === undefined) {
+      throw 'initialData has not been set yet';
+    }
     if (this.dataFlows.length === 0) {
       throw 'No dataflow has been added';
-
-    }
-    if (this.endpoint === undefined) {
-      throw 'An endpoint must be specified';
     }
 
-    let data = this.getInitialData(xxx);
-    let chainedPromise = this.getPromise(data, this.dataFLows[0]);
+    const validator = this.dataFlows[0].validator;
+    const valid = validator.validate(initialData);
+    if (!valid) reject(validator.getErrorResponse());
 
+    // store initialData in dataStore
+    _.assign(self.dataStore, initialData)
+
+    let chainedPromise = this.getPromise(initialData, this.dataFlows[0]);
     let nextDataFlow: DataFlow;
     for (let i = 0; i < (this.dataFlows.length - 1); i++) {
       nextDataFlow = this.dataFlows[i+1];
-      chainedPromise = this.chainPromise(chainedPromise, nextDataFlow);
+      chainedPromise = this.chainPromise(chainedPromise, nextDataFlow, resolve, reject);
     }
+
+    // handle last promise without chaining
+    const lastDataFlow = this.dataFlows[this.dataFlows.length - 1];
+    const { transform, terminate } = lastDataFlow.controller[lastDataFlow.controllerMethod]();
+    chainedPromise
+      .then((result: any) => {
+        resolve(transform(result));
+      })
+      .catch((error: Error) => {
+        reject(terminate(error));
+      });
   }
 
   getPromise(data:any, dataFlow: DataFlow) {
     return dataFlow.target[dataFlow.targetMethod](data);
   }
 
-  chainPromise(curentData???: any, dataFlow: DataFlow, nextDataFlow: DataFlow) {
-    const promise = dataFlow.target[dataFlow.targetMethod](???);
-    const { transform, terminate } = dataFlow.controller[dataFlow.controllerMethod]();
+  pickData(dataFlow: DataFlow) {
+    if (dataFlow.dataDependencies !== undefined && dataFlow.dataDependencies.length > 0) {
+      return _.pick(self.dataStore, dataFlow.dataDependencies);
+    } else {
+      return {};
+    }
+  }
+
+  validate(dataFlow: DataFlow, data: any, resolve: any, reject: any) {
+    const validator = dataFlow.validator;
+    const valid = validator.validate(data);
+    if (!valid) reject(validator.getErrorResponse());
+  }
+
+  chainPromise(promise: Promise<any>, nextDataFlow: DataFlow, resolve: any, reject: any, chained: boolean = true) {
+    // dataStore contains all data accumulated since the first dataFlows
+    // we pass it to the controller method to get whatever data it needs
+    const { transform, terminate } = thisDataFlow.controller[thisDataFlow.controllerMethod](this.dataStore);
 
     return promise
       .then((result: any) => {
-        const data = transform(result);
-        _.assign(self.dataStore, data);
-        return nextDataFlow???
-      })
-      .catch((error: Error) => {
-        const { status, payload } = terminate(error);
+        // store output from thisDataFlow to dataStore
+        const output = transform(result);
+        _.assign(this.dataStore, output);
+
+        // obtain data fields for nextDataFlow
+        const data = this.pickData(nextDataFlow);
+        // validate data fields
+        this.validate(nextDataFlow, data, resolve, reject);
+        return this.getPromise(data, nextDataFlow);
 
       })
+      .catch((error: Error) => {
+        reject(terminate(error));
+      });
+  }
+
+  package() {
+    if (this.endpoint === undefined) {
+      throw 'An endpoint must be specified';
+    }
+    this.endpoint.configure((req: express.Request, res: express.Response) => {
+      if (this.endpoint.method === 'get') {
+        this.initialData = req.params;
+      } else {
+        this.initialData = req.body;
+      }
+      const dataFlowsPromise = new Promise(executeDataFlows);
+      dataFlowsPromise
+        .then(({ status, payload }) => {
+          res.status(status).json(payload);
+        })
+        .catch(({ status, payload }) => {
+          res.status(status).json(payload);
+        });
+    });
+    return this.endpoint.wrap();
   }
 
 }

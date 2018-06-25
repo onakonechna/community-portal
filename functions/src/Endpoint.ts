@@ -26,7 +26,7 @@ export default class Endpoint {
     this.app.use(bodyParser.json({ strict: false }));
   }
 
-  configure(execute: (req, res) => any) {
+  configure(execute: (req: express.Request, res: express.Response) => any) {
     this.app[this.method](this.url, (req: express.Request, res: express.Response) => {
       execute(req, res);
     });

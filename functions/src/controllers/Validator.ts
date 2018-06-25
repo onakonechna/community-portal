@@ -23,4 +23,11 @@ export default class Validator {
   errors() {
     return this.validator.errors;
   }
+
+  getErrorResponse() {
+    return {
+      status: 400,
+      payload: { errors: this.errors() },
+    }
+  }
 }
