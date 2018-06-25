@@ -2,9 +2,9 @@ import * as express from 'express';
 
 import * as serverless from 'serverless-http';
 import * as cors from 'cors';
-import * as bodyParser 'body-parser';
+import * as bodyParser from 'body-parser';
 
-import { ControllerHandlers } from './../ControllerInterface';
+import { ControllerHandlers } from './controllers/ControllerInterface';
 
 const corsOptions = {
   "origin": "*",
@@ -26,13 +26,17 @@ export default class Endpoint {
     this.app.use(bodyParser.json({ strict: false }));
   }
 
+  getMethod() {
+    return this.method;
+  }
+
   configure(execute: (req: express.Request, res: express.Response) => any) {
     this.app[this.method](this.url, (req: express.Request, res: express.Response) => {
       execute(req, res);
     });
   }
 
-  wrap(){
+  wrap() {
     return serverless(this.app);
   }
 }

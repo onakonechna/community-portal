@@ -1,9 +1,9 @@
 import { ControllerInterface, ControllerHandlers } from './../ControllerInterface';
-import Validator from './../Validator';
+import Validator from './../../Validator';
 
 interface ProjectControllerInterface {
   create(data: any): ControllerHandlers;
-  get(data: any): ControllerHandlers;
+  getProjectCards(data: any): ControllerHandlers;
   getById(data: any): ControllerHandlers;
   update(data: any): ControllerHandlers;
   updateStatus(data: any): ControllerHandlers;
@@ -33,7 +33,7 @@ export default class ProjectController implements ProjectControllerInterface {
     return { transform, terminate };
   }
 
-  get(data: any) {
+  getProjectCards(data: any) {
     const transform = (result: any) => {
       if (result.Items) {
         return {

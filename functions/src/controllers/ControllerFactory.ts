@@ -1,4 +1,4 @@
-import ControllerInterface from './ControllerInterface';
+import { ControllerInterface } from './ControllerInterface';
 
 export default class ControllerFactory {
   private config: any;
