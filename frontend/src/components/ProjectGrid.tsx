@@ -14,7 +14,6 @@ interface GridStateProps {
 }
 
 interface GridProps {
-  temp?: string;
   project?: {};
   loadProjects: () => void;
   handler?: () => void;
@@ -91,6 +90,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 const mapStateToProps = (state: any) => {
   return {
     projects: state.project,
+    user: state.user,
   };
 };
 
