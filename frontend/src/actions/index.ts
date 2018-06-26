@@ -9,16 +9,17 @@ import { v4 as uuid } from 'uuid';
 
 export enum TypeKeys {
  ADD_PROJECT = 'ADD_PROJECT',
- ADD_USER = 'ADD_USER',
+ LOAD_USER = 'LOAD_USER',
  EDIT_PROJECT = 'EDIT_PROJECT',
  LOAD_PROJECT = 'LOAD_PROJECT',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
+ UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  OTHER_ACTION = '__any__other__action__type',
 }
 
-export interface AddUserAction {
-  type: TypeKeys.ADD_USER;
-  users: any;
+export interface LoadUserAction {
+  type: TypeKeys.LOAD_USER;
+  user: any;
 }
 
 export interface AddProjectAction {
@@ -36,9 +37,10 @@ export interface ProjectLoadedAction {
   projects: any;
 }
 
-// export interface PledgeProjectAction {
-//   type: TypeKeys.PLEDGE_PROJECT;
-// }
+export interface UpdateUserRoleAction {
+  type: TypeKeys.UPDATE_USER_ROLE;
+  role: string;
+}
 
 export interface OtherAction {
   type: TypeKeys.OTHER_ACTION;
@@ -46,9 +48,10 @@ export interface OtherAction {
 
 export type ActionTypes =
  | AddProjectAction
- | AddUserAction
+ | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
+ | UpdateUserRoleAction
  | OtherAction;
 
 export const addProject = (project: {}) => {
@@ -113,5 +116,12 @@ export const projectsLoaded = (projects: {}) => {
   return {
     projects,
     type: TypeKeys.PROJECTS_LOADED,
+  };
+};
+
+export const UpdateUserRoleAction = (user_id: string, role: string) => {
+  return {
+    role,
+    type: TypeKeys.UPDATE_USER_ROLE,
   };
 };

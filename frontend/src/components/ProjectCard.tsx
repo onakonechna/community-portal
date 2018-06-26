@@ -91,6 +91,7 @@ function getPercentage(pledged: number, estimated: number) {
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'])(EditButton);
+const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class projectCard extends React.Component<CardProps, CardState>{
 
@@ -159,7 +160,6 @@ export class projectCard extends React.Component<CardProps, CardState>{
                   Pledged: {this.props.project.pledged} hours
               </Typography>
               </div>
-
               <CircularProgress
                 variant="determinate"
                 color="secondary"
@@ -170,7 +170,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
           </CardContent>
           <CardActions>
             <Button>View</Button>
-            <Pledge handler={this.togglePledge} />
+            <Pledge handler={this.togglePledge} label="Pledge"/>
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
                 <SvgIcon>
@@ -182,7 +182,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
             <IconButton aria-label="Share">
               <Share />
             </IconButton>
-            <LikeProjectButton liked={false} upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
+            <Like liked={false} upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
           </CardActions>
         </Card>
       </div>
