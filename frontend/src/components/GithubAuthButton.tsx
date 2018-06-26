@@ -59,9 +59,11 @@ const withLogin = (WrappedCompoent: any) => {
         return this.onFailure(new Error('\'code\' not found'));
       }
       this.props.onSuccess(code)
-        .then((res:any) => console.log(res))
+        .then((res:any) => {
+          this.saveToken(res.data.token);
+          this.props.updateUserRole(this.props.user.user_id, 'user');
+        })
         .catch((err: Error) => console.error(err));
-      this.props.updateUserRole(this.props.user.user_id, 'user');
     }
 
     onFailure(error: Error) {
