@@ -113,6 +113,12 @@ export default class PackageService {
     this.dataFlows.push(dataFlow);
   }
 
+  async addDataFlows(dataFlowDefinitions: DataFlowDefinition[]) {
+    for (let i = 0; i < dataFlowDefinitions.length; i++) {
+      await this.addDataFlow(dataFlowDefinitions[i]);
+    }
+  }
+
   async createController(controller: string) {
     let controllerPath = this.controllerMap[controller];
     const Controller = await import(`./../../${controllerPath}.ts`);

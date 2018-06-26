@@ -99,6 +99,7 @@ export default class ProjectResource { // implements ProjectResourceInterface {
 
   upvote(data: any): Promise<any> {
     // invoke DatabaseAdapter methods
+    return new Promise(() => {});
   }
 
   delete(data: any): Promise<any> {

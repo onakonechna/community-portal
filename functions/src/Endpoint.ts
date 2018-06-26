@@ -4,6 +4,8 @@ import * as serverless from 'serverless-http';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 
+const serverless = require('serverless-http');
+
 import { ControllerHandlers } from './controllers/ControllerInterface';
 
 const corsOptions = {

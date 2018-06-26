@@ -13,7 +13,11 @@ const dataFlow = {
 }
 
 packageService.createEndpoint(endpoint);
-await packageService.addDataFlow(dataFlow);
+packageService.addDataFlows([dataFlow]);
 const handler = packageService.package();
-
 export { handler };
+
+
+// import EndpointMaker from './../../../../src/EndpointMaker';
+// const handler = new EndpointMaker().make('getProjectCards');
+// export { handler };
