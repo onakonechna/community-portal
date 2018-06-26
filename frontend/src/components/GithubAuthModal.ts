@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 
-const toQuery = (params: any, delimiter = '&') => {
+export const toQuery = (params: any, delimiter = '&') => {
   const keys = Object.keys(params);
 
   return keys.reduce(
@@ -65,7 +65,7 @@ class GithubAuthModal {
           ) {
             return;
           }
-
+          console.log(popup.location);
           const params = qs.parse(popup.location.search.substr(1)).code;
           resolve(params);
 

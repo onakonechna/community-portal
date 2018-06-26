@@ -7,17 +7,20 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import GithubAuthButton from './GithubAuthButton';
+import LoginButton from './buttons/LoginButton';
+import withLogin from './GithubAuthButton';
 import { API } from './../api/config';
 
 // callbacks for GithubAuthButton
-const onSuccess = (response: any) => {
+export const onSuccess = (response: any) => {
   axios.post(`${API}/authorize`, { code: response })
     .then((data: any) => {
       console.log(data);
     });
 };
-const onFailure = (response: any) => console.error(response);
+export const onFailure = (response: any) => console.error(response);
+
+const Login = withLogin(LoginButton);
 
 const headBar = () => (
     <div>
@@ -29,7 +32,7 @@ const headBar = () => (
             <Typography color="inherit" >
                 Magento Opensource
             </Typography>
-            <GithubAuthButton
+            <Login
               clientId="668e0b6c450cc783f267" // Github auth application client_id
               scope="" // Github permission scopes
               redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
