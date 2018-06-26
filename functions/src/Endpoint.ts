@@ -1,6 +1,5 @@
 import * as express from 'express';
 
-import * as serverless from 'serverless-http';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 

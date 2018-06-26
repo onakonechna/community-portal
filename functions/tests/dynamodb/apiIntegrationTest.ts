@@ -15,7 +15,6 @@ function loadYAML(filename) {
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: 'test_id' }, config.custom.jwt.secret, { expiresIn: '1d' });
-// console.log(config.custom.jwt.secret);
 
 // const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
@@ -59,7 +58,7 @@ function editProject(data){
   const postOptions = {
     data,
     method: 'PUT',
-    url: hostAddr + '/project/edit',
+    url: hostAddr + '/project',
     headers: {
       Authorization: token,
     }

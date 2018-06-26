@@ -3,9 +3,9 @@ import Validator from './../../Validator';
 
 interface ProjectControllerInterface {
   create(data: any): ControllerHandlers;
-  getProjectCards(data: any): ControllerHandlers;
+  getCards(data: any): ControllerHandlers;
   getById(data: any): ControllerHandlers;
-  update(data: any): ControllerHandlers;
+  edit(data: any): ControllerHandlers;
   updateStatus(data: any): ControllerHandlers;
   upvote(data: any): ControllerHandlers;
   delete(data: any): ControllerHandlers;
@@ -33,7 +33,7 @@ export default class ProjectController implements ProjectControllerInterface {
     return { transform, terminate };
   }
 
-  getProjectCards(data: any) {
+  getCards(data: any) {
     const transform = (result: any) => {
       if (result.Items) {
         return {
@@ -41,33 +41,45 @@ export default class ProjectController implements ProjectControllerInterface {
           payload: result.Items,
         };
       }
-      return [404, { error: 'No project found' }];
+      return {
+        status: 404,
+        payload: { 'error': 'No project found' },
+      };
     };
     return { transform, terminate };
   }
 
   getById(data: any) {
+    console.log('#1');
     const { project_id } = data;
+    console.log('#2');
     const transform = (result: any) => {
+      console.log('Logging within transform >>>');
+      console.log(result);
+      console.log(result.Item);
       if (result.Item) {
         return {
           status: 200,
           payload: result.Item,
         };
       }
-      return [404, { error: 'Project not found' }];
+      return {
+        status: 404,
+        payload: { 'error': 'Project not found' },
+      };
     };
+    console.log('#3');
     return { transform, terminate };
   }
 
-  update(data: any) {
+  edit(data: any) {
     const { project_id } = data;
     const transform = (result: any) => {
       return {
         status: 200,
         payload: {
           project_id,
-          message: 'Project updated successfully',
+          message: 'Project edited successfully',
         },
       };
     };
@@ -81,7 +93,7 @@ export default class ProjectController implements ProjectControllerInterface {
         status: 200,
         payload: {
           project_id,
-          message: 'Project updated successfully',
+          message: 'Project status updated successfully',
         },
       };
     };
@@ -95,7 +107,7 @@ export default class ProjectController implements ProjectControllerInterface {
         status: 200,
         payload: {
           project_id,
-          message: 'Project status updated successfully',
+          message: 'Project upvoted successfully',
         },
       };
     };

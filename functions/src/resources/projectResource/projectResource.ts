@@ -1,19 +1,27 @@
 import * as _ from 'lodash';
 import DatabaseConnection from './../DatabaseConnection';
+import DatabaseAdapter from './../DatabaseAdapter';
 
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
 interface ProjectResourceInterface {
+  create(data: any): Promise<any>;
+  getCards(data: any): Promise<any>;
+  getById(data: any): Promise<any>;
+  edit(data: any): Promise<any>;
   updateStatus(data: any): Promise<any>;
   upvote(data: any): Promise<any>;
+  delete(data: any): Promise<any>;
 }
 
-export default class ProjectResource { // implements ProjectResourceInterface {
+export default class ProjectResource implements ProjectResourceInterface {
   private db: any;
+  private adapter: any;
 
   constructor(db: DatabaseConnection) {
     this.db = db.connect();
+    this.adapter = new DatabaseAdapter(db);
   }
 
   create(data: any): Promise<any> {
@@ -32,7 +40,7 @@ export default class ProjectResource { // implements ProjectResourceInterface {
     return this.db.put(params).promise();
   }
 
-  get(data: any): Promise<any> {
+  getCards(data: any): Promise<any> {
     const params = {
       TableName: PROJECTS_TABLE,
       IndexName: PROJECTS_INDEX,
@@ -58,7 +66,7 @@ export default class ProjectResource { // implements ProjectResourceInterface {
     return this.db.get(params).promise();
   }
 
-  update(data: any): Promise<any> {
+  edit(data: any): Promise<any> {
     const { project_id } = data;
     delete data['project_id'];
 
@@ -98,8 +106,7 @@ export default class ProjectResource { // implements ProjectResourceInterface {
   }
 
   upvote(data: any): Promise<any> {
-    // invoke DatabaseAdapter methods
-    return new Promise(() => {});
+    return this.adapter.add(PROJECTS_TABLE, data, 'upvotes', 1);
   }
 
   delete(data: any): Promise<any> {

@@ -101,11 +101,10 @@ export default class PackageService {
   }
 
   createController(Controller: any) {
-    console.log(Controller);
     return new Controller();
   }
 
-  createResource(Resource: string) {
+  createResource(Resource: any) {
     return new Resource(new DatabaseConnection());
   }
 
@@ -143,10 +142,22 @@ export default class PackageService {
     console.log('5');
 
     // handle last promise without chaining
+    console.log('Dataflows:');
+    console.log(this.dataFlows);
     const lastDataFlow = this.dataFlows[this.dataFlows.length - 1];
-    const { transform, terminate } = lastDataFlow.controller[lastDataFlow.controllerMethod]();
+    console.log('Created reference to lastDataFlow >>>');
+    console.log(lastDataFlow);
+    console.log('Checking data store >>>');
+    console.log(this.dataStore);
+    const { transform, terminate } = lastDataFlow.controller[lastDataFlow.controllerMethod](this.dataStore);
+    console.log('Log transform and terminate callbacks >>>');
+    console.log(transform);
+    console.log(terminate);
+
     chainedPromise
       .then((result: any) => {
+        console.log('Log result >>>');
+        console.log(result);
         resolve(transform(result));
       })
       .catch((error: Error) => {
@@ -157,11 +168,6 @@ export default class PackageService {
   }
 
   getPromise(data:any, dataFlow: DataFlow) {
-    console.log(data);
-    console.log(dataFlow.targetMethod);
-    console.log(dataFlow.target);
-    console.log('====================');
-    console.log(dataFlow.target.get);
     return dataFlow.target[dataFlow.targetMethod](data);
   }
 
@@ -183,11 +189,15 @@ export default class PackageService {
   chainPromise(promise: Promise<any>, thisDataFlow: DataFlow, nextDataFlow: DataFlow, resolve: any, reject: any, chained: boolean = true) {
     // dataStore contains all data accumulated since the first dataFlows
     // we pass it to the controller method to get whatever data it needs
+    console.log('CATCH ME >>>');
     const { transform, terminate } = thisDataFlow.controller[thisDataFlow.controllerMethod](this.dataStore);
+    console.log('CATCH ME AGAIN >>>');
 
     return promise
       .then((result: any) => {
         // store output from thisDataFlow to dataStore
+        console.log('DB Output >>>');
+        console.log(result);
         const output = transform(result);
         _.assign(this.dataStore, output);
 
@@ -199,6 +209,8 @@ export default class PackageService {
 
       })
       .catch((error: Error) => {
+        console.log('error >>>');
+        console.log(error);
         reject(terminate(error));
       });
   }
@@ -216,11 +228,13 @@ export default class PackageService {
       const dataFlowsPromise = new Promise(this.executeDataFlows);
       dataFlowsPromise
         .then(({ status, payload }) => {
-          console.log('hi');
+          console.log('promise executed');
           res.status(status).json(payload);
         })
         .catch(({ status, payload }) => {
+          console.log('status');
           console.log(status);
+          console.log('payload');
           console.log(payload);
           res.status(status).json(payload);
         });

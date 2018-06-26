@@ -8,9 +8,8 @@ const endpoint = new Endpoint('/projects/', 'get');
 
 const dataFlow = {
   controller: ProjectController,
-  method: 'getProjectCards',
+  method: 'getCards',
   target: ProjectResource,
-  methodMap: { getProjectCards: 'get' },
 }
 
 packageService.createEndpoint(endpoint);
