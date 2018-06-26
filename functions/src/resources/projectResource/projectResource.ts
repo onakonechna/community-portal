@@ -16,11 +16,9 @@ interface ProjectResourceInterface {
 }
 
 export default class ProjectResource implements ProjectResourceInterface {
-  private db: any;
   private adapter: any;
 
   constructor(db: DatabaseConnection) {
-    this.db = db.connect();
     this.adapter = new DatabaseAdapter(db);
   }
 
@@ -33,74 +31,34 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.updated = unixTimestamp;
     data.completed = 0;
 
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Item: data,
-    };
-    return this.db.put(params).promise();
+    return this.adapter.create(PROJECTS_TABLE, data);
   }
 
   getCards(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      IndexName: PROJECTS_INDEX,
-      KeyConditionExpression: '#status = :status',
-      ExpressionAttributeNames: {
-        '#status': 'status',
-      },
-      ExpressionAttributeValues: {
-        ':status': 'open',
-      },
-      ScanIndexForward: false
-    };
-    return this.db.query(params).promise();
+    return this.adapter.get(
+      PROJECTS_TABLE,
+      PROJECTS_INDEX,
+      '#status = :status',
+      { '#status': 'status' },
+      { ':status': 'open' },
+      false,
+    );
   }
 
   getById(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Key: data,
-    };
-    return this.db.get(params).promise();
+    return this.adapter.getById(PROJECTS_TABLE, data);
   }
 
   edit(data: any): Promise<any> {
     const { project_id } = data;
     delete data['project_id'];
 
-    let AttributeUpdates: any = {};
-
-    _.forOwn(data, (value: any, key: string) => {
-      AttributeUpdates[key] = {
-        Action: 'PUT',
-        Value: value
-      }
-    });
-
-    const params = {
-      AttributeUpdates,
-      TableName: PROJECTS_TABLE,
-      Key: {
-        project_id
-      },
-    };
-    return this.db.update(params).promise();
+    return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }
 
   updateStatus(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Key: {
-        project_id: data.project_id,
-      },
-      AttributeUpdates: {
-        status: {
-          Action: 'PUT',
-          Value: data.status,
-        },
-      },
-    };
-    return this.db.update(params).promise();
+    const { project_id, status } = data;
+    return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });
   }
 
   upvote(data: any): Promise<any> {
@@ -108,10 +66,6 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   delete(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Key: data,
-    };
-    return this.db.delete(params).promise();
+    return this.adapter.delete(PROJECTS_TABLE, data);
   }
 }

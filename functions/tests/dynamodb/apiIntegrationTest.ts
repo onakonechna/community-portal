@@ -17,8 +17,8 @@ const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: 'test_id' }, config.custom.jwt.secret, { expiresIn: '1d' });
 console.log(token);
 
-const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
-// const hostAddr = 'http://localhost:3000';
+// const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+const hostAddr = 'http://localhost:3000';
 
 function getProjectCards(){
   const getCardsOptions = {
