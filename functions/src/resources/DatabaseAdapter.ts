@@ -2,9 +2,11 @@ import { DynamoDB } from 'aws-sdk';
 
 import * as _ from 'lodash';
 import AdapterInterface from './AdapterInterface';
+import DatabaseConnection from './DatabaseConnection';
 
 export default class DatabaseAdapter implements AdapterInterface {
   private client: DynamoDB.DocumentClient;
+  private db: any;
 
   constructor(db: DatabaseConnection) {
     this.db = db.connect();
@@ -66,7 +68,7 @@ export default class DatabaseAdapter implements AdapterInterface {
   }
 
   add(tableName: string, identifier: any, field: string, increment: number): Promise<any> {
-    let AttributeUpdates = {};
+    let AttributeUpdates: any = {};
     AttributeUpdates[field] = {
       Action: 'ADD',
       Value: increment,
@@ -82,7 +84,7 @@ export default class DatabaseAdapter implements AdapterInterface {
 
   delete(tableName: string, identifier: any): Promise<any> {
     const params = {
-      TableName: PROJECTS_TABLE,
+      TableName: tableName,
       Key: identifier,
     };
     return this.db.delete(params).promise();

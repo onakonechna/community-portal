@@ -1,5 +1,3 @@
-import ResourceInterface from './ResourceInterface';
-
 export default class ResourceFactory {
   private config: any;
 
@@ -7,7 +5,7 @@ export default class ResourceFactory {
     this.config = config;
   }
 
-  create(type: string): ResourceInterface {
+  create(type: string) {
     const location = this.config[type];
     const resource = require(location);
 

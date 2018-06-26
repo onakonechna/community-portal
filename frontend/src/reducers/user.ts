@@ -1,11 +1,15 @@
 import { ActionTypes, TypeKeys } from '../actions';
 
-export default function user(state = [], action:ActionTypes) {
+const testUser = {
+  name: 'Mark',
+  role: 'user',
+};
+
+export default function user(state = testUser, action:ActionTypes) {
   switch (action.type) {
     case TypeKeys.ADD_USER:
       return action.users;
     default:
       return state;
   }
-
 }

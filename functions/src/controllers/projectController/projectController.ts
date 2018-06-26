@@ -1,17 +1,17 @@
 import { ControllerInterface, ControllerHandlers } from './../ControllerInterface';
-import Validator from './../Validator';
+import Validator from './../../Validator';
 
-interface ProjectControllerInterface extends ResourceInterface {
-  create(project_id: string): ControllerHandlers;
-  get(): ControllerHandlers;
-  getById(project_id: string): ControllerHandlers;
-  update(project_id: string): ControllerHandlers;
-  updateStatus(project_id: string): ControllerHandlers;
-  upvote(project_id: string): ControllerHandlers;
-  delete(project_id: string): ControllerHandlers;
+interface ProjectControllerInterface {
+  create(data: any): ControllerHandlers;
+  getProjectCards(data: any): ControllerHandlers;
+  getById(data: any): ControllerHandlers;
+  update(data: any): ControllerHandlers;
+  updateStatus(data: any): ControllerHandlers;
+  upvote(data: any): ControllerHandlers;
+  delete(data: any): ControllerHandlers;
 }
 
-const reject = (error: Error) => {
+const terminate = (error: Error) => {
   return {
     status: 400,
     payload: { error },
@@ -19,13 +19,9 @@ const reject = (error: Error) => {
 };
 
 export default class ProjectController implements ProjectControllerInterface {
-
-  constructor(validationMap: any) {
-    this.validationMap = validationMap;
-  }
-
-  create(project_id: string) {
-    const resolve = (result: any) => {
+  create(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       return {
         status: 200,
         payload: {
@@ -34,11 +30,11 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  get() {
-    const resolve = (result: any) => {
+  getProjectCards(data: any) {
+    const transform = (result: any) => {
       if (result.Items) {
         return {
           status: 200,
@@ -47,11 +43,12 @@ export default class ProjectController implements ProjectControllerInterface {
       }
       return [404, { error: 'No project found' }];
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  getById() {
-    const resolve = (result: any) => {
+  getById(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       if (result.Item) {
         return {
           status: 200,
@@ -60,11 +57,12 @@ export default class ProjectController implements ProjectControllerInterface {
       }
       return [404, { error: 'Project not found' }];
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  update(project_id: string) {
-    const resolve = (result: any) => {
+  update(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       return {
         status: 200,
         payload: {
@@ -73,11 +71,12 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  updateStatus(project_id: string) {
-    const resolve = (result: any) => {
+  updateStatus(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       return {
         status: 200,
         payload: {
@@ -86,11 +85,12 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  upvote(project_id: string) {
-    const resolve = (result: any) => {
+  upvote(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       return {
         status: 200,
         payload: {
@@ -99,11 +99,12 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 
-  delete(project_id: string) {
-    const resolve = (result: any) => {
+  delete(data: any) {
+    const { project_id } = data;
+    const transform = (result: any) => {
       return {
         status: 200,
         payload: {
@@ -112,6 +113,6 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { resolve, reject };
+    return { transform, terminate };
   }
 }

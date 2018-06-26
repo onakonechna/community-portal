@@ -12,8 +12,9 @@ function* entries(obj: any) {
 }
 
 function getMethods(obj: any) {
-  const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
-  return _.remove(methods, (name: string) => { name === 'constructor' });
+  let methods = Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
+  _.remove(methods, (name: string) => { return name === 'constructor' });
+  return methods;
 }
 
 export {

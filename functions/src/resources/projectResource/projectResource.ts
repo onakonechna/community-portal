@@ -1,16 +1,16 @@
 import * as _ from 'lodash';
 import DatabaseConnection from './../DatabaseConnection';
-import ResourceInterface from './../ResourceInterface';
 
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
-interface ProjectResourceInterface extends ResourceInterface {
+interface ProjectResourceInterface {
   updateStatus(data: any): Promise<any>;
   upvote(data: any): Promise<any>;
 }
 
-export default class ProjectResource implements ProjectResourceInterface {
+export default class ProjectResource { // implements ProjectResourceInterface {
+  private db: any;
 
   constructor(db: DatabaseConnection) {
     this.db = db.connect();
@@ -45,6 +45,8 @@ export default class ProjectResource implements ProjectResourceInterface {
       },
       ScanIndexForward: false
     };
+    console.log('yo');
+    console.log(this.db);
     return this.db.query(params).promise();
   }
 
@@ -96,17 +98,7 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   upvote(data: any): Promise<any> {
-    const params = {
-      TableName: PROJECTS_TABLE,
-      Key: data,
-      AttributeUpdates: {
-        upvotes: {
-          Action: 'ADD',
-          Value: 1,
-        },
-      },
-    };
-    return this.db.update(params).promise();
+    // invoke DatabaseAdapter methods
   }
 
   delete(data: any): Promise<any> {
