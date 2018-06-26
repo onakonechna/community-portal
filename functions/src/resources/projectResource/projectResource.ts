@@ -53,8 +53,6 @@ export default class ProjectResource implements ProjectResourceInterface {
       },
       ScanIndexForward: false
     };
-    console.log('yo');
-    console.log(this.db);
     return this.db.query(params).promise();
   }
 

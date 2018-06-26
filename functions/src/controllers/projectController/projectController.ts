@@ -50,13 +50,8 @@ export default class ProjectController implements ProjectControllerInterface {
   }
 
   getById(data: any) {
-    console.log('#1');
     const { project_id } = data;
-    console.log('#2');
     const transform = (result: any) => {
-      console.log('Logging within transform >>>');
-      console.log(result);
-      console.log(result.Item);
       if (result.Item) {
         return {
           status: 200,
@@ -68,7 +63,6 @@ export default class ProjectController implements ProjectControllerInterface {
         payload: { 'error': 'Project not found' },
       };
     };
-    console.log('#3');
     return { transform, terminate };
   }
 
