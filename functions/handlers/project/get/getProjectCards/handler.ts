@@ -1,23 +1,19 @@
 import PackageService from './../../../../src/services/PackageService';
 import Endpoint from './../../../../src/Endpoint';
 
+import { ProjectController, ProjectResource } from './../../../../config/components';
+
 const packageService = new PackageService();
 const endpoint = new Endpoint('/projects/', 'get');
 
 const dataFlow = {
-  controller: 'ProjectController',
+  controller: ProjectController,
   method: 'getProjectCards',
-  target: 'ProjectResource',
-  targetType: 'resource',
+  target: ProjectResource,
   methodMap: { getProjectCards: 'get' },
 }
 
 packageService.createEndpoint(endpoint);
-packageService.addDataFlows([dataFlow]);
+packageService.addDataFlow(dataFlow);
 const handler = packageService.package();
 export { handler };
-
-
-// import EndpointMaker from './../../../../src/EndpointMaker';
-// const handler = new EndpointMaker().make('getProjectCards');
-// export { handler };

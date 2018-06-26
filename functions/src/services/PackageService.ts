@@ -19,13 +19,12 @@ import Validator from './../Validator';
 // (check the naming in the object returned by resolve for each controller method)
 
 interface DataFlowDefinition {
-  controller: string; // compulsory
-  method: string; // compulsory
-  target: string; // compulsory: resource (expand to include Github APIs in the future)
-  targetType: string; // compulsory: resource or webEndpoint
-  dataDependencies?: string[]; // optional
-  validationMap?: any; // optional
-  methodMap?: any; // optional: a map of methods on controller to methods on target
+  controller: any; // class to instantiate from
+  method: string;
+  target: any; // class to instantiate from (resource for now)
+  dataDependencies?: string[];
+  validationMap?: any;
+  methodMap?: any; // a map of methods on controller to methods on target
 }
 
 interface DataFlow {
@@ -46,18 +45,7 @@ export default class PackageService {
   private initialData: any;
   private endpoint: Endpoint;
 
-  constructor(controllerMap?: any, resourceMap?: any, webEndpointMap?: any) {
-    if (controllerMap !== undefined) {
-      this.controllerMap = controllerMap;
-    } else {
-      this.controllerMap = JSON.parse(fs.readFileSync('config/controllerMap.json', 'utf8'));
-    }
-    if (resourceMap !== undefined) {
-      this.resourceMap = resourceMap;
-    } else {
-      this.resourceMap = JSON.parse(fs.readFileSync('config/resourceMap.json', 'utf8'));
-    }
-    this.webEndpointMap = webEndpointMap;
+  constructor() {
     this.dataFlows = [];
     this.dataStore = {};
 
@@ -68,17 +56,10 @@ export default class PackageService {
     this.endpoint = endpoint;
   }
 
-  async addDataFlow(dataFlowDefinition: DataFlowDefinition) {
-    // create controller via asynchronous import
-    const controller = await this.createController(dataFlowDefinition.controller);
-
-    // create resource via asynchronous import
-    let target: any;
-    if (dataFlowDefinition.targetType === 'resource') {
-      target = await this.createResource(dataFlowDefinition.target);
-    } else {
-      throw 'error: only resource and webEndpoint types are allowed (webEndpoint type not implemented yet)';
-    }
+  addDataFlow(dataFlowDefinition: DataFlowDefinition) {
+    console.log(dataFlowDefinition);
+    const controller = this.createController(dataFlowDefinition.controller);
+    const target = this.createResource(dataFlowDefinition.target);
 
     // by default, the targetMethod has the same name as the controllerMethod
     // if methodMap is not provided
@@ -113,22 +94,19 @@ export default class PackageService {
     this.dataFlows.push(dataFlow);
   }
 
-  async addDataFlows(dataFlowDefinitions: DataFlowDefinition[]) {
+  addDataFlows(dataFlowDefinitions: DataFlowDefinition[]) {
     for (let i = 0; i < dataFlowDefinitions.length; i++) {
-      await this.addDataFlow(dataFlowDefinitions[i]);
+      this.addDataFlow(dataFlowDefinitions[i]);
     }
   }
 
-  async createController(controller: string) {
-    let controllerPath = this.controllerMap[controller];
-    const Controller = await import(`./../../${controllerPath}.ts`);
-    return new Controller.default();
+  createController(Controller: any) {
+    console.log(Controller);
+    return new Controller();
   }
 
-  async createResource(resource: string) {
-    let resourcePath = this.resourceMap[resource];
-    const Resource = await import(`./../../${resourcePath}.ts`);
-    return new Resource.default(new DatabaseConnection());
+  createResource(Resource: string) {
+    return new Resource(new DatabaseConnection());
   }
 
   executeDataFlows(resolve: any, reject: any) {
