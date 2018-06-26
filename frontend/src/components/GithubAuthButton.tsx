@@ -13,6 +13,7 @@ interface GithubAuthButtonProps {
   children?: any;
   onRequest?: any;
   user?: any;
+  updateUserRole?: any;
 }
 
 const withLogin = (WrappedCompoent: any) => {
@@ -53,11 +54,16 @@ const withLogin = (WrappedCompoent: any) => {
       if (!code) {
         return this.onFailure(new Error('\'code\' not found'));
       }
-      this.props.onSuccess(code);
+      this.props.onSuccess(code)
+        .then((res:any) => console.log(res))
+        .catch((err: Error) => console.error(err));
+      this.props.updateUserRole(this.props.user.user_id, 'user');
     }
 
     onFailure(error: Error) {
-      this.props.onFailure(error);
+      this.props.onFailure(error)
+        .then((err:Error) => console.log(err))
+        .then(() => this.props.updateUserRole(this.props.user.user_id, 'guest'));
     }
 
     render() {

@@ -13,34 +13,31 @@ import { API } from './../api/config';
 
 // callbacks for GithubAuthButton
 export const onSuccess = (response: any) => {
-  axios.post(`${API}/authorize`, { code: response })
-    .then((data: any) => {
-      console.log(data);
-    });
+  return axios.post(`${API}/authorize`, { code: response });
 };
 export const onFailure = (response: any) => console.error(response);
 
 const Login = withLogin(LoginButton);
 
 const headBar = () => (
-    <div>
-        <AppBar position="static" color="primary">
-            <Toolbar>
-            <IconButton color="inherit" aria-label="Menu">
-                <MenuIcon />
-            </IconButton>
-            <Typography color="inherit" >
-                Magento Opensource
+  <div>
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <IconButton color="inherit" aria-label="Menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography color="inherit" >
+          Magento Opensource
             </Typography>
-            <Login
-              clientId="668e0b6c450cc783f267" // Github auth application client_id
-              scope="" // Github permission scopes
-              redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
-              onSuccess={onSuccess}
-              onFailure={onFailure} />
-            </Toolbar>
-        </AppBar>
-    </div>
+        <Login
+          clientId="668e0b6c450cc783f267" // Github auth application client_id
+          scope="" // Github permission scopes
+          redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
+          onSuccess={onSuccess}
+          onFailure={onFailure} />
+      </Toolbar>
+    </AppBar>
+  </div>
 
 );
 

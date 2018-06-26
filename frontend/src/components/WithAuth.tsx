@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import GithubAuthButton from './GithubAuthButton';
 import { onSuccess, onFailure } from './HeadBar';
+import { UpdateUserRoleAction } from '../actions';
 
 interface WithAuthProps {
   user?: any;
@@ -12,9 +13,17 @@ interface WithAuthProps {
   label?: string;
 }
 
+interface WithAuthStateProps {
+  user?: any;
+}
+
+interface WithAuthDispatchProps {
+  updateUserRole?: any;
+}
+
 const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
   const Login = GithubAuthButton(WrappedComponent);
-  class WithAuth extends React.Component<WithAuthProps, {}> {
+  class WithAuth extends React.Component<WithAuthProps & WithAuthStateProps & WithAuthDispatchProps, {}> {
     constructor(props: WithAuthProps) {
       super(props);
     }
@@ -30,6 +39,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         onSuccess={onSuccess}
         onFailure={onFailure}
         user={this.props.user}
+        updateUserRole={this.props.updateUserRole}
       />;
     }
   }
@@ -38,7 +48,14 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
       user: state.user,
     };
   };
-  return connect(mapStateToProps, null)(WithAuth);
+
+  const mapDispatchToProps = (dispatch: any) => {
+    return {
+      updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
+    };
+  };
+
+  return connect<WithAuthStateProps, WithAuthDispatchProps, WithAuthProps>(mapStateToProps, mapDispatchToProps)(WithAuth);
 };
 
 export default Authorization;
