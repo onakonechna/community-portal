@@ -50,6 +50,10 @@ const withLogin = (WrappedCompoent: any) => {
       );
     }
 
+    saveToken(token: string) {
+      localStorage.setItem('oAuth', JSON.stringify(token));
+    }
+
     onSuccess(code: string) {
       if (!code) {
         return this.onFailure(new Error('\'code\' not found'));
