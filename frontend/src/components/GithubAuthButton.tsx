@@ -21,6 +21,7 @@ const withLogin = (WrappedCompoent: any) => {
     constructor(props: GithubAuthButtonProps) {
       super(props);
       this.handleLogin = this.handleLogin.bind(this);
+      this.handleLogout = this.handleLogout.bind(this);
     }
     public static defaultProps: Partial<GithubAuthButtonProps> = {
       buttonText: 'LOGIN',
@@ -50,6 +51,11 @@ const withLogin = (WrappedCompoent: any) => {
       );
     }
 
+    handleLogout() {
+      this.props.updateUserRole(this.props.user.user_id, 'guest');
+      localStorage.removeItem('oAuth');
+    }
+
     saveToken(token: string) {
       localStorage.setItem('oAuth', JSON.stringify(token));
     }
@@ -60,6 +66,7 @@ const withLogin = (WrappedCompoent: any) => {
       }
       this.props.onSuccess(code)
         .then((res:any) => {
+          console.log(res);
           this.saveToken(res.data.token);
           this.props.updateUserRole(this.props.user.user_id, 'user');
         })
@@ -73,7 +80,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     render() {
-      return <WrappedCompoent handler={this.handleLogin} {...this.props} />;
+      return <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />;
     }
   }
   return GithubAuthButton;

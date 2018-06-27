@@ -11,6 +11,11 @@ interface WithAuthProps {
   upvotes?: number;
   project_id?: string;
   label?: string;
+  clientId?: string;
+  scope?: string;
+  redirectUri?: string;
+  onSuccess?: any;
+  onFailure?: any;
 }
 
 interface WithAuthStateProps {
