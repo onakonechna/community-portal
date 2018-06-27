@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import { orange, red } from '@material-ui/core/colors';
+// import { orange, red, grey } from '@material-ui/core/colors';
 
 import App from './App';
 import './index.css';
@@ -31,8 +31,15 @@ import registerServiceWorker from './registerServiceWorker';
 
 const theme = createMuiTheme({
   palette: {
-    primary: orange,
-    secondary: red,
+    primary: {
+      light: '#0066ff',
+      main: '#FFA500',
+      contrastText: '#ffcc00',
+    },
+    secondary: {
+      light: '#FFFFFF',
+      main: '#F2F3F3',
+    },
   },
 });
 

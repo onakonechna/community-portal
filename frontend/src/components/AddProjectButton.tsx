@@ -3,7 +3,6 @@ import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import Add from '@material-ui/icons/Add';
 
 interface IProps {
   classes: any;
@@ -12,7 +11,8 @@ interface IProps {
 
 const styles = {
   button: {
-    margin: 'auto, 20px, auto, 20px',
+    width: '150px',
+    float: 'right' as 'right',
   },
 };
 
@@ -21,11 +21,14 @@ function addProjectButton(props: IProps) {
   return (
     <div>
       <Button
-        color="primary"
+        style={{
+          backgroundColor: '#F16321',
+        }}
+        color="secondary"
         aria-label="add"
         onClick={props.onClick}
         className={classes.button}>
-        <Add />
+        New Project
       </Button>
     </div>
   );
