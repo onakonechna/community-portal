@@ -1,27 +1,19 @@
-import { ControllerInterface, ControllerHandlers } from './../ControllerInterface';
-import Validator from './../../Validator';
-
 interface ProjectControllerInterface {
-  create(data: any): ControllerHandlers;
-  getCards(data: any): ControllerHandlers;
-  getById(data: any): ControllerHandlers;
-  edit(data: any): ControllerHandlers;
-  updateStatus(data: any): ControllerHandlers;
-  upvote(data: any): ControllerHandlers;
-  delete(data: any): ControllerHandlers;
+  create(data: any): (result: any) => any;
+  getCards(data: any): (result: any) => any;
+  getById(data: any): (result: any) => any;
+  edit(data: any): (result: any) => any;
+  updateStatus(data: any): (result: any) => any;
+  upvote(data: any): (result: any) => any;
+  downvote(data: any): (result: any) => any;
+  delete(data: any): (result: any) => any;
+  addSubscriber(data: any): (result: any) => any;
 }
-
-const terminate = (error: Error) => {
-  return {
-    status: 400,
-    payload: { error },
-  }
-};
 
 export default class ProjectController implements ProjectControllerInterface {
   create(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       return {
         status: 200,
         payload: {
@@ -30,11 +22,10 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { transform, terminate };
   }
 
   getCards(data: any) {
-    const transform = (result: any) => {
+    return (result: any) => {
       if (result.Items) {
         return {
           status: 200,
@@ -46,12 +37,11 @@ export default class ProjectController implements ProjectControllerInterface {
         payload: { 'error': 'No project found' },
       };
     };
-    return { transform, terminate };
   }
 
   getById(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       if (result.Item) {
         return {
           status: 200,
@@ -63,12 +53,11 @@ export default class ProjectController implements ProjectControllerInterface {
         payload: { 'error': 'Project not found' },
       };
     };
-    return { transform, terminate };
   }
 
   edit(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       return {
         status: 200,
         payload: {
@@ -77,12 +66,11 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { transform, terminate };
   }
 
   updateStatus(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       return {
         status: 200,
         payload: {
@@ -91,12 +79,11 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { transform, terminate };
   }
 
   upvote(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       return {
         status: 200,
         payload: {
@@ -105,12 +92,24 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { transform, terminate };
+  }
+
+  downvote(data: any) {
+    const { project_id } = data;
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          project_id,
+          message: 'Project downvoted successfully',
+        },
+      };
+    };
   }
 
   delete(data: any) {
     const { project_id } = data;
-    const transform = (result: any) => {
+    return (result: any) => {
       return {
         status: 200,
         payload: {
@@ -119,6 +118,13 @@ export default class ProjectController implements ProjectControllerInterface {
         },
       };
     };
-    return { transform, terminate };
+  }
+
+  addSubscriber(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  removeSubscriber(data: any) {
+    return (result: any) => { return {}; };
   }
 }

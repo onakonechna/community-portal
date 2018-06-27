@@ -1,37 +1,52 @@
-import { DynamoDB } from 'aws-sdk';
-const dynamoDb = new DynamoDB.DocumentClient({
-  region: 'us-east-1',
-});
+import * as _ from 'lodash';
+import DatabaseConnection from './../DatabaseConnection';
+import DatabaseAdapter from './../DatabaseAdapter';
 
-class User {
+const USERS_TABLE = process.env.USERS_TABLE;
+const USERS_INDEX = process.env.USERS_INDEX;
 
-  createUser(
-    token:string,
-    user_id:string,
-    name:string,
-    email:string,
-    company:string,
-    avatar_url:string,
-    location:string,
-    html_url:string,
-    url:string,
-  ) {
-    const data = { token, name, email, company, avatar_url, location, html_url, url, user_id };
-    const params = {
-      TableName: 'users',
-      Item: data,
-    };
-
-    return new Promise((resolve:any, reject:any) => {
-      dynamoDb.put(params, (error:any) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
+interface UserResourceInterface {
+  create(data: any): Promise<any>;
+  getById(data: any): Promise<any>;
+  update(data: any): Promise<any>;
+  addUpvotedProject(data: any): Promise<any>;
+  removeUpvotedProject(data: any): Promise<any>;
+  delete(data: any): Promise<any>;
 }
 
-module.exports = User;
+export default class UserResource implements UserResourceInterface {
+  private adapter: any;
+
+  constructor(db: DatabaseConnection) {
+    this.adapter = new DatabaseAdapter(db);
+  }
+
+  create(data: any): Promise<any> {
+    return this.adapter.create(USERS_TABLE, data);
+  }
+
+  getById(data: any): Promise<any> {
+    return this.adapter.getById(USERS_TABLE, data);
+  }
+
+  update(data: any): Promise<any> {
+    const { user_id } = data;
+    delete data['user_id'];
+
+    return this.adapter.update(USERS_TABLE, { user_id }, data);
+  }
+
+  addUpvotedProject(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+    return this.adapter.addToSet(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+  }
+
+  removeUpvotedProject(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+    return this.adapter.removeFromSet(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+  }
+
+  delete(data: any): Promise<any> {
+    return this.adapter.delete(USERS_TABLE, data);
+  }
+}

@@ -11,6 +11,8 @@ interface ProjectResourceInterface {
   getById(data: any): Promise<any>;
   edit(data: any): Promise<any>;
   updateStatus(data: any): Promise<any>;
+  addSubscriber(data: any): Promise<any>;
+  removeSubscriber(data: any): Promise<any>;
   upvote(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
@@ -61,8 +63,22 @@ export default class ProjectResource implements ProjectResourceInterface {
     return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });
   }
 
+  addSubscriber(data: any): Promise<any> {
+    const { project_id, user_id } = data;
+    return this.adapter.addToSet(PROJECTS_TABLE, { project_id }, 'subscribers', user_id);
+  }
+
+  removeSubscriber(data: any): Promise<any> {
+    const { project_id, user_id } = data;
+    return this.adapter.removeFromSet(PROJECTS_TABLE, { project_id }, 'subscribers', user_id);
+  }
+
   upvote(data: any): Promise<any> {
     return this.adapter.add(PROJECTS_TABLE, data, 'upvotes', 1);
+  }
+
+  downvote(data: any): Promise<any> {
+    return this.adapter.add(PROJECTS_TABLE, data, 'upvotes', -1);
   }
 
   delete(data: any): Promise<any> {

@@ -1,4 +1,4 @@
-likeProjectRole:
+unlikeProjectRole:
   Type: AWS::IAM::Role
   Properties:
     AssumeRolePolicyDocument:
@@ -10,7 +10,7 @@ likeProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: likeProjectRole
+      - PolicyName: unlikeProjectRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
