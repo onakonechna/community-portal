@@ -5,7 +5,7 @@ import { ProjectController, ProjectResource } from './../../../../config/compone
 import { UserController, UserResource } from './../../../../config/components';
 
 const packageService = new PackageService();
-const endpoint = new Endpoint('/user/likeProject', 'post');
+const endpoint = new Endpoint('/user/unlikeProject', 'post');
 
 // need to specify data dependencies for the first dataFlow
 // in order to retrieve user_id from authorization context
@@ -13,20 +13,20 @@ const endpoint = new Endpoint('/user/likeProject', 'post');
 const dataFlows = [
   {
     controller: UserController,
-    method: 'addUpvotedProject',
+    method: 'removeUpvotedProject',
     target: UserResource,
-    validationMap: { addUpvotedProject: 'projectIdOnlySchema' },
+    validationMap: { removeUpvotedProject: 'projectIdOnlySchema' },
     dataDependencies: ['project_id', 'user_id'],
   },
   {
     controller: ProjectController,
-    method: 'addSubscriber',
+    method: 'removeSubscriber',
     target: ProjectResource,
     dataDependencies: ['project_id', 'user_id'],
   },
   {
     controller: ProjectController,
-    method: 'upvote',
+    method: 'downvote',
     target: ProjectResource,
     dataDependencies: ['project_id'],
   },

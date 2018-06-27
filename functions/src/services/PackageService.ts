@@ -1,11 +1,19 @@
 import * as _ from 'lodash';
 import * as path from 'path';
-import * as express from 'express';
 import * as fs from 'fs';
+
+import { Request, Response } from './../../config/types';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
 import Endpoint from './../Endpoint';
 import Validator from './../Validator';
+
+const terminate = (error: Error) => {
+  return {
+    status: 400,
+    payload: { error },
+  }
+};
 
 // dataDependencies:
 // a list of retrieved data fields returned by
@@ -18,6 +26,8 @@ import Validator from './../Validator';
 // (make sure that they do not overwrite each other)
 // (check the naming in the object returned by resolve for each controller method)
 
+// storageSpecs: store all output specified by the transform function of controller by default
+
 interface DataFlowDefinition {
   controller: any; // class to instantiate from
   method: string;
@@ -25,6 +35,7 @@ interface DataFlowDefinition {
   dataDependencies?: string[];
   validationMap?: any;
   methodMap?: any; // a map of methods on controller to methods on target
+  storageSpecs?: string[]; // a list of output names to store to intermediary data store
 }
 
 interface DataFlow {
@@ -34,6 +45,7 @@ interface DataFlow {
   validator: Validator;
   target: any;
   targetMethod: string;
+  storageSpecs: string[];
 }
 
 export default class PackageService {
@@ -43,6 +55,7 @@ export default class PackageService {
   private dataFlows: DataFlow[];
   private dataStore: any;
   private initialData: any;
+  private tokenContents: any;
   private endpoint: Endpoint;
 
   constructor() {
@@ -81,6 +94,9 @@ export default class PackageService {
       validator = new Validator(dataFlowDefinition.validationMap[controllerMethod]);
     }
 
+    // get storageSpecs
+    const { storageSpecs } = dataFlowDefinition;
+
     const dataFlow = {
       dataDependencies,
       controller,
@@ -88,6 +104,7 @@ export default class PackageService {
       validator,
       target,
       targetMethod,
+      storageSpecs,
     }
 
     this.dataFlows.push(dataFlow);
@@ -117,6 +134,13 @@ export default class PackageService {
 
     this.validate(this.dataFlows[0], this.initialData, resolve, reject);
 
+    // at this point, initial data only contains req.body or req.params
+    // we check if dataDependencies for the first data flow is specified
+    // and try to retrieve additional data from tokenContents if specified
+    // note that initial data may be pruned if dataDependencies is a subset of initial data
+    // and tokenContents data will overwrite initialData if the field name is not unique
+    this.extractInitialDataDependencies();
+
     // store initialData in dataStore
     _.assign(this.dataStore, this.initialData);
 
@@ -133,11 +157,10 @@ export default class PackageService {
 
     // handle last promise without chaining
     const lastDataFlow = this.dataFlows[this.dataFlows.length - 1];
-    const { transform, terminate } = lastDataFlow.controller[lastDataFlow.controllerMethod](this.dataStore);
 
     chainedPromise
       .then((result: any) => {
-        resolve(transform(result));
+        resolve(this.transform(lastDataFlow)(result));
       })
       .catch((error: Error) => {
         reject(terminate(error));
@@ -163,16 +186,28 @@ export default class PackageService {
     if (!valid) reject(validator.getErrorResponse());
   }
 
+  extractInitialDataDependencies() {
+    if (this.dataFlows[0].dataDependencies !== undefined
+      && typeof this.dataFlows[0].dataDependencies.length == 'number'
+      && this.dataFlows[0].dataDependencies.length > 0
+    ) {
+      const prunedData = _.pick(this.initialData, this.dataFlows[0].dataDependencies);
+      const authorizerData = _.pick(this.tokenContents, this.dataFlows[0].dataDependencies);
+      this.initialData = _.assign(prunedData, authorizerData);
+    }
+  }
+
   chainPromise(promise: Promise<any>, thisDataFlow: DataFlow, nextDataFlow: DataFlow, resolve: any, reject: any, chained: boolean = true) {
-    // dataStore contains all data accumulated since the first dataFlows
-    // we pass it to the controller method to get whatever data it needs
-    const { transform, terminate } = thisDataFlow.controller[thisDataFlow.controllerMethod](this.dataStore);
+    const { storageSpecs } = thisDataFlow;
 
     return promise
       .then((result: any) => {
-        // store output from thisDataFlow to dataStore
-        const output = transform(result);
-        _.assign(this.dataStore, output);
+        // store output from thisDataFlow to dataStore if storageSpecs is specified
+        let output = this.transform(thisDataFlow)(result);
+        if (storageSpecs !== undefined) {
+          output = _.pick(output, storageSpecs);
+          _.assign(this.dataStore, output);
+        }
 
         // obtain data fields for nextDataFlow
         const data = this.pickData(nextDataFlow);
@@ -181,21 +216,27 @@ export default class PackageService {
         return this.getPromise(data, nextDataFlow);
 
       })
-      .catch((error: Error) => {
-        reject(terminate(error));
-      });
+  }
+
+  // dataStore contains all data accumulated since the first dataFlows
+  // we pass it to the controller method to get whatever data it needs
+  transform(dataFlow: DataFlow){
+    return dataFlow.controller[dataFlow.controllerMethod](this.dataStore);
   }
 
   package() {
     if (this.endpoint === undefined) {
       throw 'An endpoint must be specified';
     }
-    this.endpoint.configure((req: express.Request, res: express.Response) => {
+    this.endpoint.configure((req: Request, res: Response) => {
       if (this.endpoint.getMethod() === 'get') {
         this.initialData = req.params;
       } else {
         this.initialData = req.body;
       }
+      // append data from authorization context
+      this.tokenContents = req.tokenContents;
+
       const dataFlowsPromise = new Promise(this.executeDataFlows);
       dataFlowsPromise
         .then(({ status, payload }) => {

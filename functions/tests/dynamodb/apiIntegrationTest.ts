@@ -15,7 +15,6 @@ function loadYAML(filename) {
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: 'test_id' }, config.custom.jwt.secret, { expiresIn: '1d' });
-console.log(token);
 
 // const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
@@ -72,6 +71,9 @@ function likeProject(project_id){
     method: 'POST',
     url: hostAddr +  '/user/likeProject',
     data: { project_id },
+    headers: {
+      Authorization: token,
+    }
   };
 
   return axios(likeProjectOptions);
@@ -150,7 +152,6 @@ describe('editProject endpoint', () => {
 
     return editProject(test21EditData)
       .then((response) => {
-        console.log(response.data);
         expect(response.data.message).toBe('Project edited successfully');
       })
       .catch((error) => {
