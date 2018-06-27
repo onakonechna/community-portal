@@ -14,7 +14,22 @@ interface GithubAuthButtonProps {
   onRequest?: any;
   user?: any;
   updateUserRole?: any;
+  loadUser?: any;
 }
+
+export interface User {
+  user_id?: string;
+  name?: string;
+  company?: string;
+  avatar_url?: string;
+}
+
+const defaultUser = {
+  user_id: '',
+  name: '',
+  company: '',
+  avatar_url: '',
+};
 
 const withLogin = (WrappedCompoent: any) => {
   class GithubAuthButton extends React.Component<GithubAuthButtonProps, {}> {
@@ -52,8 +67,9 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleLogout() {
-      this.props.updateUserRole(this.props.user.user_id, 'guest');
       localStorage.removeItem('oAuth');
+      this.props.loadUser(defaultUser);
+      this.props.updateUserRole(this.props.user.user_id, 'guest');
     }
 
     decodeToken(token: string) {
@@ -69,8 +85,6 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     saveToken(token: string) {
-      const user = this.decodeToken(token);
-      console.log(user);
       localStorage.setItem('oAuth', JSON.stringify(token));
     }
 
@@ -80,7 +94,10 @@ const withLogin = (WrappedCompoent: any) => {
       }
       this.props.onSuccess(code)
         .then((res:any) => {
-          this.saveToken(res.data.token);
+          const token = res.data.token;
+          this.saveToken(token);
+          const user = this.decodeToken(token);
+          this.props.loadUser(user);
           this.props.updateUserRole(this.props.user.user_id, 'user');
         })
         .catch((err: Error) => console.error(err));

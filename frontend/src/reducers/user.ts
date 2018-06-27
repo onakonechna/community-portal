@@ -10,7 +10,7 @@ const testUser = {
 export default function user(state = testUser, action:ActionTypes) {
   switch (action.type) {
     case TypeKeys.LOAD_USER:
-      return action.user;
+      return Object.assign({}, state, action.user);
     case TypeKeys.UPDATE_USER_ROLE:
       return Object.assign({}, state, {
         role: action.role,

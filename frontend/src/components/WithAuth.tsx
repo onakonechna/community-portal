@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import GithubAuthButton from './GithubAuthButton';
+import { connect, Dispatch } from 'react-redux';
+import GithubAuthButton, { User }from './GithubAuthButton';
 import { onSuccess, onFailure } from './HeadBar';
-import { UpdateUserRoleAction } from '../actions';
+import { LoadUserAction, UpdateUserRoleAction } from '../actions';
 
 interface WithAuthProps {
   user?: any;
@@ -23,6 +23,7 @@ interface WithAuthStateProps {
 }
 
 interface WithAuthDispatchProps {
+  loadUser?: any;
   updateUserRole?: any;
 }
 
@@ -44,6 +45,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         onSuccess={onSuccess}
         onFailure={onFailure}
         user={this.props.user}
+        loadUser={this.props.loadUser}
         updateUserRole={this.props.updateUserRole}
       />;
     }
@@ -54,8 +56,9 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
     };
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
+      loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
     };
   };

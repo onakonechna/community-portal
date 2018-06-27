@@ -119,6 +119,13 @@ export const projectsLoaded = (projects: {}) => {
   };
 };
 
+export const LoadUserAction = (user: {}) => {
+  return {
+    user,
+    type: TypeKeys.LOAD_USER,
+  };
+};
+
 export const UpdateUserRoleAction = (user_id: string, role: string) => {
   return {
     role,

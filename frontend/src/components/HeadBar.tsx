@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import LoginButton from './buttons/LoginButton';
+import UserAvatar from './UserAvatar';
 import withAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
 import { API } from './../api/config';
@@ -19,6 +20,7 @@ export const onSuccess = (response: string) => {
 export const onFailure = (response: string) => console.error(response);
 
 const Login = withAuth(['guest'])(withLogin(LoginButton));
+const Avatar = withAuth(['user'])(UserAvatar);
 
 const HeadBar = () => (
   <AppBar position="static" color="primary">
@@ -36,6 +38,7 @@ const HeadBar = () => (
         onSuccess={onSuccess}
         onFailure={onFailure}
       />
+      <Avatar />
     </Toolbar>
   </AppBar>
 );
