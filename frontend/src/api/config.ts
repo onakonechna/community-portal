@@ -1,6 +1,6 @@
 export const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 
-const token = JSON.parse(localStorage.getItem('oAuth') || 'unauthorized');
+const token: any = JSON.parse(localStorage.getItem('oAuth') || '{}');
 
 export const headers = {
   mode: <RequestMode>'cors',

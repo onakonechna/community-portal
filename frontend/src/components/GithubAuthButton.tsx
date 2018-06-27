@@ -56,7 +56,21 @@ const withLogin = (WrappedCompoent: any) => {
       localStorage.removeItem('oAuth');
     }
 
+    decodeToken(token: string) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      const decoded = JSON.parse(window.atob(base64));
+      return {
+        user_id: decoded.user_id,
+        name: decoded.name,
+        company: decoded.company,
+        avatar_url: decoded.avatar_url,
+      };
+    }
+
     saveToken(token: string) {
+      const user = this.decodeToken(token);
+      console.log(user);
       localStorage.setItem('oAuth', JSON.stringify(token));
     }
 
@@ -66,7 +80,6 @@ const withLogin = (WrappedCompoent: any) => {
       }
       this.props.onSuccess(code)
         .then((res:any) => {
-          console.log(res);
           this.saveToken(res.data.token);
           this.props.updateUserRole(this.props.user.user_id, 'user');
         })
