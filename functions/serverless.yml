@@ -14,8 +14,6 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
-      - updateProjectStatus
-      - likeProject
 
 provider:
   name: aws

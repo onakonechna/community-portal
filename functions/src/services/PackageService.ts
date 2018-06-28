@@ -229,11 +229,8 @@ export default class PackageService {
       throw 'An endpoint must be specified';
     }
     this.endpoint.configure((req: Request, res: Response) => {
-      if (this.endpoint.getMethod() === 'get') {
-        this.initialData = req.params;
-      } else {
-        this.initialData = req.body;
-      }
+      this.initialData = _.assign(req.query, req.params, req.body);
+
       // append data from authorization context
       this.tokenContents = req.tokenContents;
 

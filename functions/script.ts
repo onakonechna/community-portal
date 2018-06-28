@@ -48,7 +48,6 @@ function getLikedProjects(){
   const getLikedProjectsOptions = {
     method: 'GET',
     url: hostAddr +  '/user/likedProjects',
-    // data: { project_id },
     headers: {
       Authorization: token,
     }
