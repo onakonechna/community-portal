@@ -38,6 +38,7 @@ const HeadBar = (props: any) => {
         <Typography color="inherit" >
           Magento Opensource
         </Typography>
+        <AddProjectDialog className={classes.addButton} />
         <Login
           clientId="668e0b6c450cc783f267" // Github auth application client_id
           scope="" // Github permission scopes
@@ -46,7 +47,6 @@ const HeadBar = (props: any) => {
           onFailure={onFailure}
         />
         <Avatar />
-        <AddProjectDialog className={classes.addButton} />
       </Toolbar>
     </AppBar>
   );
