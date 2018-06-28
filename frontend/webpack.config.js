@@ -26,7 +26,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            __API__: apiHost,
+            API_ENDPOINT: apiHost,
             __FRONTEND__: apiHost,
             "process.env": {
                 NODE_ENV: JSON.stringify(reactMode)

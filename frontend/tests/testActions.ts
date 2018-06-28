@@ -6,7 +6,8 @@ import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+declare const API_ENDPOINT: string;
+const API = API_ENDPOINT; //'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 
 describe('test actions', () => {
   const projectList = [
