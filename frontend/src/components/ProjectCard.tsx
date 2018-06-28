@@ -10,7 +10,6 @@ import LikeProjectButton from './LikeProjectButton';
 import { withStyles } from '@material-ui/core/styles';
 
 import { CardActions, CardContent, CardMedia } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -25,7 +24,7 @@ const styles = {
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '26rem',
+    height: '25rem',
     width: '25rem',
     display: 'flex',
     'flex-direction': 'column',
@@ -38,14 +37,21 @@ const styles = {
     display: 'flex',
     justifyContent: 'left',
     'font-size': '2rem',
+    'margin-bottom': '1rem',
   },
   chip: {
-    margin: '1.5rem 1rem 1.5rem 0',
+    margin: '1.5rem 1rem 1rem 0',
     borderRadius: '5px',
   },
   description: {
     'max-width': '24rem',
     'text-align': 'justify',
+    'font-size': '1rem',
+    'font-family': 'system-ui',
+  },
+  progress: {
+    'margin-left': 'auto',
+    color: '#48BF61',
   },
   row: {
     display: 'flex',
@@ -53,7 +59,9 @@ const styles = {
   sidebar: {
     display: 'flex',
     'flex-direction': 'column',
-    marginTop: 30,
+  },
+  smallText: {
+    'margin-bottom': '0.25rem',
   },
 };
 
@@ -96,10 +104,10 @@ interface CardState {
   pledgeOpen: boolean;
 }
 
-function getPercentage(pledged: number, estimated: number) {
-  if (!pledged || !estimated || pledged === 0) { return 1; }
-  return (pledged / estimated) * 100;
-}
+// function getPercentage(pledged: number, estimated: number) {
+//   if (!pledged || !estimated || pledged === 0) { return 1; }
+//   return (pledged / estimated) * 100;
+// }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'])(EditButton);
@@ -163,23 +171,23 @@ export class projectCard extends React.Component<CardProps, CardState>{
             ))}
             <div className={classes.row}>
               <div className={classes.sidebar}>
-                <Typography>
+                <Typography className={classes.smallText}>
+                  Opened {openedFor} days ago
+                </Typography>
+                <Typography className={classes.smallText}>
                   Size: {this.props.project.size}
                 </Typography>
-                <Typography>
-                  Opened {openedFor} days ago
-              </Typography>
               </div>
               <CircularProgress
+                className={classes.progress}
                 variant="determinate"
-                color="secondary"
-                size={150}
-                value={getPercentage(this.props.project.pledged!, this.props.project.estimated!)}
+                size={80}
+                value={80}
+                // value={getPercentage(this.props.project.pledged!, this.props.project.estimated!)}
               />
             </div>
           </CardContent>
           <CardActions>
-            <Button>View</Button>
             <Pledge handler={this.togglePledge} label="Pledge" />
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
