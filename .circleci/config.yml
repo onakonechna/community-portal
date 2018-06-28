@@ -27,6 +27,12 @@ jobs:
           paths:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
+
+      # Install AWS cli
+      - run:
+          name: Install aws cli
+          command:
+              sudo apt-get -y -qq install awscli    
       
       - run:
           name: deploy application
