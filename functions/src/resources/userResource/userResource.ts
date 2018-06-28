@@ -11,6 +11,7 @@ interface UserResourceInterface {
   update(data: any): Promise<any>;
   addUpvotedProject(data: any): Promise<any>;
   removeUpvotedProject(data: any): Promise<any>;
+  getUpvotedProjects(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -44,6 +45,11 @@ export default class UserResource implements UserResourceInterface {
   removeUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
     return this.adapter.removeFromSet(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+  }
+
+  getUpvotedProjects(data: any): Promise<any> {
+    const { user_id } = data;
+    return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, upvoted_projects');
   }
 
   delete(data: any): Promise<any> {

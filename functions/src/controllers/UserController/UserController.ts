@@ -31,7 +31,7 @@ export default class UserController implements UserControllerInterface {
       }
       return {
         status: 404,
-        payload: { 'error': 'Project not found' },
+        payload: { 'error': 'User not found' },
       };
     };
   }
@@ -43,8 +43,27 @@ export default class UserController implements UserControllerInterface {
         status: 200,
         payload: {
           project_id,
-          message: 'Project edited successfully',
+          message: 'User updated successfully',
         },
+      };
+    };
+  }
+
+  getUpvotedProjects(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { user_id, upvoted_projects } = result.Item;
+        return {
+          status: 200,
+          payload: {
+            user_id,
+            upvoted_projects: upvoted_projects.values,
+          },
+        };
+      }
+      return {
+        status: 404,
+        payload: { 'error': 'User not found' },
       };
     };
   }

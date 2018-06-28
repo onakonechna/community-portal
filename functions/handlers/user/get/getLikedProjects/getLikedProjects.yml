@@ -1,0 +1,15 @@
+getLikedProjects:
+  role: getLikedProjectsRole
+  handler: handlers/user/get/getLikedProjects/handler.handler
+  timeout: 10
+  events:
+  - http:
+      path: /user/likedProjects
+      method: get
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token
