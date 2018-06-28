@@ -57,6 +57,11 @@ const updateProjectStatusSchema = {
 };
 
 // Special JSON validation schemas
+const nullSchema = {
+  properties: {},
+  additionalProperties: false,
+};
+
 const projectIdOnlySchema = {
   properties: {
     project_id: { type: 'string' },
@@ -70,6 +75,7 @@ const validationSchemas: any = {
   createProjectSchema,
   editProjectSchema,
   updateProjectStatusSchema,
+  nullSchema,
   projectIdOnlySchema,
 };
 

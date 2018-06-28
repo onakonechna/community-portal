@@ -44,7 +44,20 @@ function unlikeProject(project_id){
   return axios(likeProjectOptions);
 }
 
-unlikeProject('test23')
+function getLikedProjects(){
+  const getLikedProjectsOptions = {
+    method: 'GET',
+    url: hostAddr +  '/user/likedProjects',
+    // data: { project_id },
+    headers: {
+      Authorization: token,
+    }
+  };
+
+  return axios(getLikedProjectsOptions);
+}
+
+getLikedProjects('test23')
   .then((response) => {
     console.log(response.data);
   })

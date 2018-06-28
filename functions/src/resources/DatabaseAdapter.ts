@@ -35,11 +35,13 @@ export default class DatabaseAdapter implements AdapterInterface {
 
   get(
     tableName: string,
-    indexName: string,
     expression: string,
+    indexName: string = undefined,
     nameMap: any = undefined,
     valueMap: any = undefined,
     ascending: boolean = true,
+    limit: number = undefined,
+    projectionExpression: string = undefined,
   ): Promise<any> {
 
     const params = {
@@ -48,16 +50,23 @@ export default class DatabaseAdapter implements AdapterInterface {
       KeyConditionExpression: expression,
       ExpressionAttributeNames: nameMap,
       ExpressionAttributeValues: valueMap,
-      ScanIndexForward: ascending
+      ScanIndexForward: ascending,
+      Limit: limit,
+      ProjectionExpression: projectionExpression,
     };
     return this.db.query(params).promise();
 
   }
 
-  getById(tableName: string, identifier: any): Promise<any> {
+  getById(
+    tableName: string,
+    identifier: any,
+    projectionExpression: string = undefined
+  ): Promise<any> {
     const params = {
       TableName: tableName,
       Key: identifier,
+      ProjectionExpression: projectionExpression,
     };
     return this.db.get(params).promise();
   }

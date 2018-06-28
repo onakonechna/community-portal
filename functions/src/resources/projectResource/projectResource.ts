@@ -39,8 +39,8 @@ export default class ProjectResource implements ProjectResourceInterface {
   getCards(data: any): Promise<any> {
     return this.adapter.get(
       PROJECTS_TABLE,
-      PROJECTS_INDEX,
       '#status = :status',
+      PROJECTS_INDEX,
       { '#status': 'status' },
       { ':status': 'open' },
       false,
