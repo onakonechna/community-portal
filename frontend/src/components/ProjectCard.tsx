@@ -16,9 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 
-import Share from '@material-ui/icons/Share';
-
-// import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -26,17 +23,32 @@ const styles = {
   avatar: {
     margin: 10,
   },
-  centered: {
-    align: 'center',
+  card: {
+    'background-color': '#F2F3F3',
+    height: '26rem',
+    width: '25rem',
     display: 'flex',
-    justifyContent: 'center',
+    'flex-direction': 'column',
+    'justify-content': 'space-between',
+  },
+  cardContent: {
+    'margin-bottom': 'auto',
+  },
+  centered: {
+    display: 'flex',
+    justifyContent: 'left',
+    'font-size': '2rem',
   },
   chip: {
-    margin: '5px 10px',
+    margin: '1.5rem 1rem 1.5rem 0',
+    borderRadius: '5px',
+  },
+  description: {
+    'max-width': '24rem',
+    'text-align': 'justify',
   },
   row: {
     display: 'flex',
-    justifyContent: 'center',
   },
   sidebar: {
     display: 'flex',
@@ -71,7 +83,7 @@ interface CardProps {
     hours_goal?: number,
     github_address: string,
     slack?: string,
-    created_date?: string,
+    created: number,
     pledge: any;
   };
   handler?: () => void;
@@ -91,6 +103,7 @@ function getPercentage(pledged: number, estimated: number) {
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'])(EditButton);
+const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class projectCard extends React.Component<CardProps, CardState>{
 
@@ -104,6 +117,12 @@ export class projectCard extends React.Component<CardProps, CardState>{
     this.togglePledge = this.togglePledge.bind(this);
   }
 
+  calculateOpenTime(timestamp: number) {
+    const now = +new Date();
+    const dateDifference = ((now - timestamp) / 1000) / (3600 * 24);
+    return Math.floor(dateDifference);
+  }
+
   toggleEdit() {
     this.setState({ editOpen: !this.state.editOpen });
   }
@@ -114,28 +133,29 @@ export class projectCard extends React.Component<CardProps, CardState>{
 
   render() {
     const { classes } = this.props;
+    const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
-          <EditProjectDialog
-            open={this.state.editOpen}
-            toggleEdit={this.toggleEdit}
-            project={this.props.project}
-          />
-          <PledgeDialog
-            open={this.state.pledgeOpen}
-            project={this.props.project}
-            toggle={this.togglePledge}
-          />
-        <Card>
+        <EditProjectDialog
+          open={this.state.editOpen}
+          toggleEdit={this.toggleEdit}
+          project={this.props.project}
+        />
+        <PledgeDialog
+          open={this.state.pledgeOpen}
+          project={this.props.project}
+          toggle={this.togglePledge}
+        />
+        <Card className={classes.card}>
           <CardMedia
             image="static/images/cards/circuit.png"
             title="Contemplative Reptile"
           />
-          <CardContent>
+          <CardContent className={classes.cardContent}>
             <Typography className={classes.centered}>
               {this.props.project.name}
             </Typography>
-            <Typography component="p">
+            <Typography className={classes.description} component="p">
               {this.props.project.description}
             </Typography>
             {this.props.project.technologies.map(technology => (
@@ -144,22 +164,12 @@ export class projectCard extends React.Component<CardProps, CardState>{
             <div className={classes.row}>
               <div className={classes.sidebar}>
                 <Typography>
-                  Project Size: {this.props.project.size}
+                  Size: {this.props.project.size}
                 </Typography>
                 <Typography>
-                  Current Contributors:
-              </Typography>
-                <Typography>
-                  Open for: days
-              </Typography>
-                <Typography>
-                  Goal: {this.props.project.estimated} hours
-              </Typography>
-                <Typography>
-                  Pledged: {this.props.project.pledged} hours
+                  Opened {openedFor} days ago
               </Typography>
               </div>
-
               <CircularProgress
                 variant="determinate"
                 color="secondary"
@@ -170,7 +180,7 @@ export class projectCard extends React.Component<CardProps, CardState>{
           </CardContent>
           <CardActions>
             <Button>View</Button>
-            <Pledge handler={this.togglePledge} />
+            <Pledge handler={this.togglePledge} label="Pledge" />
             <a href={this.props.project.github_address}>
               <IconButton aria-label="Git">
                 <SvgIcon>
@@ -178,11 +188,8 @@ export class projectCard extends React.Component<CardProps, CardState>{
                 </SvgIcon>
               </IconButton>
             </a>
-            <Edit handler={this.toggleEdit}/>
-            <IconButton aria-label="Share">
-              <Share />
-            </IconButton>
-            <LikeProjectButton liked={false} upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
+            <Edit handler={this.toggleEdit} />
+            <Like liked={false} upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
           </CardActions>
         </Card>
       </div>

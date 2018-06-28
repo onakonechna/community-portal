@@ -20,7 +20,7 @@ custom:
     domainName: 'dev.api.opensource.engcom.magento.com'
     basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
     stage: ${self:provider.stage} # Stage will be created for every branch
-    createRoute53Record: false     
+    createRoute53Record: false
 
 provider:
   name: aws
@@ -62,6 +62,8 @@ functions:
   - ${file(./handlers/project/update/editProject/editProject.yml)}
   - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
+  - ${file(./handlers/user/update/unlikeProject/unlikeProject.yml)}
+  - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -79,6 +81,8 @@ resources:
     editProjectRole: ${file(./handlers/project/update/editProject/role.yml):editProjectRole}
     updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
+    unlikeProjectRole: ${file(./handlers/user/update/unlikeProject/role.yml):unlikeProjectRole}
+    getLikedProjectsRole: ${file(./handlers/user/get/getLikedProjects/role.yml):getLikedProjectsRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

@@ -3,7 +3,7 @@ editProject:
   handler: handlers/project/update/editProject/handler.handler
   events:
   - http:
-      path: /project/edit
+      path: /project
       method: put
       cors: true
       authorizer:

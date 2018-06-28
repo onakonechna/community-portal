@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { loadProjects } from '../actions';
-import AddProjectDialog from './AddProjectDialog';
 import ProjectCard from './ProjectCard';
 
 import Grid from '@material-ui/core/Grid';
@@ -81,7 +80,6 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
             </Grid>
           ))}
         </Grid>
-        <AddProjectDialog />
       </div>
     );
   }

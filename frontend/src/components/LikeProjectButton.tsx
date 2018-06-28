@@ -13,6 +13,8 @@ interface LikeProjectProps {
   liked: boolean;
   project_id: string;
   upvotes: number;
+  user?: any;
+  role?: string;
 }
 
 interface LikeProjectState {
@@ -34,6 +36,7 @@ class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps
       liked: this.props.liked,
     };
     this.likeProject = this.likeProject.bind(this);
+    // this.placeHolder = this.placeHolder.bind(this);
   }
 
   likeProject() {
@@ -49,12 +52,16 @@ class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps
     }
   }
 
+  placeHolder() {
+    console.log('placeholder...');
+  }
+
   render() {
     const { upvotes } = this.props;
   	return (
       <IconButton
         aria-label="like"
-        onClick={this.likeProject}>
+        onClick={this.props.user.role === 'user' ? this.likeProject : this.placeHolder}>
         <Favorite
           style={{ color: this.state.liked ? '#FF2B00' : 'gray' }}
         />

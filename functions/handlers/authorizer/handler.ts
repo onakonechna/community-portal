@@ -6,13 +6,13 @@ interface contextSpecs {
   user_id: string;
 }
 
-const buildIAMPolicy = function (githubId: string,
+const buildIAMPolicy = function (principalId: string,
                                  effect: string,
                                  resource: string,
                                  context: contextSpecs) {
   const policy = {
+    principalId,
     context,
-    principalId: githubId,
     policyDocument: {
       Version: '2012-10-17',
       Statement: [

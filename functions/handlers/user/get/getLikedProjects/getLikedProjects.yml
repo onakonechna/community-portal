@@ -1,11 +1,11 @@
-likeProject:
-  role: likeProjectRole
-  handler: handlers/user/update/likeProject/handler.handler
+getLikedProjects:
+  role: getLikedProjectsRole
+  handler: handlers/user/get/getLikedProjects/handler.handler
   timeout: 10
   events:
   - http:
-      path: /user/likeProject
-      method: post
+      path: /user/likedProjects
+      method: get
       cors: true
       authorizer:
         name: authorizer

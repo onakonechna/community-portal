@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 
-class GithubService {
+export default class GithubService {
   getGithubToken(code:string) {
     const options = {
       url: 'https://github.com/login/oauth/access_token',
@@ -27,5 +27,3 @@ class GithubService {
     return rp(options);
   }
 }
-
-module.exports = GithubService;

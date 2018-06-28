@@ -4,12 +4,25 @@ import * as _ from 'lodash';
 import AdapterInterface from './AdapterInterface';
 import DatabaseConnection from './DatabaseConnection';
 
-export default class DatabaseAdapter implements AdapterInterface {
-  private client: DynamoDB.DocumentClient;
-  private db: any;
+// convert identifier object to include DynamoDB string type
+function convertIdentifier(identifier: any): any {
+  let Key: any = {};
+  _.forEach(identifier, (value: string, key: string) => {
+    Key[key] = {
+      S: value,
+    };
+  });
+  return Key;
+}
 
+export default class DatabaseAdapter implements AdapterInterface {
+  private db: DynamoDB.DocumentClient;
+  private base: DynamoDB;
+
+  // baseConnect is used for unsupported operations in the minified version
   constructor(db: DatabaseConnection) {
     this.db = db.connect();
+    this.base = db.baseConnect();
   }
 
   create(tableName: string, data: any): Promise<any> {
@@ -22,11 +35,13 @@ export default class DatabaseAdapter implements AdapterInterface {
 
   get(
     tableName: string,
-    indexName: string,
     expression: string,
+    indexName: string = undefined,
     nameMap: any = undefined,
     valueMap: any = undefined,
     ascending: boolean = true,
+    limit: number = undefined,
+    projectionExpression: string = undefined,
   ): Promise<any> {
 
     const params = {
@@ -35,16 +50,23 @@ export default class DatabaseAdapter implements AdapterInterface {
       KeyConditionExpression: expression,
       ExpressionAttributeNames: nameMap,
       ExpressionAttributeValues: valueMap,
-      ScanIndexForward: ascending
+      ScanIndexForward: ascending,
+      Limit: limit,
+      ProjectionExpression: projectionExpression,
     };
     return this.db.query(params).promise();
 
   }
 
-  getById(tableName: string, identifier: any): Promise<any> {
+  getById(
+    tableName: string,
+    identifier: any,
+    projectionExpression: string = undefined
+  ): Promise<any> {
     const params = {
       TableName: tableName,
       Key: identifier,
+      ProjectionExpression: projectionExpression,
     };
     return this.db.get(params).promise();
   }
@@ -80,6 +102,49 @@ export default class DatabaseAdapter implements AdapterInterface {
       Key: identifier,
     };
     return this.db.update(params).promise();
+  }
+
+  // use string sets
+  // identifier is of string type
+  // add to set only if item does not already exist
+  addToSet(tableName: string, identifier: any, setName: string, item: string) {
+    const Key = convertIdentifier(identifier);
+    const params = {
+      Key,
+      ExpressionAttributeNames: {
+        '#SET_NAME': setName,
+      },
+      ExpressionAttributeValues: {
+        ':item': { S: item },
+        ':items': { SS: [item] },
+      },
+      ReturnValues: 'ALL_NEW',
+      TableName: tableName,
+      UpdateExpression: 'ADD #SET_NAME :items',
+      ConditionExpression: 'not(contains(#SET_NAME, :item))',
+    };
+
+    return this.base.updateItem(params).promise();
+  }
+
+  removeFromSet(tableName: string, identifier: any, setName: string, item: string) {
+    const Key = convertIdentifier(identifier);
+    const params = {
+      Key,
+      ExpressionAttributeNames: {
+        '#SET_NAME': setName,
+      },
+      ExpressionAttributeValues: {
+        ':item': { S: item },
+        ':items': { SS: [item] },
+      },
+      ReturnValues: 'ALL_NEW',
+      TableName: tableName,
+      UpdateExpression: 'DELETE #SET_NAME :items',
+      ConditionExpression: 'contains(#SET_NAME, :item)',
+    };
+
+    return this.base.updateItem(params).promise();
   }
 
   delete(tableName: string, identifier: any): Promise<any> {

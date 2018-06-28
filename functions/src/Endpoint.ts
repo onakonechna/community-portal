@@ -1,10 +1,10 @@
 import * as express from 'express';
+import { Request, Response } from './../config/types';
 
-import * as serverless from 'serverless-http';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 
-import { ControllerHandlers } from './controllers/ControllerInterface';
+const serverless = require('serverless-http');
 
 const corsOptions = {
   "origin": "*",
@@ -12,6 +12,10 @@ const corsOptions = {
   "preflightContinue": false,
   "optionsSuccessStatus": 204,
 };
+
+interface CustomizedRequest {
+  authorizationContext: any;
+}
 
 export default class Endpoint {
   private url: string;
@@ -30,13 +34,19 @@ export default class Endpoint {
     return this.method;
   }
 
-  configure(execute: (req: express.Request, res: express.Response) => any) {
-    this.app[this.method](this.url, (req: express.Request, res: express.Response) => {
+  configure(execute: (req: Request, res: Response) => any) {
+    this.app[this.method](this.url, (req: Request, res: Response) => {
       execute(req, res);
     });
   }
 
   wrap() {
-    return serverless(this.app);
+    return serverless(this.app, {
+      request: function(request: Request, event: any, context: any) {
+        if (event.requestContext.authorizer !== undefined) {
+          request.tokenContents = event.requestContext.authorizer.claims;
+        }
+      },
+    });
   }
 }

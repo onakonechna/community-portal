@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { addProject } from '../actions';
-import AddProjectButton from './AddProjectButton';
+import AddProjectButton from './buttons/AddProjectButton';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -21,6 +21,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 
 const styles = (theme: any) => ({
+  addButton: {
+    'margin-left': 'auto',
+  },
   chip: {
     margin: '5px 5px',
   },
@@ -35,6 +38,8 @@ interface DispatchProps {
 
 interface DialogProps {
   classes?: any;
+  className?: any;
+  style?: any;
 }
 
 interface DialogState {
@@ -198,7 +203,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     const { classes } = this.props;
     const { loading, success } = this.state;
     return (
-      <div>
+      <div className={classes.addButton}>
         <AddProjectButton onClick={this.handleClickOpen} />
         <Dialog
           open={this.state.open}

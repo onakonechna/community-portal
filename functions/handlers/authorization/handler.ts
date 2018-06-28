@@ -5,9 +5,9 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const AuthorizationService = require('./../../src/services/authorizationService');
-const GithubService = require('./../../src/services/githubService');
-const UserService = require('./../../src/services/userService');
+import AuthorizationService from './../../src/services/authorizationService';
+import GithubService from './../../src/services/githubService';
+import UserService from './../../src/services/userService';
 
 const authorizationService = new AuthorizationService();
 const githubService = new GithubService();
@@ -17,6 +17,7 @@ app.use(cors());
 app.use(bodyParser.json({ strict: false }));
 
 app.post('/authorize/', (req:express.Request, res:express.Response) => {
+
   githubService.getGithubToken(req.body.code)
     .then((data: any) => {
       const token = data['access_token'];
