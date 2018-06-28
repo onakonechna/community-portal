@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/magento.png">
+    <link rel="manifest" href="__FRONTEND__/manifest.json">
+    <link rel="shortcut icon" href="__FRONTEND__/magento.png">
     <title>Magento Community Portal</title>
   </head>
   <body>
@@ -13,5 +13,15 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+
+        <script>
+          window.process = { env: { NODE_ENV: 'production' } }
+        </script>
+        <!-- Dependencies -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.1/cjs/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.1/cjs/react-dom-server.browser.development.js"></script>
+
+        <!-- Main -->
+        <script src="./dist/bundle.js"></script>
   </body>
 </html>

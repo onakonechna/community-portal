@@ -1,15 +1,20 @@
-let webpack = require("webpack")
-let apiHost = "'https://localhost:3000'"
-
+let webpack = require("webpack");
+let apiHost = "'http://localhost:3000'";
+let forntendHost = "'http://localhost'";
+let reactMode = "development";
 switch(process.env.STAGE) {
     case "production":
         apiHost = "'https://api.opensource.magento.com/'";
+        forntendHost = "'https://opensource.magento.com/'";
+        reactMode = "production"
         break;
     case "qa":
         apiHost = "'https://api.opensource.engcom.magento.com/'";
+        forntendHost = "'https://opensource.engcom.magento.com/'";
         break;  
     case "dev":
         apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
+        forntendHost = "'https://dev.opensource.engcom.magento.com/'";
         break;       
 }
 
@@ -17,11 +22,15 @@ module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/dist"
+        path: __dirname + "/public/dist"
     },
     plugins: [
         new webpack.DefinePlugin({
-            __API__: apiHost
+            __API__: apiHost,
+            __FRONTEND__: apiHost,
+            "process.env": {
+                NODE_ENV: JSON.stringify(reactMode)
+            }
           })
     ],
 
@@ -51,8 +60,8 @@ module.exports = {
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    }
+    // externals: {
+    //     "react": "React",
+    //     "react-dom": "ReactDOM"
+    // }
 };

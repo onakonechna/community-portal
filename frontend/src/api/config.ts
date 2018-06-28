@@ -1,3 +1,4 @@
+declare const __API__: string;
 export const API = __API__; 
 //'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 

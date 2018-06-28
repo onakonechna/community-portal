@@ -33,11 +33,14 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
+              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
+              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
             else  
               STAGE=dev npm run build:webpack
-            fi    
+              aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
+            fi
 
   build_functions:
     working_directory: ~/community-portal/functions

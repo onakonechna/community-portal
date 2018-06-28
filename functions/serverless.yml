@@ -63,19 +63,6 @@ functions:
   - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
 
-# custom:
-#   production:
-#     domainName: 'api.opensource.magento.com'
-#     basePath: '' # Default path to production is empty
-#     stage: 'prod'
-#     createRoute53Record: false
-#   staging:
-#     domainName: 'api.opensource.engcom.magento.com'
-#     basePath: '' # Default path to staging is empty
-#     stage: 'staging'
-#     createRoute53Record: false  
-   
-
 # Add references to defined tables and roles here before deployment
 resources:
   Resources:
