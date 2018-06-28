@@ -16,6 +16,7 @@ interface WithAuthProps {
   redirectUri?: string;
   onSuccess?: any;
   onFailure?: any;
+  toggleLike?: any;
 }
 
 interface WithAuthStateProps {

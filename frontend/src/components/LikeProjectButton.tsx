@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+// import { connect } from 'react-redux';
+// import compose from 'recompose/compose';
 
-import { likeProject } from '../actions';
+// import { likeProject } from '../actions';
 import { withStyles } from '@material-ui/core/styles';
 
 import Favorite from '@material-ui/icons/Favorite';
@@ -15,71 +15,54 @@ interface LikeProjectProps {
   upvotes: number;
   user?: any;
   role?: string;
-}
-
-interface LikeProjectState {
-  liked: boolean;
-}
-
-interface DispatchProps {
-  likeProject: any;
+  toggleLike: () => void;
+  likeProject?: any;
+  handler?: any;
 }
 
 const styles = {
-  likeButton: {},
+  likeButton: {
+    'margin-left': 'auto',
+  },
 };
 
-class LikeProjectButton extends React.Component<LikeProjectProps & DispatchProps, LikeProjectState> {
-  constructor(props: LikeProjectProps & DispatchProps) {
-    super(props);
-    this.state = {
-      liked: this.props.liked,
-    };
-    this.likeProject = this.likeProject.bind(this);
-    // this.placeHolder = this.placeHolder.bind(this);
-  }
-
-  likeProject() {
-    const { project_id } = this.props;
-    if (!this.state.liked) {
-      this.props.likeProject(project_id)
-      .then((response: any) => {
-        this.setState({ liked: true });
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-    }
-  }
-
-  placeHolder() {
-    console.log('placeholder...');
-  }
-
-  render() {
-    const { upvotes } = this.props;
-  	return (
-      <IconButton
-        aria-label="like"
-        onClick={this.props.user.role === 'user' ? this.likeProject : this.placeHolder}>
-        <Favorite
-          style={{ color: this.state.liked ? '#FF2B00' : 'gray' }}
-        />
-        <span>{upvotes}</span>
-      </IconButton>
-  	);
-  }
-}
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    likeProject: (id: string) => dispatch(likeProject(id)),
-  };
+const LikeProjectButton = (props: LikeProjectProps) => {
+  const { classes } = props;
+  // const likeProject = () => {
+  //   const { project_id } = props;
+  //   if (!props.liked) {
+  //     props.handler(project_id)
+  //       .then((response: any) => {
+  //         props.toggleLike();
+  //       })
+  //       .catch((error: any) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // };
+  return (
+    <IconButton
+      aria-label="like"
+      className={classes.likeButton}
+      onClick={props.handler}>
+      <Favorite
+        style={{ color: props.liked ? '#FF2B00' : 'gray' }}
+      />
+    </IconButton>
+  );
 };
 
-export default compose<{}, LikeProjectProps>(
-  withStyles(styles, {
-    name: 'LikeProjectButton',
-  }),
-  connect<{}, DispatchProps, LikeProjectProps>(null, mapDispatchToProps),
-)(LikeProjectButton);
+export default withStyles(styles)(LikeProjectButton);
+
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     likeProject: (id: string) => dispatch(likeProject(id)),
+//   };
+// };
+
+// export default compose<{}, LikeProjectProps>(
+//   withStyles(styles, {
+//     name: 'LikeProjectButton',
+//   }),
+//   connect<{}, DispatchProps, LikeProjectProps>(null, mapDispatchToProps),
+// )(LikeProjectButton);

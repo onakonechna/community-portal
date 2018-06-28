@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import { likeProject } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
@@ -96,12 +99,17 @@ interface CardProps {
   };
   handler?: () => void;
   toggleEdit?: () => void;
-  classes: any;
+  classes?: any;
+}
+
+interface DispatchProps {
+  likeProject: any;
 }
 
 interface CardState {
   editOpen: boolean;
   pledgeOpen: boolean;
+  liked: boolean;
 }
 
 // function getPercentage(pledged: number, estimated: number) {
@@ -113,15 +121,17 @@ const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'])(EditButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
 
-export class projectCard extends React.Component<CardProps, CardState>{
+export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
 
-  constructor(props: CardProps) {
+  constructor(props: CardProps & DispatchProps) {
     super(props);
     this.state = {
       editOpen: false,
       pledgeOpen: false,
+      liked: false,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.handleLike = this.handleLike.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
   }
 
@@ -138,6 +148,32 @@ export class projectCard extends React.Component<CardProps, CardState>{
   togglePledge() {
     this.setState({ pledgeOpen: !this.state.pledgeOpen });
   }
+
+  toggleLike() {
+    this.setState((prevState: CardState) => ({
+      liked: !prevState.liked,
+    }));
+  }
+
+  handleLike() {
+    const { project_id } = this.props.project;
+    if (!this.state.liked) {
+      this.props.likeProject(project_id)
+        .then((response: any) => {
+          this.toggleLike();
+        })
+        .catch((err: Error) => {
+          console.error(err);
+        });
+    }
+  }
+
+  // checkLikeStatus() {
+    // const { project_id } = this.props.project;
+    // call redux action to trigger getLikedProject API
+    // map a list of id of the projectList and check if that list contains this project's id
+    // if yes, set local liked state to true, otherwise false
+  // }
 
   render() {
     const { classes } = this.props;
@@ -197,7 +233,8 @@ export class projectCard extends React.Component<CardProps, CardState>{
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Like liked={false} upvotes={this.props.project.upvotes} project_id={this.props.project.project_id} />
+            <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
+            <Typography>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
       </div>
@@ -205,4 +242,15 @@ export class projectCard extends React.Component<CardProps, CardState>{
   }
 }
 
-export default withStyles(styles)(projectCard);
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    likeProject: (id: string) => dispatch(likeProject(id)),
+  };
+};
+
+export default compose<{}, CardProps>(
+  withStyles(styles, {
+    name: 'ProjectCard',
+  }),
+  connect<{}, DispatchProps, CardProps>(null, mapDispatchToProps),
+)(ProjectCard);

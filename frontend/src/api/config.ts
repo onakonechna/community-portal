@@ -1,4 +1,5 @@
-export const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+// export const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+export const API = 'https://or9hwns2yk.execute-api.us-east-1.amazonaws.com/demo';
 
 const token: any = JSON.parse(localStorage.getItem('oAuth') || '{}');
 
