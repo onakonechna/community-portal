@@ -16,6 +16,11 @@ custom:
       - getProjectDetails
       - updateProjectStatus
       - likeProject
+  customDomain:
+    domainName: 'dev.api.opensource.engcom.magento.com'
+    basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
+    stage: ${self:provider.stage} # Stage will be created for every branch
+    createRoute53Record: false     
 
 provider:
   name: aws
@@ -46,7 +51,7 @@ package:
     - coverage/**
     - .circleci/**
 
-service: test-endpoint
+service: community-portal
 
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
@@ -57,6 +62,19 @@ functions:
   - ${file(./handlers/project/update/editProject/editProject.yml)}
   - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
+
+# custom:
+#   production:
+#     domainName: 'api.opensource.magento.com'
+#     basePath: '' # Default path to production is empty
+#     stage: 'prod'
+#     createRoute53Record: false
+#   staging:
+#     domainName: 'api.opensource.engcom.magento.com'
+#     basePath: '' # Default path to staging is empty
+#     stage: 'staging'
+#     createRoute53Record: false  
+   
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -77,6 +95,7 @@ resources:
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
+  - serverless-domain-manager
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline # serverless-offline needs to be last in the list

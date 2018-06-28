@@ -1,9 +1,29 @@
+let webpack = require("webpack")
+let apiHost = "'https://localhost:3000'"
+
+switch(process.env.STAGE) {
+    case "production":
+        apiHost = "'https://api.opensource.magento.com/'";
+        break;
+    case "qa":
+        apiHost = "'https://api.opensource.engcom.magento.com/'";
+        break;  
+    case "dev":
+        apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
+        break;       
+}
+
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
         path: __dirname + "/dist"
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            __API__: apiHost
+          })
+    ],
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",

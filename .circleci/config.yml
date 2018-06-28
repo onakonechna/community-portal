@@ -27,6 +27,17 @@ jobs:
           paths:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
+      
+      - run:
+          name: deploy application
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              STAGE=qa npm run build:webpack
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              STAGE=production npm run build:webpack
+            else  
+              STAGE=dev npm run build:webpack
+            fi    
 
   build_functions:
     working_directory: ~/community-portal/functions
