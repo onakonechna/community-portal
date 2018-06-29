@@ -58,6 +58,7 @@
     "file-loader": "^1.1.11",
     "jest": "^23.1.0",
     "jest-css-modules-transform": "^2.0.0",
+    "jest-localstorage-mock": "^2.2.0",
     "jest-svg-transformer": "^1.0.0",
     "jsonwebtoken": "^8.3.0",
     "nodemon": "^1.17.5",
@@ -69,6 +70,7 @@
     "webpack": "^3.11.0"
   },
   "jest": {
+    "setupFiles": ["jest-localstorage-mock"],
     "setupTestFrameworkScriptFile": "<rootDir>/jestSetup.ts",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
@@ -86,7 +88,8 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "moduleNameMapper": { "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.ts", "\\.(css|less)$": "<rootDir>/assetsTransformer.js" }
   },
   "nodemonConfig": {
     "ignore": "test/*"

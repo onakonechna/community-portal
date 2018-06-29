@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const API = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+const API = 'https://or9hwns2yk.execute-api.us-east-1.amazonaws.com/demo';
 
 describe('test actions', () => {
   const projectList = [
@@ -54,7 +54,7 @@ describe('test actions', () => {
 
   it('test editProject action', () => {
     fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.put(`${API}/project/edit`, projectList);
+    fetchMock.put(`${API}/project`, projectList);
 
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
