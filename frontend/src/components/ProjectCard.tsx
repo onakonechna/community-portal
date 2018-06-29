@@ -157,6 +157,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 
   handleLike() {
     const { project_id } = this.props.project;
+    console.log('handling like...');
     if (!this.state.liked) {
       this.props.likeProject(project_id)
         .then((response: any) => {
