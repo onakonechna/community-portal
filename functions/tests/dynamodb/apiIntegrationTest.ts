@@ -14,11 +14,11 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const token = jwt.sign({ user_id: '12760373' }, config.custom.jwt.secret, { expiresIn: '1d' });
+const token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' });
 
 // const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
-// const hostAddr = 'https://or9hwns2yk.execute-api.us-east-1.amazonaws.com/demo/';
-const hostAddr = 'http://localhost:3000';
+const hostAddr = 'https://n51znwfhz0.execute-api.us-east-1.amazonaws.com/demo/';
+// const hostAddr = 'http://localhost:3000';
 
 function getProjectCards(){
   const getCardsOptions = {

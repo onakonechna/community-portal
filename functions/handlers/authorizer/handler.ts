@@ -31,6 +31,7 @@ const buildIAMPolicy = function (principalId: string,
 const REGION = process.env.REGION;
 const STAGE = process.env.STAGE;
 const API = process.env.API;
+const IS_OFFLINE = process.env.IS_OFFLINE;
 
 // Override aws-lambda type definition to support string errors
 // string error supported in latest Github version but not in npm version as of 06-06-2018
@@ -50,7 +51,12 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const authorizerContext = { user_id };
 
     // Return an IAM policy document for the current endpoint
-    const resource = `arn:aws:execute-api:${REGION}:*:${API}/${STAGE}/*/*`;
+    let resource: string;
+    if (IS_OFFLINE === 'true') {
+      resource = event.methodArn;
+    } else {
+      resource = `arn:aws:execute-api:${REGION}:*:${API}/${STAGE}/*/*`;
+    }
     const policyDocument = buildIAMPolicy(user_id, effect, resource, authorizerContext);
 
     callback(null, policyDocument);
