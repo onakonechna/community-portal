@@ -241,10 +241,6 @@ export default class PackageService {
 
   package() {
     this.endpoint.configure((req: Request, res: Response) => {
-      res.json({
-        methodArn: req.tokenContents,
-      });
-      return;
       this.initialData = _.assign(req.query, req.params, req.body);
 
       // append data from authorization context
