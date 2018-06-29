@@ -103,6 +103,7 @@ interface CardProps {
   handler?: () => void;
   toggleEdit?: () => void;
   classes?: any;
+  liked: boolean;
 }
 
 interface DispatchProps {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { loadProjects } from '../actions';
+import { loadProjects, getLikedProjectsAction } from '../actions';
 import ProjectCard from './ProjectCard';
 
 import Grid from '@material-ui/core/Grid';
@@ -14,7 +14,9 @@ interface GridStateProps {
 
 interface GridProps {
   project?: {};
+  user?: any;
   loadProjects: () => void;
+  getLikedProjectsAction?: any;
   handler?: () => void;
 }
 
@@ -53,11 +55,18 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
     this.updateGrid = this.updateGrid.bind(this);
   }
 
+  checkLike(id: string) {
+    const match = this.props.user.likedProjects.filter((p: string) => p === id);
+    if (match > 0) return true;
+    return false;
+  }
+
   updateGrid() {
     this.props.loadProjects();
   }
 
   componentDidMount() {
+    this.props.getLikedProjectsAction();
     this.updateGrid();
   }
 
@@ -76,6 +85,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
               <ProjectCard
                 project={project}
                 handler={this.updateGrid}
+                liked={this.checkLike(project.project_id)}
               />
             </Grid>
           ))}
@@ -95,6 +105,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     loadProjects: () => dispatch(loadProjects()),
+    getLikedProjectsAction: () => dispatch(getLikedProjectsAction()),
   };
 };
 

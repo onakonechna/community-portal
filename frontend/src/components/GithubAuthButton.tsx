@@ -97,8 +97,8 @@ const withLogin = (WrappedCompoent: any) => {
           const token = res.data.token;
           this.saveToken(token);
           const user = this.decodeToken(token);
-          this.props.loadUser(user);
           this.props.updateUserRole(this.props.user.user_id, 'user');
+          this.props.loadUser(user);
         })
         .catch((err: Error) => console.error(err));
     }

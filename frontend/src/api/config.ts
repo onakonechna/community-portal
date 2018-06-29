@@ -6,7 +6,7 @@ const token: any = JSON.parse(localStorage.getItem('oAuth') || '{}');
 export const headers = {
   mode: <RequestMode>'cors',
   headers: {
-    Authorization : 'OAuth2',
+    Authorization : token,
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
