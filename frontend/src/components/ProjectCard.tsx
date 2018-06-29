@@ -8,7 +8,7 @@ import PledgeDialog from './PledgeDialog';
 import EditButton from './buttons/EditButton';
 import PledgeButton from './buttons/PledgeButton';
 
-import LikeProjectButton from './LikeProjectButton';
+import LikeProjectButton from './buttons/LikeProjectButton';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -65,6 +65,9 @@ const styles = {
   },
   smallText: {
     'margin-bottom': '0.25rem',
+  },
+  upvotes: {
+    'font-size': '1rem',
   },
 };
 
@@ -157,7 +160,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 
   handleLike() {
     const { project_id } = this.props.project;
-    console.log('handling like...');
     if (!this.state.liked) {
       this.props.likeProject(project_id)
         .then((response: any) => {
@@ -235,7 +237,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             </a>
             <Edit handler={this.toggleEdit} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
-            <Typography>{this.props.project.upvotes}</Typography>
+            <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
       </div>

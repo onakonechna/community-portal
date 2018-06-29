@@ -19,6 +19,7 @@ interface LikeProjectProps {
 const styles = {
   likeButton: {
     'margin-left': 'auto',
+    width: '2rem',
   },
 };
 

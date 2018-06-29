@@ -5,6 +5,7 @@ import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction, UpdateUserRoleAction } from '../actions';
 
 interface WithAuthProps {
+  className?: any;
   user?: any;
   handler?: any;
   liked?: boolean;
@@ -17,6 +18,7 @@ interface WithAuthProps {
   onSuccess?: any;
   onFailure?: any;
   toggleLike?: any;
+  likeProject?: any;
 }
 
 interface WithAuthStateProps {

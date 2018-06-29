@@ -21,6 +21,7 @@ export const onSuccess = (response: string) => {
 };
 export const onFailure = (response: string) => console.error(response);
 
+const AddProject = withAuth(['user', 'owner'])(AddProjectDialog);
 const Login = withAuth(['guest'])(withLogin(LoginButton));
 const Avatar = withAuth(['user'])(UserAvatar);
 
@@ -38,7 +39,7 @@ const HeadBar = (props: any) => {
           <MenuIcon />
         </IconButton>
         <img className={classes.logo} src={Logo} width={411} height={57} />
-        <AddProjectDialog className={classes.addButton} />
+        <AddProject className={classes.addButton} />
         <Login
           clientId="668e0b6c450cc783f267" // Github auth application client_id
           scope="" // Github permission scopes
