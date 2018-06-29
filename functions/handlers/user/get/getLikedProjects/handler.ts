@@ -12,7 +12,7 @@ const dataFlow = {
   method: 'getUpvotedProjects',
   target: UserResource,
   validationMap: { getUpvotedProjects: 'nullSchema' },
-  dataDependencies: ['user_id'],
+  authDataDependencies: ['user_id'],
 };
 
 packageService.createEndpoint(endpoint);

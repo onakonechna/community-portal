@@ -11,6 +11,7 @@ const dataFlow = {
   method: 'create',
   target: ProjectResource,
   validationMap: { create: 'createProjectSchema' },
+  authDataDependencies: ['user_id'],
 }
 
 packageService.createEndpoint(endpoint);

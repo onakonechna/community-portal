@@ -57,6 +57,7 @@ functions:
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
   - ${file(./handlers/user/update/unlikeProject/unlikeProject.yml)}
   - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/update/pledge/pledge.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -76,6 +77,7 @@ resources:
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
     unlikeProjectRole: ${file(./handlers/user/update/unlikeProject/role.yml):unlikeProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/get/getLikedProjects/role.yml):getLikedProjectsRole}
+    pledgeRole: ${file(./handlers/user/update/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

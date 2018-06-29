@@ -10,7 +10,8 @@ const dataFlow = {
   controller: ProjectController,
   method: 'getCards',
   target: ProjectResource,
-}
+  validationMap: { getCards: 'nullSchema' },
+};
 
 packageService.createEndpoint(endpoint);
 packageService.addDataFlow(dataFlow);

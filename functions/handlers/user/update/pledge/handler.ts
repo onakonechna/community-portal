@@ -5,30 +5,45 @@ import { ProjectController, ProjectResource } from './../../../../config/compone
 import { UserController, UserResource } from './../../../../config/components';
 
 const packageService = new PackageService();
-const endpoint = new Endpoint('/user/likeProject', 'post');
+const endpoint = new Endpoint('/user/pledge', 'post');
 
-// need to specify data dependencies for the first dataFlow
-// in order to retrieve user_id from authorization context
-// note that user_id is not sent in request body
 const dataFlows = [
   {
     controller: ProjectController,
-    method: 'addUpvoter',
+    method: 'addPledgedHours',
     target: ProjectResource,
-    validationMap: { addUpvoter: 'projectIdOnlySchema' },
+    validationMap: { addPledgedHours: 'pledgeSchema' },
     authDataDependencies: ['user_id'],
   },
   {
-    controller: UserController,
-    method: 'addUpvotedProject',
-    target: UserResource,
-    dataDependencies: ['project_id', 'user_id'],
+    controller: ProjectController,
+    method: 'addPledgedHistory',
+    target: ProjectResource,
+    dataDependencies: ['project_id', 'hours'],
   },
   {
     controller: ProjectController,
-    method: 'upvote',
+    method: 'addPledger',
     target: ProjectResource,
-    dataDependencies: ['project_id'],
+    dataDependencies: ['project_id', 'user_id'],
+  },
+  {
+    controller: UserController,
+    method: 'subscribe',
+    target: UserResource,
+    dataDependencies: ['user_id', 'project_id'],
+  },
+  {
+    controller: ProjectController,
+    method: 'addSubscriber',
+    target: ProjectResource,
+    dataDependencies: ['project_id', 'user_id'],
+  },
+  {
+    controller: UserController,
+    method: 'pledge',
+    target: UserResource,
+    dataDependencies: ['user_id', 'project_id', 'hours'],
   },
 ];
 

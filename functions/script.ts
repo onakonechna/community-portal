@@ -14,9 +14,11 @@ function loadYAML(filename) {
 
 const projects = require('./tests/dynamodb/fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const token = jwt.sign({ user_id: 'test_id2' }, config.custom.jwt.secret, { expiresIn: '1d' });
+const token = jwt.sign({ user_id: '12760373' }, config.custom.jwt.secret, { expiresIn: '1d' });
+console.log(token);
 
 const hostAddr = 'http://localhost:3000';
+console.log(token);
 
 function likeProject(project_id){
   const likeProjectOptions = {
@@ -56,10 +58,32 @@ function getLikedProjects(){
   return axios(getLikedProjectsOptions);
 }
 
-getLikedProjects('test23')
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+function pledge(project_id, hours) {
+  const pledgeOptions = {
+    method: 'POST',
+    url: hostAddr +  '/user/pledge',
+    data: {
+      project_id,
+      hours,
+    },
+    headers: {
+      Authorization: token,
+    }
+  };
+}
+
+// likeProject('test23')
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+
+// pledge('test23', 22)
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });

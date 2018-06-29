@@ -16,11 +16,11 @@ const dataFlows = [
     method: 'removeUpvotedProject',
     target: UserResource,
     validationMap: { removeUpvotedProject: 'projectIdOnlySchema' },
-    dataDependencies: ['project_id', 'user_id'],
+    authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
-    method: 'removeSubscriber',
+    method: 'removeUpvoter',
     target: ProjectResource,
     dataDependencies: ['project_id', 'user_id'],
   },

@@ -33,6 +33,7 @@ interface DataFlowDefinition {
   method: string;
   target: any; // class to instantiate from (resource for now)
   dataDependencies?: string[];
+  authDataDependencies?: string[];
   validationMap?: any;
   methodMap?: any; // a map of methods on controller to methods on target
   storageSpecs?: string[]; // a list of output names to store to intermediary data store
@@ -40,6 +41,7 @@ interface DataFlowDefinition {
 
 interface DataFlow {
   dataDependencies: string[];
+  authDataDependencies: string[];
   controller: any;
   controllerMethod: string;
   validator: Validator;
@@ -87,6 +89,7 @@ export default class PackageService {
 
     // get dataDependencies
     const { dataDependencies } = dataFlowDefinition;
+    const { authDataDependencies } = dataFlowDefinition;
 
     // create validator
     let validator = undefined;
@@ -99,6 +102,7 @@ export default class PackageService {
 
     const dataFlow = {
       dataDependencies,
+      authDataDependencies,
       controller,
       controllerMethod,
       validator,
@@ -167,12 +171,17 @@ export default class PackageService {
       });
   }
 
-  getPromise(data:any, dataFlow: DataFlow) {
+  getPromise(data: any, dataFlow: DataFlow) {
     return dataFlow.target[dataFlow.targetMethod](data);
   }
 
   pickData(dataFlow: DataFlow) {
     if (dataFlow.dataDependencies !== undefined && dataFlow.dataDependencies.length > 0) {
+      dataFlow.dataDependencies.forEach((field: string) => {
+        if (!(field in this.dataStore)) {
+          throw `PackageService Error: ${field} is expected but cannot be found in the data store`
+        }
+      });
       return _.pick(this.dataStore, dataFlow.dataDependencies);
     } else {
       return {};
@@ -187,13 +196,20 @@ export default class PackageService {
   }
 
   extractInitialDataDependencies() {
+    // extract data from token if authDataDependencies is defined
+    if (this.dataFlows[0].authDataDependencies !== undefined
+      && typeof this.dataFlows[0].authDataDependencies.length == 'number'
+      && this.dataFlows[0].authDataDependencies.length > 0
+    ) {
+      const authorizerData = _.pick(this.tokenContents, this.dataFlows[0].authDataDependencies);
+      _.assign(this.initialData, authorizerData);
+    }
+    // prune data is dataDependencies is defined
     if (this.dataFlows[0].dataDependencies !== undefined
       && typeof this.dataFlows[0].dataDependencies.length == 'number'
       && this.dataFlows[0].dataDependencies.length > 0
     ) {
-      const prunedData = _.pick(this.initialData, this.dataFlows[0].dataDependencies);
-      const authorizerData = _.pick(this.tokenContents, this.dataFlows[0].dataDependencies);
-      this.initialData = _.assign(prunedData, authorizerData);
+      this.initialData = _.pick(this.initialData, this.dataFlows[0].dataDependencies);
     }
   }
 
