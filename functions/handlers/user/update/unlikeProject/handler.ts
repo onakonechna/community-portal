@@ -1,16 +1,14 @@
 import PackageService from './../../../../src/services/PackageService';
 import Endpoint from './../../../../src/Endpoint';
-
 import { ProjectController, ProjectResource } from './../../../../config/components';
 import { UserController, UserResource } from './../../../../config/components';
 
-const packageService = new PackageService();
 const endpoint = new Endpoint('/user/unlikeProject', 'post');
 
 // need to specify data dependencies for the first dataFlow
 // in order to retrieve user_id from authorization context
 // note that user_id is not sent in request body
-const dataFlows = [
+const dataflows = [
   {
     controller: UserController,
     method: 'removeUpvotedProject',
@@ -32,7 +30,5 @@ const dataFlows = [
   },
 ];
 
-packageService.createEndpoint(endpoint);
-packageService.addDataFlows(dataFlows);
-const handler = packageService.package();
+const handler = new PackageService(endpoint, dataflows).package();
 export { handler };

@@ -1,13 +1,11 @@
 import PackageService from './../../../../src/services/PackageService';
 import Endpoint from './../../../../src/Endpoint';
-
 import { ProjectController, ProjectResource } from './../../../../config/components';
 import { UserController, UserResource } from './../../../../config/components';
 
-const packageService = new PackageService();
 const endpoint = new Endpoint('/user/pledge', 'post');
 
-const dataFlows = [
+const dataflows = [
   {
     controller: ProjectController,
     method: 'addPledgedHours',
@@ -47,7 +45,5 @@ const dataFlows = [
   },
 ];
 
-packageService.createEndpoint(endpoint);
-packageService.addDataFlows(dataFlows);
-const handler = packageService.package();
+const handler = new PackageService(endpoint, dataflows).package();
 export { handler };

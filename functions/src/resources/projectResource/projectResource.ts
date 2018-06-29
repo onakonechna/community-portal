@@ -27,6 +27,10 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   create(data: any): Promise<any> {
+    // store user who created the project as owner
+    data.owner = data.user_id;
+    data.user_id = undefined;
+
     // append additional data
     const unixTimestamp = new Date().getTime();
     data.status = 'open';

@@ -72,13 +72,13 @@ function pledge(project_id, hours) {
   };
 }
 
-// likeProject('test23')
-//   .then((response) => {
-//     console.log(response.data);
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
+getLikedProjects('test23')
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 // pledge('test23', 22)
 //   .then((response) => {
