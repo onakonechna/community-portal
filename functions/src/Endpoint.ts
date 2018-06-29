@@ -44,7 +44,11 @@ export default class Endpoint {
     return serverless(this.app, {
       request: function(request: Request, event: any, context: any) {
         if (event.requestContext.authorizer !== undefined) {
-          request.tokenContents = event.requestContext.authorizer.claims;
+          if (event.requestContext.authorizer.claims !== undefined) {
+            request.tokenContents = event.requestContext.authorizer.claims;
+          } else {
+            request.tokenContents = event.requestContext.authorizer;
+          }
         }
       },
     });

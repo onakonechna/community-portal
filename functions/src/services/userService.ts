@@ -3,7 +3,7 @@ const dynamoDb = new awsSdk.DynamoDB.DocumentClient({
   region: 'us-east-1',
 });
 
-export default class User {
+export default class UserService {
 
   createUser(
     token:string,
