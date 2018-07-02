@@ -7,6 +7,7 @@ interface UserControllerInterface {
   removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
+  userExists(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
@@ -117,4 +118,15 @@ export default class UserController implements UserControllerInterface {
   removeUpvotedProject(data: any) {
     return (result: any) => { return {}; };
   }
+
+  userExists(data: any) {
+    return (result: any) => {
+      let flag = { user_exists: false };
+      if (result.Item) {
+        flag.user_exists = true;
+      }
+      return flag;
+    }
+  }
+
 }

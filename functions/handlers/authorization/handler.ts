@@ -65,30 +65,28 @@ const dataflows = [
     target: TokenResource,
     dataDependencies: ['access_token'],
   },
-  // below not modified yet
   {
-    controller: ProjectController,
-    method: 'addPledger',
-    target: ProjectResource,
-    dataDependencies: ['project_id', 'user_id'],
+    controller: UserController,
+    method: 'userExists',
+    target: UserResource,
+    methodMap: { userExists: 'getById' },
+    dataDependencies: ['user_id'],
   },
   {
     controller: UserController,
-    method: 'subscribe',
+    method: 'create',
     target: UserResource,
-    dataDependencies: ['user_id', 'project_id'],
-  },
-  {
-    controller: ProjectController,
-    method: 'addSubscriber',
-    target: ProjectResource,
-    dataDependencies: ['project_id', 'user_id'],
-  },
-  {
-    controller: UserController,
-    method: 'pledge',
-    target: UserResource,
-    dataDependencies: ['user_id', 'project_id', 'hours'],
+    dataDependencies: [
+      'access_token',
+      'user_id',
+      'name',
+      'email',
+      'company',
+      'avatar_url',
+      'location',
+      'html_url',
+      'url',
+    ],
   },
 ];
 
