@@ -5,9 +5,9 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-import AuthorizationService from './../../src/services/authorizationService';
-import GithubService from './../../src/services/githubService';
-import UserService from './../../src/services/userService';
+import AuthorizationService from './../../src/services/AuthorizationService';
+import GithubService from './../../src/services/GithubService';
+import UserService from './../../src/services/UserService';
 
 const authorizationService = new AuthorizationService();
 const githubService = new GithubService();

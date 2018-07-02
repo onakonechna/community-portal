@@ -1,4 +1,4 @@
-getLikedProjectsRole:
+pledgeRole:
   Type: AWS::IAM::Role
   Properties:
     AssumeRolePolicyDocument:
@@ -10,14 +10,19 @@ getLikedProjectsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getLikedProjectsRole
+      - PolicyName: pledgeRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:GetItem
-                - dynamodb:Scan
+                - dynamodb:UpdateItem
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_INDEX}"

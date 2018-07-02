@@ -1,6 +1,7 @@
 unlikeProjectRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: unlikeProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

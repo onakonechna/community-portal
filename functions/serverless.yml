@@ -14,6 +14,11 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
+  api:
+    dev: cef6942jo1
+    demo: n51znwfhz0
+    staging: glgyhzbsgj
+    prod: 4juhqxapui
 
 provider:
   name: aws
@@ -21,6 +26,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    API: ${self:custom.api.${self:provider.stage}}
     PROJECTS_TABLE: projects
     PROJECTS_INDEX: projects-index
     USERS_TABLE: users
@@ -57,6 +65,7 @@ functions:
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
   - ${file(./handlers/user/update/unlikeProject/unlikeProject.yml)}
   - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/update/pledge/pledge.yml)}
 
 # Add references to defined tables and roles here before deployment
 resources:
@@ -76,6 +85,7 @@ resources:
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
     unlikeProjectRole: ${file(./handlers/user/update/unlikeProject/role.yml):unlikeProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/get/getLikedProjects/role.yml):getLikedProjectsRole}
+    pledgeRole: ${file(./handlers/user/update/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

@@ -3,10 +3,16 @@ interface ProjectControllerInterface {
   getCards(data: any): (result: any) => any;
   getById(data: any): (result: any) => any;
   edit(data: any): (result: any) => any;
-  updateStatus(data: any): (result: any) => any;
+  updateDisplay(data: any): (result: any) => any;
   upvote(data: any): (result: any) => any;
   downvote(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
+  updateStatus(data: any): (result: any) => any;
+  addUpvoter(data: any): (result: any) => any;
+  removeUpvoter(data: any): (result: any) => any;
+  addPledgedHours(data: any): (result: any) => any;
+  addPledgedHistory(data: any): (result: any) => any;
+  addPledger(data: any): (result: any) => any;
   addSubscriber(data: any): (result: any) => any;
 }
 
@@ -68,7 +74,7 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  updateStatus(data: any) {
+  updateDisplay(data: any) {
     const { project_id } = data;
     return (result: any) => {
       return {
@@ -120,11 +126,42 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
+  // intermediary controllers
+
+  updateStatus(data: any) {
+    // display == true only if status == open after update
+    return (result: any) => {
+      const { status } = result.Attributes;
+      return {
+        display: String(status == 'open'),
+      };
+    };
+  }
+
+  addUpvoter(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  removeUpvoter(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledgedHours(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledgedHistory(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledger(data: any) {
+    return (result: any) => {
+      return {};
+    };
+  }
+
   addSubscriber(data: any) {
     return (result: any) => { return {}; };
   }
 
-  removeSubscriber(data: any) {
-    return (result: any) => { return {}; };
-  }
 }

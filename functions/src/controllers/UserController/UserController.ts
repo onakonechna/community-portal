@@ -4,6 +4,9 @@ interface UserControllerInterface {
   update(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   addUpvotedProject(data: any): (result: any) => any;
+  removeUpvotedProject(data: any): (result: any) => any;
+  pledge(data: any): (result: any) => any;
+  subscribe(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
@@ -76,6 +79,30 @@ export default class UserController implements UserControllerInterface {
         payload: {
           project_id,
           message: 'Project deleted successfully',
+        },
+      };
+    };
+  }
+
+  pledge(data: any) {
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          result,
+          message: 'Pledged successfully',
+        },
+      };
+    };
+  }
+
+  subscribe(data: any) {
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          result,
+          message: 'Subscribed successfully',
         },
       };
     };

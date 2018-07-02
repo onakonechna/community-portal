@@ -56,6 +56,15 @@ const updateProjectStatusSchema = {
   required: ['project_id', 'status'],
 };
 
+const pledgeSchema = {
+  properties: {
+    project_id: { type: 'string' },
+    hours: { type: 'number' },
+  },
+  additionalProperties: false,
+  required: ['project_id', 'hours'],
+};
+
 // Special JSON validation schemas
 const nullSchema = {
   maxProperties: 0,
@@ -74,6 +83,7 @@ const validationSchemas: any = {
   createProjectSchema,
   editProjectSchema,
   updateProjectStatusSchema,
+  pledgeSchema,
   nullSchema,
   projectIdOnlySchema,
 };

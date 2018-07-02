@@ -8,7 +8,7 @@
           "AttributeType": "S"
         },
         {
-          "AttributeName": "status",
+          "AttributeName": "display",
           "AttributeType": "S"
         },
         {
@@ -27,7 +27,7 @@
           "IndexName": "projects-index",
           "KeySchema": [
             {
-               "AttributeName": "status",
+               "AttributeName": "display",
                "KeyType": "HASH"
             },
             {
