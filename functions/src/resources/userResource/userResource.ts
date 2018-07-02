@@ -24,6 +24,15 @@ export default class UserResource implements UserResourceInterface {
   }
 
   create(data: any): Promise<any> {
+    const { user_exists, access_token } = data;
+
+    if (user_exists) {
+      return this.adapter.update(USERS_TABLE, { user_id }, { access_token });
+    }
+
+    delete data['user_exists'];
+    data.pledged_projects = {};
+
     return this.adapter.create(USERS_TABLE, data);
   }
 

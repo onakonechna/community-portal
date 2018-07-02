@@ -46,37 +46,49 @@
 
 import PackageService from './../../../../src/services/PackageService';
 import Endpoint from './../../../../src/Endpoint';
-import { ProjectController, ProjectResource } from './../../../../config/components';
+import { TokenController, TokenAPI } from './../../../../config/components';
 import { UserController, UserResource } from './../../../../config/components';
 
-const endpoint = new Endpoint('/user/pledge', 'post');
+const endpoint = new Endpoint('/authorize', 'post');
 
 const dataflows = [
   {
     controller: TokenController,
     method: 'getGithubToken',
-    target: TokenResource,
+    target: TokenAPI,
     validationMap: { getGithubToken: 'getGithubTokenSchema' },
     storageSpecs: ['access_token'],
   },
   {
     controller: TokenController,
     method: 'getUserDataByToken',
-    target: TokenResource,
+    target: TokenAPI,
     dataDependencies: ['access_token'],
+    storageSpecs: [
+      'user_id',
+      'name',
+      'email',
+      'company',
+      'avatar_url',
+      'location',
+      'html_url',
+      'url',
+    ],
   },
   {
     controller: UserController,
-    method: 'userExists',
+    method: 'checkExistence',
     target: UserResource,
-    methodMap: { userExists: 'getById' },
+    methodMap: { checkExistence: 'getById' },
     dataDependencies: ['user_id'],
+    storageSpecs: ['user_exists'],
   },
   {
     controller: UserController,
     method: 'create',
     target: UserResource,
     dataDependencies: [
+      'user_exists',
       'access_token',
       'user_id',
       'name',

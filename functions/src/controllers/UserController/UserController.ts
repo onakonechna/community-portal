@@ -18,7 +18,7 @@ export default class UserController implements UserControllerInterface {
         status: 200,
         payload: {
           user_id,
-          message: 'User created successfully',
+          message: 'User saved',
         },
       };
     };
@@ -119,7 +119,7 @@ export default class UserController implements UserControllerInterface {
     return (result: any) => { return {}; };
   }
 
-  userExists(data: any) {
+  checkExistence(data: any) {
     return (result: any) => {
       let flag = { user_exists: false };
       if (result.Item) {
