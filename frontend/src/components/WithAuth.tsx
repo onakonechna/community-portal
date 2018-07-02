@@ -2,7 +2,10 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
 import { onSuccess, onFailure } from './HeadBar';
-import { LoadUserAction, UpdateUserRoleAction } from '../actions';
+import { LoadUserAction,
+         UpdateUserRoleAction,
+         getLikedProjectsAction,
+        } from '../actions';
 
 interface WithAuthProps {
   className?: any;
@@ -28,6 +31,7 @@ interface WithAuthStateProps {
 interface WithAuthDispatchProps {
   loadUser?: any;
   updateUserRole?: any;
+  getLikedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
@@ -50,6 +54,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         user={this.props.user}
         loadUser={this.props.loadUser}
         updateUserRole={this.props.updateUserRole}
+        getLikedProjects={this.props.getLikedProjects}
       />;
     }
   }
@@ -61,6 +66,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
 
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
+      getLikedProjects: () => dispatch(getLikedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
     };

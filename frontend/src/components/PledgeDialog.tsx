@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
 import TextField from '@material-ui/core/TextField';
 import { pledgeProjectAction } from '../actions';
@@ -10,7 +11,7 @@ interface PledgeProps {
   classes?: any;
   project?: any;
   open: boolean;
-  toggle?: () => void;
+  toggle: () => void;
 }
 
 interface PledgeDispatchProps {
@@ -19,6 +20,8 @@ interface PledgeDispatchProps {
 
 interface PledgeState {
   hours?: number;
+  success: boolean;
+  loading: boolean;
 }
 
 export interface PledgeBody {
@@ -29,7 +32,11 @@ export interface PledgeBody {
 export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchProps, PledgeState> {
   constructor(props: PledgeProps & PledgeDispatchProps) {
     super(props);
-    this.state = { hours: 0 };
+    this.state = {
+      hours: 0,
+      success: false,
+      loading: false,
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -48,7 +55,25 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
       hours: this.state.hours,
     };
     if (body.hours != null && body.hours !== 0) {
-      this.props.pledgeProject(body);
+      this.props.pledgeProject(body)
+        .then((res: any) => {
+          this.setState((prevState:PledgeState) => ({
+            success: true,
+            loading: false,
+          }), () => {
+            this.props.toggle();
+            this.setState((prevState:PledgeState) => ({
+              hours: 0,
+              success: false,
+            }));
+          });
+        })
+        .catch((err: Error) => {
+          this.setState((prevState:PledgeState) => ({
+            success: false,
+            loading: false,
+          }));
+        });
     }
   }
 
@@ -70,11 +95,12 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.toggle}>
-            Cancel
+            {this.state.success ? 'Done' : 'Cancel'}
           </Button>
           <Button onClick={this.handleSubmit}>
-            Pledge
+            {this.state.success ? 'Pledged' : 'Pledge'}
           </Button>
+          {this.state.loading && <CircularProgress size={24}/>}
         </DialogActions>
       </Dialog>
     );

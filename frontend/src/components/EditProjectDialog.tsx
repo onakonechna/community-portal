@@ -142,7 +142,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
           }));
         });
       })
-      .catch((err: any) => {
+      .catch((err: Error) => {
         this.setState({
           success: false,
           loading: false,
