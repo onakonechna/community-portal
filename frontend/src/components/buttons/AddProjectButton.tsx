@@ -13,6 +13,8 @@ const styles = {
   button: {
     width: '150px',
     float: 'right' as 'right',
+    'font-size': '1rem',
+    'text-transform': 'capitalize',
   },
 };
 

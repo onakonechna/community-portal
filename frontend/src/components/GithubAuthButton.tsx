@@ -42,7 +42,7 @@ const withLogin = (WrappedCompoent: any) => {
       this.handleLogout = this.handleLogout.bind(this);
     }
     public static defaultProps: Partial<GithubAuthButtonProps> = {
-      buttonText: 'LOGIN',
+      buttonText: 'Sign In',
       onFailure: () => { return; },
       onRequest: () => { return; },
       onSuccess: () => { return; },

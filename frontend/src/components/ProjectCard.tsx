@@ -28,7 +28,7 @@ const styles = {
   card: {
     'background-color': '#F2F3F3',
     height: '25rem',
-    width: '25rem',
+    width: '30rem',
     display: 'flex',
     'flex-direction': 'column',
     'justify-content': 'space-between',

@@ -2,11 +2,17 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { loadProjects } from '../actions';
+import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
 
 import Grid from '@material-ui/core/Grid';
 
 const projectsData = require('../data/projects.json');
+
+const styles = {
+  margin: '0 auto',
+  width: '90%',
+};
 
 interface GridStateProps {
   projects: any;
@@ -72,12 +78,14 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   render() {
     return (
       <div style={{ padding: '40px 80px' }}>
+      <IntroText />
         <Grid
           container
           direction="row"
           justify-content="center"
           alignItems="flex-start"
           spacing={32}
+          style={styles}
         >
           {this.props.projects && this.props.projects.map((project: any) => (
             <Grid item key={project.project_id}>

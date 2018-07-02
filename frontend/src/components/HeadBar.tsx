@@ -26,19 +26,22 @@ const Login = withAuth(['guest'])(withLogin(LoginButton));
 const Avatar = withAuth(['user'])(UserAvatar);
 
 const styles = {
-  logo: {
+  appBar: {
+    width: '95%',
+    margin: '0 auto',
+    'box-shadow': 'none',
   },
 };
 
 const HeadBar = (props: any) => {
   const { classes } = props;
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar className={classes.appBar} position="static" color="secondary">
       <Toolbar>
         <IconButton color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
-        <img className={classes.logo} src={Logo} width={411} height={57} />
+        <img className={classes.logo} src={Logo} width={500} height={80} />
         <AddProject className={classes.addButton} />
         <Login
           clientId="668e0b6c450cc783f267" // Github auth application client_id
