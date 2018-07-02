@@ -31,7 +31,8 @@ const terminate = (error: Error) => {
 interface DataflowDefinition {
   controller: any; // class to instantiate from
   method: string;
-  target: any; // class to instantiate from (resource for now)
+  target: any; // class to instantiate from
+  targetType: string; // resource (default) | api
   dataDependencies?: string[];
   authDataDependencies?: string[];
   validationMap?: any;
@@ -72,7 +73,17 @@ export default class PackageService {
 
   addDataflow(dataflowDefinition: DataflowDefinition) {
     const controller = this.createController(dataflowDefinition.controller);
-    const target = this.createResource(dataflowDefinition.target);
+    let target: any;
+
+    switch (dataflowDefinition.targetType) {
+      case undefined:
+      case 'resource':
+        target = this.createResource(dataflowDefinition.target);
+      case 'api':
+        target = this.createAPI(dataflowDefinition.target);
+      default:
+        throw `Target type ${dataflowDefinition.targetType} is not supported`;
+    }
 
     // by default, the targetMethod has the same name as the controllerMethod
     // if methodMap is not provided
@@ -125,6 +136,10 @@ export default class PackageService {
 
   createResource(Resource: any) {
     return new Resource(new DatabaseConnection());
+  }
+
+  createAPI(API: any) {
+    return new API();
   }
 
   executeDataflows(resolve: any, reject: any) {
