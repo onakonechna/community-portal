@@ -235,13 +235,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }
   }
 
-  // checkLikeStatus() {
-    // const { project_id } = this.props.project;
-    // call redux action to trigger getLikedProject API
-    // map a list of id of the projectList and check if that list contains this project's id
-    // if yes, set local liked state to true, otherwise false
-  // }
-
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;

@@ -22,7 +22,6 @@ interface GridProps {
   project?: {};
   user?: any;
   loadProjects: () => void;
-  // getLikedProjectsAction?: any;
   handler?: () => void;
 }
 
@@ -110,7 +109,6 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     loadProjects: () => dispatch(loadProjects()),
-    // getLikedProjectsAction: () => dispatch(getLikedProjectsAction()),
   };
 };
 
