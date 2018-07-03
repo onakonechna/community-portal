@@ -46,15 +46,40 @@ const styles = {
     margin: '1.5rem 1rem 1rem 0',
     borderRadius: '5px',
   },
+  contributorText: {
+    'font-size': '1rem',
+    'font-weight': '300',
+    'margin-left': 'auto',
+  },
   description: {
     'max-width': '24rem',
     'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
   },
+  estimatedText: {
+    'font-weight': '200',
+  },
   progress: {
-    'margin-left': 'auto',
     color: '#48BF61',
+    colorSecondary: '#FF0000',
+  },
+  progressText: {
+    position: 'absolute' as 'absolute',
+    margin: 'auto',
+    width: '80%',
+    left: '0',
+    right: '0',
+    top: '0',
+    bottom: '0',
+    height: '40%',
+    'text-align': 'center',
+    'font-weight': '400',
+    'font-size': '1rem',
+  },
+  progressDiv: {
+    'margin-left': 'auto',
+    position: 'relative' as 'relative',
   },
   row: {
     display: 'flex',
@@ -84,9 +109,10 @@ interface CardProps {
     size?: string,
     tags: [string],
     technologies: [string],
-    pledgers?: [{
-      name?: string,
-      pledge?: number,
+    pledgers: [{
+      type: string,
+      values: any[],
+      wrappedName: string,
     }],
     contributors?: [{
       name?: string,
@@ -116,11 +142,6 @@ interface CardState {
   liked: boolean;
 }
 
-// function getPercentage(pledged: number, estimated: number) {
-//   if (!pledged || !estimated || pledged === 0) { return 1; }
-//   return (pledged / estimated) * 100;
-// }
-
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'])(EditButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
@@ -140,9 +161,36 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 
   calculateOpenTime(timestamp: number) {
-    const now = +new Date();
-    const dateDifference = ((now - timestamp) / 1000) / (3600 * 24);
-    return Math.floor(dateDifference);
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0);
+    const midnightStamp = +midnight;
+    const dateDifference = Math.floor(((midnightStamp - timestamp) / 1000) / (3600 * 24));
+    switch (dateDifference) {
+      case -1:
+        return 'Opened today';
+      case 0:
+        return 'Opened yesterday';
+      default:
+        return `Opened ${dateDifference + 1} days ago`;
+    }
+  }
+
+  countContributors(project: any) {
+    const numOfPledgers = project.pledgers ? project.pledgers.values.length : 0;
+    switch (numOfPledgers) {
+      case 0:
+        return 'No contributors yet';
+      case 1:
+        return '1 Contributor';
+      default:
+        return `${numOfPledgers} Contributors`;
+    }
+  }
+
+  getPercentage() {
+    const { estimated, pledged } = this.props.project;
+    if (!pledged || !estimated || pledged === 0) { return 0; }
+    return (pledged / estimated) * 100;
   }
 
   toggleEdit() {
@@ -212,19 +260,28 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.row}>
               <div className={classes.sidebar}>
                 <Typography className={classes.smallText}>
-                  Opened {openedFor} days ago
+                  {openedFor}
                 </Typography>
                 <Typography className={classes.smallText}>
                   Size: {this.props.project.size}
                 </Typography>
               </div>
-              <CircularProgress
-                className={classes.progress}
-                variant="determinate"
-                size={80}
-                value={80}
-                // value={getPercentage(this.props.project.pledged!, this.props.project.estimated!)}
-              />
+              <div className={classes.progressDiv}>
+                <CircularProgress
+                  className={classes.progress}
+                  variant="determinate"
+                  size={90}
+                  value={this.getPercentage()}
+                />
+                <Typography className={classes.progressText}>
+                  {`${this.props.project.pledged}/`}
+                  <label className={classes.estimatedText}>{`${this.props.project.estimated}\n`}</label>
+                  <label>hours</label>
+                </Typography>
+              </div>
+            </div>
+            <div>
+              <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
             </div>
           </CardContent>
           <CardActions>
