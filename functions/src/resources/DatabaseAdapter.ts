@@ -68,7 +68,6 @@ export default class DatabaseAdapter implements AdapterInterface {
       Limit: limit,
       ProjectionExpression: projectionExpression,
     };
-    console.log(params);
     return this.db.query(params).promise();
 
   }

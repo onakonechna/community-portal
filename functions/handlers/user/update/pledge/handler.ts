@@ -22,8 +22,9 @@ const dataflows = [
   // we want to get the avatar url
   {
     controller: UserController,
-    method: 'getById',
+    method: 'storeAvatarUrl',
     target: UserResource,
+    methodMap: { storeAvatarUrl: 'getById' },
     dataDependencies: ['user_id'],
     storageSpecs: ['avatar_url'],
   },

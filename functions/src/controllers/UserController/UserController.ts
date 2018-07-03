@@ -34,7 +34,6 @@ export default class UserController implements UserControllerInterface {
   }
 
   getById(data: any) {
-    const { project_id } = data;
     return (result: any) => {
       if (result.Item) {
         return {
@@ -50,12 +49,12 @@ export default class UserController implements UserControllerInterface {
   }
 
   update(data: any) {
-    const { project_id } = data;
+    const { user_id } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
-          project_id,
+          user_id,
           message: 'User updated successfully',
         },
       };
@@ -82,12 +81,12 @@ export default class UserController implements UserControllerInterface {
   }
 
   delete(data: any) {
-    const { project_id } = data;
+    const { user_id } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
-          project_id,
+          user_id,
           message: 'Project deleted successfully',
         },
       };
@@ -136,6 +135,16 @@ export default class UserController implements UserControllerInterface {
       }
       return flag;
     }
+  }
+
+  storeAvatarUrl(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { avatar_url } = result.Item;
+        return { avatar_url };
+      }
+      throw 'User not found. Attempt to retrieve user avatar_url failed';
+    };
   }
 
 }
