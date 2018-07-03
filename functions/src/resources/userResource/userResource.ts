@@ -30,11 +30,10 @@ export default class UserResource implements UserResourceInterface {
       return this.adapter.update(USERS_TABLE, { user_id }, { access_token });
     }
 
-    let data_copy = Object.assign({}, data);
-    delete data_copy['user_exists'];
-    data_copy.pledged_projects = {};
+    delete data['user_exists'];
+    data.pledged_projects = {};
 
-    return this.adapter.create(USERS_TABLE, data_copy);
+    return this.adapter.create(USERS_TABLE, data);
   }
 
   getById(data: any): Promise<any> {
@@ -43,11 +42,9 @@ export default class UserResource implements UserResourceInterface {
 
   update(data: any): Promise<any> {
     const { user_id } = data;
+    delete data['user_id'];
 
-    let data_copy = Object.assign({}, data);
-    delete data_copy['user_id'];
-
-    return this.adapter.update(USERS_TABLE, { user_id }, data_copy);
+    return this.adapter.update(USERS_TABLE, { user_id }, data);
   }
 
   addUpvotedProject(data: any): Promise<any> {

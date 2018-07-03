@@ -202,7 +202,7 @@ export default class PackageService {
       });
       return _.pick(this.dataStore, dataflow.dataDependencies);
     } else {
-      return {};
+      return Object.assign({}, this.dataStore);
     }
   }
 

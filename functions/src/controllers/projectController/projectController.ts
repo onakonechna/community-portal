@@ -46,7 +46,6 @@ export default class ProjectController implements ProjectControllerInterface {
   }
 
   getById(data: any) {
-    const { project_id } = data;
     return (result: any) => {
       if (result.Item) {
         return {
@@ -162,6 +161,18 @@ export default class ProjectController implements ProjectControllerInterface {
 
   addSubscriber(data: any) {
     return (result: any) => { return {}; };
+  }
+
+  // check if user is owner of project
+  checkOwner(data: any) {
+    const { user_id } = data;
+    return (result: any) => {
+      let flag = { is_owner: false };
+      if (result.Item && result.Item.owner === user_id) {
+        flag.is_owner = true;
+      }
+      return flag;
+    };
   }
 
 }
