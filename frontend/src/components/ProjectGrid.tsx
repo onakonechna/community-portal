@@ -62,9 +62,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 
   checkLike(id: string) {
-    return this.props.user.likedProjects.length > 0
-      ? this.props.user.likedProjects.filter((p: string) => p === id) > 0
-      : false;
+    return this.props.user.likedProjects.indexOf(id) !== -1;
   }
 
   updateGrid() {

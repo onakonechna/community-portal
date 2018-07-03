@@ -6,9 +6,9 @@ import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
 import EditButton from './buttons/EditButton';
-import PledgeButton from './buttons/PledgeButton';
-
 import LikeProjectButton from './buttons/LikeProjectButton';
+import PledgeButton from './buttons/PledgeButton';
+import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -46,10 +46,14 @@ const styles = {
     margin: '1.5rem 1rem 1rem 0',
     borderRadius: '5px',
   },
+  contributorDiv: {
+    display: 'flex',
+  },
   contributorText: {
     'font-size': '1rem',
     'font-weight': '300',
-    'margin-left': 'auto',
+    'margin-left': '2rem',
+    'margin-top': 'auto',
   },
   description: {
     'max-width': '24rem',
@@ -157,11 +161,17 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.state = {
       editOpen: false,
       pledgeOpen: false,
-      liked: false,
+      liked: this.props.liked,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps:any) {
+    this.setState({
+      liked: nextProps.liked,
+    });
   }
 
   calculateOpenTime(timestamp: number) {
@@ -180,7 +190,8 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 
   countContributors(project: any) {
-    const numOfPledgers = project.pledgers ? project.pledgers.values.length : 0;
+    const contributors = Object.keys(project.pledgers);
+    const numOfPledgers = contributors.length;
     switch (numOfPledgers) {
       case 0:
         return 'No contributors yet';
@@ -233,6 +244,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 
   render() {
     const { classes } = this.props;
+    const { pledgers } = this.props.project;
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
@@ -284,7 +296,12 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 </Typography>
               </div>
             </div>
-            <div>
+            <div className={classes.contributorDiv}>
+              {Object.keys(pledgers).length > 0
+                ? Object.keys(pledgers).map(pledger => (
+                  <ContributorAvatar key={pledger} avatar_url={pledgers[pledger].avatar_url} />
+                ))
+                : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
             </div>
           </CardContent>

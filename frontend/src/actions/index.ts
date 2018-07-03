@@ -103,8 +103,11 @@ export const getLikedProjectsAction: (any) = () => {
   return (dispatch: Dispatch) => {
     return getLikedProjects()
     .then((res:any) => {
-      const projects = res[1] || [];
-      dispatch(loadLikedProjectsAction(projects));
+      let projects;
+      if (res['upvoted_projects']) {
+        projects = res['upvoted_projects'] || [];
+        dispatch(loadLikedProjectsAction(projects));
+      }
     })
     .catch((err: Error) => console.error(err));
   };
