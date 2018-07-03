@@ -1,4 +1,4 @@
-import * as axios from 'axios';
+import axios from 'axios';
 
 interface TokenAPIInterface {
   getGithubToken(data: any): Promise<any>;

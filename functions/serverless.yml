@@ -15,7 +15,7 @@ custom:
       - getProjectCards
       - getProjectDetails
   api:
-    dev: cef6942jo1
+    dev: iq0sxk313f
     demo: n51znwfhz0
     staging: glgyhzbsgj
     prod: 4juhqxapui
