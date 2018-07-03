@@ -110,7 +110,7 @@ describe('authorize endpoint', () => {
   it('should create user and return JWT token', () => {
     expect.assertions(1);
 
-    return tokenAuthorize('8b12d4663e5a454c7242')
+    return tokenAuthorize('ceee573a0387d876417e')
       .then((response) => {
         console.log(response.data);
       });
@@ -119,13 +119,13 @@ describe('authorize endpoint', () => {
 
 // describe('createProject endpoint', () => {
 //   it('should create multiple projects with fixture data via token authorization', () => {
-//     expect.assertions(promises.length);
-//
 //     let promises = [];
 //
 //     for (let i = 0; i < projects.length; i++){
 //       promises.push(putProject(projects[i]));
 //     }
+//
+//     expect.assertions(promises.length);
 //
 //     return Promise.all(promises).then((responses) => {
 //       const results = responses.map(response => response.data);

@@ -1,3 +1,7 @@
+import AuthorizationService from './../../services/AuthorizationService';
+
+const authroizationService = new AuthorizationService();
+
 interface UserControllerInterface {
   create(data: any): (result: any) => any;
   getById(data: any): (result: any) => any;
@@ -12,6 +16,10 @@ interface UserControllerInterface {
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
+    let data_copy = Object.assign({}, data);
+    delete data_copy['user_exists'];
+    delete data_copy['access_token'];
+
     const { user_id } = data;
     return (result: any) => {
       return {
@@ -19,6 +27,7 @@ export default class UserController implements UserControllerInterface {
         payload: {
           user_id,
           message: 'User saved',
+          token: authroizationService.create(data_copy),
         },
       };
     };
