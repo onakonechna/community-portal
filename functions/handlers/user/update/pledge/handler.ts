@@ -19,11 +19,21 @@ const dataflows = [
     target: ProjectResource,
     dataDependencies: ['project_id', 'hours'],
   },
+  // we want to get the avatar url
+  {
+    controller: UserController,
+    method: 'storeAvatarUrl',
+    target: UserResource,
+    methodMap: { storeAvatarUrl: 'getById' },
+    dataDependencies: ['user_id'],
+    storageSpecs: ['avatar_url'],
+  },
+  // save both user_id and avartar_url in the list of pledgers
   {
     controller: ProjectController,
     method: 'addPledger',
     target: ProjectResource,
-    dataDependencies: ['project_id', 'user_id'],
+    dataDependencies: ['project_id', 'user_id', 'avatar_url'],
   },
   {
     controller: UserController,

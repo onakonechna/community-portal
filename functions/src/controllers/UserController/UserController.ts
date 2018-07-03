@@ -1,3 +1,7 @@
+import AuthorizationService from './../../services/AuthorizationService';
+
+const authroizationService = new AuthorizationService();
+
 interface UserControllerInterface {
   create(data: any): (result: any) => any;
   getById(data: any): (result: any) => any;
@@ -7,24 +11,29 @@ interface UserControllerInterface {
   removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
+  checkExistence(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
+    let data_copy = Object.assign({}, data);
+    delete data_copy['user_exists'];
+    delete data_copy['access_token'];
+
     const { user_id } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
           user_id,
-          message: 'User created successfully',
+          message: 'User saved',
+          token: authroizationService.create(data_copy),
         },
       };
     };
   }
 
   getById(data: any) {
-    const { project_id } = data;
     return (result: any) => {
       if (result.Item) {
         return {
@@ -40,12 +49,12 @@ export default class UserController implements UserControllerInterface {
   }
 
   update(data: any) {
-    const { project_id } = data;
+    const { user_id } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
-          project_id,
+          user_id,
           message: 'User updated successfully',
         },
       };
@@ -72,12 +81,12 @@ export default class UserController implements UserControllerInterface {
   }
 
   delete(data: any) {
-    const { project_id } = data;
+    const { user_id } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
-          project_id,
+          user_id,
           message: 'Project deleted successfully',
         },
       };
@@ -117,4 +126,25 @@ export default class UserController implements UserControllerInterface {
   removeUpvotedProject(data: any) {
     return (result: any) => { return {}; };
   }
+
+  checkExistence(data: any) {
+    return (result: any) => {
+      let flag = { user_exists: false };
+      if (result.Item) {
+        flag.user_exists = true;
+      }
+      return flag;
+    }
+  }
+
+  storeAvatarUrl(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { avatar_url } = result.Item;
+        return { avatar_url };
+      }
+      throw 'User not found. Attempt to retrieve user avatar_url failed';
+    };
+  }
+
 }

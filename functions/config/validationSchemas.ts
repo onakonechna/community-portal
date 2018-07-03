@@ -1,4 +1,12 @@
 // API-endpoint-related JSON validation schemas
+const getGithubTokenSchema = {
+  properties: {
+    code: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['code'],
+};
+
 const createProjectSchema = {
   properties: {
     project_id: { type: 'string' },
@@ -79,7 +87,8 @@ const projectIdOnlySchema = {
 };
 
 // Put all schemas together
-const validationSchemas: any = {
+const ValidationSchemas: any = {
+  getGithubTokenSchema,
   createProjectSchema,
   editProjectSchema,
   updateProjectStatusSchema,
@@ -88,4 +97,4 @@ const validationSchemas: any = {
   projectIdOnlySchema,
 };
 
-export default validationSchemas;
+export default ValidationSchemas;

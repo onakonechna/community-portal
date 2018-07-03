@@ -11,11 +11,15 @@ interface ProjectResourceInterface {
   getById(data: any): Promise<any>;
   edit(data: any): Promise<any>;
   updateStatus(data: any): Promise<any>;
+  updateDisplay(data: any): Promise<any>;
   addUpvoter(data: any): Promise<any>;
+  addPledger(data: any): Promise<any>;
+  addSubscriber(data: any): Promise<any>;
   removeUpvoter(data: any): Promise<any>;
   upvote(data: any): Promise<any>;
   downvote(data: any): Promise<any>;
   addPledgedHours(data: any): Promise<any>;
+  addPledgedHistory(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -40,6 +44,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.updated = unixTimestamp;
     data.pledged = 0;
     data.completed = 0;
+    data.pledgers = {};
     data.pledged_history = {};
     data.completed_history = {};
 
@@ -57,12 +62,14 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   getById(data: any): Promise<any> {
-    return this.adapter.getById(PROJECTS_TABLE, data);
+    const { project_id } = data;
+    return this.adapter.getById(PROJECTS_TABLE, { project_id });
   }
 
   edit(data: any): Promise<any> {
     const { project_id } = data;
     delete data['project_id'];
+    delete data['is_owner'];
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }
@@ -83,8 +90,9 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   addPledger(data: any): Promise<any> {
-    const { project_id, user_id } = data;
-    return this.adapter.addToSet(PROJECTS_TABLE, { project_id }, 'pledgers', user_id);
+    const { project_id, user_id, avatar_url } = data;
+    const pledger_details = { avatar_url };
+    return this.adapter.addToMap(PROJECTS_TABLE, { project_id }, 'pledgers', user_id, pledger_details);
   }
 
   addSubscriber(data: any): Promise<any> {
@@ -98,11 +106,13 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   upvote(data: any): Promise<any> {
-    return this.adapter.add(PROJECTS_TABLE, data, 'upvotes', 1);
+    const { project_id } = data;
+    return this.adapter.add(PROJECTS_TABLE, { project_id }, 'upvotes', 1);
   }
 
   downvote(data: any): Promise<any> {
-    return this.adapter.add(PROJECTS_TABLE, data, 'upvotes', -1);
+    const { project_id } = data;
+    return this.adapter.add(PROJECTS_TABLE, { project_id }, 'upvotes', -1);
   }
 
   addPledgedHours(data: any): Promise<any> {
@@ -118,6 +128,7 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   delete(data: any): Promise<any> {
-    return this.adapter.delete(PROJECTS_TABLE, data);
+    const { project_id } = data;
+    return this.adapter.delete(PROJECTS_TABLE, { project_id });
   }
 }

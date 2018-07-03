@@ -7,9 +7,17 @@ const endpoint = new Endpoint('/project', 'put');
 const dataflows = [
   {
     controller: ProjectController,
+    method: 'checkOwner',
+    target: ProjectResource,
+    methodMap: { checkOwner: 'getById' },
+    validationMap: { checkOwner: 'editProjectSchema' },
+    authDataDependencies: ['user_id'],
+    storageSpecs: ['is_owner'],
+  },
+  {
+    controller: ProjectController,
     method: 'edit',
     target: ProjectResource,
-    validationMap: { edit: 'editProjectSchema' },
   },
 ];
 
