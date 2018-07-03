@@ -18,7 +18,6 @@ interface LikeProjectProps {
 
 const styles = {
   likeButton: {
-    'margin-left': 'auto',
     width: '2rem',
   },
 };
@@ -31,7 +30,7 @@ const LikeProjectButton = (props: LikeProjectProps) => {
       className={classes.likeButton}
       onClick={props.handler}>
       <Favorite
-        style={{ color: props.liked ? '#FF2B00' : 'gray' }}
+        style={{ color: props.liked ? '#FF2B00' : '#27A2AA' }}
       />
     </IconButton>
   );

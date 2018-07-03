@@ -4,9 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   header: {
-    'font-weight': '700',
-    'font-size': '2.5rem',
-    margin: '0 0 0.5rem 4rem',
+    'font-family': 'system-ui',
+    'font-weight': '500',
+    'font-size': '3.5rem',
+    margin: '0.5rem 0 1rem 5rem',
   },
   subheader: {
     margin: '0 0 4rem 8rem',
@@ -20,13 +21,13 @@ const styles = {
     margin: '1rem 0',
     'font-weight': '500',
     'text-align': 'center',
-    'font-size': '1.5rem',
+    'font-size': '2rem',
   },
   subtext: {
     'margin-bottom': '3rem',
     'font-weight': '300',
     'text-align': 'center',
-    'font-size': '1rem',
+    'font-size': '1.2rem',
   },
 };
 
@@ -34,7 +35,7 @@ const IntroText = (props: any) => {
   const { classes } = props;
   return (
     <div>
-      <Typography className={classes.header}>Shape the future of Magento</Typography>
+      <Typography style={{ opacity: 0.9 }} className={classes.header}>Shape the future of Magento</Typography>
       <Typography className={classes.subheader}>
         Join thousands of community developers{'\n'}
         working on different projects

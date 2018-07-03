@@ -8,6 +8,7 @@ export default function editButton(props:any) {
     <IconButton
       aria-label="Edit"
       onClick={props.handler}
+      style={{ color: '#27A2AA' }}
     >
       <Edit />
     </IconButton>
