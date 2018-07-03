@@ -79,8 +79,10 @@ export default class PackageService {
       case undefined:
       case 'resource':
         target = this.createResource(dataflowDefinition.target);
+        break;
       case 'api':
         target = this.createAPI(dataflowDefinition.target);
+        break;
       default:
         throw `Target type ${dataflowDefinition.targetType} is not supported`;
     }

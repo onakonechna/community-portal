@@ -1,4 +1,4 @@
-import * as axios from 'axios';
+import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 
 const yaml = require('js-yaml');
@@ -16,7 +16,7 @@ const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' });
 
-// const hostAddr = 'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+// const hostAddr = 'https://iq0sxk313f.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
 
 function getProjectCards(){
@@ -92,84 +92,109 @@ function updateProjectStatus(project_id, status){
   return axios(likeProjectOptions);
 }
 
-let promises = [];
+function tokenAuthorize(code){
+  const options = {
+    method: 'POST',
+    url: hostAddr + '/authorize'
+    data: { code },
+  }
 
-for (let i = 0; i < projects.length; i++){
-  promises.push(putProject(projects[i]));
+  return axios(options);
 }
 
-describe('createProject endpoint', () => {
-  it('should create multiple projects with fixture data via token authorization', () => {
-    expect.assertions(promises.length);
+///////////
+// Tests //
+///////////
 
-    return Promise.all(promises).then((responses) => {
-      const results = responses.map(response => response.data);
-      for (let i = 0; i < promises.length; i++){
-          expect(results[i].message).toBe('Project created successfully');
-      }
-    });
-  });
-});
-
-describe('getProjectCards endpoint', () => {
-  it('should upvote project', () => {
+describe('authorize endpoint', () => {
+  it('should create user and return JWT token', () => {
     expect.assertions(1);
 
-    return likeProject('test21')
+    return tokenAuthorize('88e7b2eb1cf5b3f09e3e')
       .then((response) => {
-        expect(response.data.message).toBe('Project upvoted successfully');
-      });
-  });
-
-  it('should get open projects sorted by upvotes', () => {
-    expect.assertions(1);
-
-    return getProjectCards()
-      .then((response) => {
-        expect(response.data[0].project_id).toBe('test21');
-      });
-  });
-
-  it('should change the status of test21 to closed', () => {
-    expect.assertions(1);
-
-    return updateProjectStatus('test21', 'closed')
-      .then((response) => {
-        expect(response.data.message).toBe('Project status updated successfully');
-      });
-  });
-
-  it('should not display test21 in the project cards', () => {
-    expect.assertions(1);
-
-    return getProjectCards()
-      .then((response) => {
-        expect(response.data[0].project_id).not.toBe('test21');
+        expect(response.data.access_token).toBe('some value');
       });
   });
 });
 
-describe('editProject endpoint', () => {
-  it('should edit project details', () => {
-    expect.assertions(1);
-
-    return editProject(test21EditData)
-      .then((response) => {
-        expect(response.data.message).toBe('Project edited successfully');
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  });
-});
-
-describe('getProjectDetails endpoint', () => {
-  it('should get project details', () => {
-    expect.assertions(2);
-
-    return getProjectDetails('test21')
-      .then((response) => {
-        expect(response.data.status).toBe('closed');
-        expect(response.data.description).toBe('edited');
-      });
-});
+// describe('createProject endpoint', () => {
+//   it('should create multiple projects with fixture data via token authorization', () => {
+//     expect.assertions(promises.length);
+//
+//     let promises = [];
+//
+//     for (let i = 0; i < projects.length; i++){
+//       promises.push(putProject(projects[i]));
+//     }
+//
+//     return Promise.all(promises).then((responses) => {
+//       const results = responses.map(response => response.data);
+//       for (let i = 0; i < promises.length; i++){
+//           expect(results[i].message).toBe('Project created successfully');
+//       }
+//     });
+//   });
+// });
+//
+// describe('getProjectCards endpoint', () => {
+//   it('should upvote project', () => {
+//     expect.assertions(1);
+//
+//     return likeProject('test21')
+//       .then((response) => {
+//         expect(response.data.message).toBe('Project upvoted successfully');
+//       });
+//   });
+//
+//   it('should get open projects sorted by upvotes', () => {
+//     expect.assertions(1);
+//
+//     return getProjectCards()
+//       .then((response) => {
+//         expect(response.data[0].project_id).toBe('test21');
+//       });
+//   });
+//
+//   it('should change the status of test21 to closed', () => {
+//     expect.assertions(1);
+//
+//     return updateProjectStatus('test21', 'closed')
+//       .then((response) => {
+//         expect(response.data.message).toBe('Project status updated successfully');
+//       });
+//   });
+//
+//   it('should not display test21 in the project cards', () => {
+//     expect.assertions(1);
+//
+//     return getProjectCards()
+//       .then((response) => {
+//         expect(response.data[0].project_id).not.toBe('test21');
+//       });
+//   });
+// });
+//
+// describe('editProject endpoint', () => {
+//   it('should edit project details', () => {
+//     expect.assertions(1);
+//
+//     return editProject(test21EditData)
+//       .then((response) => {
+//         expect(response.data.message).toBe('Project edited successfully');
+//       })
+//       .catch((error) => {
+//         console.log(error.response);
+//       });
+//   });
+// });
+//
+// describe('getProjectDetails endpoint', () => {
+//   it('should get project details', () => {
+//     expect.assertions(2);
+//
+//     return getProjectDetails('test21')
+//       .then((response) => {
+//         expect(response.data.status).toBe('closed');
+//         expect(response.data.description).toBe('edited');
+//       });
+// });

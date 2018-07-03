@@ -2,9 +2,9 @@
 const getGithubTokenSchema = {
   properties: {
     code: { type: 'string' },
-    additionalProperties: false,
-    required: ['code'],
-  }
+  },
+  additionalProperties: false,
+  required: ['code'],
 };
 
 const createProjectSchema = {
