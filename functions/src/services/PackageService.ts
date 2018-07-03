@@ -195,6 +195,8 @@ export default class PackageService {
     if (dataflow.dataDependencies !== undefined && dataflow.dataDependencies.length > 0) {
       dataflow.dataDependencies.forEach((field: string) => {
         if (!(field in this.dataStore)) {
+          console.log('Logging intermediate data store between data flows..');
+          console.log(this.dataStore);
           throw `PackageService Error: ${field} is expected but cannot be found in the data store`
         }
       });

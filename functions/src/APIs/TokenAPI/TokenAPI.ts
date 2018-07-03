@@ -25,9 +25,9 @@ export default class TokenAPI implements TokenAPIInterface {
   getUserDataByToken(data: any) {
     const { access_token } = data;
     const options = {
-      method: 'POST',
+      method: 'GET',
       url: 'https://api.github.com/user',
-      data: { access_token },
+      params: { access_token },
       headers: { 'User-Agent': 'community-portal-app' },
     };
 
