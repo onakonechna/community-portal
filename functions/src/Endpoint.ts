@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response } from './../config/types';
+import { Request, Response } from './../config/Types';
 
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';

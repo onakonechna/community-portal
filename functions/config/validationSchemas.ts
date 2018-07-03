@@ -4,7 +4,8 @@ const getGithubTokenSchema = {
     code: { type: 'string' },
     additionalProperties: false,
     required: ['code'],
-}
+  }
+};
 
 const createProjectSchema = {
   properties: {
@@ -86,7 +87,7 @@ const projectIdOnlySchema = {
 };
 
 // Put all schemas together
-const validationSchemas: any = {
+const ValidationSchemas: any = {
   getGithubTokenSchema,
   createProjectSchema,
   editProjectSchema,
@@ -96,4 +97,4 @@ const validationSchemas: any = {
   projectIdOnlySchema,
 };
 
-export default validationSchemas;
+export default ValidationSchemas;

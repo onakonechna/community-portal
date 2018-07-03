@@ -7,7 +7,7 @@ interface UserControllerInterface {
   removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
-  userExists(data: any): (result: any) => any;
+  checkExistence(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {

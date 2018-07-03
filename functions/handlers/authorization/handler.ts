@@ -44,10 +44,10 @@
 //
 // module.exports.handler = serverless(app);
 
-import PackageService from './../../../../src/services/PackageService';
-import Endpoint from './../../../../src/Endpoint';
-import { TokenController, TokenAPI } from './../../../../config/components';
-import { UserController, UserResource } from './../../../../config/components';
+import PackageService from './../../src/services/PackageService';
+import Endpoint from './../../src/Endpoint';
+import { TokenController, TokenAPI } from './../../config/components';
+import { UserController, UserResource } from './../../config/components';
 
 const endpoint = new Endpoint('/authorize', 'post');
 
@@ -56,6 +56,7 @@ const dataflows = [
     controller: TokenController,
     method: 'getGithubToken',
     target: TokenAPI,
+    targetType: 'api',
     validationMap: { getGithubToken: 'getGithubTokenSchema' },
     storageSpecs: ['access_token'],
   },
@@ -63,6 +64,7 @@ const dataflows = [
     controller: TokenController,
     method: 'getUserDataByToken',
     target: TokenAPI,
+    targetType: 'api',
     dataDependencies: ['access_token'],
     storageSpecs: [
       'user_id',
@@ -89,8 +91,8 @@ const dataflows = [
     target: UserResource,
     dataDependencies: [
       'user_exists',
-      'access_token',
       'user_id',
+      'access_token',
       'name',
       'email',
       'company',
