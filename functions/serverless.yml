@@ -67,9 +67,20 @@ functions:
   - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/update/pledge/pledge.yml)}
 
-# Add references to defined tables and roles here before deployment
 resources:
   Resources:
+    # Allow CORS headers for custom authorizer
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    # Add references to defined tables and roles here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
