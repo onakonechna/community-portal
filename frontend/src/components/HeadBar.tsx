@@ -25,13 +25,20 @@ const AddProject = withAuth(['user', 'owner'])(AddProjectDialog);
 const Login = withAuth(['guest'])(withLogin(LoginButton));
 const Avatar = withAuth(['user'])(UserAvatar);
 
-const styles = {
+const styles = (theme:any) => ({
   appBar: {
     width: '95%',
     margin: '0 auto',
     'box-shadow': 'none',
   },
-};
+  logo: {
+    width: '50%',
+    height: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+});
 
 const HeadBar = (props: any) => {
   const { classes } = props;
@@ -41,7 +48,7 @@ const HeadBar = (props: any) => {
         <IconButton color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
-        <img className={classes.logo} src={Logo} width={500} height={80} />
+        <img className={classes.logo} src={Logo} />
         <AddProject className={classes.addButton} />
         <Login
           clientId="668e0b6c450cc783f267" // Github auth application client_id

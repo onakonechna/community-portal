@@ -21,14 +21,22 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = {
+const styles = (theme:any) => ({
   avatar: {
     margin: 10,
   },
   card: {
     'background-color': '#F2F3F3',
     height: '25rem',
-    width: '30rem',
+    [theme.breakpoints.down('md')]: {
+      width: '20rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '25rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '30rem',
+    },
     display: 'flex',
     'flex-direction': 'column',
     'justify-content': 'space-between',
@@ -102,7 +110,7 @@ const styles = {
     'font-size': '1rem',
     color: '#27A2AA',
   },
-};
+});
 
 interface CardProps {
   project: {

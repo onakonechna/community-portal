@@ -11,7 +11,7 @@ const projectsData = require('../data/projects.json');
 
 const styles = {
   margin: '0 auto',
-  width: '90%',
+  justifyContent: 'center',
 };
 
 interface GridStateProps {
@@ -74,13 +74,11 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 
   render() {
     return (
-      <div style={{ padding: '40px 80px' }}>
+      <div style={{ padding: '40px' }}>
       <IntroText />
         <Grid
           container
           direction="row"
-          justify-content="center"
-          alignItems="flex-start"
           spacing={32}
           style={styles}
         >
