@@ -50,6 +50,11 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   }
 
   handleSubmit(event:any) {
+    const { pledged, estimated } = this.props.project;
+    if (pledged + this.state.hours > estimated) {
+      alert('That\'s beyond the expectation!');
+      return;
+    }
     const body = {
       project_id: this.props.project.project_id,
       hours: this.state.hours,

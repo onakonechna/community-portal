@@ -104,7 +104,6 @@ export const getLikedProjectsAction: (any) = () => {
   return (dispatch: Dispatch) => {
     return getLikedProjects()
     .then((res:any) => {
-      console.log(res);
       let projects;
       if (res['upvoted_projects']) {
         projects = res['upvoted_projects'] || [];
