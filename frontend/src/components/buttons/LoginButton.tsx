@@ -10,8 +10,10 @@ const retrieveFirstName = (name: string) => {
 
 const styles = (theme:any) => ({
   logoutButton: {
-    position: 'relative' as 'relative',
-    bottom: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      position: 'relative' as 'relative',
+      bottom: '1rem',
+    },
   },
   signInIcon: {
     'margin-right': '0.5rem',

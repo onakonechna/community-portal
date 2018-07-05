@@ -87,8 +87,8 @@ const withLogin = (WrappedCompoent: any) => {
       };
     }
 
-    saveToken(token: string) {
-      localStorage.setItem('oAuth', JSON.stringify(token));
+    async saveToken(token: string) {
+      await localStorage.setItem('oAuth', JSON.stringify(token));
     }
 
     onSuccess(code: string) {
@@ -106,9 +106,6 @@ const withLogin = (WrappedCompoent: any) => {
             this.props.getLikedProjects(),
           ])
           .catch((err: Error) => console.error(err));
-          // this.props.updateUserRole(this.props.user.user_id, 'user');
-          // this.props.loadUser(user);
-          // this.props.getLikedProjects();
         })
         .catch((err: Error) => console.error(err));
     }
