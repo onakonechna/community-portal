@@ -13,7 +13,7 @@ import UserAvatar from './UserAvatar';
 import withAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
 import { API } from './../api/config';
-import Logo from './../static/images/icons/magento.png';
+import Logo from './Logo';
 
 // callbacks for GithubAuthButton
 export const onSuccess = (response: string) => {
@@ -27,16 +27,7 @@ const Avatar = withAuth(['user'])(UserAvatar);
 
 const styles = (theme:any) => ({
   appBar: {
-    width: '95%',
-    margin: '0 auto',
     'box-shadow': 'none',
-  },
-  logo: {
-    width: '50%',
-    height: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
 });
 
@@ -48,7 +39,7 @@ const HeadBar = (props: any) => {
         <IconButton color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
-        <img className={classes.logo} src={Logo} />
+        <Logo />
         <AddProject className={classes.addButton} />
         <Login
           clientId="668e0b6c450cc783f267" // Github auth application client_id
