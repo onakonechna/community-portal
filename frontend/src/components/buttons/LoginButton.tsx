@@ -4,7 +4,7 @@ import SignInIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 
 const retrieveFirstName = (name: string) => {
-  return name.split(' ')[0] ? name.split(' ')[0] : name;
+  return name ? name.split(' ')[0] : 'User';
 };
 
 const styles = {
