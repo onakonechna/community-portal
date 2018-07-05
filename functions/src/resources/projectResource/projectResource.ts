@@ -67,9 +67,16 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   edit(data: any): Promise<any> {
-    const { project_id } = data;
+    const { project_id, is_owner } = data;
     delete data['project_id'];
     delete data['is_owner'];
+
+    console.log('Checking if user is owner of the project');
+    console.log(is_owner);
+
+    if (!is_owner) {
+      throw 'Only owner of the project can edit it';
+    }
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }

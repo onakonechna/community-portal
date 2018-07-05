@@ -166,6 +166,8 @@ export default class ProjectController implements ProjectControllerInterface {
   // check if user is owner of project
   checkOwner(data: any) {
     const { user_id } = data;
+    console.log('Logging user_id');
+    console.log(user_id);
     return (result: any) => {
       let flag = { is_owner: false };
       if (result.Item && result.Item.owner === user_id) {
