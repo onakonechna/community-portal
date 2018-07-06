@@ -171,7 +171,7 @@ export default class PackageService {
     let thisDataflow: Dataflow;
     let nextDataflow: Dataflow;
 
-    _forEach(_.range(this.dataflows.length - 1), (i: number) => {
+    _.forEach(_.range(this.dataflows.length - 1), (i: number) => {
       thisDataflow = this.dataflows[i];
       nextDataflow = this.dataflows[i + 1];
       chainedPromise = this.chainPromise(

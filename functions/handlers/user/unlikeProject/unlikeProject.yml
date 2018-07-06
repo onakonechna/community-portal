@@ -1,10 +1,11 @@
-updateProjectStatus:
-  role: updateProjectStatusRole
-  handler: handlers/project/update/updateProjectStatus/handler.handler
+unlikeProject:
+  role: unlikeProjectRole
+  handler: handlers/user/unlikeProject/handler.handler
+  timeout: 10
   events:
   - http:
-      path: /project/status
-      method: put
+      path: /user/unlikeProject
+      method: post
       cors: true
       authorizer:
         name: authorizer
