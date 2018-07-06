@@ -128,6 +128,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       due: new Date(this.state.due).getTime() / 1000,
       technologies: this.state.technologies,
       github_address: this.state.github,
+      estimated: this.state.goal,
       slack_channel: this.state.slack,
     };
     this.props.editProject(body)
@@ -142,7 +143,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
           }));
         });
       })
-      .catch((err: any) => {
+      .catch((err: Error) => {
         this.setState({
           success: false,
           loading: false,

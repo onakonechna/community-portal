@@ -12,6 +12,7 @@ interface UserResourceInterface {
   addUpvotedProject(data: any): Promise<any>;
   removeUpvotedProject(data: any): Promise<any>;
   getUpvotedProjects(data: any): Promise<any>;
+  pledge(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -23,6 +24,15 @@ export default class UserResource implements UserResourceInterface {
   }
 
   create(data: any): Promise<any> {
+    const { user_exists, user_id, access_token } = data;
+
+    if (user_exists) {
+      return this.adapter.update(USERS_TABLE, { user_id }, { access_token });
+    }
+
+    delete data['user_exists'];
+    data.pledged_projects = {};
+
     return this.adapter.create(USERS_TABLE, data);
   }
 
@@ -39,17 +49,43 @@ export default class UserResource implements UserResourceInterface {
 
   addUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
-    return this.adapter.addToSet(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+    return this.adapter.addToSetIfNotExists(
+      USERS_TABLE,
+      { user_id },
+      'upvoted_projects',
+      project_id,
+    );
   }
 
   removeUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
-    return this.adapter.removeFromSet(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+    return this.adapter.removeFromSetIfExists(
+      USERS_TABLE,
+      { user_id },
+      'upvoted_projects',
+      project_id,
+    );
   }
 
   getUpvotedProjects(data: any): Promise<any> {
     const { user_id } = data;
     return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, upvoted_projects');
+  }
+
+  pledge(data: any): Promise<any> {
+    const { project_id, user_id, hours } = data;
+    return this.adapter.incrementMapKey(
+      USERS_TABLE,
+      { user_id },
+      'pledged_projects',
+      project_id,
+      hours,
+    );
+  }
+
+  subscribe(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+    return this.adapter.addToSet(USERS_TABLE, { user_id }, 'subscribed_projects', project_id);
   }
 
   delete(data: any): Promise<any> {

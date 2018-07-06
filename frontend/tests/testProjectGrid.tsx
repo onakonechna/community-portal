@@ -5,6 +5,8 @@ import { addProject, loadProjects } from '../src/actions';
 import { AddProjectDialog } from '../src/components/AddProjectDialog';
 import HeadBar from '../src/components/HeadBar';
 
+import store from '../src/store';
+
 import { ProjectGrid } from '../src/components/ProjectGrid';
 const samples = require('../src/data/sampleProjects.json');
 
@@ -15,9 +17,9 @@ describe('HeadBar Test Suite', () => {
   });
 
   it('should render the navigation bar', () => {
-    const wrapper = mount(<HeadBar />);
+    const context = { store };
+    const wrapper = mount(<HeadBar />, { context, childContextTypes: { store: jest.fn() } });
     const paper = wrapper.find('Paper');
-
     expect(paper.props().elevation).toBe(4);
   });
 });

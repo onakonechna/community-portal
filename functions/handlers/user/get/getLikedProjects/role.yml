@@ -17,6 +17,7 @@ getLikedProjectsRole:
             - Effect: Allow
               Action:
                 - dynamodb:GetItem
+                - dynamodb:Scan
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_INDEX}"

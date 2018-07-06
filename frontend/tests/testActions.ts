@@ -1,4 +1,5 @@
 import * as actions from '../src/actions';
+import { API } from '../src/api/config';
 
 import * as fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
@@ -6,8 +7,8 @@ import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-declare const API_ENDPOINT: string;
-const API = API_ENDPOINT; //'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+//declare const API_ENDPOINT: string;
+//const API = API_ENDPOINT; //'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
 
 describe('test actions', () => {
   const projectList = [
@@ -55,7 +56,7 @@ describe('test actions', () => {
 
   it('test editProject action', () => {
     fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.put(`${API}/project/edit`, projectList);
+    fetchMock.put(`${API}/project`, projectList);
 
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,

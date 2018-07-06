@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response } from './../config/types';
+import { Request, Response } from './../config/Types';
 
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
@@ -7,10 +7,10 @@ import * as bodyParser from 'body-parser';
 const serverless = require('serverless-http');
 
 const corsOptions = {
-  "origin": "*",
-  "methods": "GET,PUT,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204,
+  origin: '*',
+  methods: 'GET,PUT,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 interface CustomizedRequest {
@@ -42,9 +42,13 @@ export default class Endpoint {
 
   wrap() {
     return serverless(this.app, {
-      request: function(request: Request, event: any, context: any) {
+      request(request: Request, event: any, context: any) {
         if (event.requestContext.authorizer !== undefined) {
-          request.tokenContents = event.requestContext.authorizer.claims;
+          if (event.requestContext.authorizer.claims !== undefined) {
+            request.tokenContents = event.requestContext.authorizer.claims;
+          } else {
+            request.tokenContents = event.requestContext.authorizer;
+          }
         }
       },
     });

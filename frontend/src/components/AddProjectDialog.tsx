@@ -39,6 +39,7 @@ interface DispatchProps {
 interface DialogProps {
   classes?: any;
   className?: any;
+  handler?: any;
   style?: any;
 }
 
@@ -204,7 +205,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     const { loading, success } = this.state;
     return (
       <div className={classes.addButton}>
-        <AddProjectButton onClick={this.handleClickOpen} />
+        <AddProjectButton onClick={this.props.handler || this.handleClickOpen} />
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

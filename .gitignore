@@ -7,3 +7,4 @@ npm-debug.log
 dist
 aws-config.json
 config.json
+.DS_Store

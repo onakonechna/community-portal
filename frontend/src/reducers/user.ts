@@ -5,6 +5,7 @@ const testUser = {
   avatar_url: '',
   name: 'Mark',
   role: 'guest',
+  likedProjects: [],
 };
 
 export default function user(state = testUser, action:ActionTypes) {
@@ -14,6 +15,10 @@ export default function user(state = testUser, action:ActionTypes) {
     case TypeKeys.UPDATE_USER_ROLE:
       return Object.assign({}, state, {
         role: action.role,
+      });
+    case TypeKeys.LOAD_LIKED_PROJECTS:
+      return Object.assign({}, state, {
+        likedProjects: action.projects,
       });
     default:
       return state;

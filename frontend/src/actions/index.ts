@@ -1,4 +1,5 @@
 import fetchProjects from '../api/fetchProjects';
+import getLikedProjects from '../api/getLikedProjects';
 import { editProject, editProjectStatus } from  '../api/editProject';
 import pledgeProject from '../api/pledgeProject';
 import upvoteProject from '../api/upvoteProject';
@@ -12,6 +13,7 @@ export enum TypeKeys {
  LOAD_USER = 'LOAD_USER',
  EDIT_PROJECT = 'EDIT_PROJECT',
  LOAD_PROJECT = 'LOAD_PROJECT',
+ LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  OTHER_ACTION = '__any__other__action__type',
@@ -20,6 +22,11 @@ export enum TypeKeys {
 export interface LoadUserAction {
   type: TypeKeys.LOAD_USER;
   user: any;
+}
+
+export interface LoadLikedProjects {
+  type: TypeKeys.LOAD_LIKED_PROJECTS;
+  projects: any;
 }
 
 export interface AddProjectAction {
@@ -48,6 +55,7 @@ export interface OtherAction {
 
 export type ActionTypes =
  | AddProjectAction
+ | LoadLikedProjects
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
@@ -87,7 +95,29 @@ export const likeProject = (id: string) => {
     return upvoteProject(id)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(getLikedProjectsAction());
       });
+  };
+};
+
+export const getLikedProjectsAction: (any) = () => {
+  return (dispatch: Dispatch) => {
+    return getLikedProjects()
+    .then((res:any) => {
+      let projects;
+      if (res['upvoted_projects']) {
+        projects = res['upvoted_projects'] || [];
+        dispatch(loadLikedProjectsAction(projects));
+      }
+    })
+    .catch((err: Error) => console.error(err));
+  };
+};
+
+export const loadLikedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_LIKED_PROJECTS,
   };
 };
 

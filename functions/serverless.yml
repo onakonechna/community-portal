@@ -21,6 +21,11 @@ custom:
     basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
     stage: ${self:provider.stage} # Stage will be created for every branch
     createRoute53Record: false
+  api:
+    dev: iq0sxk313f
+    demo: n51znwfhz0
+    staging: glgyhzbsgj
+    prod: 4juhqxapui
 
 provider:
   name: aws
@@ -28,6 +33,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    API: ${self:custom.api.${self:provider.stage}}
     PROJECTS_TABLE: projects
     PROJECTS_INDEX: projects-index
     USERS_TABLE: users
@@ -64,10 +72,24 @@ functions:
   - ${file(./handlers/user/update/likeProject/likeProject.yml)}
   - ${file(./handlers/user/update/unlikeProject/unlikeProject.yml)}
   - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/update/pledge/pledge.yml)}
 
-# Add references to defined tables and roles here before deployment
 resources:
   Resources:
+    # Allow CORS headers for custom authorizer
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+        ResponseTemplates:
+          application/json: "{\"error\": $context.error.messageString}"
+    # Add references to defined tables and roles here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
@@ -83,6 +105,7 @@ resources:
     likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
     unlikeProjectRole: ${file(./handlers/user/update/unlikeProject/role.yml):unlikeProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/get/getLikedProjects/role.yml):getLikedProjectsRole}
+    pledgeRole: ${file(./handlers/user/update/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

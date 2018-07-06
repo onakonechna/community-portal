@@ -10,4 +10,4 @@ type Response = express.Response;
 export {
   Request,
   Response,
-}
+};

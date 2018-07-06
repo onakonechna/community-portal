@@ -6,13 +6,26 @@ import DatabaseConnection from './DatabaseConnection';
 
 // convert identifier object to include DynamoDB string type
 function convertIdentifier(identifier: any): any {
-  let Key: any = {};
+  const Key: any = {};
   _.forEach(identifier, (value: string, key: string) => {
     Key[key] = {
       S: value,
     };
   });
   return Key;
+}
+
+// this function is used in checking if an entry exists
+// we only use either partition key or sort key for attribute_exists()
+// because the database operation will find the entry first
+// which means if the entry does not exist, neither partition key
+// nor sort key will exist
+function getSingleKey(identifier: any): any {
+  for (const key in identifier) return key;
+}
+
+function getExistenceCondition(identifier: any) {
+  return `attribute_exists(${getSingleKey(identifier)})`;
 }
 
 export default class DatabaseAdapter implements AdapterInterface {
@@ -25,20 +38,21 @@ export default class DatabaseAdapter implements AdapterInterface {
     this.base = db.baseConnect();
   }
 
-  create(tableName: string, data: any): Promise<any> {
+  // dynamodb only recognize NONE or ALL_OLD for the ReturnValues of PutItem
+  create(tableName: string, data: any, returnValues: string = 'ALL_OLD'): Promise<any> {
     const params = {
       TableName: tableName,
       Item: data,
+      ReturnValues: returnValues,
     };
     return this.db.put(params).promise();
   }
 
   get(
     tableName: string,
-    expression: string,
+    key: string,
+    value: string|number,
     indexName: string = undefined,
-    nameMap: any = undefined,
-    valueMap: any = undefined,
     ascending: boolean = true,
     limit: number = undefined,
     projectionExpression: string = undefined,
@@ -47,9 +61,9 @@ export default class DatabaseAdapter implements AdapterInterface {
     const params = {
       TableName: tableName,
       IndexName: indexName,
-      KeyConditionExpression: expression,
-      ExpressionAttributeNames: nameMap,
-      ExpressionAttributeValues: valueMap,
+      KeyConditionExpression: '#KEY = :value',
+      ExpressionAttributeNames: { '#KEY': key },
+      ExpressionAttributeValues: { ':value': value },
       ScanIndexForward: ascending,
       Limit: limit,
       ProjectionExpression: projectionExpression,
@@ -61,7 +75,7 @@ export default class DatabaseAdapter implements AdapterInterface {
   getById(
     tableName: string,
     identifier: any,
-    projectionExpression: string = undefined
+    projectionExpression: string = undefined,
   ): Promise<any> {
     const params = {
       TableName: tableName,
@@ -71,44 +85,63 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.get(params).promise();
   }
 
-  update(tableName: string, identifier: any, data: any): Promise<any> {
-    let AttributeUpdates: any = {};
+  update(
+    tableName: string,
+    identifier: any,
+    data: any,
+    returnValues: string = 'ALL_NEW',
+  ): Promise<any> {
+    const AttributeUpdates: any = {};
 
     _.forOwn(data, (value: any, key: string) => {
       AttributeUpdates[key] = {
         Action: 'PUT',
-        Value: value
-      }
+        Value: value,
+      };
     });
 
     const params = {
       AttributeUpdates,
       TableName: tableName,
       Key: identifier,
+      ReturnValues: returnValues,
     };
     return this.db.update(params).promise();
   }
 
-  add(tableName: string, identifier: any, field: string, increment: number): Promise<any> {
-    let AttributeUpdates: any = {};
+  add(
+    tableName: string,
+    identifier: any,
+    field: string,
+    increment: number,
+    returnValues: string = 'ALL_NEW',
+  ): Promise<any> {
+    const AttributeUpdates: any = {};
     AttributeUpdates[field] = {
       Action: 'ADD',
       Value: increment,
-    }
+    };
 
     const params = {
       AttributeUpdates,
       TableName: tableName,
       Key: identifier,
+      ReturnValues: returnValues,
     };
+
     return this.db.update(params).promise();
   }
 
-  // use string sets
-  // identifier is of string type
-  // add to set only if item does not already exist
-  addToSet(tableName: string, identifier: any, setName: string, item: string) {
+  addToSetIfNotExists(
+    tableName: string,
+    identifier: any,
+    setName: string,
+    item: string,
+    returnValues: string = 'ALL_NEW',
+  ) {
     const Key = convertIdentifier(identifier);
+    const existenceCondition = getExistenceCondition(identifier);
+    const setCondition = 'not(contains(#SET_NAME, :item))';
     const params = {
       Key,
       ExpressionAttributeNames: {
@@ -118,16 +151,47 @@ export default class DatabaseAdapter implements AdapterInterface {
         ':item': { S: item },
         ':items': { SS: [item] },
       },
-      ReturnValues: 'ALL_NEW',
+      ReturnValues: returnValues,
       TableName: tableName,
       UpdateExpression: 'ADD #SET_NAME :items',
-      ConditionExpression: 'not(contains(#SET_NAME, :item))',
+      ConditionExpression: `${existenceCondition} AND ${setCondition}`,
     };
 
     return this.base.updateItem(params).promise();
   }
 
-  removeFromSet(tableName: string, identifier: any, setName: string, item: string) {
+  addToSet(
+    tableName: string,
+    identifier: any,
+    setName: string,
+    item: string,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    const Key = convertIdentifier(identifier);
+    const params = {
+      Key,
+      ExpressionAttributeNames: {
+        '#SET_NAME': setName,
+      },
+      ExpressionAttributeValues: {
+        ':items': { SS: [item] },
+      },
+      ReturnValues: returnValues,
+      TableName: tableName,
+      UpdateExpression: 'ADD #SET_NAME :items',
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.base.updateItem(params).promise();
+  }
+
+  removeFromSetIfExists(
+    tableName: string,
+    identifier: any,
+    setName: string,
+    item: string,
+    returnValues: string = 'ALL_OLD',
+  ) {
     const Key = convertIdentifier(identifier);
     const params = {
       Key,
@@ -138,19 +202,97 @@ export default class DatabaseAdapter implements AdapterInterface {
         ':item': { S: item },
         ':items': { SS: [item] },
       },
-      ReturnValues: 'ALL_NEW',
+      ReturnValues: returnValues,
       TableName: tableName,
       UpdateExpression: 'DELETE #SET_NAME :items',
-      ConditionExpression: 'contains(#SET_NAME, :item)',
+      ConditionExpression: `${getExistenceCondition(identifier)} AND contains(#SET_NAME, :item)`,
     };
 
     return this.base.updateItem(params).promise();
   }
 
-  delete(tableName: string, identifier: any): Promise<any> {
+  removeFromSet(
+    tableName: string,
+    identifier: any,
+    setName: string,
+    item: string,
+    returnValues: string = 'ALL_OLD',
+  ) {
+    const Key = convertIdentifier(identifier);
+    const params = {
+      Key,
+      ExpressionAttributeNames: {
+        '#SET_NAME': setName,
+      },
+      ExpressionAttributeValues: {
+        ':items': { SS: [item] },
+      },
+      ReturnValues: returnValues,
+      TableName: tableName,
+      UpdateExpression: 'DELETE #SET_NAME :items',
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.base.updateItem(params).promise();
+  }
+
+  incrementMapKey(
+    tableName: string,
+    identifier: any,
+    mapName: string,
+    key: string,
+    value: string|number,
+    returnValues: string = 'ALL_NEW',
+  ) {
     const params = {
       TableName: tableName,
       Key: identifier,
+      UpdateExpression: 'ADD #MAP_NAME.#KEY :value',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
+        '#KEY': key,
+      },
+      ExpressionAttributeValues: {
+        ':value': value,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.db.update(params).promise();
+  }
+
+  addToMap(
+    tableName: string,
+    identifier: any,
+    mapName: string,
+    key: string,
+    value: string|number,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      UpdateExpression: 'SET #MAP_NAME.#KEY = :value',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
+        '#KEY': key,
+      },
+      ExpressionAttributeValues: {
+        ':value': value,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.db.update(params).promise();
+  }
+
+  delete(tableName: string, identifier: any, returnValues: string = 'ALL_OLD'): Promise<any> {
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      ReturnValues: returnValues,
     };
     return this.db.delete(params).promise();
   }

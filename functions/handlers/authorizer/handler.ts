@@ -2,14 +2,10 @@ import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda
 
 const jwt = require('jsonwebtoken');
 
-interface contextSpecs {
-  user_id: string;
-}
-
 const buildIAMPolicy = function (principalId: string,
                                  effect: string,
                                  resource: string,
-                                 context: contextSpecs) {
+                                 context: any) {
   const policy = {
     principalId,
     context,
@@ -28,12 +24,21 @@ const buildIAMPolicy = function (principalId: string,
   return policy;
 };
 
+const REGION = process.env.REGION;
+const STAGE = process.env.STAGE;
+const API = process.env.API;
+const IS_OFFLINE = process.env.IS_OFFLINE;
+
 // Override aws-lambda type definition to support string errors
 // string error supported in latest Github version but not in npm version as of 06-06-2018
 type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
 
+interface customErrorInterface {
+  customErrorString: string;
+}
+
 module.exports.handler = function (event: CustomAuthorizerEvent,
-                                   context: APIGatewayEventRequestContext,
+                                   context: APIGatewayEventRequestContext & customErrorInterface,
                                    callback: Callback) {
   const token = event.authorizationToken;
 
@@ -46,7 +51,13 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const authorizerContext = { user_id };
 
     // Return an IAM policy document for the current endpoint
-    const policyDocument = buildIAMPolicy(user_id, effect, event.methodArn, authorizerContext);
+    let resource: string;
+    if (IS_OFFLINE === 'true') {
+      resource = event.methodArn;
+    } else {
+      resource = `arn:aws:execute-api:${REGION}:*:${API}/${STAGE}/*/*`;
+    }
+    const policyDocument = buildIAMPolicy(user_id, effect, resource, authorizerContext);
 
     callback(null, policyDocument);
   } catch (e) {
