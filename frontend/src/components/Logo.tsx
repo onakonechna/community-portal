@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import mLogo from './../static/images/m-logo.svg';
-import magentoLogo from './../static/images/magento-logo.svg';
+import magentoLogo from 'svg-inline-loader?classPrefix!././../static/images/magento-logo.svg';
 
 const styles = (theme:any) => ({
   logo: {
