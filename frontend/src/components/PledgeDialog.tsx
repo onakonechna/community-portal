@@ -2,8 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { pledgeProjectAction } from '../actions';
 
@@ -22,6 +23,7 @@ interface PledgeState {
   hours?: number;
   success: boolean;
   loading: boolean;
+  messageOpen: boolean;
 }
 
 export interface PledgeBody {
@@ -36,6 +38,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
       hours: 0,
       success: false,
       loading: false,
+      messageOpen: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,7 +55,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   handleSubmit(event:any) {
     const { pledged, estimated } = this.props.project;
     if (pledged + this.state.hours > estimated) {
-      alert('That\'s beyond the expectation!');
+      this.setState({ messageOpen: true });
       return;
     }
     const body = {
@@ -97,15 +100,22 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
             onChange={this.handleChange}
             fullWidth
           />
+          <Snackbar
+            open={this.state.messageOpen}
+          >
+           <SnackbarContent message="That\'s beyond the expectation!"/>
+          </Snackbar>
         </DialogContent>
         <DialogActions>
+          {this.state.loading && <LinearProgress
+              style={{ display: 'block', width: '60%' }}
+              variant="indeterminate"/>}
           <Button onClick={this.props.toggle}>
             {this.state.success ? 'Done' : 'Cancel'}
           </Button>
           <Button onClick={this.handleSubmit}>
             {this.state.success ? 'Pledged' : 'Pledge'}
           </Button>
-          {this.state.loading && <CircularProgress size={24}/>}
         </DialogActions>
       </Dialog>
     );

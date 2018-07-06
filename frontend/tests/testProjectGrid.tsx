@@ -26,7 +26,12 @@ describe('HeadBar Test Suite', () => {
 
 describe('ProjectGrid Test Suite', () => {
   it('should render the project grid', () => {
-    const wrapper = shallow(<ProjectGrid projects={samples} loadProjects={loadProjects} />);
+    const user = {
+      likedProjects: {
+        indexOf: jest.fn(),
+      },
+    };
+    const wrapper = shallow(<ProjectGrid projects={samples} loadProjects={loadProjects} user={user} />);
     const grids = wrapper.findWhere(g =>
       g.name() === 'WithStyles(Grid)' && g.prop('item') === true);
     expect(grids.length).toEqual(10);

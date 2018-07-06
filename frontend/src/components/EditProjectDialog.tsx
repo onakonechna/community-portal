@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '@material-ui/core/Chip';
 
 import Radio from '@material-ui/core/Radio';
@@ -259,13 +259,15 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
             />
           </DialogContent>
           <DialogActions>
+            {this.state.loading && <LinearProgress
+              style={{ display: 'block', width: '60%' }}
+              variant="indeterminate"/>}
             <Button onClick={this.props.toggleEdit}>
               {this.state.success ? 'Done' : 'Cancel'}
             </Button>
             <Button onClick={this.handleSubmit}>
               {this.state.success ? 'Saved' : 'Save'}
             </Button>
-            {this.state.loading && <CircularProgress size={24} />}
           </DialogActions>
         </Dialog>
       </div>
