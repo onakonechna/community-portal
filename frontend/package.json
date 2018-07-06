@@ -63,6 +63,7 @@
     "jsonwebtoken": "^8.3.0",
     "nodemon": "^1.17.5",
     "style-loader": "^0.21.0",
+    "svg-inline-loader": "^0.8.0",
     "ts-jest": "^22.4.6",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.1",
@@ -70,7 +71,9 @@
     "webpack": "^3.11.0"
   },
   "jest": {
-    "setupFiles": ["jest-localstorage-mock"],
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/jestSetup.ts",
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
@@ -89,7 +92,10 @@
       "json",
       "node"
     ],
-    "moduleNameMapper": { "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.ts", "\\.(css|less)$": "<rootDir>/assetsTransformer.js" }
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.ts",
+      "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
+    }
   },
   "nodemonConfig": {
     "ignore": "test/*"
