@@ -28,6 +28,9 @@ const styles = (theme:any) => ({
     fontSize: '24px',
     lineHeight: '1',
     padding: '0 10px 0 0',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '18px',
+    },
   },
   divider: {
     alignSelf: 'center',
