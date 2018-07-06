@@ -20,4 +20,4 @@ export {
   UserResource,
 
   TokenAPI,
-}
+};

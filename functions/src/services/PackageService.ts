@@ -12,19 +12,20 @@ const terminate = (error: Error) => {
   return {
     status: 400,
     payload: { error },
-  }
+  };
 };
 
-// dataDependencies:
-// a list of retrieved data fields returned by
-// the resolve function for each controller method in previous data flow(s)
-// used to feed intermediary data from previous data flow(s)
-// into the current data flow
-// you can ignore dataDependencies if the current data flow does not depend on any
-// previously retrieved data
-// (the intermediary data fields are stored in this.dataStore)
-// (make sure that they do not overwrite each other)
-// (check the naming in the object returned by resolve for each controller method)
+/** dataDependencies:
+ * a list of retrieved data fields returned by
+ * the resolve function for each controller method in previous data flow(s)
+ * used to feed intermediary data from previous data flow(s)
+ * into the current data flow
+ * you can ignore dataDependencies if the current data flow does not depend on any
+ * previously retrieved data
+ * (the intermediary data fields are stored in this.dataStore)
+ * (make sure that they do not overwrite each other)
+ * (check the naming in the object returned by resolve for each controller method)
+ */
 
 // storageSpecs: store all output specified by the transform function of controller by default
 
@@ -87,14 +88,15 @@ export default class PackageService {
         throw `Target type ${dataflowDefinition.targetType} is not supported`;
     }
 
-    // by default, the targetMethod has the same name as the controllerMethod
-    // if methodMap is not provided
+    /** by default, the targetMethod has the same name as the controllerMethod
+     * if methodMap is not provided
+     */
     const controllerMethod = dataflowDefinition.method;
     let targetMethod = controllerMethod;
 
     if (dataflowDefinition.methodMap !== undefined) {
       if (dataflowDefinition.methodMap[controllerMethod] === undefined) {
-        throw 'The method map provided has no corresponding target method for the given controller method'
+        throw 'Controller method not defined in method map';
       }
       targetMethod = dataflowDefinition.methodMap[controllerMethod];
     }
@@ -121,15 +123,15 @@ export default class PackageService {
       target,
       targetMethod,
       storageSpecs,
-    }
+    };
 
     this.dataflows.push(dataflow);
   }
 
   addDataflows(dataflowDefinitions: DataflowDefinition[]) {
-    for (let i = 0; i < dataflowDefinitions.length; i++) {
-      this.addDataflow(dataflowDefinitions[i]);
-    }
+    _.forEach(dataflowDefinitions, (dataflowDefinition: DataflowDefinition) => {
+      this.addDataflow(dataflowDefinition);
+    });
   }
 
   createController(Controller: any) {
@@ -154,11 +156,12 @@ export default class PackageService {
 
     this.validate(this.dataflows[0], this.initialData, resolve, reject);
 
-    // at this point, initial data only contains req.body or req.params
-    // we check if dataDependencies for the first data flow is specified
-    // and try to retrieve additional data from tokenContents if specified
-    // note that initial data may be pruned if dataDependencies is a subset of initial data
-    // and tokenContents data will overwrite initialData if the field name is not unique
+    /** at this point, initial data only contains req.body or req.params
+     * we check if dataDependencies for the first data flow is specified
+     * and try to retrieve additional data from tokenContents if specified
+     * note that initial data may be pruned if dataDependencies is a subset of initial data
+     * and tokenContents data will overwrite initialData if the field name is not unique
+     */
     this.extractInitialDataDependencies();
 
     // store initialData in dataStore
@@ -168,12 +171,17 @@ export default class PackageService {
     let thisDataflow: Dataflow;
     let nextDataflow: Dataflow;
 
-
-    for (let i = 0; i < (this.dataflows.length - 1); i++) {
+    _forEach(_.range(this.dataflows.length - 1), (i: number) => {
       thisDataflow = this.dataflows[i];
-      nextDataflow = this.dataflows[i+1];
-      chainedPromise = this.chainPromise(chainedPromise, thisDataflow, nextDataflow, resolve, reject);
-    }
+      nextDataflow = this.dataflows[i + 1];
+      chainedPromise = this.chainPromise(
+        chainedPromise,
+        thisDataflow,
+        nextDataflow,
+        resolve,
+        reject,
+      );
+    });
 
     // handle last promise without chaining
     const lastDataflow = this.dataflows[this.dataflows.length - 1];
@@ -197,13 +205,12 @@ export default class PackageService {
         if (!(field in this.dataStore)) {
           console.log('Logging intermediate data store between data flows..');
           console.log(this.dataStore);
-          throw `PackageService Error: ${field} is expected but cannot be found in the data store`
+          throw `PackageService Error: ${field} is expected but cannot be found in the data store`;
         }
       });
       return _.pick(this.dataStore, dataflow.dataDependencies);
-    } else {
-      return Object.assign({}, this.dataStore);
     }
+    return Object.assign({}, this.dataStore);
   }
 
   validate(dataflow: Dataflow, data: any, resolve: any, reject: any) {
@@ -216,7 +223,7 @@ export default class PackageService {
   extractInitialDataDependencies() {
     // extract data from token if authDataDependencies is defined
     if (this.dataflows[0].authDataDependencies !== undefined
-      && typeof this.dataflows[0].authDataDependencies.length == 'number'
+      && typeof this.dataflows[0].authDataDependencies.length === 'number'
       && this.dataflows[0].authDataDependencies.length > 0
     ) {
       const authorizerData = _.pick(this.tokenContents, this.dataflows[0].authDataDependencies);
@@ -224,14 +231,21 @@ export default class PackageService {
     }
     // prune data is dataDependencies is defined
     if (this.dataflows[0].dataDependencies !== undefined
-      && typeof this.dataflows[0].dataDependencies.length == 'number'
+      && typeof this.dataflows[0].dataDependencies.length === 'number'
       && this.dataflows[0].dataDependencies.length > 0
     ) {
       this.initialData = _.pick(this.initialData, this.dataflows[0].dataDependencies);
     }
   }
 
-  chainPromise(promise: Promise<any>, thisDataflow: Dataflow, nextDataflow: Dataflow, resolve: any, reject: any, chained: boolean = true) {
+  chainPromise(
+    promise: Promise<any>,
+    thisDataflow: Dataflow,
+    nextDataflow: Dataflow,
+    resolve: any,
+    reject: any,
+    chained: boolean = true,
+  ) {
     const { storageSpecs } = thisDataflow;
 
     return promise
@@ -249,12 +263,13 @@ export default class PackageService {
         this.validate(nextDataflow, data, resolve, reject);
         return this.getPromise(data, nextDataflow);
 
-      })
+      });
   }
 
-  // dataStore contains all data accumulated since the first dataflows
-  // we pass it to the controller method to get whatever data it needs
-  transform(dataflow: Dataflow){
+  /** dataStore contains all data accumulated since the first dataflows
+   * we pass it to the controller method to get whatever data it needs
+   */
+  transform(dataflow: Dataflow) {
     return dataflow.controller[dataflow.controllerMethod](this.dataStore);
   }
 

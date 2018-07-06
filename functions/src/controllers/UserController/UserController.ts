@@ -16,7 +16,7 @@ interface UserControllerInterface {
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
-    let data_copy = Object.assign({}, data);
+    const data_copy = Object.assign({}, data);
     delete data_copy['user_exists'];
     delete data_copy['access_token'];
 
@@ -43,7 +43,7 @@ export default class UserController implements UserControllerInterface {
       }
       return {
         status: 404,
-        payload: { 'error': 'User not found' },
+        payload: { error: 'User not found' },
       };
     };
   }
@@ -75,7 +75,7 @@ export default class UserController implements UserControllerInterface {
       }
       return {
         status: 404,
-        payload: { 'error': 'User not found' },
+        payload: { error: 'User not found' },
       };
     };
   }
@@ -129,12 +129,12 @@ export default class UserController implements UserControllerInterface {
 
   checkExistence(data: any) {
     return (result: any) => {
-      let flag = { user_exists: false };
+      const flag = { user_exists: false };
       if (result.Item) {
         flag.user_exists = true;
       }
       return flag;
-    }
+    };
   }
 
   storeAvatarUrl(data: any) {
