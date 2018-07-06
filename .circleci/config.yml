@@ -28,6 +28,26 @@ jobs:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
 
+      # Install AWS cli
+      - run:
+          name: Install aws cli
+          command:
+              sudo apt-get -y -qq install awscli    
+      
+      - run:
+          name: deploy application
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              STAGE=qa npm run build:webpack
+              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              STAGE=production npm run build:webpack
+              aws s3 sync public/. s3://production.opensource.magento.com --delete
+            else  
+              STAGE=dev npm run build:webpack
+              aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
+            fi
+
   build_functions:
     working_directory: ~/community-portal/functions
 
