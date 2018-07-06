@@ -42,7 +42,7 @@ jobs:
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
-              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
+              aws s3 sync public/. s3://production.opensource.magento.com --delete
             else  
               STAGE=dev npm run build:webpack
               aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
