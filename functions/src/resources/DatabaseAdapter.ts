@@ -6,7 +6,7 @@ import DatabaseConnection from './DatabaseConnection';
 
 // convert identifier object to include DynamoDB string type
 function convertIdentifier(identifier: any): any {
-  let Key: any = {};
+  const Key: any = {};
   _.forEach(identifier, (value: string, key: string) => {
     Key[key] = {
       S: value,
@@ -21,7 +21,7 @@ function convertIdentifier(identifier: any): any {
 // which means if the entry does not exist, neither partition key
 // nor sort key will exist
 function getSingleKey(identifier: any): any {
-  for (let key in identifier) return key;
+  for (const key in identifier) return key;
 }
 
 function getExistenceCondition(identifier: any) {
@@ -75,7 +75,7 @@ export default class DatabaseAdapter implements AdapterInterface {
   getById(
     tableName: string,
     identifier: any,
-    projectionExpression: string = undefined
+    projectionExpression: string = undefined,
   ): Promise<any> {
     const params = {
       TableName: tableName,
@@ -91,13 +91,13 @@ export default class DatabaseAdapter implements AdapterInterface {
     data: any,
     returnValues: string = 'ALL_NEW',
   ): Promise<any> {
-    let AttributeUpdates: any = {};
+    const AttributeUpdates: any = {};
 
     _.forOwn(data, (value: any, key: string) => {
       AttributeUpdates[key] = {
         Action: 'PUT',
-        Value: value
-      }
+        Value: value,
+      };
     });
 
     const params = {
@@ -116,11 +116,11 @@ export default class DatabaseAdapter implements AdapterInterface {
     increment: number,
     returnValues: string = 'ALL_NEW',
   ): Promise<any> {
-    let AttributeUpdates: any = {};
+    const AttributeUpdates: any = {};
     AttributeUpdates[field] = {
       Action: 'ADD',
       Value: increment,
-    }
+    };
 
     const params = {
       AttributeUpdates,
@@ -140,6 +140,8 @@ export default class DatabaseAdapter implements AdapterInterface {
     returnValues: string = 'ALL_NEW',
   ) {
     const Key = convertIdentifier(identifier);
+    const existenceCondition = getExistenceCondition(identifier);
+    const setCondition = 'not(contains(#SET_NAME, :item))';
     const params = {
       Key,
       ExpressionAttributeNames: {
@@ -152,7 +154,7 @@ export default class DatabaseAdapter implements AdapterInterface {
       ReturnValues: returnValues,
       TableName: tableName,
       UpdateExpression: 'ADD #SET_NAME :items',
-      ConditionExpression: `${getExistenceCondition(identifier)} AND not(contains(#SET_NAME, :item))`,
+      ConditionExpression: `${existenceCondition} AND ${setCondition}`,
     };
 
     return this.base.updateItem(params).promise();
@@ -242,7 +244,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     value: string|number,
     returnValues: string = 'ALL_NEW',
   ) {
-    var params = {
+    const params = {
       TableName: tableName,
       Key: identifier,
       UpdateExpression: 'ADD #MAP_NAME.#KEY :value',
@@ -251,7 +253,7 @@ export default class DatabaseAdapter implements AdapterInterface {
         '#KEY': key,
       },
       ExpressionAttributeValues: {
-        ':value': value
+        ':value': value,
       },
       ReturnValues: returnValues,
       ConditionExpression: getExistenceCondition(identifier),
@@ -268,7 +270,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     value: string|number,
     returnValues: string = 'ALL_NEW',
   ) {
-    var params = {
+    const params = {
       TableName: tableName,
       Key: identifier,
       UpdateExpression: 'SET #MAP_NAME.#KEY = :value',
@@ -277,7 +279,7 @@ export default class DatabaseAdapter implements AdapterInterface {
         '#KEY': key,
       },
       ExpressionAttributeValues: {
-        ':value': value
+        ':value': value,
       },
       ReturnValues: returnValues,
       ConditionExpression: getExistenceCondition(identifier),

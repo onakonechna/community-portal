@@ -49,12 +49,22 @@ export default class UserResource implements UserResourceInterface {
 
   addUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
-    return this.adapter.addToSetIfNotExists(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+    return this.adapter.addToSetIfNotExists(
+      USERS_TABLE,
+      { user_id },
+      'upvoted_projects',
+      project_id,
+    );
   }
 
   removeUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
-    return this.adapter.removeFromSetIfExists(USERS_TABLE, { user_id }, 'upvoted_projects', project_id);
+    return this.adapter.removeFromSetIfExists(
+      USERS_TABLE,
+      { user_id },
+      'upvoted_projects',
+      project_id,
+    );
   }
 
   getUpvotedProjects(data: any): Promise<any> {
@@ -64,7 +74,13 @@ export default class UserResource implements UserResourceInterface {
 
   pledge(data: any): Promise<any> {
     const { project_id, user_id, hours } = data;
-    return this.adapter.incrementMapKey(USERS_TABLE, { user_id }, 'pledged_projects', project_id, hours);
+    return this.adapter.incrementMapKey(
+      USERS_TABLE,
+      { user_id },
+      'pledged_projects',
+      project_id,
+      hours,
+    );
   }
 
   subscribe(data: any): Promise<any> {

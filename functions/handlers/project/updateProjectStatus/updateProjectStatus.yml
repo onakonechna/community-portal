@@ -1,11 +1,10 @@
-pledge:
-  role: pledgeRole
-  handler: handlers/user/update/pledge/handler.handler
-  timeout: 10
+updateProjectStatus:
+  role: updateProjectStatusRole
+  handler: handlers/project/updateProjectStatus/handler.handler
   events:
   - http:
-      path: /user/pledge
-      method: post
+      path: /project/status
+      method: put
       cors: true
       authorizer:
         name: authorizer

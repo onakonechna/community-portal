@@ -57,15 +57,15 @@ service: test-endpoint
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
-  - ${file(./handlers/project/create/createProject/createProject.yml)}
-  - ${file(./handlers/project/get/getProjectCards/getProjectCards.yml)}
-  - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
-  - ${file(./handlers/project/update/editProject/editProject.yml)}
-  - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/user/update/likeProject/likeProject.yml)}
-  - ${file(./handlers/user/update/unlikeProject/unlikeProject.yml)}
-  - ${file(./handlers/user/get/getLikedProjects/getLikedProjects.yml)}
-  - ${file(./handlers/user/update/pledge/pledge.yml)}
+  - ${file(./handlers/project/createProject/createProject.yml)}
+  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
+  - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
+  - ${file(./handlers/project/editProject/editProject.yml)}
+  - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
+  - ${file(./handlers/user/likeProject/likeProject.yml)}
+  - ${file(./handlers/user/unlikeProject/unlikeProject.yml)}
+  - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/pledge/pledge.yml)}
 
 resources:
   Resources:
@@ -90,15 +90,15 @@ resources:
     PullRequestsTable: ${file(./schema.json):PullRequests}
     EpicsTable: ${file(./schema.json):Epics}
     IssuesTable: ${file(./schema.json):Issues}
-    createProjectRole: ${file(./handlers/project/create/createProject/role.yml):createProjectRole}
-    getProjectCardsRole: ${file(./handlers/project/get/getProjectCards/role.yml):getProjectCardsRole}
-    getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
-    editProjectRole: ${file(./handlers/project/update/editProject/role.yml):editProjectRole}
-    updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
-    likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
-    unlikeProjectRole: ${file(./handlers/user/update/unlikeProject/role.yml):unlikeProjectRole}
-    getLikedProjectsRole: ${file(./handlers/user/get/getLikedProjects/role.yml):getLikedProjectsRole}
-    pledgeRole: ${file(./handlers/user/update/pledge/role.yml):pledgeRole}
+    createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
+    getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
+    getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
+    editProjectRole: ${file(./handlers/project/editProject/role.yml):editProjectRole}
+    updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
+    likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
+    unlikeProjectRole: ${file(./handlers/user/unlikeProject/role.yml):unlikeProjectRole}
+    getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
+    pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

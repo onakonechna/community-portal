@@ -1,8 +1,0 @@
-updateProjectStatus:
-  role: updateProjectStatusRole
-  handler: handlers/project/update/updateProjectStatus/handler.handler
-  events:
-  - http:
-      path: /project/status
-      method: put
-      cors: true

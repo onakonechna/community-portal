@@ -40,7 +40,7 @@ export default class ProjectController implements ProjectControllerInterface {
       }
       return {
         status: 404,
-        payload: { 'error': 'No project found' },
+        payload: { error: 'No project found' },
       };
     };
   }
@@ -55,7 +55,7 @@ export default class ProjectController implements ProjectControllerInterface {
       }
       return {
         status: 404,
-        payload: { 'error': 'Project not found' },
+        payload: { error: 'Project not found' },
       };
     };
   }
@@ -132,7 +132,7 @@ export default class ProjectController implements ProjectControllerInterface {
     return (result: any) => {
       const { status } = result.Attributes;
       return {
-        display: String(status == 'open'),
+        display: String(status === 'open'),
       };
     };
   }
@@ -169,7 +169,7 @@ export default class ProjectController implements ProjectControllerInterface {
     console.log('Logging user_id');
     console.log(user_id);
     return (result: any) => {
-      let flag = { is_owner: false };
+      const flag = { is_owner: false };
       if (result.Item && result.Item.owner === user_id) {
         flag.is_owner = true;
       }

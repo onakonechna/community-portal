@@ -1,10 +1,11 @@
-editProject:
-  role: editProjectRole
-  handler: handlers/project/update/editProject/handler.handler
+unlikeProject:
+  role: unlikeProjectRole
+  handler: handlers/user/unlikeProject/handler.handler
+  timeout: 10
   events:
   - http:
-      path: /project
-      method: put
+      path: /user/unlikeProject
+      method: post
       cors: true
       authorizer:
         name: authorizer

@@ -1,7 +1,11 @@
-import PackageService from './../../../../src/services/PackageService';
-import Endpoint from './../../../../src/Endpoint';
-import { ProjectController, ProjectResource } from './../../../../config/components';
-import { UserController, UserResource } from './../../../../config/components';
+import PackageService from './../../../src/services/PackageService';
+import Endpoint from './../../../src/Endpoint';
+import {
+  ProjectController,
+  UserController,
+  ProjectResource,
+  UserResource,
+} from './../../../config/components';
 
 const endpoint = new Endpoint('/user/likeProject', 'post');
 
@@ -29,7 +33,6 @@ const dataflows = [
     dataDependencies: ['project_id'],
   },
 ];
-
 
 const handler = new PackageService(endpoint, dataflows).package();
 export { handler };
