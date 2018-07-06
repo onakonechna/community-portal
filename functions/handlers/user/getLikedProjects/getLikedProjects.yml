@@ -1,6 +1,6 @@
 getLikedProjects:
   role: getLikedProjectsRole
-  handler: handlers/user/get/getLikedProjects/handler.handler
+  handler: handlers/user/getLikedProjects/handler.handler
   timeout: 10
   events:
   - http:

@@ -14,13 +14,16 @@ import {
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 
 const styles = (theme: any) => ({
+  cardButton: {
+    color: '#27A2AA',
+  },
   addButton: {
     'margin-left': 'auto',
   },
@@ -311,17 +314,22 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            {loading && <LinearProgress
+              style={{ display: 'block', width: '60%' }}
+              variant="indeterminate"/>}
+            <Button
+              onClick={this.handleClose}
+              className={classes.cardButton}
+            >
               {success ? 'Done' : 'Cancel'}
             </Button>
             <Button
-              color="primary"
+              className={classes.cardButton}
               disabled={loading}
               onClick={this.handleSave}
             >
               {success ? 'Saved' : 'Save'}
             </Button>
-            {loading && <CircularProgress size={24} />}
           </DialogActions>
         </Dialog>
       </div>

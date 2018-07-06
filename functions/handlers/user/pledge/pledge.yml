@@ -1,9 +1,10 @@
-createProject:
-  role: createProjectRole
-  handler: handlers/project/create/createProject/handler.handler
+pledge:
+  role: pledgeRole
+  handler: handlers/user/pledge/handler.handler
+  timeout: 10
   events:
   - http:
-      path: /project/
+      path: /user/pledge
       method: post
       cors: true
       authorizer:

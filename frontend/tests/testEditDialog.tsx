@@ -12,11 +12,12 @@ describe('EditProjectDialog Test Suite', () => {
     textField: 'textfield',
   };
   beforeAll(() => {
+    const project = samples[0] || {};
     wrapper = shallow(<EditProjectDialog
       toggleEdit={() => { console.log('placeholder'); }}
       classes={classes}
       open={true}
-      project={samples[0]}
+      project={project}
       editProject={editProjectBody}
     />);
   });
