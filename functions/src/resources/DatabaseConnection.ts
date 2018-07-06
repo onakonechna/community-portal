@@ -12,9 +12,8 @@ export default class DatabaseConnection {
         region: 'localhost',
         endpoint: 'http://localhost:8000',
       });
-    } else {
-      return new DynamoDB.DocumentClient();
     }
+    return new DynamoDB.DocumentClient();
   }
 
   baseConnect() {
@@ -23,8 +22,7 @@ export default class DatabaseConnection {
         region: 'localhost',
         endpoint: 'http://localhost:8000',
       });
-    } else {
-      return new DynamoDB();
     }
+    return new DynamoDB();
   }
 }

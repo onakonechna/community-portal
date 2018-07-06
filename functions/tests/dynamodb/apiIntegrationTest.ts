@@ -28,7 +28,7 @@ const hostAddr = 'http://localhost:3000';
 function tokenAuthorize(code){
   const options = {
     method: 'POST',
-    url: hostAddr + '/authorize'
+    url: hostAddr + '/authorize',
     data: { code },
   }
 

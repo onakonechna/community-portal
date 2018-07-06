@@ -99,7 +99,13 @@ export default class ProjectResource implements ProjectResourceInterface {
   addPledger(data: any): Promise<any> {
     const { project_id, user_id, avatar_url } = data;
     const pledger_details = { avatar_url };
-    return this.adapter.addToMap(PROJECTS_TABLE, { project_id }, 'pledgers', user_id, pledger_details);
+    return this.adapter.addToMap(
+      PROJECTS_TABLE,
+      { project_id },
+      'pledgers',
+      user_id,
+      pledger_details,
+    );
   }
 
   addSubscriber(data: any): Promise<any> {
@@ -131,7 +137,13 @@ export default class ProjectResource implements ProjectResourceInterface {
     const { project_id, hours } = data;
     const unixTimestamp = new Date().getTime();
 
-    return this.adapter.addToMap(PROJECTS_TABLE, { project_id }, 'pledged_history', unixTimestamp, hours);
+    return this.adapter.addToMap(
+      PROJECTS_TABLE,
+      { project_id },
+      'pledged_history',
+      unixTimestamp,
+      hours,
+    );
   }
 
   delete(data: any): Promise<any> {

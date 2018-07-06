@@ -28,6 +28,6 @@ export default class Validator {
     return {
       status: 400,
       payload: { errors: this.errors() },
-    }
+    };
   }
 }

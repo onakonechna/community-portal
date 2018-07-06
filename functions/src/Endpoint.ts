@@ -7,10 +7,10 @@ import * as bodyParser from 'body-parser';
 const serverless = require('serverless-http');
 
 const corsOptions = {
-  "origin": "*",
-  "methods": "GET,PUT,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204,
+  origin: '*',
+  methods: 'GET,PUT,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 interface CustomizedRequest {
@@ -42,7 +42,7 @@ export default class Endpoint {
 
   wrap() {
     return serverless(this.app, {
-      request: function(request: Request, event: any, context: any) {
+      request(request: Request, event: any, context: any) {
         if (event.requestContext.authorizer !== undefined) {
           if (event.requestContext.authorizer.claims !== undefined) {
             request.tokenContents = event.requestContext.authorizer.claims;

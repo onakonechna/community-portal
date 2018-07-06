@@ -2,8 +2,8 @@ import axios from 'axios';
 
 interface TokenAPIInterface {
   getGithubToken(data: any): Promise<any>;
-  getUserDataByToken(data: any): Promise<any>
-};
+  getUserDataByToken(data: any): Promise<any>;
+}
 
 export default class TokenAPI implements TokenAPIInterface {
   getGithubToken(data: any) {
