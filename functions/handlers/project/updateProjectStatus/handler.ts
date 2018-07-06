@@ -1,6 +1,6 @@
-import PackageService from './../../../../src/services/PackageService';
-import Endpoint from './../../../../src/Endpoint';
-import { ProjectController, ProjectResource } from './../../../../config/components';
+import PackageService from './../../../src/services/PackageService';
+import Endpoint from './../../../src/Endpoint';
+import { ProjectController, ProjectResource } from './../../../config/components';
 
 const endpoint = new Endpoint('/project/status', 'put');
 
