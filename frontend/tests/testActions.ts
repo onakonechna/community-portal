@@ -63,7 +63,8 @@ describe('test actions', () => {
 
     return store.dispatch<any>(actions.editProjectBody(projectList[0]))
       .then(() => {
-        expect(store.getActions()[0]).toEqual(expectedAction);
+        const action = store.getActions()[0] || '';
+        expect(action).toEqual(expectedAction);
       });
   });
 
