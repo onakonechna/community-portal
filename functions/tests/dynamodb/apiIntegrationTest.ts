@@ -15,9 +15,12 @@ function loadYAML(filename) {
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' });
-const different_token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' });
+const different_token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '5s' });
 
 console.log(token);
+console.log(different_token);
+
+throw 'stop';
 
 // const hostAddr = 'https://iq0sxk313f.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';

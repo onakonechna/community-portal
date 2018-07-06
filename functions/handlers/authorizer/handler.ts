@@ -2,14 +2,10 @@ import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda
 
 const jwt = require('jsonwebtoken');
 
-interface contextSpecs {
-  user_id: string;
-}
-
 const buildIAMPolicy = function (principalId: string,
                                  effect: string,
                                  resource: string,
-                                 context: contextSpecs) {
+                                 context: any) {
   const policy = {
     principalId,
     context,
@@ -37,8 +33,12 @@ const IS_OFFLINE = process.env.IS_OFFLINE;
 // string error supported in latest Github version but not in npm version as of 06-06-2018
 type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
 
+interface customErrorInterface {
+  customErrorString: string;
+}
+
 module.exports.handler = function (event: CustomAuthorizerEvent,
-                                   context: APIGatewayEventRequestContext,
+                                   context: APIGatewayEventRequestContext & customErrorInterface,
                                    callback: Callback) {
   const token = event.authorizationToken;
 

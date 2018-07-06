@@ -76,10 +76,12 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: EXPIRED_TOKEN
+        ResponseType: UNAUTHORIZED
         RestApiId:
           Ref: 'ApiGatewayRestApi'
         StatusCode: '401'
+        ResponseTemplates:
+          application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
