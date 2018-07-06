@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
+import * as _ from 'lodash';
 
 const yaml = require('js-yaml');
 const fs = require('fs');
@@ -93,8 +94,33 @@ function likeProject(project_id){
   return axios(likeProjectOptions);
 }
 
+function unlikeProject(project_id){
+  const options = {
+    method: 'POST',
+    url: hostAddr +  '/user/unlikeProject',
+    data: { project_id },
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return axios(options);
+}
+
+function getLikedProjects(){
+  const options = {
+    method: 'GET',
+    url: hostAddr +  '/user/likedProjects',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return axios(options);
+}
+
 function updateProjectStatus(project_id, status){
-  const likeProjectOptions = {
+  const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
     data: { project_id, status },
@@ -103,7 +129,7 @@ function updateProjectStatus(project_id, status){
     },
   };
 
-  return axios(likeProjectOptions);
+  return axios(options);
 }
 
 function pledge(project_id, hours){
@@ -153,7 +179,7 @@ function pledge(project_id, hours){
 //   });
 // });
 //
-// describe('getProjectCards endpoint', () => {
+// describe('likeProject, updateProjectStatus and getProjectCards endpoints', () => {
 //   it('should upvote project', () => {
 //     expect.assertions(1);
 //
@@ -207,23 +233,73 @@ function pledge(project_id, hours){
 //
 // describe('getProjectDetails endpoint', () => {
 //   it('should get project details', () => {
-//     expect.assertions(2);
+//     expect.assertions(3);
 //
 //     return getProjectDetails('test21')
 //       .then((response) => {
 //         expect(response.data.status).toBe('closed');
 //         expect(response.data.description).toBe('edited');
+//         expect(response.data.upvotes).toBe(1);
 //       });
 // });
 //
+// describe('getLikedProjects endpoint', () => {
+//   it('should get a list of liked projects', () => {
+//     expect.assertions(1);
+//
+//     return getLikedProjects()
+//       .then((response) => {
+//         expect(_.includes(response.data.upvoted_projects, 'test21')).toBeTruthy();
+//       });
+//   });
+// });
+//
+// describe('unlikeProject endpoint', () => {
+//   it('should downvote the project', () => {
+//     expect.assertions(1);
+//
+//     return unlikeProject('test21')
+//       .then((response) => {
+//         expect(response.data.message).toBe('Project downvoted successfully');
+//       });
+//   });
+//
+//   it('should see the project upvotes decreased', () => {
+//     expect.assertions(1);
+//
+//     return getProjectDetails('test21')
+//       .then((response) => {
+//         expect(response.data.upvotes).toBe(0);
+//       });
+//   });
+// };
+//
 // describe('pledge endpoint', () => {
-//   it('should invoke the pledge function and execute all steps', () => {
+//   it('should get successful response from the pledge endpoint', () => {
 //     expect.assertions(1);
 //
 //     return pledge('test21', 25)
 //       .then((response) => {
 //         expect(response.data.message).toBe('Pledged successfully');
 //       });
+//   });
+//
+//   it('should update pledging-related data in projects data', () => {
+//     expect.assertions(4);
+//
+//     return getProjectDetails('test21')
+//       .then((response) => {
+//         const { pledged, pledgers, pledged_history, subscribers } = response.data;
+//         expect(pledged).toBe(25);
+//         expect('40802007' in pledgers).toBeTruthy();
+//         expect(_.includes(pledged_history, 25)).toBeTruthy();
+//         expect(_.includes(subscribers.values, '40802007')).toBeTruthy();
+//       });
+//   });
+//
+//   it('should update pledging-related data in users data', () => {
+//     // to be implemented after implementing API to get pledged projects for users
+//     expect(1).toBe(1);
 //   });
 // });
 
