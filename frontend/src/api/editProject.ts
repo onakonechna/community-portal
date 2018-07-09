@@ -13,5 +13,7 @@ export const editProjectStatus = (id: string, status: string) => {
   };
   return fetch(`${API}/project`, putHeaders(body))
     .then(res => res.json())
-    .catch(err => err);
+    .catch(((err: Error) => {
+      console.error(err);
+    }));
 };

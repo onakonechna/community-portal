@@ -8,6 +8,8 @@ import HeadBar from '../src/components/HeadBar';
 
 import store from '../src/store';
 
+jest.mock('../src/components/Logo');
+
 describe('Guest Users', () => {
   it('guest user should be able to see the login button', () => {
     const context = { store };
