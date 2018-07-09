@@ -12,7 +12,7 @@ import LoginButton from './buttons/LoginButton';
 import UserAvatar from './UserAvatar';
 import withAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
-import { API } from './../api/config';
+import { API } from './../api/Config';
 import Logo from './Logo';
 
 export const onSuccess = (response: string) => {
