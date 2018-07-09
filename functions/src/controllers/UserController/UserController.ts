@@ -153,7 +153,9 @@ export default class UserController implements UserControllerInterface {
     return (result: any) => {
       if (result.Item) {
         const { scopes } = result.Item;
-        console.log(scopes);
+        if (scopes === undefined) {
+          return {}; // empty array
+        }
         return { scopes: scopes.values };
       }
       throw 'User not found. Attempt to retrieve user scopes failed';

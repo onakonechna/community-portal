@@ -35,6 +35,13 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.owner = data.user_id;
     data.user_id = undefined;
 
+    // check that user has write:project scope
+    const { scopes } = data;
+    delete data['scopes'];
+    if (scopes === undefined || !_.includes(scopes, 'write:project')) {
+      throw 'User does not have the required scope (write:project) to create project';
+    }
+
     // append additional data
     const unixTimestamp = new Date().getTime();
     data.status = 'open';
