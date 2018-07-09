@@ -96,7 +96,7 @@ jobs:
 
       - run:
           name: Insert user fixture data
-          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
           name: Run backend tests
