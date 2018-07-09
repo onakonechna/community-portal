@@ -15,7 +15,6 @@ import withLogin from './GithubAuthButton';
 import { API } from './../api/config';
 import Logo from './Logo';
 
-// callbacks for GithubAuthButton
 export const onSuccess = (response: string) => {
   return axios.post(`${API}/authorize`, { code: response });
 };
@@ -42,9 +41,9 @@ const HeadBar = (props: any) => {
         <Logo />
         <AddProject className={classes.addButton} />
         <Login
-          clientId="668e0b6c450cc783f267" // Github auth application client_id
-          scope="" // Github permission scopes
-          redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
+          clientId="668e0b6c450cc783f267"
+          scope=""
+          redirectUri="http://localhost:3030/auth"
           onSuccess={onSuccess}
           onFailure={onFailure}
         />

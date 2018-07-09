@@ -119,7 +119,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
   }
 
   handleReadTime(timestamp: number) {
-    return new Date(timestamp * 1000).toISOString().substr(0, 10);
+    return new Date(timestamp).toISOString().substr(0, 10);
   }
 
   handleSubmit() {
@@ -129,7 +129,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       name: this.state.name,
       description: this.state.description,
       size: this.state.size,
-      due: new Date(this.state.due).getTime() / 1000,
+      due: new Date(this.state.due).getTime(),
       technologies: this.state.technologies,
       github_address: this.state.github,
       estimated: this.state.goal,

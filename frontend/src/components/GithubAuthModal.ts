@@ -70,10 +70,7 @@ class GithubAuthModal {
 
           this.close();
         } catch (error) {
-          /*
-           * Ignore DOMException: Blocked a frame with origin from accessing a
-           * cross-origin frame.
-           */
+          console.error(error);
         }
       }, 500);
     });

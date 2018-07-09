@@ -1,13 +1,6 @@
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 
-// jest.mock('../src/components/Logo.tsx', () => {
-//   return jest.fn().mockImplementation(() => {
-//     const { createElement } = require('react');
-//     return <div>Logo</div>;
-//   });
-// });
-
 jest.mock('../src/components/Logo');
 
 import { addProject, loadProjects } from '../src/actions';

@@ -46,9 +46,9 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         return <WrappedComponent {...this.props} />;
       }
       return <Login
-        clientId="668e0b6c450cc783f267" // Github auth application client_id
-        scope="" // Github permission scopes
-        redirectUri="http://localhost:3030/auth" // Callback url, as example domain.com/auth
+        clientId="668e0b6c450cc783f267"
+        scope=""
+        redirectUri="http://localhost:3030/auth"
         onSuccess={onSuccess}
         onFailure={onFailure}
         user={this.props.user}
