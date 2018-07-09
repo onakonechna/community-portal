@@ -86,7 +86,13 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   updateStatus(data: any): Promise<any> {
-    const { project_id, status } = data;
+    const { project_id, status, scopes } = data;
+
+    delete data['scopes'];
+    if (scopes === undefined || !_.includes(scopes, 'write:project')) {
+      throw 'User does not have the required scope (write:project) to create project';
+    }
+
     return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });
   }
 

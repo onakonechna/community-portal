@@ -6,10 +6,18 @@ const endpoint = new Endpoint('/project/status', 'put');
 
 const dataflows = [
   {
+    controller: UserController,
+    method: 'getScopes',
+    target: UserResource,
+    methodMap: { getScopes: 'getById' },
+    validationMap: { getScopes: 'updateProjectStatusSchema' },
+    authDataDependencies: ['user_id'],
+    storageSpecs: ['scopes'],
+  },
+  {
     controller: ProjectController,
     method: 'updateStatus',
     target: ProjectResource,
-    validationMap: { updateStatus: 'updateProjectStatusSchema' },
     storageSpecs: ['display'],
   },
   {
