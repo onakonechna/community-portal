@@ -16,12 +16,9 @@ function loadYAML(filename) {
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 const token = jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' });
-const different_token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '5s' });
 
 console.log(token);
-console.log(different_token);
 
-// const hostAddr = 'https://iq0sxk313f.execute-api.us-east-1.amazonaws.com/dev';
 const hostAddr = 'http://localhost:3000';
 
 function tokenAuthorize(code){
@@ -148,17 +145,6 @@ function pledge(project_id, hours){
 ///////////
 // Tests //
 ///////////
-
-// describe('authorize endpoint', () => {
-//   it('should create user and return JWT token', () => {
-//     expect.assertions(1);
-//
-//     return tokenAuthorize('ceee573a0387d876417e')
-//       .then((response) => {
-//         console.log(response.data);
-//       });
-//   });
-// });
 
 describe('createProject endpoint', () => {
   it('should create multiple projects with fixture data via token authorization', () => {
@@ -302,10 +288,3 @@ describe('pledge endpoint', () => {
     expect(1).toBe(1);
   });
 });
-
-// describe('dummy test', () => {
-//   it('should pass', () => {
-//     expect.assertions(1);
-//     expect(1).toBe(1);
-//   });
-// });
