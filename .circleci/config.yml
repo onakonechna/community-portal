@@ -72,6 +72,18 @@ jobs:
           command: 'sudo apt-get update && sudo apt-get install default-jre default-jdk'
 
       - run:
+          name: Install Python dev static libraries
+          command: sudo apt-get install python-dev
+
+      - run:
+          name: Install pip
+          command: 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py --user'
+
+      - run:
+          name: Install aws cli
+          command: .local/bin/pip install awscli --upgrade --user
+
+      - run:
           name: Setup Local DynamoDB
           command: node_modules/.bin/sls dynamodb install
 
@@ -83,12 +95,8 @@ jobs:
       - run: sleep 20
 
       - run:
-          name: install aws cli
-          command: pip install awscli --upgrade --user
-
-      - run:
           name: Insert user fixture data
-          command: aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
+          command: .local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
 
       - run:
           name: Run backend tests
