@@ -1,9 +1,9 @@
-import fetchProjects from '../api/fetchProjects';
-import getLikedProjects from '../api/getLikedProjects';
-import { editProject, editProjectStatus } from  '../api/editProject';
-import pledgeProject from '../api/pledgeProject';
-import upvoteProject from '../api/upvoteProject';
-import saveProject from '../api/saveProject';
+import fetchProjects from '../api/FetchProjects';
+import getLikedProjects from '../api/GetLikedProjects';
+import { editProject, editProjectStatus } from  '../api/EditProject';
+import pledgeProject from '../api/PledgeProject';
+import upvoteProject from '../api/UpvoteProject';
+import saveProject from '../api/SaveProject';
 
 import { Dispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
