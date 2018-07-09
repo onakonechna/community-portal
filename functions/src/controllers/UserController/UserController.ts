@@ -12,6 +12,8 @@ interface UserControllerInterface {
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
   checkExistence(data: any): (result: any) => any;
+  storeAvatarUrl(data: any): (result: any) => any;
+  getScopes(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
@@ -144,6 +146,17 @@ export default class UserController implements UserControllerInterface {
         return { avatar_url };
       }
       throw 'User not found. Attempt to retrieve user avatar_url failed';
+    };
+  }
+
+  getScopes(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { scopes } = result.Item;
+        console.log(scopes);
+        return { scopes: scopes.values };
+      }
+      throw 'User not found. Attempt to retrieve user scopes failed';
     };
   }
 
