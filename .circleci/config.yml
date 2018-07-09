@@ -83,12 +83,12 @@ jobs:
       - run: sleep 20
 
       - run:
-        name: install aws cli
-        command: pip install awscli --upgrade --user
+          name: install aws cli
+          command: pip install awscli --upgrade --user
 
       - run:
-        name: Insert user fixture data
-        command: aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
+          name: Insert user fixture data
+          command: aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
 
       - run:
           name: Run backend tests
