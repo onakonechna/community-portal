@@ -1,4 +1,4 @@
-import { API, postHeaders } from './config';
+import { API, postHeaders } from './Config';
 
 import { PledgeBody } from '../components/PledgeDialog';
 
