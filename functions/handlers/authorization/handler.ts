@@ -1,6 +1,6 @@
 import PackageService from './../../src/services/PackageService';
 import Endpoint from './../../src/Endpoint';
-import { TokenController, UserController, TokenAPI, UserResource } from './../../config/components';
+import { TokenController, UserController, TokenAPI, UserResource } from './../../config/Components';
 
 const endpoint = new Endpoint('/authorize', 'post');
 

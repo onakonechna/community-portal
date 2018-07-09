@@ -5,7 +5,7 @@ import {
   UserController,
   ProjectResource,
   UserResource,
-} from './../../../config/components';
+} from './../../../config/Components';
 
 const endpoint = new Endpoint('/user/likedProjects', 'get');
 

@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Request, Response } from './../../config/types';
+import { Request, Response } from './../../config/Types';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
 import Endpoint from './../Endpoint';
