@@ -1,7 +1,11 @@
 import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
-import { ProjectController, ProjectResource } from './../../../config/Components';
-import { UserController, UserResource } from './../../../config/Components';
+import {
+  ProjectController,
+  ProjectResource,
+  UserController,
+  UserResource,
+} from './../../../config/Components';
 
 const endpoint = new Endpoint('/project', 'post');
 
