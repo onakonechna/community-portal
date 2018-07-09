@@ -8,7 +8,6 @@ import store from './store';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 import App from './App';
-import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 const theme = createMuiTheme({
