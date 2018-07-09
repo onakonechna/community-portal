@@ -1,6 +1,4 @@
 import * as actions from '../src/actions';
-//import { API } from '../src/api/config';
-
 import * as fetchMock from 'fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -8,7 +6,7 @@ import thunk from 'redux-thunk';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 declare const API_ENDPOINT: string;
-const API = API_ENDPOINT; //'https://cef6942jo1.execute-api.us-east-1.amazonaws.com/dev';
+const API = API_ENDPOINT;
 
 describe('test actions', () => {
   const projectList = [

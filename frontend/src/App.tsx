@@ -10,7 +10,7 @@ class App extends React.Component {
     return (
       <div>
         <HeadBar />
-        <Route exact path="/projects" component={ProjectGrid}/>
+        <ProjectGrid />
         <Route exact path="/auth" component={Auth}/>
       </div>
     );
