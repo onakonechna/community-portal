@@ -81,7 +81,7 @@ jobs:
 
       - run:
           name: Install aws cli
-          command: .local/bin/pip install awscli --upgrade --user
+          command: ~/.local/bin/pip install awscli --upgrade --user
 
       - run:
           name: Setup Local DynamoDB
@@ -96,7 +96,7 @@ jobs:
 
       - run:
           name: Insert user fixture data
-          command: .local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000
 
       - run:
           name: Run backend tests
