@@ -1,20 +1,20 @@
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
-let forntendHost = "'http://localhost'";
+let frontendHost = "'http://localhost'";
 let reactMode = "development";
 switch(process.env.STAGE) {
     case "production":
         apiHost = "'https://api.opensource.magento.com/'";
-        forntendHost = "'https://opensource.magento.com/'";
+        frontendHost = "'https://opensource.magento.com/'";
         reactMode = "production"
         break;
     case "qa":
         apiHost = "'https://api.opensource.engcom.magento.com/'";
-        forntendHost = "'https://opensource.engcom.magento.com/'";
+        frontendHost = "'https://opensource.engcom.magento.com/'";
         break;  
     case "dev":
         apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
-        forntendHost = "'https://dev.opensource.engcom.magento.com/'";
+        frontendHost = "'https://dev.opensource.engcom.magento.com/'";
         break;       
 }
 

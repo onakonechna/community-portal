@@ -89,6 +89,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleChange = this.handleChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleTechSubmission = this.handleTechSubmission.bind(this);
   }
@@ -97,22 +98,9 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     return (event: any) => {
       const newItem = event.target.value;
       if (field === 'technologies') {
-        if (newItem.slice(-1) === ' ') {
-          const technologies = this.state.technologies;
-          const techList = technologies.map(t => t.type);
-          if (techList.indexOf(newItem.slice(0, -1)) !== -1) return;
-          this.setState((prevState:DialogState) => ({
-            technologies: [
-              ...prevState.technologies,
-              { key: prevState.technologies.length, type: newItem.slice(0, -1) },
-            ],
-            technologiesString: '',
-          }));
-        } else {
-          this.setState({
-            technologiesString: newItem,
-          });
-        }
+        this.setState({
+          technologiesString: newItem,
+        });
       } else if (field === 'goal') {
         if (newItem === 'NaN') {
           this.setState({ goal: 0 });
@@ -143,6 +131,23 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   handleClose() {
     this.setState({ open: false });
   }
+
+  handleKeyPress(event: any) {
+    const newItem = event.target.value;
+    if (event.key === 'Enter') {
+      const technologies = this.state.technologies;
+      const techList = technologies.map(t => t.type);
+      if (techList.indexOf(newItem) !== -1) return;
+      this.setState((prevState:DialogState) => ({
+        technologies: [
+          ...prevState.technologies,
+          { key: prevState.technologies.length, type: newItem },
+        ],
+        technologiesString: '',
+      }));
+    }
+  }
+
   handleTechSubmission(technologies: Technology[]) {
     return technologies.map((tech) => {
       return tech.type;
@@ -165,7 +170,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         name: this.state.name,
         description: this.state.description,
         size: this.state.size,
-        due: new Date(this.state.due).getTime() / 1000,
+        due: new Date(this.state.due).getTime(),
         technologies: this.handleTechSubmission(tech),
         github_address: this.state.github,
         estimated: this.state.goal,
@@ -250,8 +255,9 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               required
               margin="dense"
               id="technologies"
-              label="Input Technologies for this Project (Separate by space)"
+              label="Input Technologies for this Project (Separate by Enter)"
               onChange={this.handleChange('technologies')}
+              onKeyPress={this.handleKeyPress}
               value={this.state.technologiesString}
               type="text"
               fullWidth

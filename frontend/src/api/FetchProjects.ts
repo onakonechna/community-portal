@@ -1,4 +1,4 @@
-import { API, headers } from './config';
+import { API, headers } from './Config';
 
 const fetchProjects = () => {
   return fetch(`${API}/projects`, headers)

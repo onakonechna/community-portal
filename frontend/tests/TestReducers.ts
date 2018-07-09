@@ -1,4 +1,4 @@
-import {  OtherAction, ProjectLoadedAction, TypeKeys } from '../src/actions';
+import { OtherAction, ProjectLoadedAction, TypeKeys } from '../src/actions';
 import projectReducer from '../src/reducers/project';
 
 describe('test reducer', () => {

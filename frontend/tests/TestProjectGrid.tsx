@@ -1,6 +1,8 @@
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 
+jest.mock('../src/components/Logo');
+
 import { addProject, loadProjects } from '../src/actions';
 import { AddProjectDialog } from '../src/components/AddProjectDialog';
 import HeadBar from '../src/components/HeadBar';

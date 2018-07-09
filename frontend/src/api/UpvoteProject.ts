@@ -1,4 +1,4 @@
-import { API, postHeaders } from './config';
+import { API, postHeaders } from './Config';
 
 const upvoteProject = (id: string) => {
   return fetch(`${API}/user/likeProject`, postHeaders({ project_id: id }))

@@ -69,6 +69,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -76,21 +77,9 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     return (event: any) => {
       const newItem = event.target.value;
       if (field === 'technologies') {
-        if (newItem.slice(-1) === ' ') {
-          const technologies = this.state.technologies;
-          if (technologies.indexOf(newItem.slice(0, -1)) !== -1) return;
-          this.setState((prevState:EditDialogState) => ({
-            technologies: [
-              ...prevState.technologies,
-              newItem.slice(0, -1),
-            ],
-            technologiesString: '',
-          }));
-        } else {
-          this.setState({
-            technologiesString: newItem,
-          });
-        }
+        this.setState({
+          technologiesString: newItem,
+        });
       } else if (field === 'goal') {
         if (newItem === 'NaN') {
           this.setState({ goal: 0 });
@@ -114,8 +103,23 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
   }
 
+  handleKeyPress(event: any) {
+    const newItem = event.target.value;
+    if (event.key === 'Enter') {
+      const technologies = this.state.technologies;
+      if (technologies.indexOf(newItem) !== -1) return;
+      this.setState((prevState:EditDialogState) => ({
+        technologies: [
+          ...prevState.technologies,
+          newItem,
+        ],
+        technologiesString: '',
+      }));
+    }
+  }
+
   handleReadTime(timestamp: number) {
-    return new Date(timestamp * 1000).toISOString().substr(0, 10);
+    return new Date(timestamp).toISOString().substr(0, 10);
   }
 
   handleSubmit() {
@@ -125,7 +129,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       name: this.state.name,
       description: this.state.description,
       size: this.state.size,
-      due: new Date(this.state.due).getTime() / 1000,
+      due: new Date(this.state.due).getTime(),
       technologies: this.state.technologies,
       github_address: this.state.github,
       estimated: this.state.goal,
@@ -195,8 +199,9 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               required
               margin="dense"
               id="technologies"
-              label="Input Technologies for this Project (Separate by space)"
+              label="Input Technologies for this Project (Separate by Enter)"
               onChange={this.handleChange('technologies')}
+              onKeyPress={this.handleKeyPress}
               value={this.state.technologiesString}
               type="text"
               fullWidth

@@ -217,11 +217,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 
   toggleEdit() {
-    this.setState({ editOpen: !this.state.editOpen });
+    this.setState((prevState: CardState) => ({
+      editOpen: !prevState.editOpen,
+    }));
   }
 
   togglePledge() {
-    this.setState({ pledgeOpen: !this.state.pledgeOpen });
+    this.setState((prevState: CardState) => ({
+      pledgeOpen: !prevState.pledgeOpen,
+    }));
   }
 
   toggleLike() {
