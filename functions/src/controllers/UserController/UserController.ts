@@ -18,18 +18,18 @@ interface UserControllerInterface {
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
-    const data_copy = Object.assign({}, data);
-    delete data_copy['user_exists'];
-    delete data_copy['access_token'];
+    delete data['user_exists'];
+    delete data['access_token'];
 
-    const { user_id } = data;
+    const { user_id, scopes } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
           user_id,
+          scopes,
           message: 'User saved',
-          token: authroizationService.create(data_copy),
+          token: authroizationService.create(data),
         },
       };
     };
@@ -145,7 +145,8 @@ export default class UserController implements UserControllerInterface {
         const { avatar_url } = result.Item;
         return { avatar_url };
       }
-      throw 'User not found. Attempt to retrieve user avatar_url failed';
+      console.log('Warning: User not found - attempt to retrieve user avatar_url gives empty map');
+      return {};
     };
   }
 
@@ -158,7 +159,8 @@ export default class UserController implements UserControllerInterface {
         }
         return { scopes: scopes.values };
       }
-      throw 'User not found. Attempt to retrieve user scopes failed';
+      console.log('Warning: User not found - attempt to retrieve user scopes gives empty map');
+      return {};
     };
   }
 
