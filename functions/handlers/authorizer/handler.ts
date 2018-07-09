@@ -50,6 +50,12 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const effect = 'Allow';
     const authorizerContext = { user_id };
 
+    // check that API is defined
+    if (API === undefined) {
+      console.log('Check that API id is defined for the current stage in serverless.yml');
+      throw 'API undefined';
+    }
+
     // Return an IAM policy document for the current endpoint
     let resource: string;
     if (IS_OFFLINE === 'true') {
@@ -61,6 +67,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
 
     callback(null, policyDocument);
   } catch (e) {
+    console.log(e);
     callback('Unauthorized'); // Return a 401 Unauthorized response
   }
 };

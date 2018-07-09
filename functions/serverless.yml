@@ -22,10 +22,7 @@ custom:
     stage: ${self:provider.stage} # Stage will be created for every branch
     createRoute53Record: false
   api:
-    dev: iq0sxk313f
-    demo: n51znwfhz0
-    staging: glgyhzbsgj
-    prod: 4juhqxapui
+    dev: 8qgklun7w3
 
 provider:
   name: aws
