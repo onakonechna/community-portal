@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
@@ -34,29 +35,47 @@ interface WithAuthDispatchProps {
   getLikedProjects?: any;
 }
 
-const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
+const Authorization = (allowedRoles:any, compulsoryScopes:any) => (WrappedComponent:any) => {
   const Login = GithubAuthButton(WrappedComponent);
   class WithAuth extends React.Component<WithAuthProps & WithAuthStateProps & WithAuthDispatchProps, {}> {
     constructor(props: WithAuthProps) {
       super(props);
     }
     render() {
-      const { role } = this.props.user;
-      if (allowedRoles.includes(role)) {
+      const { role, scopes } = this.props.user;
+      console.log('WithAuth.tsx debugging - scopes:', scopes);
+      if (!allowedRoles.includes(role)) {
+        return <Login
+          clientId="668e0b6c450cc783f267"
+          scope=""
+          redirectUri="http://localhost:3030/auth"
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+          user={this.props.user}
+          loadUser={this.props.loadUser}
+          updateUserRole={this.props.updateUserRole}
+          updateUserScopes={this.props.updateUserScopes}
+          getLikedProjects={this.props.getLikedProjects}
+        />;
+      }
+
+      // do not check scopes if compulsoryScopes is not specified
+      if (compulsoryScopes === 'undefined'
+        || (Array.isArray(compulsoryScopes) && compulsoryScopes.length === 0)
+      ) {
         return <WrappedComponent {...this.props} />;
       }
-      return <Login
-        clientId="668e0b6c450cc783f267"
-        scope=""
-        redirectUri="http://localhost:3030/auth"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        user={this.props.user}
-        loadUser={this.props.loadUser}
-        updateUserRole={this.props.updateUserRole}
-        updateUserScopes={this.props.updateUserScopes}
-        getLikedProjects={this.props.getLikedProjects}
-      />;
+      if (!Array.isArray(compulsoryScopes)) {
+        throw 'WithAuth.tsx: compulsoryScopes must be an array if specified';
+      }
+
+      // check if user scopes contain every compulsory scope listed
+      if (_.every(compulsoryScopes, (scope: string) => _.includes(scopes, scope))) {
+        return <WrappedComponent {...this.props} />;
+      }
+
+      // render nothing
+      return;
     }
   }
   const mapStateToProps = (state: any) => {
