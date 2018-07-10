@@ -1,6 +1,6 @@
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3030'";
-let frontendHost = "'blah'";
+let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 
 switch(process.env.STAGE) {
