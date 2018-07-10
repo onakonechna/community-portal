@@ -16,6 +16,8 @@ import { API } from './../api/Config';
 import Logo from './Logo';
 
 declare const __FRONTEND__: string;
+declare const GIT_ID: string;
+export const gitId = GIT_ID;
 export const frontEnd = __FRONTEND__;
 
 export const onSuccess = (response: string) => {
@@ -35,7 +37,6 @@ const styles = (theme:any) => ({
 
 const HeadBar = (props: any) => {
   const { classes } = props;
-  console.log(frontEnd);
   return (
     <AppBar className={classes.appBar} position="static" color="secondary">
       <Toolbar>
@@ -45,7 +46,7 @@ const HeadBar = (props: any) => {
         <Logo />
         <AddProject className={classes.addButton} />
         <Login
-          clientId={process.env.GIT_ID}
+          clientId={gitId}
           scope=""
           redirectUri={`${frontEnd}/auth`}
           onSuccess={onSuccess}

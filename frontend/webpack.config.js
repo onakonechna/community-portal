@@ -1,5 +1,5 @@
 let webpack = require("webpack");
-let apiHost = "'http://localhost:3030'";
+let apiHost = "'http://localhost:3000'";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 
@@ -18,12 +18,14 @@ switch(process.env.STAGE) {
         frontendHost = "'https://dev.opensource.engcom.magento.com/'";
         break;    
     case "local":
-        apiHost = "'http://localhost:8080'"
-        frontendHost = "'http://localhost:8080'";   
+        apiHost = "'http://localhost:3000'"
+        frontendHost = "'http://localhost:8080'";
+        break;
 }
 
 console.log(process.env.STAGE);
 console.log(apiHost);
+console.log(process.env.GIT_ID);
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -35,10 +37,8 @@ module.exports = {
         new webpack.DefinePlugin({
             API_ENDPOINT: apiHost,
             __FRONTEND__: frontendHost,
-            "process.env": {
-                NODE_ENV: JSON.stringify(reactMode),
-                GIT_ID: JSON.stringify(process.env.GIT_ID)
-            }
+            NODE_ENV: JSON.stringify(reactMode),
+            GIT_ID: JSON.stringify(process.env.GIT_ID)
           })
     ],
 
