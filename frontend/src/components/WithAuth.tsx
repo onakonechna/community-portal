@@ -54,6 +54,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         user={this.props.user}
         loadUser={this.props.loadUser}
         updateUserRole={this.props.updateUserRole}
+        updateUserScopes={this.props.updateUserScopes}
         getLikedProjects={this.props.getLikedProjects}
       />;
     }
@@ -69,6 +70,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
       getLikedProjects: () => dispatch(getLikedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
+      updateUserScopes: (id: string, scopes: string[]) => dispatch(UpdateUserScopesAction(id, scopes)),
     };
   };
 

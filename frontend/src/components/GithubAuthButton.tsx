@@ -102,6 +102,7 @@ const withLogin = (WrappedCompoent: any) => {
           const user = this.decodeToken(token);
           Promise.all([
             this.props.updateUserRole(this.props.user.user_id, 'user'),
+            this.props.updateUserScopes(this.props.user.user_id, this.props.user.scopes),
             this.props.loadUser(user),
             this.props.getLikedProjects(),
           ])
