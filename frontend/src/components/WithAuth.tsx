@@ -46,6 +46,22 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
     render() {
       const { role, scopes } = this.props.user;
       console.log('WithAuth.tsx debugging - scopes:', scopes);
+
+      // do not render if user has no required scopes
+      if (
+        compulsoryScopes !== undefined
+        && Array.isArray(compulsoryScopes)
+        && compulsoryScopes.length > 0
+      ) {
+        if (
+          scopes === undefined
+          || scopes.length === 0
+          || !_.every(compulsoryScopes, (scope: string) => _.includes(scopes, scope))
+        ) {
+          return null;
+        }
+      }
+
       if (!allowedRoles.includes(role)) {
         return <Login
           clientId="668e0b6c450cc783f267"
@@ -61,24 +77,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
         />;
       }
 
-      // do not check scopes if compulsoryScopes is not specified
-      if (compulsoryScopes === undefined
-        || (Array.isArray(compulsoryScopes) && compulsoryScopes.length === 0)
-      ) {
-        return <WrappedComponent {...this.props} />;
-      }
-      if (!Array.isArray(compulsoryScopes)) {
-        console.log('Logging compulsoryScopes:', compulsoryScopes);
-        throw 'WithAuth.tsx: compulsoryScopes must be an array if specified';
-      }
-
-      // check if user scopes contain every compulsory scope listed
-      if (_.every(compulsoryScopes, (scope: string) => _.includes(scopes, scope))) {
-        return <WrappedComponent {...this.props} />;
-      }
-
-      // render nothing
-      return null;
+      return <WrappedComponent {...this.props} />;
     }
   }
   const mapStateToProps = (state: any) => {
