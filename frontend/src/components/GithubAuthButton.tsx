@@ -14,6 +14,7 @@ interface GithubAuthButtonProps {
   onRequest?: any;
   user?: any;
   updateUserRole?: any;
+  updateUserScopes?: any;
   getLikedProjects?: any;
   loadUser?: any;
 }

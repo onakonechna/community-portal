@@ -6,6 +6,7 @@ import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,
+         UpdateUserScopesAction,
         } from '../actions';
 
 interface WithAuthProps {
@@ -32,10 +33,11 @@ interface WithAuthStateProps {
 interface WithAuthDispatchProps {
   loadUser?: any;
   updateUserRole?: any;
+  updateUserScopes?: any;
   getLikedProjects?: any;
 }
 
-const Authorization = (allowedRoles:any, compulsoryScopes:any) => (WrappedComponent:any) => {
+const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
   const Login = GithubAuthButton(WrappedComponent);
   class WithAuth extends React.Component<WithAuthProps & WithAuthStateProps & WithAuthDispatchProps, {}> {
     constructor(props: WithAuthProps) {
@@ -60,12 +62,13 @@ const Authorization = (allowedRoles:any, compulsoryScopes:any) => (WrappedCompon
       }
 
       // do not check scopes if compulsoryScopes is not specified
-      if (compulsoryScopes === 'undefined'
+      if (compulsoryScopes === undefined
         || (Array.isArray(compulsoryScopes) && compulsoryScopes.length === 0)
       ) {
         return <WrappedComponent {...this.props} />;
       }
       if (!Array.isArray(compulsoryScopes)) {
+        console.log('Logging compulsoryScopes:', compulsoryScopes);
         throw 'WithAuth.tsx: compulsoryScopes must be an array if specified';
       }
 
@@ -75,7 +78,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes:any) => (WrappedCompon
       }
 
       // render nothing
-      return;
+      return null;
     }
   }
   const mapStateToProps = (state: any) => {
