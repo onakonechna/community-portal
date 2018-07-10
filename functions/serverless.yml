@@ -11,14 +11,18 @@ custom:
   functions:
     # Add lambda functions for public endpoints here so Jest will not complain
     public: # remove non-public functions after authorizer integration
-      - getProjectCards
-      - updateProjectStatus
-      - getProjectDetails
-      - getToken
-      - projects
-      - users
-      - likeProject
       - authorization
+      - getProjectCards
+      - getProjectDetails
+      - updateProjectStatus
+      - likeProject
+  customDomain:
+    domainName: 'dev.api.opensource.engcom.magento.com'
+    basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
+    stage: ${self:provider.stage} # Stage will be created for every branch
+    createRoute53Record: false
+  api:
+    dev: 8qgklun7w3
 
 provider:
   name: aws
@@ -26,6 +30,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    API: ${self:custom.api.${self:provider.stage}}
     PROJECTS_TABLE: projects
     PROJECTS_INDEX: projects-index
     USERS_TABLE: users
@@ -49,23 +56,37 @@ package:
     - coverage/**
     - .circleci/**
 
-service: test-endpoint
+service: community-portal
 
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
-  - ${file(./handlers/project/create/createProject/createProject.yml)}
-  - ${file(./handlers/project/get/getProjectCards/getProjectCards.yml)}
-  - ${file(./handlers/project/get/getProjectDetails/getProjectDetails.yml)}
-  - ${file(./handlers/project/update/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/project/projects/projects.yml)}
-  - ${file(./handlers/token/get/get.yml)}
-  - ${file(./handlers/user/users/users.yml)}
-  - ${file(./handlers/user/update/likeProject/likeProject.yml)}
+  - ${file(./handlers/project/createProject/createProject.yml)}
+  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
+  - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
+  - ${file(./handlers/project/editProject/editProject.yml)}
+  - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
+  - ${file(./handlers/user/likeProject/likeProject.yml)}
+  - ${file(./handlers/user/unlikeProject/unlikeProject.yml)}
+  - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/pledge/pledge.yml)}
 
-# Add references to defined tables and roles here before deployment
 resources:
   Resources:
+    # Allow CORS headers for custom authorizer
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+        ResponseTemplates:
+          application/json: "{\"error\": $context.error.messageString}"
+    # Add references to defined tables and roles here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
@@ -73,14 +94,19 @@ resources:
     PullRequestsTable: ${file(./schema.json):PullRequests}
     EpicsTable: ${file(./schema.json):Epics}
     IssuesTable: ${file(./schema.json):Issues}
-    createProjectRole: ${file(./handlers/project/create/createProject/role.yml):createProjectRole}
-    getProjectCardsRole: ${file(./handlers/project/get/getProjectCards/role.yml):getProjectCardsRole}
-    getProjectDetailsRole: ${file(./handlers/project/get/getProjectDetails/role.yml):getProjectDetailsRole}
-    updateProjectStatusRole: ${file(./handlers/project/update/updateProjectStatus/role.yml):updateProjectStatusRole}
-    likeProjectRole: ${file(./handlers/user/update/likeProject/role.yml):likeProjectRole}
+    createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
+    getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
+    getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
+    editProjectRole: ${file(./handlers/project/editProject/role.yml):editProjectRole}
+    updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
+    likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
+    unlikeProjectRole: ${file(./handlers/user/unlikeProject/role.yml):unlikeProjectRole}
+    getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
+    pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
+  - serverless-domain-manager
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline # serverless-offline needs to be last in the list

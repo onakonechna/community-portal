@@ -1,0 +1,8 @@
+getProjectCards:
+  role: getProjectCardsRole
+  handler: handlers/project/getProjectCards/handler.handler
+  events:
+    - http:
+        path: /projects
+        method: get
+        cors: true

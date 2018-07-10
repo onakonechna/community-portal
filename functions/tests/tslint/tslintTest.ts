@@ -18,14 +18,8 @@ for (let filePath of filePaths){
 
 const result = linter.getResult();
 
-// describe('tslint tests', () => {
-//   it('should not produce any errors', () => {
-//     expect(result.errorCount).toBe(0);
-//   });
-// });
-
 describe('tslint tests', () => {
   it('should not produce any errors', () => {
-    expect(1).toBe(1);
+    expect(result.errorCount).toBe(0);
   });
 });

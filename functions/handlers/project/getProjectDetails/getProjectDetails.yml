@@ -1,0 +1,12 @@
+getProjectDetails:
+  role: getProjectDetailsRole
+  handler: handlers/project/getProjectDetails/handler.handler
+  events:
+  - http:
+      path: /project/{project_id}
+      method: get
+      cors: true
+      request:
+        parameters:
+          paths:
+            project_id: true

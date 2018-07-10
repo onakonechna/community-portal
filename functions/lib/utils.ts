@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 // Helper iterator
 // Usage:
 // for (let [key, value] of entries(myObj)) {
@@ -9,6 +11,13 @@ function* entries(obj: any) {
   }
 }
 
+function getMethods(obj: any) {
+  const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
+  _.remove(methods, (name: string) => { return name === 'constructor'; });
+  return methods;
+}
+
 export {
   entries,
+  getMethods,
 };

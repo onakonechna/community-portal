@@ -1,0 +1,14 @@
+createProject:
+  role: createProjectRole
+  handler: handlers/project/createProject/handler.handler
+  events:
+  - http:
+      path: /project/
+      method: post
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token

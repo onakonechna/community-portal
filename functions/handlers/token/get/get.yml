@@ -1,6 +1,0 @@
-getToken:
-  handler: handlers/token/get/handler.handler
-  events:
-  - http:
-      path: /token/get/
-      method: post

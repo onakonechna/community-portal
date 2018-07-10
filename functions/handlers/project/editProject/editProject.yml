@@ -1,0 +1,14 @@
+editProject:
+  role: editProjectRole
+  handler: handlers/project/editProject/handler.handler
+  events:
+  - http:
+      path: /project
+      method: put
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token
