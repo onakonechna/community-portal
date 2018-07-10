@@ -1,7 +1,8 @@
 let webpack = require("webpack");
-let apiHost = "'http://localhost:3000'";
-let frontendHost = "'http://localhost'";
+let apiHost = "'http://localhost:3030'";
+let frontendHost = "'blah'";
 let reactMode = "development";
+
 switch(process.env.STAGE) {
     case "production":
         apiHost = "'https://api.opensource.magento.com/'";
@@ -15,8 +16,14 @@ switch(process.env.STAGE) {
     case "dev":
         apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
         frontendHost = "'https://dev.opensource.engcom.magento.com/'";
-        break;       
+        break;    
+    case "local":
+        apiHost = "'http://localhost:8080'"
+        frontendHost = "'http://localhost:8080'";   
 }
+
+console.log(process.env.STAGE);
+console.log(apiHost);
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -27,12 +34,19 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             API_ENDPOINT: apiHost,
-            __FRONTEND__: apiHost,
+            __FRONTEND__: frontendHost,
             "process.env": {
-                NODE_ENV: JSON.stringify(reactMode)
+                NODE_ENV: JSON.stringify(reactMode),
+                GIT_ID: JSON.stringify(process.env.GIT_ID)
             }
           })
     ],
+
+    devServer: {
+        publicPath: "/",
+        contentBase: "./public",
+        hot: true
+    },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",

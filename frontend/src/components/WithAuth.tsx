@@ -7,6 +7,9 @@ import { LoadUserAction,
          getLikedProjectsAction,
         } from '../actions';
 
+declare const __FRONTEND__: string;
+export const frontEnd = __FRONTEND__;
+
 interface WithAuthProps {
   className?: any;
   user?: any;
@@ -46,9 +49,9 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         return <WrappedComponent {...this.props} />;
       }
       return <Login
-        clientId="668e0b6c450cc783f267"
+        clientId={process.env.GIT_ID || ''}
         scope=""
-        redirectUri="http://localhost:3030/auth"
+        redirectUri={`${frontEnd}/auth`}
         onSuccess={onSuccess}
         onFailure={onFailure}
         user={this.props.user}

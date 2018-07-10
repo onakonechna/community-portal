@@ -15,6 +15,9 @@ import withLogin from './GithubAuthButton';
 import { API } from './../api/Config';
 import Logo from './Logo';
 
+declare const __FRONTEND__: string;
+export const frontEnd = __FRONTEND__;
+
 export const onSuccess = (response: string) => {
   return axios.post(`${API}/authorize`, { code: response });
 };
@@ -32,6 +35,7 @@ const styles = (theme:any) => ({
 
 const HeadBar = (props: any) => {
   const { classes } = props;
+  console.log(frontEnd);
   return (
     <AppBar className={classes.appBar} position="static" color="secondary">
       <Toolbar>
@@ -41,9 +45,9 @@ const HeadBar = (props: any) => {
         <Logo />
         <AddProject className={classes.addButton} />
         <Login
-          clientId="668e0b6c450cc783f267"
+          clientId={process.env.GIT_ID}
           scope=""
-          redirectUri="http://localhost:3030/auth"
+          redirectUri={`${frontEnd}/auth`}
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
