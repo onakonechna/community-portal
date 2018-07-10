@@ -55,7 +55,7 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-function putProject(project, token=token){
+function putProject(project, token=tokens.mae){
   const postOptions = {
     method: 'POST',
     url: hostAddr + '/project',
@@ -72,7 +72,7 @@ const test21EditData = {
   description: 'edited',
 }
 
-function editProject(data, token=token){
+function editProject(data, token=tokens.mae){
   const postOptions = {
     data,
     method: 'PUT',
@@ -122,7 +122,7 @@ function getLikedProjects(){
   return axios(options);
 }
 
-function updateProjectStatus(project_id, status, token=token){
+function updateProjectStatus(project_id, status, token=tokens.mae){
   const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
