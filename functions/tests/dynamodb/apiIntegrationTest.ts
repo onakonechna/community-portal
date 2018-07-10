@@ -15,9 +15,15 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const token = jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' });
 
-console.log(token);
+const tokens = {
+  mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  xiya: jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+};
+
+console.log(tokens);
+
+const token = tokens.mae; // default token
 
 const hostAddr = 'http://localhost:3000';
 
@@ -49,7 +55,7 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-function putProject(project){
+function putProject(project, token=token){
   const postOptions = {
     method: 'POST',
     url: hostAddr + '/project',
@@ -66,7 +72,7 @@ const test21EditData = {
   description: 'edited',
 }
 
-function editProject(data){
+function editProject(data, token=token){
   const postOptions = {
     data,
     method: 'PUT',
@@ -116,7 +122,7 @@ function getLikedProjects(){
   return axios(options);
 }
 
-function updateProjectStatus(project_id, status){
+function updateProjectStatus(project_id, status, token=token){
   const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
@@ -162,6 +168,15 @@ describe('createProject endpoint', () => {
           expect(results[i].message).toBe('Project created successfully');
       }
     });
+  });
+
+  it('should not create a project if the user has no write:project scope', () => {
+    expect.assertions(1);
+
+    putProject(projects[0], tokens.xiya)
+      .catch((error) => {
+        console.log('logging:', error);
+      });
   });
 });
 
