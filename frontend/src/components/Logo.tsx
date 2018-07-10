@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-// import MagentoLogoImage from '-!svg-react-loader!./../static/images/m-logo.svg';
-// import MagentoLogoText from '-!svg-react-loader!././../static/images/magento-logo.svg';
+import MagentoLogoImage from '-!svg-react-loader!./../static/images/m-logo.svg';
+import MagentoLogoText from '-!svg-react-loader!././../static/images/magento-logo.svg';
 
 const styles = (theme:any) => ({
   logo: {
@@ -38,15 +38,13 @@ const styles = (theme:any) => ({
     margin: '0 10px',
   },
 });
-/*
-// <MagentoLogoImage className={classes.mLogo} />
-// <MagentoLogoText className={classes.magentoLogo} />
-*/
+
 const Logo = (props: any) => {
   const { classes } = props;
   return (
     <span className={classes.logo}>
-
+      <MagentoLogoImage className={classes.mLogo} />
+      <MagentoLogoText className={classes.magentoLogo} />
       <span className={classes.divider}></span>
       <span className={classes.logoText}>Community Portal</span>
     </span>
