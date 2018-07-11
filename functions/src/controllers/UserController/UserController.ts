@@ -8,6 +8,7 @@ interface UserControllerInterface {
   update(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   addUpvotedProject(data: any): (result: any) => any;
+  addBookmarkedProject(data: any): (result: any) => any;
   removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
@@ -112,6 +113,19 @@ export default class UserController implements UserControllerInterface {
         payload: {
           result,
           message: 'Subscribed successfully',
+        },
+      };
+    };
+  }
+
+  addBookmarkedProject(data: any) {
+    const { project_id } = data;
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          project_id,
+          message: 'Project bookmarked successfully',
         },
       };
     };

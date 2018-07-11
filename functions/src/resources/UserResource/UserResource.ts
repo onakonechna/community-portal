@@ -10,9 +10,11 @@ interface UserResourceInterface {
   getById(data: any): Promise<any>;
   update(data: any): Promise<any>;
   addUpvotedProject(data: any): Promise<any>;
+  addBookmarkedProject(data: any): Promise<any>;
   removeUpvotedProject(data: any): Promise<any>;
   getUpvotedProjects(data: any): Promise<any>;
   pledge(data: any): Promise<any>;
+  subscribe(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -53,6 +55,16 @@ export default class UserResource implements UserResourceInterface {
       USERS_TABLE,
       { user_id },
       'upvoted_projects',
+      project_id,
+    );
+  }
+
+  addBookmarkedProject(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+    return this.adapter.addToSetIfNotExists(
+      USERS_TABLE,
+      { user_id },
+      'bookmarked_projects',
       project_id,
     );
   }
