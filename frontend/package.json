@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "PORT=3030 react-scripts-ts start",
-    "start:dev": "webpack-dev-server",
+    "start:dev": "STAGE=local webpack-dev-server",
     "dev": "nodemon -w ./ -x npm run start -e ts,tsx",
     "deploy": "npm run build && aws s3 sync build/* s3://opensource.engcom.magento.com",
     "build": "react-scripts-ts build",

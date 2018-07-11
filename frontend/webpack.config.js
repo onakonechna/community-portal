@@ -1,6 +1,8 @@
+const path = require("path");
+
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3030'";
-let frontendHost = "'http://localhost:8080'";
+let frontendHost = "'blah'";
 let reactMode = "development";
 
 switch(process.env.STAGE) {
@@ -29,7 +31,8 @@ module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/public/dist"
+        path: path.resolve(__dirname + "/public/dist"),
+        publicPath: "/dist/"
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -43,9 +46,8 @@ module.exports = {
     ],
 
     devServer: {
-        publicPath: "/",
-        contentBase: "./public",
-        hot: true
+        contentBase: "public",
+        publicPath: "/dist/"
     },
 
     // Enable sourcemaps for debugging webpack's output.

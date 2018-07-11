@@ -35,7 +35,7 @@ const styles = (theme:any) => ({
 
 const HeadBar = (props: any) => {
   const { classes } = props;
-  console.log(frontEnd);
+  console.log(process.env.GIT_ID);
   return (
     <AppBar className={classes.appBar} position="static" color="secondary">
       <Toolbar>
