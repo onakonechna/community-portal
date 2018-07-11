@@ -52,7 +52,7 @@ const withLogin = (WrappedCompoent: any) => {
     private popup: any;
 
     handleLogin() {
-      const search = toQuery({
+        const search = toQuery({
         client_id: this.props.clientId,
         redirect_uri: this.props.redirectUri,
         scope: this.props.scope,

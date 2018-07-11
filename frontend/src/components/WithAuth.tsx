@@ -9,6 +9,8 @@ import { LoadUserAction,
 
 declare const __FRONTEND__: string;
 export const frontEnd = __FRONTEND__;
+declare const GIT_ID: string;
+export const gitId = GIT_ID;
 
 interface WithAuthProps {
   className?: any;
@@ -49,7 +51,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         return <WrappedComponent {...this.props} />;
       }
       return <Login
-        clientId={process.env.GIT_ID || ''}
+        clientId={gitId}
         scope=""
         redirectUri={`${frontEnd}/auth`}
         onSuccess={onSuccess}
