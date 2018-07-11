@@ -90,7 +90,7 @@ export default class ProjectResource implements ProjectResourceInterface {
 
     delete data['scopes'];
     if (scopes === undefined || !_.includes(scopes, 'write:project')) {
-      throw 'User does not have the required scope (write:project) to create project';
+      throw 'User does not have the required scope (write:project) to update project status';
     }
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });

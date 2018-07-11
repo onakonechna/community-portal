@@ -217,14 +217,14 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
       });
   });
 
-  // it('should not change the project status of test21 to open if the user has no write:project scope', () => {
-  //   expect.assertions(1);
-  //
-  //   return updateProjectStatus('test21', 'closed', tokens.xiya)
-  //     .catch((response) => {
-  //       expect(response.data.error).toBe('User does not have the required scope (write:project) to create project');
-  //     });
-  // });
+  it('should not change the project status of test21 to open if the user has no write:project scope', () => {
+    expect.assertions(1);
+
+    return updateProjectStatus('test21', 'open', tokens.xiya)
+      .catch((error) => {
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
+      });
+  });
 });
 
 describe('editProject endpoint', () => {
@@ -237,6 +237,15 @@ describe('editProject endpoint', () => {
       })
       .catch((error) => {
         console.log(error.response);
+      });
+  });
+
+  it('should not edit project if user has no write:project scope', () => {
+    expect.assertions(1);
+
+    return editProject(test21EditData, tokens.xiya)
+      .catch((error) => {
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to edit project');
       });
   });
 });
