@@ -174,8 +174,8 @@ describe('createProject endpoint', () => {
     expect.assertions(1);
 
     putProject(projects[0], tokens.xiya)
-      .catch((error) => {
-        console.log('logging:', error);
+      .catch((response) => {
+        expect(response.data.error).toBe('User does not have the required scope (write:project) to create project');
       });
   });
 });
