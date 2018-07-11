@@ -10,7 +10,6 @@ const dataflows = [
     method: 'addBookmarkedProject',
     target: UserResource,
     validationMap: { addBookmarkedProject: 'projectIdOnlySchema' },
-    dataDependencies: ['project_id'],
     authDataDependencies: ['user_id'],
   },
 ];
