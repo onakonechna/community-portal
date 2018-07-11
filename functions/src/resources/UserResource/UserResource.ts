@@ -13,6 +13,7 @@ interface UserResourceInterface {
   addBookmarkedProject(data: any): Promise<any>;
   removeUpvotedProject(data: any): Promise<any>;
   getUpvotedProjects(data: any): Promise<any>;
+  getBookmarkedProjects(data: any): Promise<any>;
   pledge(data: any): Promise<any>;
   subscribe(data: any): Promise<any>;
   delete(data: any): Promise<any>;
@@ -83,6 +84,11 @@ export default class UserResource implements UserResourceInterface {
   getUpvotedProjects(data: any): Promise<any> {
     const { user_id } = data;
     return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, upvoted_projects');
+  }
+
+  getBookmarkedProjects(data: any): Promise<any> {
+    const { user_id } = data;
+    return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, bookmarked_projects');
   }
 
   pledge(data: any): Promise<any> {
