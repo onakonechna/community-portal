@@ -32,6 +32,11 @@ export interface LoadLikedProjects {
   projects: any;
 }
 
+export interface LoadBookmarkedProjects {
+  type: TypeKeys.LOAD_BOOKMARKED_PROJECTS;
+  projects: any;
+}
+
 export interface AddProjectAction {
   type: TypeKeys.ADD_PROJECT;
   project: any;
@@ -59,6 +64,7 @@ export interface OtherAction {
 export type ActionTypes =
  | AddProjectAction
  | LoadLikedProjects
+ | LoadBookmarkedProjects
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction

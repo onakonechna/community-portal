@@ -5,6 +5,7 @@ import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,
+         getBookmarkedProjectsAction,
         } from '../actions';
 
 interface WithAuthProps {
@@ -23,6 +24,8 @@ interface WithAuthProps {
   onFailure?: any;
   toggleLike?: any;
   likeProject?: any;
+  toggleBookmark?: any;
+  bookmarkProject?: any;
 }
 
 interface WithAuthStateProps {
@@ -33,6 +36,7 @@ interface WithAuthDispatchProps {
   loadUser?: any;
   updateUserRole?: any;
   getLikedProjects?: any;
+  getBookmarkedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
@@ -56,6 +60,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
         loadUser={this.props.loadUser}
         updateUserRole={this.props.updateUserRole}
         getLikedProjects={this.props.getLikedProjects}
+        getBookmarkedProjects={this.props.getBookmarkedProjects}
       />;
     }
   }
@@ -68,6 +73,7 @@ const Authorization = (allowedRoles:any) => (WrappedComponent:any) => {
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       getLikedProjects: () => dispatch(getLikedProjectsAction()),
+      getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
     };

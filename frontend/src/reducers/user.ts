@@ -21,6 +21,10 @@ export default function user(state = testUser, action:ActionTypes) {
       return Object.assign({}, state, {
         likedProjects: action.projects,
       });
+    case TypeKeys.LOAD_BOOKMARKED_PROJECTS:
+      return Object.assign({}, state, {
+        bookmarkedProjects: action.projects,
+      });
     default:
       return state;
   }
