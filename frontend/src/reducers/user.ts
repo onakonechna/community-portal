@@ -6,6 +6,7 @@ const testUser = {
   name: 'Mark',
   role: 'guest',
   likedProjects: [],
+  bookmarkedProjects: [],
 };
 
 export default function user(state = testUser, action:ActionTypes) {

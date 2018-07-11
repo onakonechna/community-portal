@@ -64,6 +64,10 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
     return this.props.user.likedProjects.indexOf(id) !== -1;
   }
 
+  checkBookmark(id: string) {
+    return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+  }
+
   updateGrid() {
     this.props.loadProjects();
   }
@@ -88,6 +92,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
                 project={project}
                 handler={this.updateGrid}
                 liked={this.checkLike(project.project_id)}
+                bookmarked={this.checkBookmark(project.project_id)}
               />
             </Grid>
           ))}

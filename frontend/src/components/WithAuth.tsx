@@ -12,6 +12,7 @@ interface WithAuthProps {
   user?: any;
   handler?: any;
   liked?: boolean;
+  bookmarked?: boolean;
   upvotes?: number;
   project_id?: string;
   label?: string;
