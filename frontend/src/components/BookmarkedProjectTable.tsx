@@ -3,9 +3,14 @@ import { connect } from 'react-redux';
 
 // import { getBookmarkedProjectsAction } from '../actions';
 import { loadProjects } from '../actions';
-import BookmarkedProjectRow from './BookmarkedProjectRow';
+// import BookmarkedProjectRow from './BookmarkedProjectRow';
 
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 const projectsData = require('../data/projects.json');
 
@@ -71,18 +76,17 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   render() {
     return (
       <div style={{ padding: '40px' }}>
-        <Grid
-          container
-          direction="row"
-          spacing={32}
-          style={styles}
-        >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Project Name</TableCell>
+            </TableRow>
+          </TableHead>
           {this.props.projects && this.props.projects.map((project: any) => (
             <Grid item key={project.project_id}>
               <BookmarkedProjectRow
                 project_id={project.project_id}
                 name={project.name}
-                handler={this.updateGrid}
               />
             </Grid>
           ))}
