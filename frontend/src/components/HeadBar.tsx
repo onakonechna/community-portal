@@ -43,7 +43,7 @@ const HeadBar = (props: any) => {
         <Login
           clientId="668e0b6c450cc783f267"
           scope=""
-          redirectUri="http://localhost:3030/auth"
+          redirectUri="http://localhost:8080/auth"
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
