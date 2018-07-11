@@ -31,6 +31,7 @@ const Avatar = withAuth(['user'])(UserAvatar);
 
 const styles = (theme:any) => ({
   appBar: {
+    'font-family': 'system-ui',
     'box-shadow': 'none',
   },
 });
