@@ -52,7 +52,7 @@ const withLogin = (WrappedCompoent: any) => {
     private popup: any;
 
     handleLogin() {
-        const search = toQuery({
+      const search = toQuery({
         client_id: this.props.clientId,
         redirect_uri: this.props.redirectUri,
         scope: this.props.scope,
@@ -97,7 +97,7 @@ const withLogin = (WrappedCompoent: any) => {
         return this.onFailure(new Error('\'code\' not found'));
       }
       this.props.onSuccess(code)
-        .then((res:any) => {
+        .then((res: any) => {
           const token = res.data.token;
           this.saveToken(token);
           const user = this.decodeToken(token);
@@ -106,14 +106,14 @@ const withLogin = (WrappedCompoent: any) => {
             this.props.loadUser(user),
             this.props.getLikedProjects(),
           ])
-          .catch((err: Error) => console.error(err));
+            .catch((err: Error) => console.error(err));
         })
         .catch((err: Error) => console.error(err));
     }
 
     onFailure(error: Error) {
       this.props.onFailure(error)
-        .then((err:Error) => console.log(err))
+        .then((err: Error) => console.log(err))
         .then(() => this.props.updateUserRole(this.props.user.user_id, 'guest'));
     }
 
