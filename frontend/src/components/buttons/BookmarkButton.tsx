@@ -20,7 +20,7 @@ const BookmarkButton = (props: BookmarkProjectProps) => {
       onClick={props.handler}
     >
       <Bookmark
-        style={{ color: props.bookmarked ? '#FF2B00' : '#27A2AA' }}
+        style={{ color: props.bookmarked ? '#f16321' : '#27A2AA' }}
       />
     </IconButton>
   );
