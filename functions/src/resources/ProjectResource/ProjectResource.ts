@@ -35,6 +35,13 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.owner = data.user_id;
     data.user_id = undefined;
 
+    // check that user has write:project scope
+    const { scopes } = data;
+    delete data['scopes'];
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
+      throw 'User does not have the required scope (write:project) to create project';
+    }
+
     // append additional data
     const unixTimestamp = new Date().getTime();
     data.status = 'open';
@@ -67,22 +74,25 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   edit(data: any): Promise<any> {
-    const { project_id, is_owner } = data;
+    const { project_id, scopes } = data;
     delete data['project_id'];
-    delete data['is_owner'];
+    delete data['scopes'];
 
-    console.log('Checking if user is owner of the project');
-    console.log(is_owner);
-
-    if (!is_owner) {
-      throw 'Only owner of the project can edit it';
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
+      throw 'User does not have the required scope (write:project) to edit project';
     }
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }
 
   updateStatus(data: any): Promise<any> {
-    const { project_id, status } = data;
+    const { project_id, status, scopes } = data;
+
+    delete data['scopes'];
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
+      throw 'User does not have the required scope (write:project) to update project status';
+    }
+
     return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });
   }
 

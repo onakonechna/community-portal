@@ -15,13 +15,16 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const token = jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' });
-const different_token = jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '5s' });
 
-console.log(token);
-console.log(different_token);
+const tokens = {
+  mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  xiya: jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+};
 
-// const hostAddr = 'https://iq0sxk313f.execute-api.us-east-1.amazonaws.com/dev';
+console.log(tokens);
+
+const token = tokens.mae; // default token
+
 const hostAddr = 'http://localhost:3000';
 
 function tokenAuthorize(code){
@@ -52,7 +55,7 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-function putProject(project){
+function putProject(project, token=tokens.mae){
   const postOptions = {
     method: 'POST',
     url: hostAddr + '/project',
@@ -69,7 +72,7 @@ const test21EditData = {
   description: 'edited',
 }
 
-function editProject(data){
+function editProject(data, token=tokens.mae){
   const postOptions = {
     data,
     method: 'PUT',
@@ -119,7 +122,7 @@ function getLikedProjects(){
   return axios(options);
 }
 
-function updateProjectStatus(project_id, status){
+function updateProjectStatus(project_id, status, token=tokens.mae){
   const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
@@ -149,17 +152,6 @@ function pledge(project_id, hours){
 // Tests //
 ///////////
 
-// describe('authorize endpoint', () => {
-//   it('should create user and return JWT token', () => {
-//     expect.assertions(1);
-//
-//     return tokenAuthorize('ceee573a0387d876417e')
-//       .then((response) => {
-//         console.log(response.data);
-//       });
-//   });
-// });
-
 describe('createProject endpoint', () => {
   it('should create multiple projects with fixture data via token authorization', () => {
     let promises = [];
@@ -176,6 +168,15 @@ describe('createProject endpoint', () => {
           expect(results[i].message).toBe('Project created successfully');
       }
     });
+  });
+
+  it('should not create a project if the user has no write:project scope', () => {
+    expect.assertions(1);
+
+    return putProject(projects[0], tokens.xiya)
+      .catch((error) => {
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to create project');
+      });
   });
 });
 
@@ -215,6 +216,15 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
         expect(response.data[0].project_id).not.toBe('test21');
       });
   });
+
+  it('should not change the project status of test21 to open if the user has no write:project scope', () => {
+    expect.assertions(1);
+
+    return updateProjectStatus('test21', 'open', tokens.xiya)
+      .catch((error) => {
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
+      });
+  });
 });
 
 describe('editProject endpoint', () => {
@@ -227,6 +237,15 @@ describe('editProject endpoint', () => {
       })
       .catch((error) => {
         console.log(error.response);
+      });
+  });
+
+  it('should not edit project if user has no write:project scope', () => {
+    expect.assertions(1);
+
+    return editProject(test21EditData, tokens.xiya)
+      .catch((error) => {
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to edit project');
       });
   });
 });
@@ -299,13 +318,6 @@ describe('pledge endpoint', () => {
 
   it('should update pledging-related data in users data', () => {
     // to be implemented after implementing API to get pledged projects for users
-    expect(1).toBe(1);
-  });
-});
-
-describe('dummy test', () => {
-  it('should pass', () => {
-    expect.assertions(1);
     expect(1).toBe(1);
   });
 });
