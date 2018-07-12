@@ -4,6 +4,7 @@ let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
+let public = '';
 
 switch(process.env.STAGE) {
     case "production":
@@ -41,12 +42,14 @@ module.exports = {
             API_ENDPOINT: apiHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
-            GIT_ID: JSON.stringify(process.env.GIT_ID)
+            GIT_ID: JSON.stringify(process.env.GIT_ID),
+            PUBLIC_URL: JSON.stringify(public)
           })
     ],
 
     devServer: {
-        contentBase: "public"
+        contentBase: "public",
+        historyApiFallback: true,
     },
 
     // Enable sourcemaps for debugging webpack's output.
