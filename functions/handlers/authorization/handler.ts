@@ -40,6 +40,14 @@ const dataflows = [
   },
   {
     controller: UserController,
+    method: 'getScopes',
+    target: UserResource,
+    methodMap: { getScopes: 'getById' },
+    dataDependencies: ['user_id'],
+    storageSpecs: ['scopes'],
+  },
+  {
+    controller: UserController,
     method: 'create',
     target: UserResource,
     dataDependencies: [
