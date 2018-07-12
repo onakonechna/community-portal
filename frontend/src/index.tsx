@@ -16,7 +16,7 @@ import App from './App';
 const palette: Palette = createPalette({
     primary: {
       light: '#48BF61',
-      dark: '#D4D4D4',
+      dark: '#A9A9A9',
       main: '#8BC34A',
     },
     secondary: {

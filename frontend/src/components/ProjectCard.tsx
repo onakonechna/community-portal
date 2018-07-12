@@ -76,8 +76,8 @@ const styles = (theme:any) => ({
     'margin-left': 'auto',
   },
   progress: {
-    // color: '#48BF61',
-    // colorSecondary: '#FF0000',
+    color: '#48BF61',
+    'z-index': '1',
   },
   progressText: {
     position: 'absolute' as 'absolute',
@@ -286,10 +286,17 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <div className={classes.progressDiv}>
                 <CircularProgress
                   className={classes.progress}
+                  style={{ position: 'absolute' }}
                   color={'primary'}
-                  variant="determinate"
+                  variant="static"
                   size={90}
                   value={this.getPercentage()}
+                />
+                <CircularProgress
+                  variant="static"
+                  style={{ color: '#A9A9A9' }}
+                  size={90}
+                  value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
