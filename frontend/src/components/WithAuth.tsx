@@ -45,7 +45,6 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
     }
     render() {
       const { role, scopes } = this.props.user;
-      console.log('WithAuth.tsx debugging - scopes:', scopes);
 
       // do not render if user has no required scopes
       if (
