@@ -63,7 +63,6 @@ export default class UserResource implements UserResourceInterface {
 
   addBookmarkedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
-    console.log('logging', user_id, project_id);
     return this.adapter.addToSetIfNotExists(
       USERS_TABLE,
       { user_id },

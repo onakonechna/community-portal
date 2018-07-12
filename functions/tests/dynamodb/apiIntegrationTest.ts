@@ -39,25 +39,25 @@ function tokenAuthorize(code){
 }
 
 function getProjectCards(){
-  const getCardsOptions = {
+  const options = {
     method: 'GET',
     url: hostAddr + '/projects',
   };
 
-  return axios(getCardsOptions);
+  return axios(options);
 }
 
 function getProjectDetails(project_id){
-  const getDetailsOptions = {
+  const options = {
     method: 'GET',
     url: hostAddr + '/project/' + project_id,
   };
 
-  return axios(getDetailsOptions);
+  return axios(options);
 }
 
 function putProject(project, token=tokens.xiya){
-  const postOptions = {
+  const options = {
     method: 'POST',
     url: hostAddr + '/project',
     data: project,
@@ -65,7 +65,7 @@ function putProject(project, token=tokens.xiya){
       Authorization: token,
     },
   };
-  return axios(postOptions);
+  return axios(options);
 }
 
 const test21EditData = {
@@ -86,7 +86,7 @@ function editProject(data, token=tokens.xiya){
 }
 
 function likeProject(project_id){
-  const likeProjectOptions = {
+  const options = {
     method: 'POST',
     url: hostAddr +  '/user/likeProject',
     data: { project_id },
@@ -95,7 +95,20 @@ function likeProject(project_id){
     },
   };
 
-  return axios(likeProjectOptions);
+  return axios(options);
+}
+
+function bookmarkProject(project_id){
+  const options = {
+    method: 'POST',
+    url: hostAddr +  '/user/bookmarkProject',
+    data: { project_id },
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return axios(options);
 }
 
 function unlikeProject(project_id){
@@ -115,6 +128,18 @@ function getLikedProjects(){
   const options = {
     method: 'GET',
     url: hostAddr +  '/user/likedProjects',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return axios(options);
+}
+
+function getBookmarkedProjects(){
+  const options = {
+    method: 'GET',
+    url: hostAddr +  '/user/bookmarkedProjects',
     headers: {
       Authorization: token,
     },
@@ -320,5 +345,25 @@ describe('pledge endpoint', () => {
   it('should update pledging-related data in users data', () => {
     // to be implemented after implementing API to get pledged projects for users
     expect(1).toBe(1);
+  });
+
+  describe('bookmark endpoint', () => {
+    it('should bookmark the project', () => {
+      expect.assertions(1);
+
+      return bookmarkProject('test22')
+        .then((response) => {
+          expect(response.data.message).toBe('Project bookmarked successfully');
+        });
+    });
+
+    it('should get a list of bookmarked projects', () => {
+      expect.assertions(1);
+
+      return getBookmarkedProjects()
+        .then((response) => {
+          expect(_.includes(response.data.bookmarked_projects, 'test22')).toBeTruthy();
+        });
+    });
   });
 });
