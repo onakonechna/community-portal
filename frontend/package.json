@@ -93,7 +93,9 @@
       "/build/"
     ],
     "globals": {
-      "API_ENDPOINT": "http://localhost:3000"
+      "API_ENDPOINT": "http://localhost:3000",
+      "__FRONTEND__": "'http://localhost:8080'",
+      "GIT_ID": "12683233"
     },
     "moduleFileExtensions": [
       "ts",
