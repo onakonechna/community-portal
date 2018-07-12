@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { loadProjects } from '../actions';
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
 
@@ -102,19 +101,25 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-    projects: state.project,
-    user: state.user,
+const WithProjectGrid = (loadProjects: any) => {
+
+  const mapStateToProps = (state: any) => {
+    return {
+      projects: state.project,
+      user: state.user,
+    };
   };
+
+  const mapDispatchToProps = (dispatch: any) => {
+    return {
+      loadProjects: () => dispatch(loadProjects()),
+    };
+  };
+
+  return connect(
+    mapStateToProps, mapDispatchToProps,
+  )(ProjectGrid);
+
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    loadProjects: () => dispatch(loadProjects()),
-  };
-};
-
-export default connect(
-  mapStateToProps, mapDispatchToProps,
-)(ProjectGrid);
+export default WithProjectGrid;
