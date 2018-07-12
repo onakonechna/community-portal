@@ -15,10 +15,11 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
+const authUserId = '39741185';
 
 const tokens = {
   mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
-  xiya: jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  xiya: jwt.sign({ user_id: authUserId }, config.custom.jwt.secret, { expiresIn: '1d' }),
 };
 
 console.log(tokens);
@@ -310,9 +311,9 @@ describe('pledge endpoint', () => {
       .then((response) => {
         const { pledged, pledgers, pledged_history, subscribers } = response.data;
         expect(pledged).toBe(25);
-        expect('40802007' in pledgers).toBeTruthy();
+        expect(authUserId in pledgers).toBeTruthy();
         expect(_.includes(pledged_history, 25)).toBeTruthy();
-        expect(_.includes(subscribers.values, '40802007')).toBeTruthy();
+        expect(_.includes(subscribers.values, authUserId)).toBeTruthy();
       });
   });
 
