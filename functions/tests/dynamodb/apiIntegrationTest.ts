@@ -23,7 +23,7 @@ const tokens = {
 
 console.log(tokens);
 
-const token = tokens.mae; // default token
+const token = tokens.xiya; // default token
 
 const hostAddr = 'http://localhost:3000';
 
@@ -55,7 +55,7 @@ function getProjectDetails(project_id){
   return axios(getDetailsOptions);
 }
 
-function putProject(project, token=tokens.mae){
+function putProject(project, token=tokens.xiya){
   const postOptions = {
     method: 'POST',
     url: hostAddr + '/project',
@@ -72,7 +72,7 @@ const test21EditData = {
   description: 'edited',
 }
 
-function editProject(data, token=tokens.mae){
+function editProject(data, token=tokens.xiya){
   const postOptions = {
     data,
     method: 'PUT',
@@ -122,7 +122,7 @@ function getLikedProjects(){
   return axios(options);
 }
 
-function updateProjectStatus(project_id, status, token=tokens.mae){
+function updateProjectStatus(project_id, status, token=tokens.xiya){
   const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
@@ -173,7 +173,7 @@ describe('createProject endpoint', () => {
   it('should not create a project if the user has no write:project scope', () => {
     expect.assertions(1);
 
-    return putProject(projects[0], tokens.xiya)
+    return putProject(projects[0], tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to create project');
       });
@@ -220,7 +220,7 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
   it('should not change the project status of test21 to open if the user has no write:project scope', () => {
     expect.assertions(1);
 
-    return updateProjectStatus('test21', 'open', tokens.xiya)
+    return updateProjectStatus('test21', 'open', tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
       });
@@ -243,7 +243,7 @@ describe('editProject endpoint', () => {
   it('should not edit project if user has no write:project scope', () => {
     expect.assertions(1);
 
-    return editProject(test21EditData, tokens.xiya)
+    return editProject(test21EditData, tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to edit project');
       });
