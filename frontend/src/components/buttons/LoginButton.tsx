@@ -18,12 +18,6 @@ const styles = (theme:any) => ({
     display: 'flex',
     'align-items': 'center',
   },
-  logoutButton: {
-    // [theme.breakpoints.down('xs')]: {
-    //   position: 'relative' as 'relative',
-    //   bottom: '1rem',
-    // },
-  },
   signInIcon: {
     'margin-right': '0.5rem',
   },
