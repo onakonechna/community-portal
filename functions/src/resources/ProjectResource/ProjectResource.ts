@@ -38,7 +38,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     // check that user has write:project scope
     const { scopes } = data;
     delete data['scopes'];
-    if (scopes === undefined || !_.includes(scopes, 'write:project')) {
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
       throw 'User does not have the required scope (write:project) to create project';
     }
 
@@ -78,7 +78,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     delete data['project_id'];
     delete data['scopes'];
 
-    if (scopes === undefined || !_.includes(scopes, 'write:project')) {
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
       throw 'User does not have the required scope (write:project) to edit project';
     }
 
@@ -89,7 +89,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     const { project_id, status, scopes } = data;
 
     delete data['scopes'];
-    if (scopes === undefined || !_.includes(scopes, 'write:project')) {
+    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
       throw 'User does not have the required scope (write:project) to update project status';
     }
 

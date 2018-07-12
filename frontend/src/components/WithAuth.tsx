@@ -48,12 +48,12 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
 
       // do not render if user has no required scopes
       if (
-        compulsoryScopes !== undefined
+        typeof compulsoryScopes !== 'undefined'
         && Array.isArray(compulsoryScopes)
         && compulsoryScopes.length > 0
       ) {
         if (
-          scopes === undefined
+          typeof scopes === 'undefined'
           || scopes.length === 0
           || !_.every(compulsoryScopes, (scope: string) => _.includes(scopes, scope))
         ) {
