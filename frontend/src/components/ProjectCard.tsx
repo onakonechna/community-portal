@@ -186,6 +186,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   componentWillReceiveProps(nextProps:any) {
     this.setState({
       liked: nextProps.liked,
+      bookmarked: nextProps.bookmarked,
     });
   }
 

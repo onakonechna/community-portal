@@ -107,11 +107,11 @@ const withLogin = (WrappedCompoent: any) => {
           this.saveToken(token);
           const user = this.decodeToken(token);
           Promise.all([
+            this.props.loadUser(user),
             this.props.updateUserRole(this.props.user.user_id, 'user'),
             this.props.updateUserScopes(this.props.user.user_id, this.props.user.scopes),
             this.props.getLikedProjects(),
             this.props.getBookmarkedProjects(),
-            this.props.loadUser(user),
           ])
           .catch((err: Error) => console.error(err));
         })
