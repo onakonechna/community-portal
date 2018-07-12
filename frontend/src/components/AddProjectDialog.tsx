@@ -170,7 +170,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         name: this.state.name,
         description: this.state.description,
         size: this.state.size,
-        due: new Date(this.state.due).getTime() / 1000,
+        due: new Date(this.state.due).getTime(),
         technologies: this.handleTechSubmission(tech),
         github_address: this.state.github,
         estimated: this.state.goal,

@@ -92,11 +92,15 @@ jobs:
           command: node_modules/.bin/sls offline start -r us-east-1
           background: true
 
-      - run: sleep 20
+      - run: sleep 30
 
       - run:
-          name: Insert user fixture data
-          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/user.json --endpoint-url http://localhost:8000 --region us-east-1
+          name: Insert user fixture data for Mae
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
+
+      - run:
+          name: Insert user fixture data for Xiya
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
           name: Run backend tests

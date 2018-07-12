@@ -1,4 +1,4 @@
-import { API, putHeaders } from './config';
+import { API, putHeaders } from './Config';
 
 export const editProject = (project:any) => {
   return fetch(`${API}/project`, putHeaders(project))

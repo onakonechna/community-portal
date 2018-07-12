@@ -12,22 +12,24 @@ interface UserControllerInterface {
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
   checkExistence(data: any): (result: any) => any;
+  storeAvatarUrl(data: any): (result: any) => any;
+  getScopes(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
-    const data_copy = Object.assign({}, data);
-    delete data_copy['user_exists'];
-    delete data_copy['access_token'];
+    delete data['user_exists'];
+    delete data['access_token'];
 
-    const { user_id } = data;
+    const { user_id, scopes } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
           user_id,
+          scopes,
           message: 'User saved',
-          token: authroizationService.create(data_copy),
+          token: authroizationService.create(data),
         },
       };
     };
@@ -143,7 +145,22 @@ export default class UserController implements UserControllerInterface {
         const { avatar_url } = result.Item;
         return { avatar_url };
       }
-      throw 'User not found. Attempt to retrieve user avatar_url failed';
+      console.log('Warning: User not found - attempt to retrieve user avatar_url gives empty map');
+      return {};
+    };
+  }
+
+  getScopes(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { scopes } = result.Item;
+        if (scopes === undefined) {
+          return {}; // empty array
+        }
+        return { scopes: scopes.values };
+      }
+      console.log('Warning: User not found - attempt to retrieve user scopes gives empty map');
+      return {};
     };
   }
 
