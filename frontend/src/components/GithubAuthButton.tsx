@@ -57,7 +57,6 @@ const withLogin = (WrappedCompoent: any) => {
         redirect_uri: this.props.redirectUri,
         scope: this.props.scope,
       });
-      console.log(search);
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
         `https://github.com/login/oauth/authorize?${search}`,

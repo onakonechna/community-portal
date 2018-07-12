@@ -9,7 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import AddProjectDialog from './AddProjectDialog';
 import LoginButton from './buttons/LoginButton';
-import UserAvatar from './UserAvatar';
 import withAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
 import { API } from './../api/Config';
@@ -27,7 +26,6 @@ export const onFailure = (response: string) => console.error(response);
 
 const AddProject = withAuth(['user', 'owner'])(AddProjectDialog);
 const Login = withAuth(['guest'])(withLogin(LoginButton));
-const Avatar = withAuth(['user'])(UserAvatar);
 
 const styles = (theme:any) => ({
   appBar: {
@@ -53,7 +51,6 @@ const HeadBar = (props: any) => {
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <Avatar />
       </Toolbar>
     </AppBar>
   );

@@ -46,8 +46,7 @@ module.exports = {
     ],
 
     devServer: {
-        contentBase: "public",
-        publicPath: "/dist/"
+        contentBase: "public"
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -72,7 +71,15 @@ module.exports = {
             {
                 test: /\.svg$/,
                 loader: 'svg-react-loader'
-            }        
+            },
+            { 
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, 
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: 'static/images/'
+                }           
+            }    
         ]
     },
 

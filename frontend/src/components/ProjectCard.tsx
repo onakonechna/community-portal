@@ -12,7 +12,7 @@ import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { CardActions, CardContent, CardMedia } from '@material-ui/core';
+import { CardActions, CardContent } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -264,10 +264,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           toggle={this.togglePledge}
         />
         <Card className={classes.card}>
-          <CardMedia
-            image="static/images/cards/circuit.png"
-            title="Contemplative Reptile"
-          />
           <CardContent className={classes.cardContent}>
             <Typography className={classes.centered}>
               {this.props.project.name}
