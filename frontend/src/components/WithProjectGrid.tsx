@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -22,6 +23,7 @@ interface GridProps {
   user?: any;
   loadProjects: () => void;
   handler?: () => void;
+  filter?: string;
 }
 
 interface IProject {
@@ -69,6 +71,19 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 
   updateGrid() {
     this.props.loadProjects();
+  }
+
+  filter() {
+    if (this.props.filter !== undefined) {
+      if (this.props.user !== undefined || !Array.isArray(this.props.user[this.props.filter])){
+        throw `The filter ${this.props.filter} must be an array on the user redux store`;
+      }
+
+      return _.pickBy(this.props.projects, (project: any) => {
+        return _.includes(this.props.user[this.props.filter], project.project_id);
+      });
+    }
+    return this.props.projects;
   }
 
   componentDidMount() {
