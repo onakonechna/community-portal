@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
+import { loadProjects } from './../actions';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -75,12 +76,17 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 
   filter() {
     if (this.props.filter !== undefined) {
-      if (this.props.user !== undefined || !Array.isArray(this.props.user[this.props.filter])){
-        throw `The filter ${this.props.filter} must be an array on the user redux store`;
+      console.log(this.props.user[this.props.filter]);
+      if (this.props.user === undefined || !Array.isArray(this.props.user[this.props.filter])) {
+        throw `The filter ${this.props.filter} must be an array in the user redux store`;
       }
 
-      return _.pickBy(this.props.projects, (project: any) => {
-        return _.includes(this.props.user[this.props.filter], project.project_id);
+      console.log(this.props.projects, _.filter(this.props.projects, (project: any) => {
+        return _.includes(this.props.user['bookmarkedProjects'], project.project_id);
+      }));
+
+      return _.filter(this.props.projects, (project: any) => {
+        return _.includes(this.props.user['bookmarkedProjects'], project.project_id);
       });
     }
     return this.props.projects;
@@ -100,7 +106,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
           spacing={32}
           style={styles}
         >
-          {this.props.projects && this.props.projects.map((project: any) => (
+          {this.props.projects && this.filter().map((project: any) => (
             <Grid item key={project.project_id}>
               <ProjectCard
                 project={project}
@@ -116,25 +122,19 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 }
 
-const WithProjectGrid = (loadProjects: any) => {
-
-  const mapStateToProps = (state: any) => {
-    return {
-      projects: state.project,
-      user: state.user,
-    };
+const mapStateToProps = (state: any) => {
+  return {
+    projects: state.project,
+    user: state.user,
   };
-
-  const mapDispatchToProps = (dispatch: any) => {
-    return {
-      loadProjects: () => dispatch(loadProjects()),
-    };
-  };
-
-  return connect(
-    mapStateToProps, mapDispatchToProps,
-  )(ProjectGrid);
-
 };
 
-export default WithProjectGrid;
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    loadProjects: () => dispatch(loadProjects()),
+  };
+};
+
+export default connect(
+  mapStateToProps, mapDispatchToProps,
+)(ProjectGrid);
