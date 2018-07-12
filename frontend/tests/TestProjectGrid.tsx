@@ -9,7 +9,7 @@ import HeadBar from '../src/components/HeadBar';
 
 import store from '../src/store';
 
-import { ProjectGrid } from '../src/components/WithProjectGrid';
+import { ProjectGrid } from '../src/components/ProjectGrid';
 const samples = require('../src/data/sampleProjects.json');
 
 describe('HeadBar Test Suite', () => {
