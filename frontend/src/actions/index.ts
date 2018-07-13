@@ -16,6 +16,7 @@ export enum TypeKeys {
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
+ UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
  OTHER_ACTION = '__any__other__action__type',
 }
 
@@ -160,5 +161,12 @@ export const UpdateUserRoleAction = (user_id: string, role: string) => {
   return {
     role,
     type: TypeKeys.UPDATE_USER_ROLE,
+  };
+};
+
+export const UpdateUserScopesAction = (user_id: string, scopes: string[]) => {
+  return {
+    scopes,
+    type: TypeKeys.UPDATE_USER_SCOPES,
   };
 };

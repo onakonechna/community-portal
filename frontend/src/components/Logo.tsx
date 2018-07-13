@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import MagentoLogoImage from '-!svg-react-loader!./../static/images/m-logo.svg';
 import MagentoLogoText from '-!svg-react-loader!././../static/images/magento-logo.svg';
 
-const styles = (theme:any) => ({
+const styles = (theme:any) => createStyles({
   logo: {
     alignItems: 'start',
     display: 'flex',

@@ -1,0 +1,37 @@
+{
+  "access_token": {
+    "S": "1564f59060fcf44bfade7fe8ade9abc69995ad82"
+  },
+  "avatar_url": {
+    "S": "https://avatars3.githubusercontent.com/u/39741185?v=4"
+  },
+  "company": {
+    "NULL": true
+  },
+  "email": {
+    "NULL": true
+  },
+  "html_url": {
+    "S": "https://github.com/XiyaMagento"
+  },
+  "location": {
+    "NULL": true
+  },
+  "name": {
+    "NULL": true
+  },
+  "pledged_projects": {
+    "M": {}
+  },
+  "scopes": {
+    "SS": [
+      "write:project"
+    ]
+  },
+  "url": {
+    "S": "https://api.github.com/users/XiyaMagento"
+  },
+  "user_id": {
+    "S": "39741185"
+  }
+}

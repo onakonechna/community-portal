@@ -12,7 +12,7 @@ import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { CardActions, CardContent, CardMedia } from '@material-ui/core';
+import { CardActions, CardContent } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -76,8 +76,8 @@ const styles = (theme:any) => ({
     'margin-left': 'auto',
   },
   progress: {
-    color: '#48BF61',
-    colorSecondary: '#FF0000',
+    // color: '#48BF61',
+    // colorSecondary: '#FF0000',
   },
   progressText: {
     position: 'absolute' as 'absolute',
@@ -159,7 +159,7 @@ interface CardState {
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
-const Edit = WithAuth(['owner', 'user'])(EditButton);
+const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
@@ -264,10 +264,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           toggle={this.togglePledge}
         />
         <Card className={classes.card}>
-          <CardMedia
-            image="static/images/cards/circuit.png"
-            title="Contemplative Reptile"
-          />
           <CardContent className={classes.cardContent}>
             <Typography className={classes.centered}>
               {this.props.project.name}
@@ -290,6 +286,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <div className={classes.progressDiv}>
                 <CircularProgress
                   className={classes.progress}
+                  color={'primary'}
                   variant="determinate"
                   size={90}
                   value={this.getPercentage()}

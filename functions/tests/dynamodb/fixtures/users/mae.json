@@ -1,0 +1,32 @@
+{
+  "access_token": {
+    "S": "bd35513b1e08e6f4f787fc3f532edd4fcc322a3f"
+  },
+  "avatar_url": {
+    "S": "https://avatars2.githubusercontent.com/u/40802007?v=4"
+  },
+  "company": {
+    "NULL": true
+  },
+  "email": {
+    "NULL": true
+  },
+  "html_url": {
+    "S": "https://github.com/community-portal-test"
+  },
+  "location": {
+    "NULL": true
+  },
+  "name": {
+    "S": "Mae Borowski"
+  },
+  "pledged_projects": {
+    "M": {}
+  },
+  "url": {
+    "S": "https://api.github.com/users/community-portal-test"
+  },
+  "user_id": {
+    "S": "40802007"
+  }
+}
