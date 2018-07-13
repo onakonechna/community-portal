@@ -32,25 +32,14 @@ const styles = (theme:any) => ({
     'font-family': 'system-ui',
     'box-shadow': 'none',
   },
-  menuButton: {
-    'margin-right': '1rem',
-    [theme.breakpoints.down('sm')]: {
-      'margin-right': '0',
-    },
-  },
-  toolBar: {
-    [theme.breakpoints.down('sm')]: {
-      'padding': '0',
-    }
-  }
 });
 
 const HeadBar = (props: any) => {
   const { classes } = props;
   return (
     <AppBar className={classes.appBar} position="static" color="secondary">
-      <Toolbar className={classes.toolBar}>
-        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+      <Toolbar>
+        <IconButton color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
         <Logo />

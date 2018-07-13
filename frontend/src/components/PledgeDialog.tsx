@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Message from './Message';
-
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { pledgeProjectAction } from '../actions';
 
@@ -43,7 +42,6 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   handleChange(event: any) {
@@ -54,13 +52,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     }
   }
 
-  handleMessageClose() {
-    this.setState({
-      messageOpen: false
-    });
-  }
-
-  handleSubmit(event: any) {
+  handleSubmit(event:any) {
     const { pledged, estimated } = this.props.project;
     if (pledged + this.state.hours > estimated) {
       this.setState({ messageOpen: true });
@@ -73,19 +65,19 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     if (body.hours != null && body.hours !== 0) {
       this.props.pledgeProject(body)
         .then((res: any) => {
-          this.setState((prevState: PledgeState) => ({
+          this.setState((prevState:PledgeState) => ({
             success: true,
             loading: false,
           }), () => {
             this.props.toggle();
-            this.setState((prevState: PledgeState) => ({
+            this.setState((prevState:PledgeState) => ({
               hours: 0,
               success: false,
             }));
           });
         })
         .catch((err: Error) => {
-          this.setState((prevState: PledgeState) => ({
+          this.setState((prevState:PledgeState) => ({
             success: false,
             loading: false,
           }));
@@ -96,38 +88,36 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   render() {
     const { project } = this.props;
     return (
-      <div>
-        <Dialog open={this.props.open}>
-          <DialogTitle>Pledge a Project</DialogTitle>
-          <DialogContent>
-            <h3>{project.goal}</h3>
-            <TextField
-              id="hours_pledged"
-              label="hours to pledge"
-              type="number"
-              value={this.state.hours || ''}
-              onChange={this.handleChange}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            {this.state.loading && <LinearProgress
+      <Dialog open={this.props.open}>
+        <DialogTitle>Pledge a Project</DialogTitle>
+        <DialogContent>
+          <h3>{project.goal}</h3>
+          <TextField
+            id="hours_pledged"
+            label="hours to pledge"
+            type="number"
+            value={this.state.hours || ''}
+            onChange={this.handleChange}
+            fullWidth
+          />
+          <Snackbar
+            open={this.state.messageOpen}
+          >
+           <SnackbarContent message="That\'s beyond the expectation!"/>
+          </Snackbar>
+        </DialogContent>
+        <DialogActions>
+          {this.state.loading && <LinearProgress
               style={{ display: 'block', width: '60%' }}
-              variant="indeterminate" />}
-            <Button onClick={this.props.toggle}>
-              {this.state.success ? 'Done' : 'Cancel'}
-            </Button>
-            <Button onClick={this.handleSubmit}>
-              {this.state.success ? 'Pledged' : 'Pledge'}
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Message
-          message={'Actually, we don\'t need that much commitment :)'}
-          open={this.state.messageOpen}
-          handleClose={this.handleMessageClose}
-        />
-      </div>
+              variant="indeterminate"/>}
+          <Button onClick={this.props.toggle}>
+            {this.state.success ? 'Done' : 'Cancel'}
+          </Button>
+          <Button onClick={this.handleSubmit}>
+            {this.state.success ? 'Pledged' : 'Pledge'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }

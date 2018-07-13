@@ -23,9 +23,9 @@
   "pledged_projects": {
     "M": {}
   },
-  "upvoted_projects": {
+  "scopes": {
     "SS": [
-      "test8"
+      "write:project"
     ]
   },
   "url": {
