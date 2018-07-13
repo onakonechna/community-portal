@@ -159,7 +159,7 @@ interface CardState {
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
-const Edit = WithAuth(['owner', 'user'])(EditButton);
+const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
