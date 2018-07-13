@@ -31,18 +31,18 @@ provider:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
     API: ${self:custom.api.${self:provider.stage}}
-    PROJECTS_TABLE: projects
-    PROJECTS_INDEX: projects-index
-    USERS_TABLE: users
-    USERS_INDEX: users-index
-    TAGS_TABLE: tags
-    SKILLS_TABLE: skills
-    PULL_REQUESTS_TABLE: pull-requests
-    PULL_REQUESTS_INDEX: pull-requests-index
-    EPICS_TABLE: epics
-    EPICS_INDEX: epics-index
-    ISSUES_TABLE: issues
-    ISSUES_INDEX: issues-index
+    PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
+    PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
+    USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
+    USERS_INDEX: ${file(./schema.json):Users.Properties.TableName}-index
+    TAGS_TABLE: ${file(./schema.json):Tags.Properties.TableName}
+    SKILLS_TABLE: ${file(./schema.json):Skills.Properties.TableName}
+    PULL_REQUESTS_TABLE: ${file(./schema.json):PullRequests.Properties.TableName}
+    PULL_REQUESTS_INDEX: ${file(./schema.json):PullRequests.Properties.TableName}-index
+    EPICS_TABLE: ${file(./schema.json):Epics.Properties.TableName}
+    EPICS_INDEX: ${file(./schema.json):Epics.Properties.TableName}-index
+    ISSUES_TABLE: ${file(./schema.json):Issues.Properties.TableName}
+    ISSUES_INDEX: ${file(./schema.json):Issues.Properties.TableName}-index
     JWT_SECRET: ${self:custom.jwt.secret}
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
