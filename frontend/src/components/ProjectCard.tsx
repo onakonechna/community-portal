@@ -110,6 +110,8 @@ const styles = (theme:any) => ({
   upvotes: {
     'font-size': '1rem',
     color: '#27A2AA',
+    'position': 'relative' as 'relative',
+    'right': '0.5rem',
   },
 });
 
