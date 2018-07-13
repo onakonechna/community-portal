@@ -67,7 +67,6 @@ class GithubAuthModal {
           }
           const params = qs.parse(popup.location.search.substr(1)).code;
           resolve(params);
-
           this.close();
         } catch (error) {
           console.error(error);

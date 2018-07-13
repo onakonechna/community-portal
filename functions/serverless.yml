@@ -10,12 +10,10 @@ custom:
       migrate: true
   functions:
     # Add lambda functions for public endpoints here so Jest will not complain
-    public: # remove non-public functions after authorizer integration
+    public:
       - authorization
       - getProjectCards
       - getProjectDetails
-      - updateProjectStatus
-      - likeProject
   customDomain:
     domainName: 'dev.api.opensource.engcom.magento.com'
     basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
