@@ -6,28 +6,33 @@ interface UserControllerInterface {
   create(data: any): (result: any) => any;
   getById(data: any): (result: any) => any;
   update(data: any): (result: any) => any;
+  getUpvotedProjects(data: any): (result: any) => any;
+  getBookmarkedProjects(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   addUpvotedProject(data: any): (result: any) => any;
+  addBookmarkedProject(data: any): (result: any) => any;
   removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
   checkExistence(data: any): (result: any) => any;
+  storeAvatarUrl(data: any): (result: any) => any;
+  getScopes(data: any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
   create(data: any) {
-    const data_copy = Object.assign({}, data);
-    delete data_copy['user_exists'];
-    delete data_copy['access_token'];
+    delete data['user_exists'];
+    delete data['access_token'];
 
-    const { user_id } = data;
+    const { user_id, scopes } = data;
     return (result: any) => {
       return {
         status: 200,
         payload: {
           user_id,
+          scopes,
           message: 'User saved',
-          token: authroizationService.create(data_copy),
+          token: authroizationService.create(data),
         },
       };
     };
@@ -80,6 +85,25 @@ export default class UserController implements UserControllerInterface {
     };
   }
 
+  getBookmarkedProjects(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { user_id, bookmarked_projects } = result.Item;
+        return {
+          status: 200,
+          payload: {
+            user_id,
+            bookmarked_projects: bookmarked_projects.values,
+          },
+        };
+      }
+      return {
+        status: 404,
+        payload: { error: 'User not found' },
+      };
+    };
+  }
+
   delete(data: any) {
     const { user_id } = data;
     return (result: any) => {
@@ -117,6 +141,19 @@ export default class UserController implements UserControllerInterface {
     };
   }
 
+  addBookmarkedProject(data: any) {
+    const { project_id } = data;
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          project_id,
+          message: 'Project bookmarked successfully',
+        },
+      };
+    };
+  }
+
   // Controllers for intermediaries
 
   addUpvotedProject(data: any) {
@@ -143,7 +180,22 @@ export default class UserController implements UserControllerInterface {
         const { avatar_url } = result.Item;
         return { avatar_url };
       }
-      throw 'User not found. Attempt to retrieve user avatar_url failed';
+      console.log('Warning: User not found - attempt to retrieve user avatar_url gives empty map');
+      return {};
+    };
+  }
+
+  getScopes(data: any) {
+    return (result: any) => {
+      if (result.Item) {
+        const { scopes } = result.Item;
+        if (scopes === undefined) {
+          return {}; // empty array
+        }
+        return { scopes: scopes.values };
+      }
+      console.log('Warning: User not found - attempt to retrieve user scopes gives empty map');
+      return {};
     };
   }
 

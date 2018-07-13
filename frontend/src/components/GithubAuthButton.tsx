@@ -14,7 +14,9 @@ interface GithubAuthButtonProps {
   onRequest?: any;
   user?: any;
   updateUserRole?: any;
+  updateUserScopes?: any;
   getLikedProjects?: any;
+  getBookmarkedProjects?: any;
   loadUser?: any;
 }
 
@@ -24,6 +26,7 @@ export interface User {
   company?: string;
   avatar_url?: string;
   likedProjects?: string[];
+  bookmarkedProjects?: string[];
 }
 
 const defaultUser: User = {
@@ -32,6 +35,7 @@ const defaultUser: User = {
   company: '',
   avatar_url: '',
   likedProjects: [],
+  bookmarkedProjects: [],
 };
 
 const withLogin = (WrappedCompoent: any) => {
@@ -73,6 +77,7 @@ const withLogin = (WrappedCompoent: any) => {
       localStorage.removeItem('oAuth');
       this.props.loadUser(defaultUser);
       this.props.updateUserRole(this.props.user.user_id, 'guest');
+      this.props.updateUserScopes(this.props.user.user_id, []);
     }
 
     decodeToken(token: string) {
@@ -84,6 +89,7 @@ const withLogin = (WrappedCompoent: any) => {
         name: decoded.name,
         company: decoded.company,
         avatar_url: decoded.avatar_url,
+        scopes: decoded.scopes,
       };
     }
 
@@ -101,9 +107,11 @@ const withLogin = (WrappedCompoent: any) => {
           this.saveToken(token);
           const user = this.decodeToken(token);
           Promise.all([
-            this.props.updateUserRole(this.props.user.user_id, 'user'),
             this.props.loadUser(user),
+            this.props.updateUserRole(this.props.user.user_id, 'user'),
+            this.props.updateUserScopes(this.props.user.user_id, this.props.user.scopes),
             this.props.getLikedProjects(),
+            this.props.getBookmarkedProjects(),
           ])
             .catch((err: Error) => console.error(err));
         })

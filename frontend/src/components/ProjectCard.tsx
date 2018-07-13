@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { likeProject } from '../actions';
+import { likeProject, bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
+import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
@@ -149,20 +150,24 @@ interface CardProps {
   toggleEdit?: () => void;
   classes?: any;
   liked: boolean;
+  bookmarked: boolean;
 }
 
 interface DispatchProps {
   likeProject: any;
+  bookmarkProject: any;
 }
 
 interface CardState {
   editOpen: boolean;
   pledgeOpen: boolean;
   liked: boolean;
+  bookmarked: boolean;
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
-const Edit = WithAuth(['owner', 'user'])(EditButton);
+const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
+const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
@@ -173,15 +178,18 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       editOpen: false,
       pledgeOpen: false,
       liked: this.props.liked,
+      bookmarked: this.props.bookmarked,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
+    this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
   }
 
   componentWillReceiveProps(nextProps:any) {
     this.setState({
       liked: nextProps.liked,
+      bookmarked: nextProps.bookmarked,
     });
   }
 
@@ -237,12 +245,31 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }));
   }
 
+  toggleBookmark() {
+    this.setState((prevState: CardState) => ({
+      bookmarked: !prevState.bookmarked,
+    }));
+  }
+
   handleLike() {
     const { project_id } = this.props.project;
     if (!this.state.liked) {
       this.props.likeProject(project_id)
         .then((response: any) => {
           this.toggleLike();
+        })
+        .catch((err: Error) => {
+          console.error(err);
+        });
+    }
+  }
+
+  handleBookmark() {
+    const { project_id } = this.props.project;
+    if (!this.state.bookmarked) {
+      this.props.bookmarkProject(project_id)
+        .then((response: any) => {
+          this.toggleBookmark();
         })
         .catch((err: Error) => {
           console.error(err);
@@ -325,6 +352,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
+            <Bookmark bookmarked={this.state.bookmarked} handler={this.handleBookmark} project_id={this.props.project.project_id} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
@@ -337,6 +365,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 const mapDispatchToProps = (dispatch: any) => {
   return {
     likeProject: (id: string) => dispatch(likeProject(id)),
+    bookmarkProject: (id: string) => dispatch(bookmarkProjectAction(id)),
   };
 };
 

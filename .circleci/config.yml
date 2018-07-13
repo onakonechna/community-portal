@@ -92,7 +92,7 @@ jobs:
           command: node_modules/.bin/sls offline start -r us-east-1
           background: true
 
-      - run: sleep 30
+      - run: sleep 60
 
       - run:
           name: Insert user fixture data for Mae

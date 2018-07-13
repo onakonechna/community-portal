@@ -14,6 +14,7 @@ interface ProjectControllerInterface {
   addPledgedHistory(data: any): (result: any) => any;
   addPledger(data: any): (result: any) => any;
   addSubscriber(data: any): (result: any) => any;
+  checkOwner(data: any): (result: any) => any;
 }
 
 export default class ProjectController implements ProjectControllerInterface {

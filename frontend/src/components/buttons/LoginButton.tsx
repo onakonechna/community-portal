@@ -45,7 +45,7 @@ const loginButton = (props:any) => {
   return (
     <div>
       {props.user.role !== 'guest'
-        ? 
+        ?
           <div className={classes.authWrapper}>
             <Button className={classes.logoutButton} onClick={props.logoutHandler}>Logout</Button>
             <Typography className={classes.welcomeText}>{`Welcome, ${retrieveFirstName(props.user.name)}`}</Typography>

@@ -10,8 +10,11 @@ class App extends React.Component {
     return (
       <div>
         <HeadBar />
-        <ProjectGrid />
+        <Route exact path="/" component={ProjectGrid} />
         <Route exact path="/auth" component={Auth}/>
+        <Route exact path="/bookmarked" render={
+          () => <ProjectGrid filter="bookmarkedProjects" />
+        } />
       </div>
     );
   }
