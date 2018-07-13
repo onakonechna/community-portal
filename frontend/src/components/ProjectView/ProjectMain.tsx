@@ -56,7 +56,25 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
 
   render() {
     return (
-      <h1>{this.props.project.name ? this.props.project.name : ''}</h1>
+      <div>
+        <h1>{this.props.project.name}</h1>
+        <p>{this.props.project.description}</p>
+        <p>Created at: {this.props.project.created}</p>
+        <p>Updated at: {this.props.project.updated}</p>
+        <p>Status: {this.props.project.status}</p>
+        <p>Size: {this.props.project.size}</p>
+        <p>Due: {this.props.project.due}</p>
+        <p>Skills: {this.props.project.skills}</p>
+        <p>Technologies: {this.props.project.technologies}</p>
+        <p>Tags: {this.props.project.tags}</p>
+        <p>Upvotes: {this.props.project.upvotes}</p>
+        <p>Owner: {this.props.project.owner}</p>
+        <p>Estimated: {this.props.project.estimated}</p>
+        <p>Pledged: {this.props.project.pledged}</p>
+        <p>Completed: {this.props.project.completed}</p>
+        <p>GitHub: {this.props.project.github_address}</p>
+        <p>Slack: {this.props.project.slack_channel}</p>
+      </div>
     )
   }
 }
