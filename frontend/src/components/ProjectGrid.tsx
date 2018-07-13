@@ -1,9 +1,10 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { loadProjects } from '../actions';
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
+import { loadProjects } from './../actions';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -23,6 +24,7 @@ interface GridProps {
   user?: any;
   loadProjects: () => void;
   handler?: () => void;
+  filter?: string;
 }
 
 interface IProject {
@@ -64,8 +66,26 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
     return this.props.user.likedProjects.indexOf(id) !== -1;
   }
 
+  checkBookmark(id: string) {
+    return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+  }
+
   updateGrid() {
     this.props.loadProjects();
+  }
+
+  filter() {
+    if (typeof this.props.filter !== 'undefined') {
+      if (typeof this.props.user === 'undefined' || !Array.isArray(this.props.user[this.props.filter])) {
+        throw `The filter ${this.props.filter} must be an array in the user redux store`;
+      }
+
+      return _.filter(this.props.projects, (project: any) => {
+        const filter:any = this.props.filter;
+        return _.includes(this.props.user[filter], project.project_id);
+      });
+    }
+    return this.props.projects;
   }
 
   componentDidMount() {
@@ -82,12 +102,13 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
           spacing={32}
           style={styles}
         >
-          {this.props.projects && this.props.projects.map((project: any) => (
+          {this.props.projects && this.filter().map((project: any) => (
             <Grid item key={project.project_id}>
               <ProjectCard
                 project={project}
                 handler={this.updateGrid}
                 liked={this.checkLike(project.project_id)}
+                bookmarked={this.checkBookmark(project.project_id)}
               />
             </Grid>
           ))}

@@ -4,10 +4,11 @@ import { connect, Dispatch } from 'react-redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
 import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
-         UpdateUserRoleAction,
-         getLikedProjectsAction,
-         UpdateUserScopesAction,
-        } from '../actions';
+  UpdateUserRoleAction,
+  getLikedProjectsAction,
+  getBookmarkedProjectsAction,
+  UpdateUserScopesAction,
+} from '../actions';
 
 declare const __FRONTEND__: string;
 export const frontEnd = __FRONTEND__;
@@ -19,6 +20,7 @@ interface WithAuthProps {
   user?: any;
   handler?: any;
   liked?: boolean;
+  bookmarked?: boolean;
   upvotes?: number;
   project_id?: string;
   label?: string;
@@ -29,6 +31,8 @@ interface WithAuthProps {
   onFailure?: any;
   toggleLike?: any;
   likeProject?: any;
+  toggleBookmark?: any;
+  bookmarkProject?: any;
 }
 
 interface WithAuthStateProps {
@@ -40,6 +44,7 @@ interface WithAuthDispatchProps {
   updateUserRole?: any;
   updateUserScopes?: any;
   getLikedProjects?: any;
+  getBookmarkedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
@@ -93,6 +98,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       getLikedProjects: () => dispatch(getLikedProjectsAction()),
+      getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
       updateUserScopes: (id: string, scopes: string[]) => dispatch(UpdateUserScopesAction(id, scopes)),

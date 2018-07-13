@@ -65,8 +65,10 @@ functions:
   - ${file(./handlers/project/editProject/editProject.yml)}
   - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/likeProject/likeProject.yml)}
+  - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/unlikeProject/unlikeProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
 
 resources:
@@ -98,8 +100,10 @@ resources:
     editProjectRole: ${file(./handlers/project/editProject/role.yml):editProjectRole}
     updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
+    bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
     unlikeProjectRole: ${file(./handlers/user/unlikeProject/role.yml):unlikeProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
+    getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
