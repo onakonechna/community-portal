@@ -75,13 +75,13 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 
   filter() {
-    if (this.props.filter !== undefined) {
-      if (this.props.user === undefined || !Array.isArray(this.props.user[this.props.filter])) {
+    if (typeof this.props.filter !== 'undefined') {
+      if (typeof this.props.user === 'undefined' || !Array.isArray(this.props.user[this.props.filter])) {
         throw `The filter ${this.props.filter} must be an array in the user redux store`;
       }
 
       return _.filter(this.props.projects, (project: any) => {
-        return _.includes(this.props.user['bookmarkedProjects'], project.project_id);
+        return _.includes(this.props.user[this.props.filter], project.project_id);
       });
     }
     return this.props.projects;
