@@ -98,19 +98,6 @@ function likeProject(project_id){
   return axios(options);
 }
 
-function bookmarkProject(project_id){
-  const options = {
-    method: 'POST',
-    url: hostAddr +  '/user/bookmarkProject',
-    data: { project_id },
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  return axios(options);
-}
-
 function unlikeProject(project_id){
   const options = {
     method: 'POST',
@@ -128,18 +115,6 @@ function getLikedProjects(){
   const options = {
     method: 'GET',
     url: hostAddr +  '/user/likedProjects',
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  return axios(options);
-}
-
-function getBookmarkedProjects(){
-  const options = {
-    method: 'GET',
-    url: hostAddr +  '/user/bookmarkedProjects',
     headers: {
       Authorization: token,
     },
@@ -345,25 +320,5 @@ describe('pledge endpoint', () => {
   it('should update pledging-related data in users data', () => {
     // to be implemented after implementing API to get pledged projects for users
     expect(1).toBe(1);
-  });
-
-  describe('bookmark endpoint', () => {
-    it('should bookmark the project', () => {
-      expect.assertions(1);
-
-      return bookmarkProject('test22')
-        .then((response) => {
-          expect(response.data.message).toBe('Project bookmarked successfully');
-        });
-    });
-
-    it('should get a list of bookmarked projects', () => {
-      expect.assertions(1);
-
-      return getBookmarkedProjects()
-        .then((response) => {
-          expect(_.includes(response.data.bookmarked_projects, 'test22')).toBeTruthy();
-        });
-    });
   });
 });
