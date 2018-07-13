@@ -15,15 +15,16 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
+const authUserId = '39741185';
 
 const tokens = {
   mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
-  xiya: jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  xiya: jwt.sign({ user_id: authUserId }, config.custom.jwt.secret, { expiresIn: '1d' }),
 };
 
 console.log(tokens);
 
-const token = tokens.mae; // default token
+const token = tokens.xiya; // default token
 
 const hostAddr = 'http://localhost:3000';
 
@@ -38,25 +39,25 @@ function tokenAuthorize(code){
 }
 
 function getProjectCards(){
-  const getCardsOptions = {
+  const options = {
     method: 'GET',
     url: hostAddr + '/projects',
   };
 
-  return axios(getCardsOptions);
+  return axios(options);
 }
 
 function getProjectDetails(project_id){
-  const getDetailsOptions = {
+  const options = {
     method: 'GET',
     url: hostAddr + '/project/' + project_id,
   };
 
-  return axios(getDetailsOptions);
+  return axios(options);
 }
 
-function putProject(project, token=tokens.mae){
-  const postOptions = {
+function putProject(project, token=tokens.xiya){
+  const options = {
     method: 'POST',
     url: hostAddr + '/project',
     data: project,
@@ -64,7 +65,7 @@ function putProject(project, token=tokens.mae){
       Authorization: token,
     },
   };
-  return axios(postOptions);
+  return axios(options);
 }
 
 const test21EditData = {
@@ -72,7 +73,7 @@ const test21EditData = {
   description: 'edited',
 }
 
-function editProject(data, token=tokens.mae){
+function editProject(data, token=tokens.xiya){
   const postOptions = {
     data,
     method: 'PUT',
@@ -85,7 +86,7 @@ function editProject(data, token=tokens.mae){
 }
 
 function likeProject(project_id){
-  const likeProjectOptions = {
+  const options = {
     method: 'POST',
     url: hostAddr +  '/user/likeProject',
     data: { project_id },
@@ -94,7 +95,7 @@ function likeProject(project_id){
     },
   };
 
-  return axios(likeProjectOptions);
+  return axios(options);
 }
 
 function unlikeProject(project_id){
@@ -122,7 +123,7 @@ function getLikedProjects(){
   return axios(options);
 }
 
-function updateProjectStatus(project_id, status, token=tokens.mae){
+function updateProjectStatus(project_id, status, token=tokens.xiya){
   const options = {
     method: 'PUT',
     url: hostAddr +  '/project/status',
@@ -173,7 +174,7 @@ describe('createProject endpoint', () => {
   it('should not create a project if the user has no write:project scope', () => {
     expect.assertions(1);
 
-    return putProject(projects[0], tokens.xiya)
+    return putProject(projects[0], tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to create project');
       });
@@ -220,7 +221,7 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
   it('should not change the project status of test21 to open if the user has no write:project scope', () => {
     expect.assertions(1);
 
-    return updateProjectStatus('test21', 'open', tokens.xiya)
+    return updateProjectStatus('test21', 'open', tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
       });
@@ -243,7 +244,7 @@ describe('editProject endpoint', () => {
   it('should not edit project if user has no write:project scope', () => {
     expect.assertions(1);
 
-    return editProject(test21EditData, tokens.xiya)
+    return editProject(test21EditData, tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to edit project');
       });
@@ -310,9 +311,9 @@ describe('pledge endpoint', () => {
       .then((response) => {
         const { pledged, pledgers, pledged_history, subscribers } = response.data;
         expect(pledged).toBe(25);
-        expect('40802007' in pledgers).toBeTruthy();
+        expect(authUserId in pledgers).toBeTruthy();
         expect(_.includes(pledged_history, 25)).toBeTruthy();
-        expect(_.includes(subscribers.values, '40802007')).toBeTruthy();
+        expect(_.includes(subscribers.values, authUserId)).toBeTruthy();
       });
   });
 
