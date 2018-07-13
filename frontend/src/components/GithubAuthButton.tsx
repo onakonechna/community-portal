@@ -71,7 +71,7 @@ const withLogin = (WrappedCompoent: any) => {
         (data: string) => this.onSuccess(data),
         (error: Error) => this.onFailure(error),
       );
-    }
+    } 
 
     handleLogout() {
       localStorage.removeItem('oAuth');
