@@ -1,5 +1,6 @@
-declare const API_ENDPOINT: string;
-export const API = API_ENDPOINT;
+// declare const API_ENDPOINT: string;
+// export const API = API_ENDPOINT;
+export const API = 'http://localhost:3000';
 
 const localToken = localStorage.getItem('oAuth');
 const token: any = localToken !== null ? JSON.parse(localToken) : '';
