@@ -81,7 +81,8 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
       }
 
       return _.filter(this.props.projects, (project: any) => {
-        return _.includes(this.props.user[this.props.filter], project.project_id);
+        const filter:any = this.props.filter;
+        return _.includes(this.props.user[filter], project.project_id);
       });
     }
     return this.props.projects;
