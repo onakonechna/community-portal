@@ -15,7 +15,7 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const authUserId = '12760373';
+const authUserId = '39741185';
 
 const tokens = {
   mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
