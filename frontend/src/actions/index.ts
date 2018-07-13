@@ -1,3 +1,4 @@
+import fetchProject from '../api/FetchProject';
 import fetchProjects from '../api/FetchProjects';
 import getLikedProjects from '../api/GetLikedProjects';
 import { editProject, editProjectStatus } from  '../api/EditProject';
@@ -14,6 +15,7 @@ export enum TypeKeys {
  EDIT_PROJECT = 'EDIT_PROJECT',
  LOAD_PROJECT = 'LOAD_PROJECT',
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
+ PROJECT_LOADED = 'PROJECT_LOADED',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
@@ -41,6 +43,11 @@ export interface EditProjectAction {
 }
 
 export interface ProjectLoadedAction {
+  type: TypeKeys.PROJECT_LOADED;
+  project: any;
+}
+
+export interface ProjectsLoadedAction {
   type: TypeKeys.PROJECTS_LOADED;
   projects: any;
 }
@@ -60,6 +67,7 @@ export type ActionTypes =
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
+ | ProjectsLoadedAction
  | UpdateUserRoleAction
  | OtherAction;
 
@@ -122,6 +130,18 @@ export const loadLikedProjectsAction = (projects: any) => {
   };
 };
 
+export const loadProject = (project_id: string) => {
+  return (dispatch: Dispatch) => {
+    return fetchProject(project_id)
+      .then((project) => {
+        dispatch(projectLoaded(project));
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  };
+};
+
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
@@ -142,6 +162,13 @@ export const pledgeProjectAction = (body: any) => {
       });
   };
 };
+
+export const projectLoaded = (project: {}) => {
+  return {
+    project,
+    type: TypeKeys.PROJECT_LOADED,
+  };
+}
 
 export const projectsLoaded = (projects: {}) => {
   return {

@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import ProjectMain from './ProjectMain'
 import TabContainer from './TabContainer';
 
 import Tabs from '@material-ui/core/Tabs';
@@ -89,8 +90,8 @@ export class ProjectView extends React.Component<any, any> {
             label="Statistics"
           />
         </Tabs>
-        {value === 0 && <TabContainer>Item One</TabContainer>}
-        {value === 1 && <TabContainer>Item Two</TabContainer>}
+        {value === 0 && <TabContainer><ProjectMain /></TabContainer>}
+        {value === 1 && <TabContainer>Statistics</TabContainer>}
       </div>
     );
   }
