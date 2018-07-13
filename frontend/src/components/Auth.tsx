@@ -10,7 +10,7 @@ class Auth extends React.Component<{}, IAuthState> {
     super(props);
 
     this.state = {
-      size: 150,
+      size: 250,
     };
   }
 
@@ -21,6 +21,7 @@ class Auth extends React.Component<{}, IAuthState> {
   }
 
   render() {
+    console.log('loading...');
     return (
       <CircularProgress
         style={{
@@ -29,7 +30,7 @@ class Auth extends React.Component<{}, IAuthState> {
           left: (window.innerWidth / 2) - (this.state.size / 2),
         }}
         size={this.state.size}
-        color="primary"
+        // color="primary"
       />
     );
   }

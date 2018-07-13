@@ -17,7 +17,7 @@ const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
 
 const tokens = {
-  mae: jwt.sign({ user_id: '12760373' }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
   xiya: jwt.sign({ user_id: '39741185' }, config.custom.jwt.secret, { expiresIn: '1d' }),
 };
 

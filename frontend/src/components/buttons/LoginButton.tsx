@@ -29,6 +29,7 @@ const styles = (theme:any) => ({
     [theme.breakpoints.down('md')]: {
       padding: '8px 0.2rem',
     },
+    'min-width': '0',
   },
   welcomeText: {
     'font-size': '1rem',
