@@ -1,7 +1,11 @@
+const path = require("path");
+
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
-let frontendHost = "'http://localhost'";
+let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
+let public = '';
+
 switch(process.env.STAGE) {
     case "production":
         apiHost = "'https://api.opensource.magento.com/'";
@@ -15,24 +19,38 @@ switch(process.env.STAGE) {
     case "dev":
         apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
         frontendHost = "'https://dev.opensource.engcom.magento.com/'";
-        break;       
+        break;    
+    case "local":
+        apiHost = "'http://localhost:3000'"
+        frontendHost = "'http://localhost:8080'";
+        break;
 }
+
+console.log(process.env.STAGE);
+console.log(apiHost);
+console.log(process.env.GIT_ID);
 
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/public/dist"
+        path: path.resolve(__dirname + "/public/dist"),
+        publicPath: "/dist/"
     },
     plugins: [
         new webpack.DefinePlugin({
             API_ENDPOINT: apiHost,
-            __FRONTEND__: apiHost,
-            "process.env": {
-                NODE_ENV: JSON.stringify(reactMode)
-            }
+            __FRONTEND__: frontendHost,
+            NODE_ENV: JSON.stringify(reactMode),
+            GIT_ID: JSON.stringify(process.env.GIT_ID),
+            PUBLIC_URL: JSON.stringify(public)
           })
     ],
+
+    devServer: {
+        contentBase: "public",
+        historyApiFallback: true,
+    },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
@@ -56,7 +74,15 @@ module.exports = {
             {
                 test: /\.svg$/,
                 loader: 'svg-react-loader'
-            }        
+            },
+            { 
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, 
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: 'static/images/'
+                }           
+            }    
         ]
     },
 

@@ -9,6 +9,11 @@ import { LoadUserAction,
          UpdateUserScopesAction,
         } from '../actions';
 
+declare const __FRONTEND__: string;
+export const frontEnd = __FRONTEND__;
+declare const GIT_ID: string;
+export const gitId = GIT_ID;
+
 interface WithAuthProps {
   className?: any;
   user?: any;
@@ -63,9 +68,9 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
 
       if (!allowedRoles.includes(role)) {
         return <Login
-          clientId="668e0b6c450cc783f267"
+          clientId={gitId}
           scope=""
-          redirectUri="http://localhost:3030/auth"
+          redirectUri={`${frontEnd}/auth`}
           onSuccess={onSuccess}
           onFailure={onFailure}
           user={this.props.user}
