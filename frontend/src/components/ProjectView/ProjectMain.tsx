@@ -8,15 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {};
 
-interface DispatchProps {
-  loadProject: (project_id: string) => void;
-}
-
-interface ProjectMainProps {
-  project?: {};
-  user?: any;
-}
-
 interface IProject {
   id: string;
   name: string;
@@ -37,6 +28,15 @@ interface IProject {
   created_date: string;
 }
 
+interface DispatchProps {
+  loadProject: (project_id: string) => void;
+}
+
+interface ProjectMainProps {
+  project?: any;
+  user?: any;
+}
+
 interface ProjectMainState {
   projects: IProject[];
 }
@@ -47,8 +47,6 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
   }
 
   update() {
-    // this.props.loadProject(this.props.project.project_id);
-    console.log('hey there');
     this.props.loadProject('test21');
   }
 
@@ -58,7 +56,7 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
 
   render() {
     return (
-      <h1>MAIN</h1>
+      <h1>{this.props.project.name ? this.props.project.name : ''}</h1>
     )
   }
 }
