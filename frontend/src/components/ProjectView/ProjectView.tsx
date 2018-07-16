@@ -90,7 +90,7 @@ export class ProjectView extends React.Component<any, any> {
             label="Statistics"
           />
         </Tabs>
-        {value === 0 && <TabContainer><ProjectMain /></TabContainer>}
+        {value === 0 && <TabContainer><ProjectMain project_id={this.props.match.params.project_id} /></TabContainer>}
         {value === 1 && <TabContainer>Statistics</TabContainer>}
       </div>
     );

@@ -15,11 +15,11 @@ switch(process.env.STAGE) {
     case "qa":
         apiHost = "'https://api.opensource.engcom.magento.com/'";
         frontendHost = "'https://opensource.engcom.magento.com/'";
-        break;  
+        break;
     case "dev":
         apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
         frontendHost = "'https://dev.opensource.engcom.magento.com/'";
-        break;    
+        break;
     case "local":
         apiHost = "'http://localhost:3000'"
         frontendHost = "'http://localhost:8080'";
@@ -75,14 +75,14 @@ module.exports = {
                 test: /\.svg$/,
                 loader: 'svg-react-loader'
             },
-            { 
-                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, 
+            {
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]',
                     outputPath: 'static/images/'
-                }           
-            }    
+                }
+            }
         ]
     },
 

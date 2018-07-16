@@ -12,7 +12,7 @@ class App extends React.Component {
       <div>
         <HeadBar />
         <Route exact path="/" component={ProjectGrid} />
-        <Route exact path="/project" component={ProjectView} />
+        <Route exact path="/project/:project_id" component={ProjectView} />
         <Route exact path="/auth" component={Auth}/>
         <Route exact path="/bookmarked" render={
           () => <ProjectGrid filter="bookmarkedProjects" />

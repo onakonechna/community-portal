@@ -33,6 +33,7 @@ interface DispatchProps {
 }
 
 interface ProjectMainProps {
+  project_id: string;
   project?: any;
   user?: any;
 }
@@ -41,17 +42,21 @@ interface ProjectMainState {
   projects: IProject[];
 }
 
-export class ProjectMain extends React.Component<ProjectMainProps & DispatchProps, ProjectMainState> {
-  constructor(props: ProjectMainProps & DispatchProps) {
+interface RouteProps {
+  match: any;
+}
+
+export class ProjectMain extends React.Component<ProjectMainProps & DispatchProps & RouteProps, ProjectMainState> {
+  constructor(props: ProjectMainProps & DispatchProps & RouteProps) {
     super(props);
   }
 
-  update() {
-    this.props.loadProject('test21');
+  update(project_id: string) {
+    this.props.loadProject(project_id);
   }
 
   componentDidMount() {
-    this.update();
+    this.update(this.props.project_id);
   }
 
   render() {
