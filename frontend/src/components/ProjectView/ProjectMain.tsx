@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 
 import { loadProject } from '../../actions';
 
+import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -46,6 +47,7 @@ interface DispatchProps {
 interface ProjectMainProps {
   project_id: string;
   fieldMap?: any;
+  chipMap?: any;
   project?: any;
   user?: any;
   classes?: any;
@@ -100,6 +102,21 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
                 <TableCell>{this.props.project[entry[0]]}</TableCell>
               </TableRow>
             ))}
+            {this.props.chipMap.map((entry: string[]) => (
+              entry[0] in this.props.project ?
+                <TableRow>
+                  <TableCell>{entry[1]}</TableCell>
+                  <TableCell>{this.props.project[entry[0]].map((chip: string) => (
+                    <Chip className={classes.chip} key={chip} label={chip} />
+                  ))}</TableCell>
+                </TableRow>
+              :
+                null
+            ))}
+            <TableRow>
+              <TableCell>Due</TableCell>
+              <TableCell>{this.getDate(this.props.project.due)}</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>

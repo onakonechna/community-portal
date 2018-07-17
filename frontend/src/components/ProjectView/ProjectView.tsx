@@ -57,10 +57,6 @@ const styles = (theme: any) => ({
 const fieldMap = [
   ['status', 'Status'],
   ['size', 'Size'],
-  ['due', 'Due'],
-  ['skills', 'Skills'],
-  ['technologies', 'Technologies'],
-  ['tags', 'Tags'],
   ['upvotes', 'Upvotes'],
   ['owner', 'Owner'],
   ['estimated', 'Estimated'],
@@ -68,6 +64,12 @@ const fieldMap = [
   ['completed', 'Completed'],
   ['github_address', 'GitHub'],
   ['slack_channel', 'Slack'],
+];
+
+const chipMap = [
+  ['skills', 'Skills'],
+  ['technologies', 'Technologies'],
+  ['tags', 'Tags'],
 ];
 
 export class ProjectView extends React.Component<any, any> {
@@ -107,7 +109,11 @@ export class ProjectView extends React.Component<any, any> {
           />
         </Tabs>
         {value === 0 && <Container>
-          <ProjectMain project_id={this.props.match.params.project_id} fieldMap={fieldMap} />
+          <ProjectMain
+            project_id={this.props.match.params.project_id}
+            fieldMap={fieldMap}
+            chipMap={chipMap}
+          />
         </Container>}
         {value === 1 && <Container>Statistics</Container>}
       </div>
