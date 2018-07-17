@@ -17,7 +17,7 @@ switch(process.env.STAGE) {
         frontendHost = "'https://opensource.engcom.magento.com'";
         break;  
     case "dev":
-        apiHost = "'https://api.dev.opensource.engcom.magento.com'";
+        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'https://api.dev.opensource.engcom.magento.com'";
         frontendHost = "'https://dev.opensource.engcom.magento.com'";
         break;    
     case "local":
@@ -26,8 +26,13 @@ switch(process.env.STAGE) {
         break;
     case "custom":
         apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'http://localhost'";
+        frontendHost = process.env.FRONTEND 
+            ? JSON.stringify(process.env.FRONTEND) 
+            : "'http://dev.opensource.engcom.magento.com.s3-website-us-east-1.amazonaws.com'";
         break;  
 }
+
+console.log(apiHost);
 
 module.exports = {
     entry: "./src/index.tsx",
