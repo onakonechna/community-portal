@@ -20,11 +20,13 @@ jobs:
       
       - run:
           name: retrieve endpoint from workspace
-          command: endpoint=$(cat workspace/endpoint)
+          command: endpoint=$(cat ~/community-portal/frontend/workspace/endpoint)
 
       - run:
           name: test print endpoint
-          command: echo "$endpoint"
+          command: |
+            echo "endpoint = "
+            echo "$endpoint"
 
       - run:
           name: Install dependencies
