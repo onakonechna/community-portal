@@ -5,8 +5,19 @@ import compose from 'recompose/compose';
 import { loadProject } from '../../actions';
 
 import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
-const styles = {};
+import Jumbotron from './Jumbotron';
+
+const styles: any = (theme:any) => ({
+  titleText: {
+    fontWeight: 'normal',
+    fontSize: '2em',
+  },
+});
 
 interface IProject {
   id: string;
@@ -34,20 +45,18 @@ interface DispatchProps {
 
 interface ProjectMainProps {
   project_id: string;
+  fieldMap?: any;
   project?: any;
   user?: any;
+  classes?: any;
 }
 
 interface ProjectMainState {
   projects: IProject[];
 }
 
-interface RouteProps {
-  match: any;
-}
-
-export class ProjectMain extends React.Component<ProjectMainProps & DispatchProps & RouteProps, ProjectMainState> {
-  constructor(props: ProjectMainProps & DispatchProps & RouteProps) {
+export class ProjectMain extends React.Component<ProjectMainProps & DispatchProps, ProjectMainState> {
+  constructor(props: ProjectMainProps & DispatchProps) {
     super(props);
   }
 
@@ -59,26 +68,40 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
     this.update(this.props.project_id);
   }
 
+  getDate(timestamp: number) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        <h1>{this.props.project.name}</h1>
-        <p>{this.props.project.description}</p>
-        <p>Created at: {this.props.project.created}</p>
-        <p>Updated at: {this.props.project.updated}</p>
-        <p>Status: {this.props.project.status}</p>
-        <p>Size: {this.props.project.size}</p>
-        <p>Due: {this.props.project.due}</p>
-        <p>Skills: {this.props.project.skills}</p>
-        <p>Technologies: {this.props.project.technologies}</p>
-        <p>Tags: {this.props.project.tags}</p>
-        <p>Upvotes: {this.props.project.upvotes}</p>
-        <p>Owner: {this.props.project.owner}</p>
-        <p>Estimated: {this.props.project.estimated}</p>
-        <p>Pledged: {this.props.project.pledged}</p>
-        <p>Completed: {this.props.project.completed}</p>
-        <p>GitHub: {this.props.project.github_address}</p>
-        <p>Slack: {this.props.project.slack_channel}</p>
+        <p className={classes.titleText}>{this.props.project.name}</p>
+        <Jumbotron>
+          <p>{this.props.project.description}</p>
+          <hr />
+          <p>
+            <span>Created at {this.getDate(this.props.project.created)}</span>&nbsp;
+            <span>Updated at {this.getDate(this.props.project.updated)}</span>
+          </p>
+        </Jumbotron>
+        <Table>
+          <TableBody>
+            {this.props.fieldMap.map((entry: string[]) => (
+              <TableRow>
+                <TableCell>{entry[1]}</TableCell>
+                <TableCell>{this.props.project[entry[0]]}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     )
   }

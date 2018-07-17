@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-const TabContainer = (props: any) => {
+const Container = (props: any) => {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
       {props.children}
@@ -9,4 +9,4 @@ const TabContainer = (props: any) => {
   );
 };
 
-export default TabContainer;
+export default Container;

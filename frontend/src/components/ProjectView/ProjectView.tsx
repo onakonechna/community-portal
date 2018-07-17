@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 
 import ProjectMain from './ProjectMain'
-import TabContainer from './TabContainer';
+import Container from './Container';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -54,6 +54,22 @@ const styles = (theme: any) => ({
   },
 });
 
+const fieldMap = [
+  ['status', 'Status'],
+  ['size', 'Size'],
+  ['due', 'Due'],
+  ['skills', 'Skills'],
+  ['technologies', 'Technologies'],
+  ['tags', 'Tags'],
+  ['upvotes', 'Upvotes'],
+  ['owner', 'Owner'],
+  ['estimated', 'Estimated'],
+  ['pledged', 'Pledged'],
+  ['completed', 'Completed'],
+  ['github_address', 'GitHub'],
+  ['slack_channel', 'Slack'],
+];
+
 export class ProjectView extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -90,8 +106,10 @@ export class ProjectView extends React.Component<any, any> {
             label="Statistics"
           />
         </Tabs>
-        {value === 0 && <TabContainer><ProjectMain project_id={this.props.match.params.project_id} /></TabContainer>}
-        {value === 1 && <TabContainer>Statistics</TabContainer>}
+        {value === 0 && <Container>
+          <ProjectMain project_id={this.props.match.params.project_id} fieldMap={fieldMap} />
+        </Container>}
+        {value === 1 && <Container>Statistics</Container>}
       </div>
     );
   }
