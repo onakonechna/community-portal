@@ -12,6 +12,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import Jumbotron from './Jumbotron';
+import ScheduleMeetingDialog from './ScheduleMeetingDialog';
+import ScheduleMeetingButton from './../buttons/ScheduleMeetingButton';
 
 const styles: any = (theme:any) => ({
   titleText: {
@@ -23,10 +25,13 @@ const styles: any = (theme:any) => ({
 interface IProject {
   id: string;
   name: string;
+  created: number;
+  updated: number;
   title?: string;
   description: string;
   technologies: [string];
   estimated: number;
+  due: number;
   pledged?: number;
   due_date?: string;
   hours_goal?: number;
@@ -46,20 +51,24 @@ interface DispatchProps {
 
 interface ProjectMainProps {
   project_id: string;
-  fieldMap?: any;
-  chipMap?: any;
-  project?: any;
+  fieldMap: any;
+  chipMap: any;
+  project?: IProject;
   user?: any;
   classes?: any;
 }
 
 interface ProjectMainState {
-  projects: IProject[];
+  scheduleMeetingOpen: boolean;
 }
 
 export class ProjectMain extends React.Component<ProjectMainProps & DispatchProps, ProjectMainState> {
   constructor(props: ProjectMainProps & DispatchProps) {
     super(props);
+    this.state = {
+      scheduleMeetingOpen: false,
+    };
+    this.toggleScheduleMeeting = this.toggleScheduleMeeting.bind(this);
   }
 
   update(project_id: string) {
@@ -81,17 +90,30 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
+  toggleScheduleMeeting() {
+    this.setState((prevState: ProjectMainState) => ({
+      scheduleMeetingOpen: !prevState.scheduleMeetingOpen,
+    }));
+  }
+
   render() {
     const { classes } = this.props;
+    const project: any = this.props.project;
     return (
       <div>
-        <p className={classes.titleText}>{this.props.project.name}</p>
+        <ScheduleMeetingDialog
+          open={this.state.scheduleMeetingOpen}
+          project={project}
+          toggle={this.toggleScheduleMeeting}
+        />
+        <ScheduleMeetingButton handler={this.toggleScheduleMeeting} label="ScheduleMeeting" />
+        <p className={classes.titleText}>{project.name}</p>
         <Jumbotron>
-          <p>{this.props.project.description}</p>
+          <p>{project.description}</p>
           <hr />
           <p>
-            <span>Created at {this.getDate(this.props.project.created)}</span>&nbsp;
-            <span>Updated at {this.getDate(this.props.project.updated)}</span>
+            <span>Created at {this.getDate(project.created)}</span>&nbsp;
+            <span>Updated at {this.getDate(project.updated)}</span>
           </p>
         </Jumbotron>
         <Table>
@@ -99,14 +121,14 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
             {this.props.fieldMap.map((entry: string[]) => (
               <TableRow>
                 <TableCell>{entry[1]}</TableCell>
-                <TableCell>{this.props.project[entry[0]]}</TableCell>
+                <TableCell>{project[entry[0]]}</TableCell>
               </TableRow>
             ))}
             {this.props.chipMap.map((entry: string[]) => (
-              entry[0] in this.props.project ?
+              entry[0] in project ?
                 <TableRow>
                   <TableCell>{entry[1]}</TableCell>
-                  <TableCell>{this.props.project[entry[0]].map((chip: string) => (
+                  <TableCell>{project[entry[0]].map((chip: string) => (
                     <Chip className={classes.chip} key={chip} label={chip} />
                   ))}</TableCell>
                 </TableRow>
@@ -115,7 +137,7 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
             ))}
             <TableRow>
               <TableCell>Due</TableCell>
-              <TableCell>{this.getDate(this.props.project.due)}</TableCell>
+              <TableCell>{this.getDate(project.due)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

@@ -203,6 +203,10 @@ export const pledgeProjectAction = (body: any) => {
   };
 };
 
+export const scheduleMeetingAction : (any) = () => {
+  return null;
+}
+
 export const projectLoaded = (project: {}) => {
   return {
     project,
