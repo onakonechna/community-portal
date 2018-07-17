@@ -8,17 +8,17 @@ let public = '';
 
 switch(process.env.STAGE) {
     case "production":
-        apiHost = "'https://api.opensource.magento.com/'";
-        frontendHost = "'https://opensource.magento.com/'";
+        apiHost = "'https://api.opensource.magento.com'";
+        frontendHost = "'https://opensource.magento.com'";
         reactMode = "production"
         break;
     case "qa":
-        apiHost = "'https://api.opensource.engcom.magento.com/'";
-        frontendHost = "'https://opensource.engcom.magento.com/'";
+        apiHost = "'https://api.opensource.engcom.magento.com'";
+        frontendHost = "'https://opensource.engcom.magento.com'";
         break;  
     case "dev":
-        apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
-        frontendHost = "'https://dev.opensource.engcom.magento.com/'";
+        apiHost = "'https://api.dev.opensource.engcom.magento.com'";
+        frontendHost = "'https://dev.opensource.engcom.magento.com'";
         break;    
     case "local":
         apiHost = "'http://localhost:3000'"
@@ -52,7 +52,7 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    devtool: "eval",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
