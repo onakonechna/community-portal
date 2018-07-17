@@ -16,7 +16,7 @@ jobs:
             - dependencies-cache
 
       - attach_workspace:
-          at: ~/community-portal/workspace
+          at: ~/community-portal/frontend/workspace
       
       - run:
           name: retrieve endpoint from workspace
