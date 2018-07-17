@@ -24,11 +24,10 @@ switch(process.env.STAGE) {
         apiHost = "'http://localhost:3000'"
         frontendHost = "'http://localhost:8080'";
         break;
+    case "custom":
+        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'http://localhost'";
+        break;  
 }
-
-console.log(process.env.STAGE);
-console.log(apiHost);
-console.log(process.env.GIT_ID);
 
 module.exports = {
     entry: "./src/index.tsx",
