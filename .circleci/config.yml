@@ -20,7 +20,7 @@ jobs:
       
       - run:
           name: retrieve endpoint from workspace
-          command: endpoint=$(cat endpoint)
+          command: endpoint=$(cat workspace/endpoint)
 
       - run:
           name: test print endpoint
