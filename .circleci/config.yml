@@ -15,6 +15,17 @@ jobs:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
 
+      - attach_workspace:
+          at: ~/community-portal/workspace
+      
+      - run:
+          name: retrieve endpoint from workspace
+          command: endpoint=$(cat endpoint)
+
+      - run:
+          name: test print endpoint
+          command: echo "$endpoint"
+
       - run:
           name: Install dependencies
           command: npm install
@@ -62,6 +73,8 @@ jobs:
           keys:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
+      
+      - run: mkdir -p workspace  
 
       - run:
           name: Install dependencies
@@ -92,7 +105,7 @@ jobs:
           command: node_modules/.bin/sls offline start -r us-east-1
           background: true
 
-      - run: sleep 60
+      - run: sleep 30
 
       - run:
           name: Insert user fixture data for Mae
@@ -119,7 +132,12 @@ jobs:
 
       - run:
           name: Set endpoint variable for S3 deployment
-          command: endpoint=$(node_modules/.bin/sls info --verbose | grep ServiceEndpoint | sed -E s/ServiceEndpoint\:[[:space:]]//g)
+          command: node_modules/.bin/sls info --verbose | grep ServiceEndpoint | sed -E s/ServiceEndpoint\:[[:space:]]//g > workspace/endpoint
+
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - endpoint
 
       - save_cache:
           paths:
