@@ -20,13 +20,11 @@ jobs:
       
       - run:
           name: retrieve endpoint from workspace
-          command: endpoint=$(cat ~/community-portal/functions/workspace/endpoint)
-
-      - run:
-          name: test print endpoint
           command: |
-            echo "endpoint = "
+            endpoint=$(cat ~/community-portal/functions/workspace/endpoint)
             echo "$endpoint"
+            endpoint2=$(cat ../functions/workspace/endpoint)
+            echo "$endpoint2"
 
       - run:
           name: Install dependencies
@@ -135,10 +133,6 @@ jobs:
       - run:
           name: Set endpoint variable for S3 deployment
           command: node_modules/.bin/sls info --verbose | grep ServiceEndpoint | sed -E s/ServiceEndpoint\:[[:space:]]//g > workspace/endpoint
-
-      - run: |
-          endpoint=$(cat ~/community-portal/functions/workspace/endpoint)
-          echo "$endpoint"
 
       - persist_to_workspace:
           root: workspace
