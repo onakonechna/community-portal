@@ -64,6 +64,7 @@ functions:
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/editProject/editProject.yml)}
   - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
+  - ${file(./handlers/project/scheduleMeeting/scheduleMeeting.yml)}
   - ${file(./handlers/user/likeProject/likeProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/unlikeProject/unlikeProject.yml)}
@@ -105,6 +106,7 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
+    scheduleMeetingRole: ${file(./handlers/project/scheduleMeeting/role.yml):scheduleMeetingRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

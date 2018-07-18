@@ -22,8 +22,10 @@ interface ScheduleMeetingDispatchProps {
 interface ScheduleMeetingState {
   title: string;
   description: string;
-  zoom_link: string;
+  link: string;
   date: string;
+  start_time: string;
+  end_time: string;
   success: boolean;
   loading: boolean;
   messageOpen: boolean;
@@ -34,8 +36,9 @@ export interface ScheduleMeetingBody {
   project_id: string;
   title: string;
   description: string;
-  zoom_link: string;
-  date: string;
+  link: string;
+  start_at: number;
+  end_at: number;
 }
 
 export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps & ScheduleMeetingDispatchProps, ScheduleMeetingState> {
@@ -44,8 +47,10 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
     this.state = {
       title: '',
       description: '',
-      zoom_link: '',
-      date: this.handleReadTime(),
+      link: '',
+      date: this.handleReadDate(),
+      start_time: this.handleReadTime(),
+      end_time: this.handleReadTime({ addOneHour: true }),
       success: false,
       loading: false,
       messageOpen: false,
@@ -69,9 +74,29 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
     //   this.setState({ messageOpen: true });
     //   return;
     // }
+    const {
+      title,
+      description,
+      link,
+      date,
+      start_time,
+      end_time,
+    } = this.state;
+
+    const { project_id } = this.props.project;
+
+    const start_at = this.getTime(date, start_time);
+    const end_at = this.getTime(date, end_time);
+
     const body = {
-      project_id: this.props.project.project_id,
+      project_id,
+      title,
+      description,
+      link,
+      start_at,
+      end_at,
     };
+
     // if (body.hours != null && body.hours !== 0) {
     if (true) {
       this.props.scheduleMeeting(body)
@@ -95,8 +120,23 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
     }
   }
 
-  handleReadTime() {
+  handleReadDate() {
     return new Date().toISOString().substr(0, 10);
+  }
+
+  handleReadTime(settings?: any) {
+    const date = new Date();
+    if (typeof settings !== 'undefined' && settings.addOneHour){
+      if (date.getHours() < 23) {
+        date.setHours(date.getHours() + 1);
+      }
+    }
+    return date.toISOString().substr(11, 5);
+  }
+
+  getTime(date: string, time: string) {
+    console.log('getTime:', `${date} ${time}`);
+    return new Date(`${date} ${time}`).getTime();
   }
 
   render() {
@@ -128,11 +168,11 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
           <TextField
             required
             margin="dense"
-            id="zoom_link"
-            label="Zoom Link"
+            id="link"
+            label="Conference Link"
             type="text"
-            onChange={this.handleChange('zoom_link')}
-            value={this.state.zoom_link}
+            onChange={this.handleChange('link')}
+            value={this.state.link}
             fullWidth
           />
           <TextField
@@ -142,6 +182,28 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
             type="date"
             onChange={this.handleChange('date')}
             value={this.state.date}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            required
+            id="start_time"
+            label="Start Time"
+            type="time"
+            onChange={this.handleChange('start_time')}
+            value={this.state.start_time}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            required
+            id="end_time"
+            label="End Time"
+            type="time"
+            onChange={this.handleChange('end_time')}
+            value={this.state.end_time}
             InputLabelProps={{
               shrink: true,
             }}

@@ -73,6 +73,19 @@ const pledgeSchema = {
   required: ['project_id', 'hours'],
 };
 
+const scheduleMeetingSchema = {
+  properties: {
+    project_id: { type: 'string' },
+    title: { type: 'string' },
+    description: { type: 'string' },
+    link: { type: 'string' },
+    start_at: { type: 'number' },
+    end_at: { type: 'number' },
+  },
+  additionalProperties: false,
+  required: ['project_id', 'title', 'description', 'link', 'start_at', 'end_at'],
+};
+
 // Special JSON validation schemas
 const nullSchema = {
   maxProperties: 0,
@@ -93,6 +106,7 @@ const ValidationSchemas: any = {
   editProjectSchema,
   updateProjectStatusSchema,
   pledgeSchema,
+  scheduleMeetingSchema,
   nullSchema,
   projectIdOnlySchema,
 };

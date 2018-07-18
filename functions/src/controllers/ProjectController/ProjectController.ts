@@ -12,6 +12,7 @@ interface ProjectControllerInterface {
   removeUpvoter(data: any): (result: any) => any;
   addPledgedHours(data: any): (result: any) => any;
   addPledgedHistory(data: any): (result: any) => any;
+  scheduleMeeting(data: any): (result: any) => any;
   addPledger(data: any): (result: any) => any;
   addSubscriber(data: any): (result: any) => any;
   checkOwner(data: any): (result: any) => any;
@@ -121,6 +122,19 @@ export default class ProjectController implements ProjectControllerInterface {
         payload: {
           project_id,
           message: 'Project deleted successfully',
+        },
+      };
+    };
+  }
+
+  scheduleMeeting(data: any) {
+    const { project_id } = data;
+    return (result: any) => {
+      return {
+        status: 200,
+        payload: {
+          project_id,
+          message: 'Meeting scheduled successfully',
         },
       };
     };

@@ -5,6 +5,7 @@ import getBookmarkedProjects from '../api/GetBookmarkedProjects';
 import getLikedProjects from '../api/GetLikedProjects';
 import { editProject, editProjectStatus } from  '../api/EditProject';
 import pledgeProject from '../api/PledgeProject';
+import scheduleMeeting from '../api/ScheduleMeeting';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
 
@@ -203,8 +204,16 @@ export const pledgeProjectAction = (body: any) => {
   };
 };
 
-export const scheduleMeetingAction : (any) = () => {
-  return null;
+export const scheduleMeetingAction = (body: any) => {
+  return (dispatch: Dispatch) => {
+    return scheduleMeeting(body)
+      .then(() => {
+        dispatch(loadProjects());
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  };
 }
 
 export const projectLoaded = (project: {}) => {

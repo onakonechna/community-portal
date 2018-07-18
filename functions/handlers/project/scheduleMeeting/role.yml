@@ -1,7 +1,7 @@
-getProjectCardsRole:
+scheduleMeetingRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: getProjectCardsRole
+    RoleName: scheduleMeetingRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,12 +11,13 @@ getProjectCardsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getProjectCardsRole
+      - PolicyName: scheduleMeetingRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:Query
+                - dynamodb:UpdateItem
               Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"

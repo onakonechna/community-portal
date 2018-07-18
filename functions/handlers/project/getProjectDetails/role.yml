@@ -1,6 +1,7 @@
 getProjectDetailsRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: getProjectDetailsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

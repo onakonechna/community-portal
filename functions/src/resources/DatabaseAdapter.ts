@@ -288,6 +288,34 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.update(params).promise();
   }
 
+  addToMapIfNotExists(
+    tableName: string,
+    identifier: any,
+    mapName: string,
+    key: string,
+    value: string|number,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    const existenceCondition = getExistenceCondition(identifier);
+    const mapCondition = 'not(contains(#MAP_NAME, #KEY))';
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      UpdateExpression: 'SET #MAP_NAME.#KEY = :value',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
+        '#KEY': key,
+      },
+      ExpressionAttributeValues: {
+        ':value': value,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: `${existenceCondition} AND ${mapCondition}`,
+    };
+
+    return this.db.update(params).promise();
+  }
+
   delete(tableName: string, identifier: any, returnValues: string = 'ALL_OLD'): Promise<any> {
     const params = {
       TableName: tableName,

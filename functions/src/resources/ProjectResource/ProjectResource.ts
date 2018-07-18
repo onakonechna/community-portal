@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import DatabaseConnection from './../DatabaseConnection';
 import DatabaseAdapter from './../DatabaseAdapter';
+import * as uuidv1 from 'uuid/v1';
 
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
@@ -20,6 +21,7 @@ interface ProjectResourceInterface {
   downvote(data: any): Promise<any>;
   addPledgedHours(data: any): Promise<any>;
   addPledgedHistory(data: any): Promise<any>;
+  scheduleMeeting(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -153,6 +155,31 @@ export default class ProjectResource implements ProjectResourceInterface {
       'pledged_history',
       unixTimestamp,
       hours,
+    );
+  }
+
+  scheduleMeeting(data: any): Promise<any> {
+    console.log('Hello!');
+    const { project_id, title, description, link, start_at, end_at } = data;
+    const status = 'scheduled';
+    const unixTimestamp = new Date().getTime();
+    const entry = {
+      title,
+      description,
+      status,
+      link,
+      start_at,
+      end_at,
+      created: unixTimestamp,
+      updated: unixTimestamp,
+    };
+
+    return this.adapter.addToMapIfNotExists(
+      PROJECTS_TABLE,
+      { project_id },
+      'meetings',
+      uuidv1(),
+      entry,
     );
   }
 
