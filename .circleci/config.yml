@@ -41,7 +41,6 @@ jobs:
           name: deploy application
           command: |
             endpoint=$(cat ../functions/workspace/endpoint)
-            echo "$endpoint"
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
