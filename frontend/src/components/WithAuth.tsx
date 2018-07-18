@@ -29,6 +29,10 @@ interface WithAuthProps {
   onFailure?: any;
   toggleLike?: any;
   likeProject?: any;
+  open?: boolean;
+  toggleSideBar?: any;
+  toHome?: any;
+  toProfile?: any;
 }
 
 interface WithAuthStateProps {

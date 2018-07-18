@@ -1,9 +1,9 @@
 import { ActionTypes, TypeKeys } from '../actions';
 
 const testUser = {
-  user_id: '83dhh288d',
+  user_id: '37183938',
   avatar_url: '',
-  name: 'Mark',
+  name: '',
   role: 'guest',
   likedProjects: [],
 };

@@ -32,8 +32,6 @@ switch(process.env.STAGE) {
         break;  
 }
 
-console.log(apiHost);
-
 module.exports = {
     entry: "./src/index.tsx",
     output: {
