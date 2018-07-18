@@ -79,11 +79,11 @@ const scheduleMeetingSchema = {
     title: { type: 'string' },
     description: { type: 'string' },
     link: { type: 'string' },
-    start_at: { type: 'number' },
-    end_at: { type: 'number' },
+    start: { type: 'number' },
+    end: { type: 'number' },
   },
   additionalProperties: false,
-  required: ['project_id', 'title', 'description', 'link', 'start_at', 'end_at'],
+  required: ['project_id', 'title', 'description', 'link', 'start', 'end'],
 };
 
 // Special JSON validation schemas

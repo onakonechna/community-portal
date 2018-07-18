@@ -37,8 +37,8 @@ export interface ScheduleMeetingBody {
   title: string;
   description: string;
   link: string;
-  start_at: number;
-  end_at: number;
+  start: number;
+  end: number;
 }
 
 export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps & ScheduleMeetingDispatchProps, ScheduleMeetingState> {
@@ -85,16 +85,16 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
 
     const { project_id } = this.props.project;
 
-    const start_at = this.getTime(date, start_time);
-    const end_at = this.getTime(date, end_time);
+    const start = this.getTime(date, start_time);
+    const end = this.getTime(date, end_time);
 
     const body = {
       project_id,
       title,
       description,
       link,
-      start_at,
-      end_at,
+      start,
+      end,
     };
 
     // if (body.hours != null && body.hours !== 0) {

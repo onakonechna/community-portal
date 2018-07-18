@@ -56,6 +56,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.pledgers = {};
     data.pledged_history = {};
     data.completed_history = {};
+    data.meetings = {};
 
     return this.adapter.create(PROJECTS_TABLE, data);
   }
@@ -160,7 +161,7 @@ export default class ProjectResource implements ProjectResourceInterface {
 
   scheduleMeeting(data: any): Promise<any> {
     console.log('Hello!');
-    const { project_id, title, description, link, start_at, end_at } = data;
+    const { project_id, title, description, link, start, end } = data;
     const status = 'scheduled';
     const unixTimestamp = new Date().getTime();
     const entry = {
@@ -168,8 +169,8 @@ export default class ProjectResource implements ProjectResourceInterface {
       description,
       status,
       link,
-      start_at,
-      end_at,
+      start,
+      end,
       created: unixTimestamp,
       updated: unixTimestamp,
     };
