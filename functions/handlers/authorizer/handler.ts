@@ -24,9 +24,11 @@ const buildIAMPolicy = function (principalId: string,
   return policy;
 };
 
-const REGION = process.env.REGION;
-const STAGE = process.env.STAGE;
-const API = process.env.API;
+const getUniversalPath = function (methodArn: string) {
+  const root = methodArn.match(/.*:.*?\/.*?\//)[0];
+  return `${root}*/*`;
+}
+
 const IS_OFFLINE = process.env.IS_OFFLINE;
 
 // Override aws-lambda type definition to support string errors
@@ -50,18 +52,12 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const effect = 'Allow';
     const authorizerContext = { user_id };
 
-    // check that API is defined
-    if (API === undefined) {
-      console.log('Check that API id is defined for the current stage in serverless.yml');
-      throw 'API undefined';
-    }
-
     // Return an IAM policy document for the current endpoint
     let resource: string;
     if (IS_OFFLINE === 'true') {
       resource = event.methodArn;
     } else {
-      resource = `arn:aws:execute-api:${REGION}:*:${API}/${STAGE}/*/*`;
+      resource = getUniversalPath(event.methodArn);
     }
     const policyDocument = buildIAMPolicy(user_id, effect, resource, authorizerContext);
 
