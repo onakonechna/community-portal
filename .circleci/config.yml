@@ -16,11 +16,11 @@ jobs:
             - dependencies-cache
 
       - attach_workspace:
-          at: ~/community-portal/frontend/workspace
+          at: ~/community-portal/functions/workspace
       
       - run:
           name: retrieve endpoint from workspace
-          command: endpoint=$(cat ~/community-portal/frontend/workspace/endpoint)
+          command: endpoint=$(cat ~/community-portal/functions/workspace/endpoint)
 
       - run:
           name: test print endpoint
