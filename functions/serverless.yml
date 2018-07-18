@@ -19,8 +19,6 @@ custom:
     basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
     stage: ${self:provider.stage} # Stage will be created for every branch
     createRoute53Record: false
-  api:
-    dev: 8qgklun7w3
 
 provider:
   name: aws
@@ -28,9 +26,6 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
-    REGION: ${self:provider.region}
-    STAGE: ${self:provider.stage}
-    API: ${self:custom.api.${self:provider.stage}}
     PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
     PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
     USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
