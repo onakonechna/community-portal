@@ -17,14 +17,6 @@ jobs:
 
       - attach_workspace:
           at: ~/community-portal/functions/workspace
-      
-      - run:
-          name: retrieve endpoint from workspace
-          command: |
-            endpoint=$(cat ~/community-portal/functions/workspace/endpoint)
-            echo "$endpoint"
-            endpoint2=$(cat ../functions/workspace/endpoint)
-            echo "$endpoint2"
 
       - run:
           name: Install dependencies
@@ -48,6 +40,8 @@ jobs:
       - run:
           name: deploy application
           command: |
+            endpoint=$(cat ../functions/workspace/endpoint)
+            echo "$endpoint"
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
