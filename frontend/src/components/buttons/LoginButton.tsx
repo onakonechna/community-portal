@@ -18,6 +18,9 @@ const styles = (theme:any) => ({
     display: 'flex',
     'align-items': 'center',
   },
+  logoutButton: {
+    'font-size': '1rem',
+  },
   signInIcon: {
     'margin-right': '0.5rem',
   },
@@ -26,8 +29,10 @@ const styles = (theme:any) => ({
     [theme.breakpoints.down('md')]: {
       padding: '8px 0.2rem',
     },
+    'min-width': '0',
   },
   welcomeText: {
+    'font-size': '1rem',
     margin: '0 1rem 0.2rem 0',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
@@ -40,7 +45,7 @@ const loginButton = (props:any) => {
   return (
     <div>
       {props.user.role !== 'guest'
-        ? 
+        ?
           <div className={classes.authWrapper}>
             <Button className={classes.logoutButton} onClick={props.logoutHandler}>Logout</Button>
             <Typography className={classes.welcomeText}>{`Welcome, ${retrieveFirstName(props.user.name)}`}</Typography>

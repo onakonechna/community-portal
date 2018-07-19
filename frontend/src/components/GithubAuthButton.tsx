@@ -19,6 +19,7 @@ interface GithubAuthButtonProps {
   updateUserRole?: any;
   updateUserScopes?: any;
   getLikedProjects?: any;
+  getBookmarkedProjects?: any;
   loadUser?: any;
 }
 
@@ -28,6 +29,7 @@ export interface User {
   company?: string;
   avatar_url?: string;
   likedProjects?: string[];
+  bookmarkedProjects?: string[];
 }
 
 const defaultUser: User = {
@@ -36,6 +38,7 @@ const defaultUser: User = {
   company: '',
   avatar_url: '',
   likedProjects: [],
+  bookmarkedProjects: [],
 };
 
 const withLogin = (WrappedCompoent: any) => {
@@ -114,10 +117,11 @@ const withLogin = (WrappedCompoent: any) => {
           this.saveToken(token);
           const user = this.decodeToken(token);
           Promise.all([
+            this.props.loadUser(user),
             this.props.updateUserRole(this.props.user.user_id, 'user'),
             this.props.updateUserScopes(this.props.user.user_id, this.props.user.scopes),
             this.props.getLikedProjects(),
-            this.props.loadUser(user),
+            this.props.getBookmarkedProjects(),
           ])
             .catch((err: Error) => console.error(err));
         })

@@ -11,9 +11,12 @@ class App extends React.Component {
     return (
       <div>
         <Route path="/" component={HeadBar}/>
-        <Route exact path="/" component={ProjectGrid}/>
+        <Route exact path="/" component={ProjectGrid} />
         <Route exact path="/auth" component={Auth}/>
         <Route exact path="/profile" component={Profile}/>
+        <Route exact path="/bookmarked" render={
+          () => <ProjectGrid filter="bookmarkedProjects" />
+        } />
       </div>
     );
   }

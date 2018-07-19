@@ -4,5 +4,9 @@
   ],
   "rules": {
     "variable-name": [true, "check-format", "allow-pascal-case", "allow-snake-case"]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "tests"
+  ]
 }

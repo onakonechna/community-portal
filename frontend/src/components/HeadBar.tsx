@@ -22,6 +22,17 @@ const styles = (theme:any) => ({
     'font-family': 'system-ui',
     'box-shadow': 'none',
   },
+  menuButton: {
+    'margin-right': '1rem',
+    [theme.breakpoints.down('sm')]: {
+      'margin-right': '0',
+    },
+  },
+  toolBar: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0',
+    },
+  },
 });
 
 interface HeadBarProps {
