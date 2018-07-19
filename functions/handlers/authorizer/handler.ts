@@ -27,7 +27,7 @@ const buildIAMPolicy = function (principalId: string,
 const getUniversalPath = function (methodArn: string) {
   const root = methodArn.match(/.*:.*?\/.*?\//)[0];
   return `${root}*/*`;
-}
+};
 
 const IS_OFFLINE = process.env.IS_OFFLINE;
 
