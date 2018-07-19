@@ -108,15 +108,13 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
               </TableRow>
             ))}
             {this.props.chipMap.map((entry: string[]) => (
-              entry[0] in this.props.project ?
+              entry[0] in this.props.project &&
                 <TableRow>
                   <TableCell>{entry[1]}</TableCell>
                   <TableCell>{this.props.project[entry[0]].map((chip: string) => (
                     <Chip className={classes.chip} key={chip} label={chip} />
                   ))}</TableCell>
                 </TableRow>
-              :
-                null
             ))}
             <TableRow>
               <TableCell>Due</TableCell>
