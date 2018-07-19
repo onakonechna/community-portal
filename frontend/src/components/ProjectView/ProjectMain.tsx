@@ -11,7 +11,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import Jumbotron from './Jumbotron';
+import DescriptionBox from './DescriptionBox';
 import ScheduleMeetingDialog from './ScheduleMeetingDialog';
 import ScheduleMeetingButton from './../buttons/ScheduleMeetingButton';
 import WithAuth from './../WithAuth';
@@ -110,14 +110,14 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
           toggle={this.toggleScheduleMeeting}
         />
         <p className={classes.titleText}>{project.name}</p>
-        <Jumbotron>
+        <DescriptionBox>
           <p>{project.description}</p>
           <hr />
           <p>
             <span>Created at {this.getDate(project.created)}</span>&nbsp;
             <span>Updated at {this.getDate(project.updated)}</span>
           </p>
-        </Jumbotron>
+        </DescriptionBox>
         <Table>
           <TableBody>
             {this.props.fieldMap.map((entry: string[]) => (

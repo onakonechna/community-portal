@@ -10,7 +10,7 @@ const styles = {
     backgroundColor: '#F2F3F3',
 };
 
-const TextArea = (props: any) => {
+const DescriptionBox = (props: any) => {
   return (
     <Typography component="div" style={styles}>
       {props.children}
@@ -18,4 +18,4 @@ const TextArea = (props: any) => {
   )
 }
 
-export default TextArea;
+export default DescriptionBox;
