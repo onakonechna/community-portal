@@ -2,7 +2,7 @@ import * as React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
-  padding: '6px 24px',
+  padding: '0.5em 1.5em',
   fontSize: '12px',
   backgroundColor: '#F2F3F3',
 };
