@@ -6,6 +6,14 @@ import * as uuidv1 from 'uuid/v1';
 const PROJECTS_TABLE = process.env.PROJECTS_TABLE;
 const PROJECTS_INDEX = process.env.PROJECTS_INDEX;
 
+function checkScope(data: any, scope: string) {
+  const { scopes } = data;
+  delete data['scopes'];
+  if (typeof scopes === 'undefined' || !_.includes(scopes, scope)) {
+    throw `User does not have the required scope (${scope})`;
+  }
+}
+
 interface ProjectResourceInterface {
   create(data: any): Promise<any>;
   getCards(data: any): Promise<any>;
@@ -38,11 +46,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.user_id = undefined;
 
     // check that user has write:project scope
-    const { scopes } = data;
-    delete data['scopes'];
-    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
-      throw 'User does not have the required scope (write:project) to create project';
-    }
+    checkScope(data, 'write:project');
 
     // append additional data
     const unixTimestamp = new Date().getTime();
@@ -77,13 +81,10 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   edit(data: any): Promise<any> {
-    const { project_id, scopes } = data;
-    delete data['project_id'];
-    delete data['scopes'];
+    checkScope(data, 'write:project');
 
-    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
-      throw 'User does not have the required scope (write:project) to edit project';
-    }
+    const { project_id } = data;
+    delete data['project_id'];
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }
@@ -91,10 +92,7 @@ export default class ProjectResource implements ProjectResourceInterface {
   updateStatus(data: any): Promise<any> {
     const { project_id, status, scopes } = data;
 
-    delete data['scopes'];
-    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
-      throw 'User does not have the required scope (write:project) to update project status';
-    }
+    checkScope(data, 'write:project');
 
     return this.adapter.update(PROJECTS_TABLE, { project_id }, { status });
   }
@@ -160,7 +158,8 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   scheduleMeeting(data: any): Promise<any> {
-    console.log('Hello!');
+    checkScope(data, 'write:project');
+
     const { project_id, title, description, link, start, end } = data;
     const status = 'scheduled';
     const unixTimestamp = new Date().getTime();

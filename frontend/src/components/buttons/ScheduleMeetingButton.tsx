@@ -15,7 +15,7 @@ const styles = {
 function ScheduleMeetingButton(props:any) {
   const { classes } = props;
   return (
-    <Button className={classes.scheduleMeeting} onClick={props.handler}>Schedule</Button>
+    <Button className={classes.scheduleMeeting} onClick={props.handler}>Schedule a Meeting</Button>
   );
 }
 

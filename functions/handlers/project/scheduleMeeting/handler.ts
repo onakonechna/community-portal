@@ -11,9 +11,17 @@ const endpoint = new Endpoint('/project/meeting', 'post');
 
 const dataflows = [
   {
+    controller: UserController,
+    method: 'getScopes',
+    target: UserResource,
+    methodMap: { getScopes: 'getById' },
+    validationMap: { getScopes: 'scheduleMeetingSchema' },
+    authDataDependencies: ['user_id'],
+    storageSpecs: ['scopes'],
+  },
+  {
     controller: ProjectController,
     method: 'scheduleMeeting',
-    validationMap: { scheduleMeeting: 'scheduleMeetingSchema' },
     target: ProjectResource,
   },
 ];

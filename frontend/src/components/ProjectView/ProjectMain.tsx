@@ -14,6 +14,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Jumbotron from './Jumbotron';
 import ScheduleMeetingDialog from './ScheduleMeetingDialog';
 import ScheduleMeetingButton from './../buttons/ScheduleMeetingButton';
+import WithAuth from './../WithAuth';
+
+const ScheduleMeeting = WithAuth(['owner', 'user'], ['write:project'])(ScheduleMeetingButton);
 
 const styles: any = (theme:any) => ({
   titleText: {
@@ -106,7 +109,6 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
           project={project}
           toggle={this.toggleScheduleMeeting}
         />
-        <ScheduleMeetingButton handler={this.toggleScheduleMeeting} label="ScheduleMeeting" />
         <p className={classes.titleText}>{project.name}</p>
         <Jumbotron>
           <p>{project.description}</p>
@@ -141,6 +143,7 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
             </TableRow>
           </TableBody>
         </Table>
+        <ScheduleMeeting handler={this.toggleScheduleMeeting} label="ScheduleMeeting" />
       </div>
     )
   }

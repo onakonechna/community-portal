@@ -69,11 +69,6 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
   }
 
   handleSubmit(event:any) {
-    // const { pledged, estimated } = this.props.project;
-    // if (pledged + this.state.hours > estimated) {
-    //   this.setState({ messageOpen: true });
-    //   return;
-    // }
     const {
       title,
       description,
@@ -97,27 +92,24 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
       end,
     };
 
-    // if (body.hours != null && body.hours !== 0) {
-    if (true) {
-      this.props.scheduleMeeting(body)
-        .then((res: any) => {
-          this.setState((prevState:ScheduleMeetingState) => ({
-            success: true,
-            loading: false,
-          }), () => {
-            this.props.toggle();
-            this.setState((prevState:ScheduleMeetingState) => ({
-              success: false,
-            }));
-          });
-        })
-        .catch((err: Error) => {
+    this.props.scheduleMeeting(body)
+      .then((res: any) => {
+        this.setState((prevState:ScheduleMeetingState) => ({
+          success: true,
+          loading: false,
+        }), () => {
+          this.props.toggle();
           this.setState((prevState:ScheduleMeetingState) => ({
             success: false,
-            loading: false,
           }));
         });
-    }
+      })
+      .catch((err: Error) => {
+        this.setState((prevState:ScheduleMeetingState) => ({
+          success: false,
+          loading: false,
+        }));
+      });
   }
 
   handleReadDate() {
@@ -211,7 +203,7 @@ export class ScheduleMeetingDialog extends React.Component<ScheduleMeetingProps 
           <Snackbar
             open={this.state.messageOpen}
           >
-           <SnackbarContent message="That\'s beyond the expectation!"/>
+           <SnackbarContent message="Check your input!"/>
           </Snackbar>
         </DialogContent>
         <DialogActions>

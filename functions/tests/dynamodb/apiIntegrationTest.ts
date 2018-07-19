@@ -201,7 +201,7 @@ describe('createProject endpoint', () => {
 
     return putProject(projects[0], tokens.mae)
       .catch((error) => {
-        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to create project');
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project)');
       });
   });
 });
@@ -248,7 +248,7 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
 
     return updateProjectStatus('test21', 'open', tokens.mae)
       .catch((error) => {
-        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project)');
       });
   });
 });
@@ -271,7 +271,7 @@ describe('editProject endpoint', () => {
 
     return editProject(test21EditData, tokens.mae)
       .catch((error) => {
-        expect(error.response.data.error).toBe('User does not have the required scope (write:project) to edit project');
+        expect(error.response.data.error).toBe('User does not have the required scope (write:project)');
       });
   });
 });
