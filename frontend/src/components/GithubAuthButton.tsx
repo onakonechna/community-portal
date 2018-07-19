@@ -1,13 +1,16 @@
 import * as React from 'react';
+import axios from 'axios';
 import GithubAuthModal, { toQuery } from './GithubAuthModal';
+import { API } from './../api/Config';
+
+declare const __FRONTEND__: string;
+declare const GIT_ID: string;
+export const gitId = GIT_ID;
+export const frontEnd = __FRONTEND__;
 
 interface GithubAuthButtonProps {
-  clientId: string;
   label?: string;
-  redirectUri: string;
   scope: string;
-  onSuccess: any;
-  onFailure: any;
   className?: string;
   buttonText?: string;
   children?: any;
@@ -44,26 +47,33 @@ const withLogin = (WrappedCompoent: any) => {
     }
     public static defaultProps: Partial<GithubAuthButtonProps> = {
       buttonText: 'Sign In',
-      onFailure: () => { return; },
-      onRequest: () => { return; },
-      onSuccess: () => { return; },
       scope: 'user:email',
     };
 
     private popup: any;
 
+    authorize(response: string) {
+      return axios.post(`${API}/authorize`, { code: response });
+    }
+
+    processAuthorizeFailure(response: Error) {
+      return new Promise((resolve, reject) => {
+        console.error(response);
+        resolve(response);
+      });
+    }
+
     handleLogin() {
       const search = toQuery({
-        client_id: this.props.clientId,
-        redirect_uri: this.props.redirectUri,
-        scope: this.props.scope,
+        client_id: gitId,
+        redirect_uri: `${frontEnd}/auth`,
+        scope: '',
       });
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
         `https://github.com/login/oauth/authorize?${search}`,
         { height: 1000, width: 600 },
       );
-      this.props.onRequest();
       popup.then(
         (data: string) => this.onSuccess(data),
         (error: Error) => this.onFailure(error),
@@ -98,7 +108,7 @@ const withLogin = (WrappedCompoent: any) => {
       if (!code) {
         return this.onFailure(new Error('\'code\' not found'));
       }
-      this.props.onSuccess(code)
+      this.authorize(code)
         .then((res: any) => {
           const token = res.data.token;
           this.saveToken(token);
@@ -115,8 +125,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     onFailure(error: Error) {
-      this.props.onFailure(error)
-        .then((err: Error) => console.log(err))
+      this.processAuthorizeFailure(error)
         .then(() => this.props.updateUserRole(this.props.user.user_id, 'guest'));
     }
 

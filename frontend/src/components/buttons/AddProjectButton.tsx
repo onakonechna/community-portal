@@ -18,6 +18,9 @@ const styles = (theme:any) => ({
     'font-size': '1rem',
     'text-transform': 'capitalize',
     'background-color': '#F16321',
+    '&:hover': {
+      backgroundColor: '#FACCB7',
+    },
     [theme.breakpoints.down('xs')]: {
       width: '1rem',
       'min-width': '0',
@@ -37,11 +40,8 @@ const addProjectButton: React.StatelessComponent<IProps> = (props: IProps) => (
     </div>
   );
 
-
-
-
 export default compose<{}, IProps>(
-  withStyles(styles,{
+  withStyles(styles, {
     name: 'addProjectButton',
-  }), withWidth()
+  }), withWidth(),
 )(addProjectButton);

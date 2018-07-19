@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,19 +10,8 @@ import AddProjectDialog from './AddProjectDialog';
 import LoginButton from './buttons/LoginButton';
 import WithAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
-import { API } from './../api/Config';
 import Logo from './Logo';
 import SideBar from './SideBar';
-
-declare const __FRONTEND__: string;
-declare const GIT_ID: string;
-export const gitId = GIT_ID;
-export const frontEnd = __FRONTEND__;
-
-export const onSuccess = (response: string) => {
-  return axios.post(`${API}/authorize`, { code: response });
-};
-export const onFailure = (response: string) => console.error(response);
 
 const AddProject = WithAuth(['user', 'owner'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
@@ -86,13 +74,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
           />
           <Logo />
           <AddProject className={classes.addButton} />
-          <Login
-            clientId={gitId}
-            scope=""
-            redirectUri={`${frontEnd}/auth`}
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-          />
+          <Login />
         </Toolbar>
       </AppBar>
     );

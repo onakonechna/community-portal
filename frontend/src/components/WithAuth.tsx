@@ -2,17 +2,11 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
-import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,
          UpdateUserScopesAction,
-        } from '../actions';
-
-declare const __FRONTEND__: string;
-export const frontEnd = __FRONTEND__;
-declare const GIT_ID: string;
-export const gitId = GIT_ID;
+} from '../actions';
 
 interface WithAuthProps {
   className?: any;
@@ -22,11 +16,6 @@ interface WithAuthProps {
   upvotes?: number;
   project_id?: string;
   label?: string;
-  clientId?: string;
-  scope?: string;
-  redirectUri?: string;
-  onSuccess?: any;
-  onFailure?: any;
   toggleLike?: any;
   likeProject?: any;
   open?: boolean;
@@ -72,11 +61,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
 
       if (!allowedRoles.includes(role)) {
         return <Login
-          clientId={gitId}
           scope=""
-          redirectUri={`${frontEnd}/auth`}
-          onSuccess={onSuccess}
-          onFailure={onFailure}
           user={this.props.user}
           loadUser={this.props.loadUser}
           updateUserRole={this.props.updateUserRole}
