@@ -26,7 +26,7 @@ console.log(tokens);
 
 const token = tokens.xiya; // default token
 
-const hostAddr = 'http://localhost:3000';
+const hostAddr = 'https://8qgklun7w3.execute-api.us-east-1.amazonaws.com/dev';
 
 function tokenAuthorize(code){
   const options = {
