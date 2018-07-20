@@ -1,5 +1,4 @@
 createProject:
-  name: ${self:provider.stage}-createProject
   role: createProjectRole
   handler: handlers/project/createProject/handler.handler
   events:

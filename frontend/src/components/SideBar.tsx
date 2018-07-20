@@ -32,7 +32,11 @@ const SideBar = (props: any) => {
           <ListItemText primary="Profile" />
         </ListItem>
         <Divider />
-        <ListItem button className={classes.listItem}>
+        <ListItem
+          button
+          className={classes.listItem}
+          onClick={props.toBookMark}
+        >
           <ListItemText primary="Bookmarked Projects" />
         </ListItem>
         <Divider />

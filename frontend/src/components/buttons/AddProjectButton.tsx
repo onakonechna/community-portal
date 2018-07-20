@@ -29,15 +29,14 @@ const styles = (theme:any) => ({
 });
 
 const addProjectButton: React.StatelessComponent<IProps> = (props: IProps) => (
-  <div>
-    <Button
-      color="secondary"
-      aria-label="add"
-      onClick={props.onClick}
-      className={props.classes.button}>
-      {isWidthUp('sm', props.width) ? 'New Project' : <Plus />}
-    </Button>
-  </div>
+  <Button
+    id="addProject"
+    color="secondary"
+    aria-label="add"
+    onClick={props.onClick}
+    className={props.classes.button}>
+    {isWidthUp('sm', props.width) ? 'New Project' : <Plus />}
+  </Button>
 );
 
 export default compose<{}, IProps>(

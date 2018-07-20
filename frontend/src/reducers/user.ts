@@ -7,6 +7,7 @@ const testUser = {
   role: 'guest',
   likedProjects: [],
   bookmarkedProjects: [],
+  scopes: [],
 };
 
 export default function user(state = testUser, action:ActionTypes) {
@@ -16,6 +17,10 @@ export default function user(state = testUser, action:ActionTypes) {
     case TypeKeys.UPDATE_USER_ROLE:
       return Object.assign({}, state, {
         role: action.role,
+      });
+    case TypeKeys.UPDATE_USER_SCOPES:
+      return Object.assign({}, state, {
+        scopes: action.scopes,
       });
     case TypeKeys.LOAD_LIKED_PROJECTS:
       return Object.assign({}, state, {

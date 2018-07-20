@@ -9,10 +9,10 @@ import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
-import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import Avatar from '@material-ui/core/Avatar';
 import { CardActions, CardContent } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
@@ -322,7 +322,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 />
                 <CircularProgress
                   variant="static"
-                  style={{ color: '#A9A9A9' }}
+                  style={{ color: '#E0E0E0' }}
                   size={90}
                   value={100}
                 />
@@ -336,7 +336,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <ContributorAvatar key={pledger} avatar_url={pledgers[pledger].avatar_url} />
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>

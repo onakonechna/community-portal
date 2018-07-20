@@ -58,6 +58,11 @@ export interface UpdateUserRoleAction {
   role: string;
 }
 
+export interface UpdateUserScopeAction {
+  type: TypeKeys.UPDATE_USER_SCOPES;
+  scopes: string[];
+}
+
 export interface OtherAction {
   type: TypeKeys.OTHER_ACTION;
 }
@@ -70,6 +75,7 @@ export type ActionTypes =
  | EditProjectAction
  | ProjectLoadedAction
  | UpdateUserRoleAction
+ | UpdateUserScopeAction
  | OtherAction;
 
 export const addProject = (project: {}) => {

@@ -13,7 +13,7 @@ import withLogin from './GithubAuthButton';
 import Logo from './Logo';
 import SideBar from './SideBar';
 
-const AddProject = WithAuth(['user', 'owner'])(AddProjectDialog);
+const AddProject = WithAuth(['user', 'owner'], ['write:project'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
 const SideNav = WithAuth(['owner', 'user'])(SideBar);
 
@@ -51,6 +51,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
       sideBarOpen: false,
     },
     this.toggleSideBar = this.toggleSideBar.bind(this);
+    this.toBookMark = this.toBookMark.bind(this);
     this.toHome = this.toHome.bind(this);
     this.toProfile = this.toProfile.bind(this);
   }
@@ -59,6 +60,10 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     this.setState((prevState: HeadBarState) => ({
       sideBarOpen: !prevState.sideBarOpen,
     }));
+  }
+
+  toBookMark() {
+    this.props.history.push('./bookmarked');
   }
 
   toHome() {
@@ -73,16 +78,19 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     const { classes } = this.props;
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
-        <Toolbar>
+        <Toolbar id="toolbar">
           <IconButton onClick={this.toggleSideBar} aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <SideNav
-            open={this.state.sideBarOpen}
-            toggleSideBar={this.toggleSideBar}
-            toProfile={this.toProfile}
-            toHome={this.toHome}
-          />
+          <span>
+            <SideNav
+              open={this.state.sideBarOpen}
+              toggleSideBar={this.toggleSideBar}
+              toBookMark={this.toBookMark}
+              toProfile={this.toProfile}
+              toHome={this.toHome}
+            />
+          </span>
           <Logo />
           <AddProject className={classes.addButton} />
           <Login />

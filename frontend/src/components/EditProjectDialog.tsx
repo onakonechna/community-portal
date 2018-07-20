@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 
 import { editProjectBody } from '../actions';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
 import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -15,7 +15,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
   chip: {
     margin: '5px 5px',
   },

@@ -15,6 +15,7 @@ custom:
       - getProjectCards
       - getProjectDetails
   customDomain:
+    domainName: 'dev.api.opensource.engcom.magento.com'
     basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
     stage: ${self:provider.stage} # Stage will be created for every branch
     createRoute53Record: false
@@ -41,24 +42,6 @@ provider:
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - logs:*
-      Resource:
-        - 'Fn::Join':
-          - ':'
-          -
-            - 'arn:aws:logs'
-            - '*'
-            - '*'
-            - '*'
-    - Effect: Allow
-      Action:
-        - cloudwatch:*
-        - logs:*
-      Resource:
-        - '*'
 
 package:
   individually: false
@@ -120,6 +103,7 @@ resources:
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
+  - serverless-domain-manager
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline # serverless-offline needs to be last in the list

@@ -5,6 +5,7 @@ import GithubAuthButton, { User }from './GithubAuthButton';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,
+         getBookmarkedProjectsAction,
          UpdateUserScopesAction,
 } from '../actions';
 
@@ -13,15 +14,20 @@ interface WithAuthProps {
   user?: any;
   handler?: any;
   liked?: boolean;
+  bookmarked?: boolean;
   upvotes?: number;
   project_id?: string;
   label?: string;
+  scope?: string;
   toggleLike?: any;
   likeProject?: any;
+  toggleBookmark?: any;
+  bookmarkProject?: any;
   open?: boolean;
   toggleSideBar?: any;
-  toHome?: any;
   toProfile?: any;
+  toBookMark?: any;
+  toHome?: any;
 }
 
 interface WithAuthStateProps {
@@ -33,6 +39,7 @@ interface WithAuthDispatchProps {
   updateUserRole?: any;
   updateUserScopes?: any;
   getLikedProjects?: any;
+  getBookmarkedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
@@ -43,6 +50,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
     }
     render() {
       const { role, scopes } = this.props.user;
+
       // do not render if user has no required scopes
       if (
         typeof compulsoryScopes !== 'undefined'
@@ -66,6 +74,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
           updateUserRole={this.props.updateUserRole}
           updateUserScopes={this.props.updateUserScopes}
           getLikedProjects={this.props.getLikedProjects}
+          getBookmarkedProjects={this.props.getBookmarkedProjects}
         />;
       }
 
@@ -81,6 +90,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       getLikedProjects: () => dispatch(getLikedProjectsAction()),
+      getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
       updateUserScopes: (id: string, scopes: string[]) => dispatch(UpdateUserScopesAction(id, scopes)),

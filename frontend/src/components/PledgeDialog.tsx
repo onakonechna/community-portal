@@ -56,7 +56,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
 
   handleMessageClose() {
     this.setState({
-      messageOpen: false
+      messageOpen: false,
     });
   }
 

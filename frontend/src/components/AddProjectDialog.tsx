@@ -9,29 +9,88 @@ import { withStyles } from '@material-ui/core/styles';
 
 import {
   Dialog, DialogActions, DialogContent, DialogTitle,
-  FormControl, FormControlLabel, FormLabel,
 } from '@material-ui/core';
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Calendar from '@material-ui/icons/DateRange';
+import Close from '@material-ui/icons/Close';
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme: any) => ({
-  cardButton: {
-    color: '#27A2AA',
+  actions: {
+
   },
   addButton: {
     'margin-left': 'auto',
   },
+  cardButton: {
+    color: '#27A2AA',
+  },
+  saveButton: {
+    'background-color': '#F16321',
+    color: '#FFFFFF',
+    'margin-left': '1rem',
+  },
+  content: {
+    margin: 'auto 1rem 1rem 1rem',
+  },
+  exitButton: {
+    'line-height': '1rem',
+    'margin-left': 'auto',
+    'min-width': '2rem',
+    padding: 0,
+  },
   chip: {
+    'background-color': '#DBEFEE',
+    'border-radius': '5px',
+    'font-size': '1rem',
+    'font-weight': '300',
     margin: '5px 5px',
+    'text-transform': 'capitalize',
+  },
+  input: {
+    border: '0.1rem solid #E0E0E0',
+    'border-radius': '5px',
+  },
+  goalInput: {
+    border: '0.1rem solid #E0E0E0',
+    'border-radius': '5px',
+    'text-align': 'center',
+  },
+  label: {
+    'font-family': 'system-ui',
+    'font-size': '0.875rem',
+    'font-weight': '500',
+    margin: '0.3rem auto',
+  },
+  row: {
+    'flex-wrap': 'wrap',
+    'flex-direction': 'row',
+  },
+  rowItem: {
+    display: 'inline-block',
+    width: '33.3%',
+  },
+  select: {
+    border: '0.1rem solid #E0E0E0',
+    'border-radius': '5px',
+    width: '90%',
   },
   textField: {
     width: 200,
+  },
+  title: {
+    display: 'flex',
+    'font-weight': '300',
+    'font-size': '1.75rem',
+    'font-family': 'system-ui',
+    width: '40rem',
   },
 });
 
@@ -217,126 +276,150 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
-          fullWidth={true}
           maxWidth={'md'}
         >
-          <DialogTitle id="form-dialog-title">Create Project</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Input Project Title"
-              type="text"
-              value={this.state.name}
-              onChange={this.handleChange('name')}
-              fullWidth
-            />
-            <TextField
-              required
-              id="description"
-              label="Input Project Description"
-              multiline
-              rows="4"
-              value={this.state.description}
-              onChange={this.handleChange('description')}
-              margin="normal"
-              fullWidth
-            />
-            {this.state.technologies.map(technology => (
-              <Chip
-                className={classes.chip}
-                onDelete={this.handleDelete(technology.type)}
-                key={technology.key}
-                label={technology.type}
-                />
-            ))}
-            <TextField
-              required
-              margin="dense"
-              id="technologies"
-              label="Input Technologies for this Project (Separate by Enter)"
-              onChange={this.handleChange('technologies')}
-              onKeyPress={this.handleKeyPress}
-              value={this.state.technologiesString}
-              type="text"
-              fullWidth
-            />
-            <TextField
-              required
-              id="due"
-              label="Due Date"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange('due')}
-              value={this.state.due}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              required
-              margin="dense"
-              id="goal"
-              label="Goal (total hours)"
-              type="number"
-              onChange={this.handleChange('goal')}
-              value={this.state.goal}
-            />
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Size</FormLabel>
-              <RadioGroup
-                aria-label="size"
-                name="size"
-                value={this.state.size}
-                onChange={this.handleChange('size')}
-                style={{ flexDirection: 'row' }}
+          <div className={classes.content}>
+            <DialogTitle
+              disableTypography
+              id="form-dialog-title"
+              className={classes.title}>
+              New Project
+              <Button
+                className={classes.exitButton}
+                onClick={this.handleClose}
               >
-                <FormControlLabel value="S" control={<Radio />} label="Small" />
-                <FormControlLabel value="M" control={<Radio />} label="Medium" />
-                <FormControlLabel value="L" control={<Radio />} label="Large" />
-                <FormControlLabel value="XL" control={<Radio />} label="Extra Large" />
-              </RadioGroup>
-            </FormControl>
-            <TextField
-              required
-              margin="dense"
-              id="github"
-              label="Input GitHub Address"
-              onChange={this.handleChange('github')}
-              value={this.state.github}
-              type="text"
-              fullWidth
-            />
-            <TextField
-              required
-              margin="dense"
-              id="slack"
-              label="Input Slack Channel"
-              type="text"
-              onChange={this.handleChange('slack')}
-              value={this.state.slack}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            {loading && <LinearProgress
-              style={{ display: 'block', width: '60%' }}
-              variant="indeterminate"/>}
-            <Button
-              onClick={this.handleClose}
-              className={classes.cardButton}
-            >
-              {success ? 'Done' : 'Cancel'}
-            </Button>
-            <Button
-              className={classes.cardButton}
-              disabled={loading}
-              onClick={this.handleSave}
-            >
-              {success ? 'Saved' : 'Save'}
-            </Button>
-          </DialogActions>
+                <Close />
+              </Button>
+            </DialogTitle>
+            <DialogContent>
+              <Typography className={classes.label}>Project Name*</Typography>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                InputProps={{ className:classes.input }}
+                required
+                type="text"
+                value={this.state.name}
+                onChange={this.handleChange('name')}
+                fullWidth
+              />
+              <Typography className={classes.label}>Description</Typography>
+              <TextField
+                id="description"
+                InputProps={{ className:classes.input }}
+                multiline
+                rows="4"
+                value={this.state.description}
+                onChange={this.handleChange('description')}
+                margin="normal"
+                fullWidth
+              />
+              <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
+              {this.state.technologies.map(technology => (
+                <Chip
+                  className={classes.chip}
+                  onDelete={this.handleDelete(technology.type)}
+                  key={technology.key}
+                  label={technology.type}
+                  />
+              ))}
+              <TextField
+                required
+                margin="dense"
+                InputProps={{ className:classes.input }}
+                id="technologies"
+                onChange={this.handleChange('technologies')}
+                onKeyPress={this.handleKeyPress}
+                value={this.state.technologiesString}
+                type="text"
+                fullWidth
+              >
+              </TextField>
+              <div className={classes.row}>
+                <div className={classes.rowItem} style={{ position: 'relative' }}>
+                  <Typography className={classes.label}>Due Date*</Typography>
+                  <Calendar style={{ position: 'absolute', right: 15, top: 35, width: 20, height: 20 }}/>
+                  <TextField
+                    required
+                    id="due"
+                    type="date"
+                    InputProps={{ className:classes.input }}
+                    className={classes.textField}
+                    onChange={this.handleChange('due')}
+                    value={this.state.due}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </div>
+                <div className={classes.rowItem}>
+                  <Typography className={classes.label}>Goal(total hours)*</Typography>
+                  <TextField
+                    required
+                    id="goal"
+                    type="number"
+                    InputProps={{ className:classes.goalInput }}
+                    onChange={this.handleChange('goal')}
+                    value={this.state.goal}
+                  />
+                </div>
+                <div className={classes.rowItem}>
+                  <Typography className={classes.label}>Size</Typography>
+                  <Select
+                    className={classes.select}
+                    value={this.state.size}
+                    onChange={this.handleChange('size')}
+                  >
+                    <MenuItem value="S">Small</MenuItem>
+                    <MenuItem value="M">Medium</MenuItem>
+                    <MenuItem value="L">Large</MenuItem>
+                    <MenuItem value="XL">Extra Large</MenuItem>
+                  </Select>
+                </div>
+              </div>
+              <Typography className={classes.label}>GitHub Address*</Typography>
+              <TextField
+                required
+                margin="dense"
+                id="github"
+                type="text"
+                InputProps={{ className:classes.input }}
+                onChange={this.handleChange('github')}
+                value={this.state.github}
+                fullWidth
+              />
+              <Typography className={classes.label}>Slack Channel*</Typography>
+              <TextField
+                required
+                margin="dense"
+                id="slack"
+                type="text"
+                InputProps={{ className:classes.input }}
+                onChange={this.handleChange('slack')}
+                value={this.state.slack}
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions className={classes.actions}>
+              {loading && <LinearProgress
+                style={{ display: 'block', width: '60%' }}
+                variant="indeterminate"/>}
+              <Button
+                onClick={this.handleClose}
+                className={classes.cardButton}
+              >
+                {success ? 'Done' : 'Cancel'}
+              </Button>
+              <Button
+                className={classes.saveButton}
+                disabled={loading}
+                onClick={this.handleSave}
+              >
+                {success ? 'Saved' : 'Save'}
+              </Button>
+            </DialogActions>
+          </div>
         </Dialog>
       </div>
     );
