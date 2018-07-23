@@ -67,23 +67,24 @@ interface Technology {
   type: string;
 }
 
+const state = {
+  open: false,
+  technologies: [],
+  technologiesString: '',
+  size: 'S',
+  success: false,
+  loading: false,
+  name: '',
+  description: '',
+  due: '',
+  goal: 0,
+  github: '',
+  slack: '',
+};
+
 export class AddProjectDialog extends React.Component<DispatchProps & DialogProps, DialogState> {
   constructor(props: DispatchProps & DialogProps) {
     super(props);
-    const state = {
-      open: false,
-      technologies: [],
-      technologiesString: '',
-      size: 'S',
-      success: false,
-      loading: false,
-      name: '',
-      description: '',
-      due: '',
-      goal: 0,
-      github: '',
-      slack: '',
-    };
     this.state = state;
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -92,6 +93,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleTechSubmission = this.handleTechSubmission.bind(this);
+    this.setLoadingState = this.setLoadingState.bind(this);
   }
 
   handleChange(field: string) {
@@ -156,56 +158,45 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
 
   handleSave() {
     if (!this.state.loading) {
-      this.setState((prevState:DialogState) => ({
-        success: false,
-        loading: true,
-      }));
-
-      const tech: Technology[] = [];
-      this.state.technologies.map((technology) => {
-        tech.push({ type: technology.type });
-      });
-
-      const data = {
-        name: this.state.name,
-        description: this.state.description,
-        size: this.state.size,
-        due: new Date(this.state.due).getTime(),
-        technologies: this.handleTechSubmission(tech),
-        github_address: this.state.github,
-        estimated: this.state.goal,
-        slack_channel: this.state.slack,
-      };
+      this.setLoadingState(false, true);
+      const data = this.prepareData();
       this.props.addProject(data)
         .then((response: any) => {
-          this.setState({
-            success: true,
-            loading: false,
-          });
-          const state = {
-            open: false,
-            technologies: [],
-            technologiesString: '',
-            size: 'S',
-            success: false,
-            loading: false,
-            name: '',
-            description: '',
-            due: '',
-            goal: 0,
-            github: '',
-            slack: '',
-          };
+          this.setLoadingState(true, false);
           this.setState(state);
         })
-        .catch((error: any) => {
-          this.setState({
-            success: false,
-            loading: false,
-          });
+        .catch((error: Error) => {
+          this.setLoadingState(false, false);
           console.log(error);
         });
     }
+  }
+
+  prepareData() {
+    const tech: Technology[] = [];
+    this.state.technologies.map((technology) => {
+      tech.push({ type: technology.type });
+    });
+
+    const data = {
+      name: this.state.name,
+      description: this.state.description,
+      size: this.state.size,
+      due: new Date(this.state.due).getTime(),
+      technologies: this.handleTechSubmission(tech),
+      github_address: this.state.github,
+      estimated: this.state.goal,
+      slack_channel: this.state.slack,
+    };
+
+    return data;
+  }
+
+  setLoadingState(success:boolean, loading:boolean) {
+    this.setState({
+      success,
+      loading,
+    });
   }
 
   render() {

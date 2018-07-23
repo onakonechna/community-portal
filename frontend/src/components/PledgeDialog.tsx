@@ -40,11 +40,11 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
       loading: false,
       messageOpen: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handlePledgeChange = this.handlePledgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event: any) {
+  handlePledgeChange(event: any) {
     if (event.target.value === null) {
       this.setState({ hours: 0 });
     } else {
@@ -97,7 +97,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
             label="hours to pledge"
             type="number"
             value={this.state.hours || ''}
-            onChange={this.handleChange}
+            onChange={this.handlePledgeChange}
             fullWidth
           />
           <Snackbar

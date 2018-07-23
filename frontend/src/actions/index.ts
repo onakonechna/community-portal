@@ -16,7 +16,6 @@ export enum TypeKeys {
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
- OTHER_ACTION = '__any__other__action__type',
 }
 
 export interface LoadUserAction {
@@ -49,18 +48,13 @@ export interface UpdateUserRoleAction {
   role: string;
 }
 
-export interface OtherAction {
-  type: TypeKeys.OTHER_ACTION;
-}
-
 export type ActionTypes =
  | AddProjectAction
  | LoadLikedProjects
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
- | UpdateUserRoleAction
- | OtherAction;
+ | UpdateUserRoleAction;
 
 export const addProject = (project: {}) => {
   const projectBody = {

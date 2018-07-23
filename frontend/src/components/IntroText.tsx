@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
-const styles = (theme:any) => ({
+const styles = (theme: Theme) => ({
   header: {
     'font-family': 'system-ui',
     'font-weight': '500',
@@ -46,7 +46,7 @@ const IntroText = (props: any) => {
   const { classes } = props;
   return (
     <Grid>
-      <Typography style={{ opacity: 0.9 }} className={classes.header}>Shape the future of Magento</Typography>
+      <Typography className={classes.header}>Shape the future of Magento</Typography>
       <Typography className={classes.subheader}>
         Join thousands of community developers{'\n'}
         working on different projects

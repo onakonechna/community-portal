@@ -174,6 +174,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
+    this.toggleStatus = this.toggleStatus.bind(this);
   }
 
   componentWillReceiveProps(nextProps:any) {
@@ -214,6 +215,13 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     const { estimated, pledged } = this.props.project;
     if (!pledged || !estimated || pledged === 0) { return 0; }
     return (pledged / estimated) * 100;
+  }
+
+  toggleStatus(field: string) {
+    this.setState((prevState: CardState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
   }
 
   toggleEdit() {

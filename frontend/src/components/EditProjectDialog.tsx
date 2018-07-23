@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
@@ -71,34 +72,42 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.handleDelete = this.handleDelete.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleGoalChange = this.handleGoalChange.bind(this);
+    this.handleTechChange = this.handleTechChange.bind(this);
   }
 
   handleChange(field: string) {
     return (event: any) => {
       const newItem = event.target.value;
-      if (field === 'technologies') {
-        this.setState({
-          technologiesString: newItem,
-        });
-      } else if (field === 'goal') {
-        if (newItem === 'NaN') {
-          this.setState({ goal: 0 });
-        } else {
-          this.setState({ goal: parseInt(newItem, 10) });
-        }
+      this.setState({
+        [field]: newItem,
+      });
+    };
+  }
+
+  handleTechChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      this.setState({
+        technologiesString: newItem,
+      });
+    };
+  }
+
+  handleGoalChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      if (newItem === 'NaN') {
+        this.setState({ goal: 0 });
       } else {
-        this.setState({
-          [field]: newItem,
-        });
+        this.setState({ goal: parseInt(newItem, 10) });
       }
     };
   }
 
-  handleDelete(tech:string) {
+  handleDelete(tech: string) {
     return () => {
-      const technologies = this.state.technologies.filter((t) => {
-        return t !== tech;
-      });
+      const technologies = _.without(this.state.technologies, tech);
       this.setState({ technologies });
     };
   }
@@ -108,7 +117,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     if (event.key === 'Enter') {
       const technologies = this.state.technologies;
       if (technologies.indexOf(newItem) !== -1) return;
-      this.setState((prevState:EditDialogState) => ({
+      this.setState((prevState: EditDialogState) => ({
         technologies: [
           ...prevState.technologies,
           newItem,
@@ -137,12 +146,12 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
     this.props.editProject(body)
       .then((res: any) => {
-        this.setState((prevState:EditDialogState) => ({
+        this.setState((prevState: EditDialogState) => ({
           success: true,
           loading: false,
         }), () => {
           this.props.toggleEdit();
-          this.setState((prevState:EditDialogState) => ({
+          this.setState((prevState: EditDialogState) => ({
             success: false,
           }));
         });
@@ -200,7 +209,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               margin="dense"
               id="technologies"
               label="Input Technologies for this Project (Separate by Enter)"
-              onChange={this.handleChange('technologies')}
+              onChange={this.handleTechChange()}
               onKeyPress={this.handleKeyPress}
               value={this.state.technologiesString}
               type="text"
@@ -224,7 +233,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               id="goal"
               label="Goal (total hours)"
               type="number"
-              onChange={this.handleChange('goal')}
+              onChange={this.handleGoalChange()}
               value={this.state.goal}
             />
             <FormControl component="fieldset">
@@ -266,7 +275,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
           <DialogActions>
             {this.state.loading && <LinearProgress
               style={{ display: 'block', width: '60%' }}
-              variant="indeterminate"/>}
+              variant="indeterminate" />}
             <Button onClick={this.props.toggleEdit}>
               {this.state.success ? 'Done' : 'Cancel'}
             </Button>
