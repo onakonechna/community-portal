@@ -40,11 +40,12 @@ interface IProject {
   github: string;
   slack?: string;
   size?: string;
-  backers: [{
-    name?: string,
-    pledge?: number;
-  }];
+  pledgers: Pledger[];
   created_date: string;
+}
+
+interface Pledger {
+  avatar_url?: string;
 }
 
 interface GridState {
@@ -76,6 +77,12 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 
   filter() {
     if (typeof this.props.filter !== 'undefined') {
+      if (this.props.filter === 'pledgedProjects') {
+        return _.filter(this.props.projects, (project: any) => {
+          return _.includes(Object.keys(project.pledgers), this.props.user.user_id);
+        });
+      }
+
       if (typeof this.props.user === 'undefined' || !Array.isArray(this.props.user[this.props.filter])) {
         throw `The filter ${this.props.filter} must be an array in the user redux store`;
       }

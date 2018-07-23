@@ -25,6 +25,7 @@ interface WithAuthProps {
   bookmarkProject?: any;
   open?: boolean;
   toggleSideBar?: any;
+  toPledged?: any;
   toProfile?: any;
   toBookMark?: any;
   toHome?: any;

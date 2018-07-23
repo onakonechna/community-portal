@@ -53,6 +53,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.toBookMark = this.toBookMark.bind(this);
     this.toHome = this.toHome.bind(this);
+    this.toPledged = this.toPledged.bind(this);
     this.toProfile = this.toProfile.bind(this);
   }
 
@@ -68,6 +69,10 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
 
   toHome() {
     this.props.history.push('.');
+  }
+
+  toPledged() {
+    this.props.history.push('./pledged');
   }
 
   toProfile() {
@@ -87,6 +92,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
               open={this.state.sideBarOpen}
               toggleSideBar={this.toggleSideBar}
               toBookMark={this.toBookMark}
+              toPledged={this.toPledged}
               toProfile={this.toProfile}
               toHome={this.toHome}
             />

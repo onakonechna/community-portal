@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
 import {
   Dialog, DialogActions, DialogContent, DialogTitle,
@@ -22,7 +22,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
   actions: {
 
   },
@@ -31,6 +31,16 @@ const styles = (theme: any) => ({
   },
   cardButton: {
     color: '#27A2AA',
+  },
+  calendarIcon: {
+    position: 'absolute' as 'absolute',
+    right: '1rem',
+    top: '2rem',
+    width: '1.5rem',
+    height: '1.5rem',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
   },
   saveButton: {
     'background-color': '#F16321',
@@ -76,6 +86,10 @@ const styles = (theme: any) => ({
   rowItem: {
     display: 'inline-block',
     width: '33.3%',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      'margin-right': '1rem',
+    },
   },
   select: {
     border: '0.1rem solid #E0E0E0',
@@ -339,7 +353,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               <div className={classes.row}>
                 <div className={classes.rowItem} style={{ position: 'relative' }}>
                   <Typography className={classes.label}>Due Date*</Typography>
-                  <Calendar style={{ position: 'absolute', right: 15, top: 35, width: 20, height: 20 }}/>
+                  <Calendar className={classes.calendarIcon}/>
                   <TextField
                     required
                     id="due"

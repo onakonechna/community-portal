@@ -17,6 +17,10 @@ class App extends React.Component {
         <Route exact path="/bookmarked" render={
           () => <ProjectGrid filter="bookmarkedProjects" />
         } />
+        <Route exact path="/pledged" render={
+          () => <ProjectGrid filter="pledgedProjects" />
+        }
+        />
       </div>
     );
   }
