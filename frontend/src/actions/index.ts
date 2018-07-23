@@ -1,4 +1,6 @@
+import bookmarkProject from '../api/BookmarkProject';
 import fetchProjects from '../api/FetchProjects';
+import getBookmarkedProjects from '../api/GetBookmarkedProjects';
 import getLikedProjects from '../api/GetLikedProjects';
 import { editProject, editProjectStatus } from  '../api/EditProject';
 import pledgeProject from '../api/PledgeProject';
@@ -14,8 +16,10 @@ export enum TypeKeys {
  EDIT_PROJECT = 'EDIT_PROJECT',
  LOAD_PROJECT = 'LOAD_PROJECT',
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
+ LOAD_BOOKMARKED_PROJECTS = 'LOAD_BOOKMARKED_PROJECTS',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
+ UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
 }
 
 export interface LoadUserAction {
@@ -25,6 +29,11 @@ export interface LoadUserAction {
 
 export interface LoadLikedProjects {
   type: TypeKeys.LOAD_LIKED_PROJECTS;
+  projects: any;
+}
+
+export interface LoadBookmarkedProjects {
+  type: TypeKeys.LOAD_BOOKMARKED_PROJECTS;
   projects: any;
 }
 
@@ -51,6 +60,7 @@ export interface UpdateUserRoleAction {
 export type ActionTypes =
  | AddProjectAction
  | LoadLikedProjects
+ | LoadBookmarkedProjects
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
@@ -94,17 +104,41 @@ export const likeProject = (id: string) => {
   };
 };
 
+export const bookmarkProjectAction = (id: string) => {
+  return (dispatch: Dispatch) => {
+    return bookmarkProject(id)
+      .then(() => {
+        dispatch(loadProjects());
+        dispatch(getBookmarkedProjectsAction());
+      });
+  };
+};
+
 export const getLikedProjectsAction: (any) = () => {
   return (dispatch: Dispatch) => {
     return getLikedProjects()
-    .then((res:any) => {
-      let projects;
-      if (res['upvoted_projects']) {
-        projects = res['upvoted_projects'] || [];
-        dispatch(loadLikedProjectsAction(projects));
-      }
-    })
-    .catch((err: Error) => console.error(err));
+      .then((res:any) => {
+        let projects;
+        if (res['upvoted_projects']) {
+          projects = res['upvoted_projects'] || [];
+          dispatch(loadLikedProjectsAction(projects));
+        }
+      })
+      .catch((err: Error) => console.error(err));
+  };
+};
+
+export const getBookmarkedProjectsAction: (any) = () => {
+  return (dispatch: Dispatch) => {
+    return getBookmarkedProjects()
+      .then((res:any) => {
+        let projects;
+        if (res['bookmarked_projects']) {
+          projects = res['bookmarked_projects'] || [];
+          dispatch(loadBookmarkedProjectsAction(projects));
+        }
+      })
+      .catch((err: Error) => console.error(err));
   };
 };
 
@@ -115,10 +149,17 @@ export const loadLikedProjectsAction = (projects: any) => {
   };
 };
 
+export const loadBookmarkedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
+  };
+};
+
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
-      .then((projects) => {
+      .then((projects: any) => {
         dispatch(projectsLoaded(projects));
       })
       .catch((err: any) => {
@@ -154,5 +195,12 @@ export const UpdateUserRoleAction = (user_id: string, role: string) => {
   return {
     role,
     type: TypeKeys.UPDATE_USER_ROLE,
+  };
+};
+
+export const UpdateUserScopesAction = (user_id: string, scopes: string[]) => {
+  return {
+    scopes,
+    type: TypeKeys.UPDATE_USER_SCOPES,
   };
 };

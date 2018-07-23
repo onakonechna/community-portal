@@ -10,9 +10,12 @@ interface UserResourceInterface {
   getById(data: any): Promise<any>;
   update(data: any): Promise<any>;
   addUpvotedProject(data: any): Promise<any>;
+  addBookmarkedProject(data: any): Promise<any>;
   removeUpvotedProject(data: any): Promise<any>;
   getUpvotedProjects(data: any): Promise<any>;
+  getBookmarkedProjects(data: any): Promise<any>;
   pledge(data: any): Promise<any>;
+  subscribe(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -37,7 +40,8 @@ export default class UserResource implements UserResourceInterface {
   }
 
   getById(data: any): Promise<any> {
-    return this.adapter.getById(USERS_TABLE, data);
+    const { user_id } = data;
+    return this.adapter.getById(USERS_TABLE, { user_id });
   }
 
   update(data: any): Promise<any> {
@@ -57,6 +61,16 @@ export default class UserResource implements UserResourceInterface {
     );
   }
 
+  addBookmarkedProject(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+    return this.adapter.addToSetIfNotExists(
+      USERS_TABLE,
+      { user_id },
+      'bookmarked_projects',
+      project_id,
+    );
+  }
+
   removeUpvotedProject(data: any): Promise<any> {
     const { user_id, project_id } = data;
     return this.adapter.removeFromSetIfExists(
@@ -70,6 +84,11 @@ export default class UserResource implements UserResourceInterface {
   getUpvotedProjects(data: any): Promise<any> {
     const { user_id } = data;
     return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, upvoted_projects');
+  }
+
+  getBookmarkedProjects(data: any): Promise<any> {
+    const { user_id } = data;
+    return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, bookmarked_projects');
   }
 
   pledge(data: any): Promise<any> {

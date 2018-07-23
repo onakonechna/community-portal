@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "@types/lodash": "^4.14.111",
     "axios": "^0.18.0",
     "lodash": "^4.17.10",
     "react": "^16.4.0",
@@ -23,6 +24,7 @@
   },
   "scripts": {
     "start": "PORT=3030 react-scripts-ts start",
+    "start:dev": "STAGE=local webpack-dev-server",
     "dev": "nodemon -w ./ -x npm run start -e ts,tsx",
     "deploy": "npm run build && aws s3 sync build/* s3://opensource.engcom.magento.com",
     "build": "react-scripts-ts build",
@@ -67,6 +69,7 @@
     "jsonwebtoken": "^8.3.0",
     "nodemon": "^1.17.5",
     "react-svg-loader": "^2.1.0",
+    "serverless-offline": "^3.25.6",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "svg-react-loader": "^0.4.5",
@@ -74,8 +77,9 @@
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.2",
     "url-loader": "^1.0.1",
-    "webpack": "^4.15.1",
-    "webpack-cli": "^3.0.8"
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
   },
   "jest": {
     "setupFiles": [
@@ -92,7 +96,9 @@
       "/build/"
     ],
     "globals": {
-      "API_ENDPOINT": "http://localhost:3000"
+      "API_ENDPOINT": "http://localhost:3000",
+      "__FRONTEND__": "'http://localhost:8080'",
+      "GIT_ID": "12683233"
     },
     "moduleFileExtensions": [
       "ts",

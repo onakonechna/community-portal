@@ -1,6 +1,7 @@
 getLikedProjectsRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: getLikedProjectsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

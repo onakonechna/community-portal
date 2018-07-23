@@ -32,6 +32,9 @@ describe('ProjectGrid Test Suite', () => {
       likedProjects: {
         indexOf: jest.fn(),
       },
+      bookmarkedProjects: {
+        indexOf: jest.fn(),
+      },
     };
     const wrapper = shallow(<ProjectGrid projects={samples} loadProjects={loadProjects} user={user} />);
     const grids = wrapper.findWhere(g =>

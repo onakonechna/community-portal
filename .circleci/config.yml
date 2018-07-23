@@ -7,7 +7,7 @@ jobs:
       - image: circleci/node:10.3
 
     steps:
-      - checkout: 
+      - checkout:
           path: ~/community-portal/
 
       - restore_cache:
@@ -20,9 +20,9 @@ jobs:
           command: npm install
 
       - run:
-          name: run frontend tests
+          name: Run frontend tests
           command: npm test
-          
+
       - save_cache:
           paths:
             - node_modules
@@ -32,8 +32,8 @@ jobs:
       - run:
           name: Install aws cli
           command:
-              sudo apt-get -y -qq install awscli    
-      
+              sudo apt-get -y -qq install awscli
+
       - run:
           name: deploy application
           command: |
@@ -43,7 +43,7 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
               aws s3 sync public/. s3://production.opensource.magento.com --delete
-            else  
+            else
               STAGE=dev npm run build:webpack
               aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
             fi
@@ -67,36 +67,56 @@ jobs:
           name: Install dependencies
           command: npm install
 
-      - run:    
+      - run:
           name: Install Java
           command: 'sudo apt-get update && sudo apt-get install default-jre default-jdk'
-      
-      - run:
-          name: Setup Local DynamoDB
-          command: node_modules/.bin/sls dynamodb install 
 
       - run:
-          name: Start Local DynamoDB      
+          name: Install Python dev static libraries
+          command: sudo apt-get install python-dev
+
+      - run:
+          name: Install pip
+          command: 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py --user'
+
+      - run:
+          name: Install aws cli
+          command: ~/.local/bin/pip install awscli --upgrade --user
+
+      - run:
+          name: Setup Local DynamoDB
+          command: node_modules/.bin/sls dynamodb install
+
+      - run:
+          name: Start Local DynamoDB
           command: node_modules/.bin/sls offline start -r us-east-1
           background: true
 
-      - run: sleep 20
+      - run: sleep 60
 
       - run:
-          name: run backend tests
+          name: Insert user fixture data for Mae
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
+
+      - run:
+          name: Insert user fixture data for Xiya
+          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
+
+      - run:
+          name: Run backend tests
           command: npm test
 
       - run:
-          name: deploy application
+          name: Deploy application
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               node_modules/.bin/sls deploy --stage staging
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               node_modules/.bin/sls deploy --stage prod
-            else  
+            else
               node_modules/.bin/sls deploy --stage dev
             fi
-          
+
       - save_cache:
           paths:
             - node_modules
@@ -108,7 +128,3 @@ workflows:
     jobs:
       - build_frontend
       - build_functions
-
-
-
-

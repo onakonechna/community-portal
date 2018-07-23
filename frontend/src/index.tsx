@@ -6,23 +6,34 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import createPalette, { Palette } from '@material-ui/core/styles/createPalette';
+import createTypography, { FontStyle } from '@material-ui/core/styles/createTypography';
 
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#0066ff',
-      main: '#D4D4D4',
-      contrastText: '#ffcc00',
-    },
-    secondary: {
-      light: '#FFFFFF',
-      main: '#F2F3F3',
-      dark: '#00FF00',
-    },
+const palette: Palette = createPalette({
+  primary: {
+    light: '#48BF61',
+    dark: '#D4D4D4',
+    main: '#8BC34A',
   },
+  secondary: {
+    light: '#FFFFFF',
+    main: '#F2F3F3',
+    dark: '#00FF00',
+  },
+});
+
+const fontStyle: FontStyle = {
+  fontFamily: 'system-ui',
+  fontSize: 12,
+  fontWeightLight: 300,
+  fontWeightRegular: 'normal',
+  fontWeightMedium: 'bold',
+};
+const theme = createMuiTheme({
+  palette,
+  typography: createTypography(createPalette({}), fontStyle),
 });
 
 ReactDOM.render(
@@ -35,4 +46,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
-registerServiceWorker();

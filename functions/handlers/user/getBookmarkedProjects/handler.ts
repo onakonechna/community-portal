@@ -2,14 +2,14 @@ import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
 import { UserController, UserResource } from './../../../config/Components';
 
-const endpoint = new Endpoint('/user/likedProjects', 'get');
+const endpoint = new Endpoint('/user/bookmarkedProjects', 'get');
 
 const dataflows = [
   {
     controller: UserController,
-    method: 'getUpvotedProjects',
+    method: 'getBookmarkedProjects',
     target: UserResource,
-    validationMap: { getUpvotedProjects: 'nullSchema' },
+    validationMap: { getBookmarkedProjects: 'nullSchema' },
     authDataDependencies: ['user_id'],
   },
 ];
