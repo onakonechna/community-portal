@@ -165,7 +165,7 @@ export const loadBookmarkedProjectsAction = (projects: any) => {
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
-      .then((projects) => {
+      .then((projects: any) => {
         dispatch(projectsLoaded(projects));
       })
       .catch((err: any) => {
