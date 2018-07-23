@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import Plus from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';

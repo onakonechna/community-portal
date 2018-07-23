@@ -10,6 +10,11 @@
     "jsx": "react",
     "moduleResolution": "node",
     "rootDirs": ["src", "test"],
+    "paths": {
+      "lodash/*": [
+        "node_modules/@types/lodash-es/*"
+      ],
+    },
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

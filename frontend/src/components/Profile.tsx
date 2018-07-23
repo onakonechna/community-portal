@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import UserAvatar from '@material-ui/core/Avatar';
-import { Card, CardActions, CardContent } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
