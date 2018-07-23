@@ -273,6 +273,13 @@ export default class PackageService {
     return dataflow.controller[dataflow.controllerMethod](this.dataStore);
   }
 
+  respond(res: Response) {
+    return (response: any) => {
+      res.status(response.status).json(response.payload);
+      this.dataStore = {};
+    };
+  }
+
   package() {
     this.endpoint.configure((req: Request, res: Response) => {
       this.initialData = _.assign(req.query, req.params, req.body);
@@ -281,15 +288,8 @@ export default class PackageService {
       this.tokenContents = req.tokenContents;
 
       const dataflowsPromise = new Promise(this.executeDataflows);
-      dataflowsPromise
-        .then(({ status, payload }) => {
-          res.status(status).json(payload);
-        })
-        .catch(({ status, payload }) => {
-          res.status(status).json(payload);
-        });
+      dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
     });
     return this.endpoint.wrap();
   }
-
 }

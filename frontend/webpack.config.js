@@ -61,7 +61,7 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    // Enabled debugging with React Dev Tool 
+    // Enabled debugging with React Dev Tool
     devtool: "eval",
 
     resolve: {
@@ -83,14 +83,14 @@ module.exports = {
                 test: /\.svg$/,
                 loader: 'svg-react-loader'
             },
-            { 
-                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, 
+            {
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]',
                     outputPath: 'static/images/'
-                }           
-            }    
+                }
+            }
         ]
     },
 
