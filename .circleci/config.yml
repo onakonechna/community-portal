@@ -43,13 +43,16 @@ jobs:
             endpoint=$(cat ../functions/workspace/endpoint)
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
-              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
+              aws s3 sync public/. s3://staging.opensource.engcom.magento.com --acl public-read --delete
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
-              aws s3 sync public/. s3://production.opensource.magento.com --delete
+              aws s3 sync public/. s3://production.opensource.magento.com --acl public-read --delete
+            elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
+              STAGE=dev npm run build:webpack
+              aws s3 sync public/. s3://dev.opensource.engcom.magento.com --acl public-read --delete  
             else
-              STAGE=dev ENDPOINT_URL="$endpoint" npm run build:webpack
-              aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
+              STAGE=custom ENDPOINT_URL="$endpoint" FRONTEND="http://dev.opensource.engcom.magento.com.s3-website-us-east-1.amazonaws.com/$endpoint" npm run build:webpack
+              aws s3 sync public/. s3://dev.opensource.engcom.magento.com/$endpoint --delete
             fi
 
   build_functions:
@@ -119,8 +122,10 @@ jobs:
               node_modules/.bin/sls deploy --stage staging
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               node_modules/.bin/sls deploy --stage prod
+            elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
+              node_modules/.bin/sls deploy --stage dev   
             else
-              node_modules/.bin/sls deploy --stage dev
+              node_modules/.bin/sls deploy --stage "${CIRCLE_BRANCH}"
             fi
 
       - run:

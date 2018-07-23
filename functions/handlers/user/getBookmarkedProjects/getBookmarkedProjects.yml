@@ -1,5 +1,6 @@
 getBookmarkedProjects:
-  role: getBookmarkedProjectsRole
+  name: ${self:provider.stage}-getBookmarkedProjects
+  role: ${self:provider.stage}-getBookmarkedProjectsRole
   handler: handlers/user/getBookmarkedProjects/handler.handler
   timeout: 10
   events:

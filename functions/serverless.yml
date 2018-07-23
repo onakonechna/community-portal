@@ -14,24 +14,35 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
+  domainNames:
+    dev:
+      name: dev.api.opensource.engcom.magento.com
+      path: ${opt:branch, ''}
+      stage: ${opt:stage, ''}
+    staging:
+      name: api.opensource.engcom.magento.com
+      path: ${opt:branch, ''}
+      stage: ${opt:stage, ''}
+    production:
+      name: api.opensource.engcom.magento.com
+      path: ${opt:branch, ''}  
+      stage: ${opt:stage, ''} 
   customDomain:
-    basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
-    stage: ${self:provider.stage} # Stage will be created for every branch
-    createRoute53Record: false
-  api:
-    dev: 8qgklun7w3
+   domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
+   basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
+   stage: ${self:provider.stage} # Stage will be created for every branch
+   createRoute53Record: false
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: ${opt:stage, 'dev'}
+  stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   github_client_id: ${env:GITHUB_CLIENT_ID}
   github_client_secret: ${env:GITHUB_CLIENT_SECRET}
   region: us-east-1
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
-    API: ${self:custom.api.${self:provider.stage}}
     PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
     PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
     USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
@@ -48,6 +59,7 @@ provider:
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
     GITHUB_CLIENT_ID: ${env:GITHUB_CLIENT_ID}
     GITHUB_CLIENT_SECRET: ${env:GITHUB_CLIENT_SECRET}
+    BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -128,5 +140,6 @@ resources:
 
 plugins:
   - serverless-webpack
+  - serverless-domain-manager
   - serverless-dynamodb-local
   - serverless-offline # serverless-offline needs to be last in the list
