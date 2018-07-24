@@ -2,7 +2,8 @@ import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Request, Response } from './../../config/Types';
+import { Callback, Request, Response } from './../../config/Types';
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
 import Endpoint from './../Endpoint';
@@ -290,6 +291,10 @@ export default class PackageService {
       const dataflowsPromise = new Promise(this.executeDataflows);
       dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
     });
-    return this.endpoint.wrap();
+    return (
+      event: CustomAuthorizerEvent,
+      context: APIGatewayEventRequestContext,
+      callback: Callback
+    ) => this.endpoint.wrap()(event, context, callback);
   }
 }
