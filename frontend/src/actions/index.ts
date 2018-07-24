@@ -7,7 +7,7 @@ import pledgeProject from '../api/PledgeProject';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
 
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { v4 as uuid } from 'uuid';
 
 export enum TypeKeys {
@@ -20,6 +20,7 @@ export enum TypeKeys {
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
+ OTHER_ACTION = 'OTHER_ACTION',
 }
 
 export interface LoadUserAction {
@@ -57,6 +58,15 @@ export interface UpdateUserRoleAction {
   role: string;
 }
 
+export interface UpdateUserScopesAction {
+  type: TypeKeys.UPDATE_USER_SCOPES;
+  scopes: string[];
+}
+
+export interface OtherAction {
+  type: TypeKeys.OTHER_ACTION;
+}
+
 export type ActionTypes =
  | AddProjectAction
  | LoadLikedProjects
@@ -64,7 +74,9 @@ export type ActionTypes =
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
- | UpdateUserRoleAction;
+ | UpdateUserRoleAction
+ | UpdateUserScopesAction
+ | OtherAction;
 
 export const addProject = (project: {}) => {
   const projectBody = {

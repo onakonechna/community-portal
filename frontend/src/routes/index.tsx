@@ -7,9 +7,12 @@ import ProjectGrid from '../components/ProjectGrid';
 
 const Routes = () => (
   <div>
-    <HeadBar />
-    <ProjectGrid />
+    <Route path="/" component={HeadBar} />
+    <Route exact path="/" component={ProjectGrid} />
     <Route exact path="/auth" component={Auth} />
+    <Route exact path="/bookmarked" render={
+      () => <ProjectGrid filter="bookmarkedProjects" />
+    } />
   </div>
 );
 
