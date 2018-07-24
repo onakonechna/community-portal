@@ -128,8 +128,8 @@ jobs:
               node_modules/.bin/sls create_domain --stage dev
               node_modules/.bin/sls deploy --stage dev   
             else
-              node_modules/.bin/sls create_domain --stage "${CIRCLE_BRANCH}"
-              node_modules/.bin/sls deploy --stage "${CIRCLE_BRANCH}"
+              node_modules/.bin/sls create_domain --stage dev
+              node_modules/.bin/sls deploy --stage dev
             fi
 
       - run:
