@@ -1,8 +1,8 @@
+import { Request, Response } from './../../../config/Types';
+
 import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
 import { UserController, UserResource } from './../../../config/Components';
-
-const endpoint = new Endpoint('/user/likedProjects', 'get');
 
 const dataflows = [
   {
@@ -14,5 +14,8 @@ const dataflows = [
   },
 ];
 
-const handler = new PackageService(endpoint, dataflows).package();
-export { handler };
+const endpoint = new Endpoint('/user/likedProjects', 'get');
+endpoint.configure((req: Request, res: Response) => {
+  new PackageService(dataflows).package(req, res);
+});
+export const handler = endpoint.execute();
