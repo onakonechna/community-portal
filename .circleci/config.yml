@@ -98,7 +98,7 @@ jobs:
 
       - run:
           name: Start Local DynamoDB
-          command: node_modules/.bin/sls offline start -r us-east-1
+          command: node_modules/.bin/sls offline start --stage=dev -r us-east-1
           background: true
 
       - run: sleep 60
