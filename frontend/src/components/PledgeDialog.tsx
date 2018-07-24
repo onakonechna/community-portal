@@ -5,9 +5,15 @@ import Message from './Message';
 
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { pledgeProjectAction } from '../actions';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 interface PledgeProps {
   classes?: any;
@@ -41,12 +47,12 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
       loading: false,
       messageOpen: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handlePledgeChange = this.handlePledgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
-  handleChange(event: any) {
+  handlePledgeChange(event: any) {
     if (event.target.value === null) {
       this.setState({ hours: 0 });
     } else {
@@ -56,7 +62,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
 
   handleMessageClose() {
     this.setState({
-      messageOpen: false
+      messageOpen: false,
     });
   }
 
@@ -97,21 +103,26 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     const { project } = this.props;
     return (
       <div>
-        <Dialog open={this.props.open}>
-          <DialogTitle>Pledge a Project</DialogTitle>
-          <DialogContent>
-            <h3>{project.goal}</h3>
-            <TextField
-              id="hours_pledged"
-              label="hours to pledge"
-              type="number"
-              value={this.state.hours || ''}
-              onChange={this.handleChange}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            {this.state.loading && <LinearProgress
+      <Dialog open={this.props.open}>
+        <DialogTitle>Pledge a Project</DialogTitle>
+        <DialogContent>
+          <h3>{project.goal}</h3>
+          <TextField
+            id="hours_pledged"
+            label="hours to pledge"
+            type="number"
+            value={this.state.hours || ''}
+            onChange={this.handlePledgeChange}
+            fullWidth
+          />
+          <Snackbar
+            open={this.state.messageOpen}
+          >
+           <SnackbarContent message="That\'s beyond the expectation!"/>
+          </Snackbar>
+        </DialogContent>
+        <DialogActions>
+          {this.state.loading && <LinearProgress
               style={{ display: 'block', width: '60%' }}
               variant="indeterminate" />}
             <Button onClick={this.props.toggle}>

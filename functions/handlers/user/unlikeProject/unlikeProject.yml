@@ -1,5 +1,4 @@
 unlikeProject:
-  name: ${self:provider.stage}-unlikeProject
   role: unlikeProjectRole
   handler: handlers/user/unlikeProject/handler.handler
   timeout: 10

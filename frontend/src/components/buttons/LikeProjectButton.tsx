@@ -3,6 +3,9 @@ import * as React from 'react';
 import Favorite from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 
+import { withStyles, Theme } from '@material-ui/core/styles';
+import { Classes } from '../../../node_modules/@types/jss';
+
 interface LikeProjectProps {
   liked: boolean;
   project_id: string;
@@ -12,18 +15,29 @@ interface LikeProjectProps {
   toggleLike: () => void;
   likeProject?: any;
   handler?: any;
+  classes: Classes;
 }
 
+const styles = (theme: Theme) => ({
+  likedButton: {
+    color: '#FF2B00',
+  },
+  unlikedButton: {
+    color: '#27A2AA',
+  },
+});
+
 const LikeProjectButton = (props: LikeProjectProps) => {
+  const { classes, liked } = props;
   return (
     <IconButton
       aria-label="like"
       onClick={props.handler}>
       <Favorite
-        style={{ color: props.liked ? '#FF2B00' : '#27A2AA' }}
+        className={liked ? classes.likedButton : classes.unlikedButton}
       />
     </IconButton>
   );
 };
 
-export default LikeProjectButton;
+export default withStyles(styles)(LikeProjectButton);

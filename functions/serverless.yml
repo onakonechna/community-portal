@@ -24,7 +24,7 @@ custom:
       path: ${opt:branch, ''}
       stage: ${opt:stage, ''}
     production:
-      name: api.opensource.engcom.magento.com
+      name: api.opensource.magento.com
       path: ${opt:branch, ''}  
       stage: ${opt:stage, ''} 
   customDomain:
@@ -60,25 +60,26 @@ provider:
     GITHUB_CLIENT_ID: ${env:GITHUB_CLIENT_ID}
     GITHUB_CLIENT_SECRET: ${env:GITHUB_CLIENT_SECRET}
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
+    GITHUB_CLIENT_ID: ${self:custom.github.client_id}
+    GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
   iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - logs:*
-      Resource:
-        - 'Fn::Join':
-          - ':'
-          -
-            - 'arn:aws:logs'
-            - '*'
-            - '*'
-            - '*'
-    - Effect: Allow
-      Action:
-        - cloudwatch:*
-        - logs:*
-      Resource:
-        - '*'
-
+      - Effect: Allow
+        Action:
+          - logs:*
+        Resource:
+          - 'Fn::Join':
+            - ':'
+            -
+              - 'arn:aws:logs'
+              - '*'
+              - '*'
+              - '*'
+      - Effect: Allow
+        Action:
+          - cloudwatch:*
+          - logs:*
+        Resource:
+          - '*'
 package:
   individually: false
   exclude:
@@ -139,6 +140,7 @@ resources:
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
+  - serverless-domain-manager
   - serverless-webpack
   - serverless-domain-manager
   - serverless-dynamodb-local

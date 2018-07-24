@@ -1,4 +1,5 @@
 const path = require("path");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
@@ -36,8 +37,6 @@ switch(process.env.STAGE) {
         break;  
 }
 
-console.log(apiHost);
-
 module.exports = {
     entry: "./src/index.tsx",
     output: {
@@ -52,7 +51,7 @@ module.exports = {
             NODE_ENV: JSON.stringify(reactMode),
             GIT_ID: JSON.stringify(process.env.GIT_ID),
             PUBLIC_URL: JSON.stringify(public)
-          })
+          }),
     ],
 
     devServer: {
@@ -61,8 +60,8 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    // Enabled debugging with React Dev Tool
-    devtool: "eval",
+    // Enabled debugging with React Dev Tool 
+    // devtool: "eval",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
@@ -94,12 +93,17 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        minimize: true,
+        minimizer: [new UglifyJsPlugin()]
+    },
+
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
     // externals: {
-    //     "react": "React",
-    //     "react-dom": "ReactDOM"
+    //     "react-dom": "ReactDOM",
+    //     "jss": "jss",
     // }
 };
