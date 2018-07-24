@@ -1,5 +1,6 @@
 likeProject:
-  role: likeProjectRole
+  name: ${self:provider.stage}-likeProject
+  role: ${self:provider.stage}-likeProjectRole
   handler: handlers/user/likeProject/handler.handler
   timeout: 10
   events:

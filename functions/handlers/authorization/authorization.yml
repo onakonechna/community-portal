@@ -1,5 +1,6 @@
 authorization:
-    role: authorizationRole
+    name: ${self:provider.stage}-authorization
+    role: ${self:provider.stage}-authorizationRole
     handler: handlers/authorization/handler.handler
     events:
     - http:
