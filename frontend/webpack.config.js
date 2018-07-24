@@ -1,4 +1,5 @@
 const path = require("path");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
@@ -8,27 +9,29 @@ let public = '';
 
 switch(process.env.STAGE) {
     case "production":
-        apiHost = "'https://api.opensource.magento.com/'";
-        frontendHost = "'https://opensource.magento.com/'";
+        apiHost = "'https://api.opensource.magento.com'";
+        frontendHost = "'https://opensource.magento.com'";
         reactMode = "production"
         break;
     case "qa":
-        apiHost = "'https://api.opensource.engcom.magento.com/'";
-        frontendHost = "'https://opensource.engcom.magento.com/'";
-        break;
+        apiHost = "'https://api.opensource.engcom.magento.com'";
+        frontendHost = "'https://opensource.engcom.magento.com'";
+        break;  
     case "dev":
-        apiHost = "'https://api.dev.opensource.engcom.magento.com/'";
-        frontendHost = "'https://dev.opensource.engcom.magento.com/'";
-        break;
+        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'https://api.dev.opensource.engcom.magento.com'";
+        frontendHost = "'https://dev.opensource.engcom.magento.com'";
+        break;    
     case "local":
         apiHost = "'http://localhost:3000'";
         frontendHost = "'http://localhost:8080'";
         break;
+    case "custom":
+        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'http://localhost'";
+        frontendHost = process.env.FRONTEND 
+            ? JSON.stringify(process.env.FRONTEND) 
+            : "'http://dev.opensource.engcom.magento.com.s3-website-us-east-1.amazonaws.com'";
+        break;  
 }
-
-console.log(process.env.STAGE);
-console.log(apiHost);
-console.log(process.env.GIT_ID);
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -44,7 +47,7 @@ module.exports = {
             NODE_ENV: JSON.stringify(reactMode),
             GIT_ID: JSON.stringify(process.env.GIT_ID),
             PUBLIC_URL: JSON.stringify(public)
-          })
+          }),
     ],
 
     devServer: {
@@ -53,8 +56,8 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    // Enabled debugging with React Dev Tool
-    devtool: "eval",
+    // Enabled debugging with React Dev Tool 
+    // devtool: "eval",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
@@ -86,12 +89,17 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        minimize: true,
+        minimizer: [new UglifyJsPlugin()]
+    },
+
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
     // externals: {
-    //     "react": "React",
-    //     "react-dom": "ReactDOM"
+    //     "react-dom": "ReactDOM",
+    //     "jss": "jss",
     // }
 };

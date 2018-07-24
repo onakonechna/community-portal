@@ -1,7 +1,12 @@
 import { ActionTypes, TypeKeys } from '../actions';
 
+<<<<<<< HEAD
 const defaultUser = {
   user_id: '',
+=======
+const testUser = {
+  user_id: '37183938',
+>>>>>>> c1a9b57ed9113cdd1df47fac39d2f6f57ef2ff9b
   avatar_url: '',
   name: '',
   role: 'guest',

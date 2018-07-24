@@ -1,20 +1,15 @@
-import * as _ from 'lodash';
+import every from 'lodash/every';
+import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
-import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
-  UpdateUserRoleAction,
-  getLikedProjectsAction,
-  getBookmarkedProjectsAction,
-  UpdateUserScopesAction,
+         UpdateUserRoleAction,
+         getLikedProjectsAction,
+         getBookmarkedProjectsAction,
+         UpdateUserScopesAction,
 } from '../actions';
-
-declare const __FRONTEND__: string;
-export const frontEnd = __FRONTEND__;
-declare const GIT_ID: string;
-export const gitId = GIT_ID;
 
 interface WithAuthProps {
   className?: any;
@@ -25,15 +20,17 @@ interface WithAuthProps {
   upvotes?: number;
   project_id?: string;
   label?: string;
-  clientId?: string;
   scope?: string;
-  redirectUri?: string;
-  onSuccess?: any;
-  onFailure?: any;
   toggleLike?: any;
   likeProject?: any;
   toggleBookmark?: any;
   bookmarkProject?: any;
+  open?: boolean;
+  toggleSideBar?: any;
+  toPledged?: any;
+  toProfile?: any;
+  toBookMark?: any;
+  toHome?: any;
 }
 
 interface WithAuthStateProps {
@@ -66,7 +63,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
         if (
           typeof scopes === 'undefined'
           || scopes.length === 0
-          || !_.every(compulsoryScopes, (scope: string) => _.includes(scopes, scope))
+          || !every(compulsoryScopes, (scope: string) => includes(scopes, scope))
         ) {
           return null;
         }
@@ -74,16 +71,13 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
 
       if (!allowedRoles.includes(role)) {
         return <Login
-          clientId={gitId}
           scope=""
-          redirectUri={`${frontEnd}/auth`}
-          onSuccess={onSuccess}
-          onFailure={onFailure}
           user={this.props.user}
           loadUser={this.props.loadUser}
           updateUserRole={this.props.updateUserRole}
           updateUserScopes={this.props.updateUserScopes}
           getLikedProjects={this.props.getLikedProjects}
+          getBookmarkedProjects={this.props.getBookmarkedProjects}
         />;
       }
 
