@@ -27,7 +27,7 @@ export default class Endpoint {
     this.url = url;
     this.method = method;
     this.app = express();
-    this.router = express.Router()
+    this.router = express.Router();
     this.app.use(cors(corsOptions));
     this.app.use(bodyParser.json({ strict: false }));
   }
