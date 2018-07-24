@@ -18,8 +18,8 @@ const config = loadYAML('./serverless.yml');
 const authUserId = '39741185';
 
 const tokens = {
-  mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.secret, { expiresIn: '1d' }),
-  xiya: jwt.sign({ user_id: authUserId }, config.custom.jwt.secret, { expiresIn: '1d' }),
+  mae: jwt.sign({ user_id: '40802007' }, config.custom.jwt.stage.other, { expiresIn: '1d' }),
+  xiya: jwt.sign({ user_id: authUserId }, config.custom.jwt.stage.other, { expiresIn: '1d' }),
 };
 
 console.log(tokens);

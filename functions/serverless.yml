@@ -1,10 +1,13 @@
 custom:
   jwt:
-    secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    secret: ${self:custom.jwt.stage.${self:provider.stage}, ${self:custom.jwt.stage.other}}
     expiration_time: 20d
+    stage:
+      prod: ${ssm:jwt_secret}
+      other: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b # fake secret for testing
   github:
-    client_id: '668e0b6c450cc783f267' #github auth app client_id
-    client_secret: 'f8998271c8e88e2980a02ed5ce38c6dca854e7a7' #github auth app client_secret
+    client_id: ${ssm:client_id} # github auth app client_id
+    client_secret: '${ssm:client_secret}' # github auth app client_secret
   dynamodb:
     start:
       migrate: true
