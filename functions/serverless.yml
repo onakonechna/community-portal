@@ -57,8 +57,6 @@ provider:
     ISSUES_INDEX: ${file(./schema.json):Issues.Properties.TableName}-index
     JWT_SECRET: ${self:custom.jwt.secret}
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
-    GITHUB_CLIENT_ID: ${env:GITHUB_CLIENT_ID}
-    GITHUB_CLIENT_SECRET: ${env:GITHUB_CLIENT_SECRET}
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
