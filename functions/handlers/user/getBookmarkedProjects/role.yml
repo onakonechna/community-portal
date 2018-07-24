@@ -1,7 +1,7 @@
 getBookmarkedProjectsRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: getBookmarkedProjectsRole
+    RoleName: ${self:provider.stage}-getBookmarkedProjectsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ getBookmarkedProjectsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getBookmarkedProjectsRole
+      - PolicyName: ${self:provider.stage}-getBookmarkedProjectsPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

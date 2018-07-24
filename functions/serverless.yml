@@ -3,8 +3,8 @@ custom:
     secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     expiration_time: 20d
   github:
-    client_id: '668e0b6c450cc783f267' #github auth app client_id
-    client_secret: 'f8998271c8e88e2980a02ed5ce38c6dca854e7a7' #github auth app client_secret
+    client_id: ${self:provider.github_client_id} #github auth app client_id
+    client_secret: ${self:provider.github_client_secret} #github auth app client_secret
   dynamodb:
     start:
       migrate: true
@@ -14,18 +14,35 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
+  domainNames:
+    dev:
+      name: dev.api.opensource.engcom.magento.com
+      path: ${opt:branch, ''}
+      stage: ${opt:stage, ''}
+    staging:
+      name: api.opensource.engcom.magento.com
+      path: ${opt:branch, ''}
+      stage: ${opt:stage, ''}
+    production:
+      name: api.opensource.magento.com
+      path: ${opt:branch, ''}  
+      stage: ${opt:stage, ''} 
   customDomain:
-    domainName: 'dev.api.opensource.engcom.magento.com'
-    basePath: ${self:provider.stage} # If created by CircleCI prefix will correspond to the branch code is pushed to
-    stage: ${self:provider.stage} # Stage will be created for every branch
-    createRoute53Record: false
+   domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
+   basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
+   stage: ${self:provider.stage} # Stage will be created for every branch
+   createRoute53Record: false
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: ${opt:stage, 'dev'}
+  stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
+  github_client_id: ${env:GITHUB_CLIENT_ID}
+  github_client_secret: ${env:GITHUB_CLIENT_SECRET}
   region: us-east-1
   environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
     PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
     PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
     USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
@@ -40,9 +57,27 @@ provider:
     ISSUES_INDEX: ${file(./schema.json):Issues.Properties.TableName}-index
     JWT_SECRET: ${self:custom.jwt.secret}
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
+    BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
-
+  iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - logs:*
+        Resource:
+          - 'Fn::Join':
+            - ':'
+            -
+              - 'arn:aws:logs'
+              - '*'
+              - '*'
+              - '*'
+      - Effect: Allow
+        Action:
+          - cloudwatch:*
+          - logs:*
+        Resource:
+          - '*'
 package:
   individually: false
   exclude:

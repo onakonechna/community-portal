@@ -1,7 +1,7 @@
 unlikeProjectRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: unlikeProjectRole
+    RoleName: ${self:provider.stage}-unlikeProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ unlikeProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: unlikeProjectRole
+      - PolicyName: ${self:provider.stage}-unlikeProjectPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

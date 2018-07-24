@@ -5,7 +5,7 @@ import GithubAuthModal, { toQuery } from './GithubAuthModal';
 import Message from './Message';
 import { API } from './../api/Config';
 
-import './auth.css';
+//import './auth.css';
 
 declare const __FRONTEND__: string;
 declare const GIT_ID: string;

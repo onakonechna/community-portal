@@ -1,6 +1,7 @@
 updateProjectStatusRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-updateProjectStatusRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ updateProjectStatusRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: updateProjectStatusRole
+      - PolicyName: ${self:provider.stage}-updateProjectStatusPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
