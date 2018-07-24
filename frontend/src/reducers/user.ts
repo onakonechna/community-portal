@@ -1,15 +1,15 @@
 import { ActionTypes, TypeKeys } from '../actions';
 
-const testUser = {
-  user_id: '83dhh288d',
+const defaultUser = {
+  user_id: '',
   avatar_url: '',
-  name: 'Mark',
+  name: '',
   role: 'guest',
   likedProjects: [],
   bookmarkedProjects: [],
 };
 
-export default function user(state = testUser, action:ActionTypes) {
+export default function user(state = defaultUser, action:ActionTypes) {
   switch (action.type) {
     case TypeKeys.LOAD_USER:
       return Object.assign({}, state, action.user);
