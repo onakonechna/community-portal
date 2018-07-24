@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import GithubAuthButton, { User }from './GithubAuthButton';
 import { onSuccess, onFailure } from './HeadBar';
 import { LoadUserAction,
