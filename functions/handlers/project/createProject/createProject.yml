@@ -1,6 +1,6 @@
 createProject:
   name: ${self:provider.stage}-createProject
-  role: ${self:provider.stage}-createProjectRole
+  role: createProjectRole
   handler: handlers/project/createProject/handler.handler
   events:
   - http:

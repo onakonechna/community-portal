@@ -1,6 +1,6 @@
 getProjectDetails:
   name: ${self:provider.stage}-getProjectDetails
-  role: ${self:provider.stage}-getProjectDetailsRole
+  role: getProjectDetailsRole
   handler: handlers/project/getProjectDetails/handler.handler
   events:
   - http:

@@ -1,6 +1,6 @@
 updateProjectStatus:
   name: ${self:provider.stage}-updateProjectStatus
-  role: ${self:provider.stage}-updateProjectStatusRole
+  role: updateProjectStatusRole
   handler: handlers/project/updateProjectStatus/handler.handler
   events:
   - http:

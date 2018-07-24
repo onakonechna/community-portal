@@ -1,6 +1,6 @@
 editProject:
   name: ${self:provider.stage}-editProject
-  role: ${self:provider.stage}-editProjectRole
+  role: editProjectRole
   handler: handlers/project/editProject/handler.handler
   events:
   - http:
