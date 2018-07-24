@@ -15,6 +15,9 @@ jobs:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
 
+      - attach_workspace:
+          at: ~/community-portal/functions/workspace
+
       - run:
           name: Install dependencies
           command: npm install
@@ -37,6 +40,7 @@ jobs:
       - run:
           name: deploy application
           command: |
+            endpoint=$(cat ../functions/workspace/endpoint)
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --delete
@@ -44,7 +48,7 @@ jobs:
               STAGE=production npm run build:webpack
               aws s3 sync public/. s3://production.opensource.magento.com --delete
             else
-              STAGE=dev npm run build:webpack
+              STAGE=dev ENDPOINT_URL="$endpoint" npm run build:webpack
               aws s3 sync public/. s3://dev.opensource.engcom.magento.com --delete
             fi
 
@@ -62,6 +66,8 @@ jobs:
           keys:
             - dependencies-cache-{{ checksum "./package.json" }}
             - dependencies-cache
+      
+      - run: mkdir -p workspace  
 
       - run:
           name: Install dependencies
@@ -89,18 +95,18 @@ jobs:
 
       - run:
           name: Start Local DynamoDB
-          command: node_modules/.bin/sls offline start -r us-east-1
+          command: node_modules/.bin/sls offline start --stage=dev -r us-east-1
           background: true
 
       - run: sleep 60
 
       - run:
           name: Insert user fixture data for Mae
-          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
+          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
           name: Insert user fixture data for Xiya
-          command: ~/.local/bin/aws dynamodb put-item --table-name users --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
+          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
           name: Run backend tests
@@ -117,14 +123,27 @@ jobs:
               node_modules/.bin/sls deploy --stage dev
             fi
 
+      - run:
+          name: Set endpoint variable for S3 deployment
+          command: node_modules/.bin/sls info --verbose | grep ServiceEndpoint | sed -E s/ServiceEndpoint\:[[:space:]]//g > workspace/endpoint
+
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - endpoint
+
       - save_cache:
           paths:
             - node_modules
           key: dependencies-cache-{{ checksum "./package.json" }}
 
 workflows:
-  version: 1
+  version: 2
   build_and_deploy:
     jobs:
-      - build_frontend
       - build_functions
+      - build_frontend:
+          requires:
+            - build_functions
+
+ 
