@@ -39,10 +39,7 @@
     "@types/fetch-mock": "^6.0.3",
     "@types/jest": "^23.0.2",
     "@types/lodash": "^4.14.112",
-<<<<<<< HEAD
-=======
     "@types/lodash-es": "^4.17.0",
->>>>>>> c1a9b57ed9113cdd1df47fac39d2f6f57ef2ff9b
     "@types/material-ui": "^0.20.8",
     "@types/node": "^10.3.2",
     "@types/qs": "^6.5.1",

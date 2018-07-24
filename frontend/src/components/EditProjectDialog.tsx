@@ -308,76 +308,13 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               required
               margin="dense"
               id="technologies"
-<<<<<<< HEAD
               label="Input Technologies for this Project (Separate by Enter)"
               onChange={this.handleTechChange()}
-=======
-              onChange={this.handleChange('technologies')}
->>>>>>> c1a9b57ed9113cdd1df47fac39d2f6f57ef2ff9b
               onKeyPress={this.handleKeyPress}
               value={this.state.technologiesString}
               type="text"
               fullWidth
             />
-<<<<<<< HEAD
-            <TextField
-              required
-              id="due"
-              label="Due Date"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange('due')}
-              value={this.state.due}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              required
-              margin="dense"
-              id="goal"
-              label="Goal (total hours)"
-              type="number"
-              onChange={this.handleGoalChange()}
-              value={this.state.goal}
-            />
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Size</FormLabel>
-              <RadioGroup
-                aria-label="size"
-                name="size"
-                value={this.state.size}
-                onChange={this.handleChange('size')}
-                style={{ flexDirection: 'row' }}
-              >
-                <FormControlLabel value="S" control={<Radio />} label="Small" />
-                <FormControlLabel value="M" control={<Radio />} label="Medium" />
-                <FormControlLabel value="L" control={<Radio />} label="Large" />
-                <FormControlLabel value="XL" control={<Radio />} label="Extra Large" />
-              </RadioGroup>
-            </FormControl>
-            <TextField
-              required
-              margin="dense"
-              id="github"
-              label="Input GitHub Address"
-              onChange={this.handleChange('github')}
-              value={this.state.github}
-              type="text"
-              fullWidth
-            />
-            <TextField
-              required
-              margin="dense"
-              id="slack"
-              label="Input Slack Channel"
-              type="text"
-              onChange={this.handleChange('slack')}
-              value={this.state.slack}
-              fullWidth
-            />
-=======
-
               <div className={classes.row}>
                 <div className={classes.rowItem} style={{ position: 'relative' }}>
                   <Typography className={classes.label}>Due Date*</Typography>
@@ -442,21 +379,15 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
                 value={this.state.slack}
                 fullWidth
               />
->>>>>>> c1a9b57ed9113cdd1df47fac39d2f6f57ef2ff9b
           </DialogContent>
           <DialogActions>
             {this.state.loading && <LinearProgress
               style={{ display: 'block', width: '60%' }}
-<<<<<<< HEAD
-              variant="indeterminate" />}
-            <Button onClick={this.props.toggleEdit}>
-=======
               variant="indeterminate"/>}
             <Button
               onClick={this.props.toggleEdit}
               className={classes.cardButton}
             >
->>>>>>> c1a9b57ed9113cdd1df47fac39d2f6f57ef2ff9b
               {this.state.success ? 'Done' : 'Cancel'}
             </Button>
             <Button
