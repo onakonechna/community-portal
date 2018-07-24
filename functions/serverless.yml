@@ -1,10 +1,9 @@
 custom:
   jwt:
-    secret: ${self:custom.jwt.stage.${self:provider.stage}, ${self:custom.jwt.stage.other}}
+    secret: ${self:custom.jwt.stage.${self:provider.stage}, 'Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b'} # fake secret for testing
     expiration_time: 20d
     stage:
       prod: ${ssm:jwt_secret}
-      other: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b # fake secret for testing
   github:
     client_id: ${ssm:client_id} # github auth app client_id
     client_secret: '${ssm:client_secret}' # github auth app client_secret
