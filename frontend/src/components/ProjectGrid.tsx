@@ -8,8 +8,6 @@ import { loadProjects } from './../actions';
 
 import Grid from '@material-ui/core/Grid';
 
-const projectsData = require('../data/projects.json');
-
 const styles = {
   margin: '0 auto',
   justifyContent: 'center',
@@ -52,10 +50,6 @@ interface GridState {
 }
 
 export class ProjectGrid extends React.Component<GridProps & GridStateProps, GridState> {
-
-  public state: GridState = {
-    projects: projectsData,
-  };
 
   constructor(props: GridProps & GridStateProps) {
     super(props);
