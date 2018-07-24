@@ -119,12 +119,16 @@ jobs:
           name: Deploy application
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              sls create_domain --stage staging
               node_modules/.bin/sls deploy --stage staging
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              sls create_domain --stage prod
               node_modules/.bin/sls deploy --stage prod
             elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
+              sls create_domain --stage dev
               node_modules/.bin/sls deploy --stage dev   
             else
+              sls create_domain --stage "${CIRCLE_BRANCH}"
               node_modules/.bin/sls deploy --stage "${CIRCLE_BRANCH}"
             fi
 
