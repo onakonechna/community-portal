@@ -117,23 +117,31 @@ export class ProjectMain extends React.Component<ProjectMainProps & DispatchProp
         </DescriptionBox>
         <Table>
           <TableBody>
-            {this.props.fieldMap.map((entry: string[]) => (
-              <TableRow>
-                <TableCell>{entry[1]}</TableCell>
-                <TableCell>{project[entry[0]]}</TableCell>
-              </TableRow>
-            ))}
-            {this.props.chipMap.map((entry: string[]) => (
-              entry[0] in project ?
+            {this.props.fieldMap.map((entry: string[]) => {
+              const displayName = entry[1];
+              const fieldName = entry[0];
+              return (
                 <TableRow>
-                  <TableCell>{entry[1]}</TableCell>
-                  <TableCell>{project[entry[0]].map((chip: string) => (
-                    <Chip className={classes.chip} key={chip} label={chip} />
-                  ))}</TableCell>
+                  <TableCell>{displayName}</TableCell>
+                  <TableCell>{project[fieldName]}</TableCell>
                 </TableRow>
-              :
-                null
-            ))}
+              );
+            })}
+            {this.props.chipMap.map((entry: string[]) => {
+              const displayName = entry[1];
+              const fieldName = entry[0];
+              return (
+                fieldName in project ?
+                  <TableRow>
+                    <TableCell>{displayName}</TableCell>
+                    <TableCell>{project[fieldName].map((chip: string) => (
+                      <Chip className={classes.chip} key={chip} label={chip} />
+                    ))}</TableCell>
+                  </TableRow>
+                :
+                  null
+              );
+            })}
             <TableRow>
               <TableCell>Due</TableCell>
               <TableCell>{this.getDate(project.due)}</TableCell>
