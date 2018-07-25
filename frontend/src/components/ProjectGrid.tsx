@@ -17,7 +17,7 @@ const styles = (theme: Theme) => ({
   invisibleCard: {
     'background-color': '#FFFFFF',
     'opacity': 0,
-    height: '25rem',
+    height: '1rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
