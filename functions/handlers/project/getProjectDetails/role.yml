@@ -1,7 +1,7 @@
 getProjectDetailsRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: getProjectDetailsRole
+    RoleName: ${self:provider.stage}-getProjectDetailsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ getProjectDetailsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getProjectDetailsRole
+      - PolicyName: ${self:provider.stage}-getProjectDetailsPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

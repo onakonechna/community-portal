@@ -9,12 +9,13 @@ import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
-import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { CardActions, CardContent } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
@@ -77,8 +78,9 @@ const styles = (theme:any) => ({
     'margin-left': 'auto',
   },
   progress: {
-    // color: '#48BF61',
-    // colorSecondary: '#FF0000',
+    color: '#48BF61',
+    'z-index': '1',
+    position: 'absolute' as 'absolute',
   },
   progressText: {
     position: 'absolute' as 'absolute',
@@ -110,6 +112,8 @@ const styles = (theme:any) => ({
   upvotes: {
     'font-size': '1rem',
     color: '#27A2AA',
+    position: 'relative' as 'relative',
+    right: '0.5rem',
   },
 });
 
@@ -181,6 +185,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
+    this.toggleStatus = this.toggleStatus.bind(this);
   }
 
   componentWillReceiveProps(nextProps:any) {
@@ -222,6 +227,13 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     const { estimated, pledged } = this.props.project;
     if (!pledged || !estimated || pledged === 0) { return 0; }
     return (pledged / estimated) * 100;
+  }
+
+  toggleStatus(field: string) {
+    this.setState((prevState: CardState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
   }
 
   toggleEdit() {
@@ -313,10 +325,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <div className={classes.progressDiv}>
                 <CircularProgress
                   className={classes.progress}
-                  color={'primary'}
-                  variant="determinate"
+                  variant="static"
                   size={90}
                   value={this.getPercentage()}
+                />
+                <CircularProgress
+                  variant="static"
+                  style={{ color: '#E0E0E0' }}
+                  size={90}
+                  value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
@@ -328,7 +345,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <ContributorAvatar key={pledger} avatar_url={pledgers[pledger].avatar_url} />
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>

@@ -30,6 +30,7 @@
     "lodash": "^4.17.10",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
+    "serverless-domain-manager": "^2.6.0",
     "serverless-dynamodb-local": "^0.2.30",
     "serverless-iam-roles-per-function": "^1.0.1",
     "serverless-offline": "^3.25.3",

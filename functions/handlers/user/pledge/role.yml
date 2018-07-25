@@ -1,6 +1,7 @@
 pledgeRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-pledgeRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ pledgeRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: pledgeRole
+      - PolicyName: ${self:provider.stage}-pledgePolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

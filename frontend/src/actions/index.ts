@@ -9,7 +9,7 @@ import scheduleMeeting from '../api/ScheduleMeeting';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
 
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { v4 as uuid } from 'uuid';
 
 export enum TypeKeys {
@@ -23,7 +23,7 @@ export enum TypeKeys {
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
- OTHER_ACTION = '__any__other__action__type',
+ OTHER_ACTION = 'OTHER_ACTION',
 }
 
 export interface LoadUserAction {
@@ -66,6 +66,11 @@ export interface UpdateUserRoleAction {
   role: string;
 }
 
+export interface UpdateUserScopeAction {
+  type: TypeKeys.UPDATE_USER_SCOPES;
+  scopes: string[];
+}
+
 export interface OtherAction {
   type: TypeKeys.OTHER_ACTION;
 }
@@ -79,6 +84,7 @@ export type ActionTypes =
  | ProjectLoadedAction
  | ProjectsLoadedAction
  | UpdateUserRoleAction
+ | UpdateUserScopeAction
  | OtherAction;
 
 export const addProject = (project: {}) => {
@@ -186,7 +192,7 @@ export const loadBookmarkedProjectsAction = (projects: any) => {
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
-      .then((projects) => {
+      .then((projects: any) => {
         dispatch(projectsLoaded(projects));
       })
       .catch((err: any) => {

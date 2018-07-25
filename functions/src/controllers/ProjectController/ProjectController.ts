@@ -16,6 +16,7 @@ interface ProjectControllerInterface {
   addPledger(data: any): (result: any) => any;
   addSubscriber(data: any): (result: any) => any;
   checkOwner(data: any): (result: any) => any;
+  checkPledgedHours(data: any): (result: any) => any;
 }
 
 export default class ProjectController implements ProjectControllerInterface {
@@ -181,14 +182,29 @@ export default class ProjectController implements ProjectControllerInterface {
   // check if user is owner of project
   checkOwner(data: any) {
     const { user_id } = data;
-    console.log('Logging user_id');
-    console.log(user_id);
     return (result: any) => {
       const flag = { is_owner: false };
       if (result.Item && result.Item.owner === user_id) {
         flag.is_owner = true;
       }
       return flag;
+    };
+  }
+
+  // check if pledged hours would exceed total
+  checkPledgedHours(data: any) {
+    const { hours } = data;
+    return (result: any) => {
+      const flag = { will_exceed: false };
+      if (result.Item) {
+        const { pledged, estimated } = result.Item;
+        if (pledged + hours > estimated) {
+          throw 'Total number of hours exceed estimated hours to completion';
+        }
+      } else {
+        throw 'Project not found';
+      }
+      return {};
     };
   }
 

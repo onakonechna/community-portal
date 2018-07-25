@@ -1,4 +1,4 @@
-import { OtherAction, ProjectsLoadedAction, TypeKeys } from '../src/actions';
+import { ProjectLoadedAction, TypeKeys } from '../src/actions';
 import projectReducer from '../src/reducers/project';
 
 describe('test reducer', () => {
@@ -32,15 +32,7 @@ describe('test reducer', () => {
     type: TypeKeys.PROJECTS_LOADED,
   };
 
-  const defaultAction: OtherAction = {
-    type: TypeKeys.OTHER_ACTION,
-  };
-
   it('test projectLoading reducer', () => {
     expect(projectReducer([], loadAction)).toEqual(projects);
-  });
-
-  it('test empty reducer', () => {
-    expect(projectReducer([], defaultAction)).toEqual([]);
   });
 });

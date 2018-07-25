@@ -1,6 +1,7 @@
 updateProjectStatusRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-updateProjectStatusRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ updateProjectStatusRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: updateProjectStatusRole
+      - PolicyName: ${self:provider.stage}-updateProjectStatusPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -21,3 +22,8 @@ updateProjectStatusRole:
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"

@@ -1,7 +1,7 @@
 createProjectRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: createProjectRole
+    RoleName: ${self:provider.stage}-createProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ createProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: createProjectRole
+      - PolicyName: ${self:provider.stage}-createProjectPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
