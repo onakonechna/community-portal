@@ -58,7 +58,7 @@ describe('AddProjectGrid Test Suite', () => {
   it('test AddProjectDialog open button', () => {
     const allButtons = wrapper.findWhere((b: any) => b.name() === 'Button');
     const radio = wrapper.find('RadioGroup');
-    expect(allButtons.length).toEqual(3);
+    expect(allButtons.length).toEqual(4);
     expect(radio).toBeTruthy();
   });
 
@@ -69,9 +69,4 @@ describe('AddProjectGrid Test Suite', () => {
     expect(wrapper.state('goal')).toEqual(20);
   });
 
-  it('radio button should work', () => {
-    const radio = wrapper.findWhere((r:any) => r.name() === 'RadioGroup');
-    radio.props().onChange({ target: { value: 'L' } });
-    expect(wrapper.state('size')).toEqual('L');
-  });
 });

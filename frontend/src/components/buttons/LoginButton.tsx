@@ -2,8 +2,7 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import SignInIcon from '@material-ui/icons/AccountCircle';
-import { withStyles } from '@material-ui/core/styles';
-
+import withStyles from '@material-ui/core/styles/withStyles';
 import UserAvatar from '../UserAvatar';
 import withAuth from '../WithAuth';
 

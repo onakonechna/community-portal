@@ -12,10 +12,16 @@ const endpoint = new Endpoint('/user/pledge', 'post');
 const dataflows = [
   {
     controller: ProjectController,
+    method: 'checkPledgedHours',
+    target: ProjectResource,
+    methodMap: { checkPledgedHours: 'getById' },
+    validationMap: { checkPledgedHours: 'pledgeSchema' },
+    authDataDependencies: ['user_id'],
+  },
+  {
+    controller: ProjectController,
     method: 'addPledgedHours',
     target: ProjectResource,
-    validationMap: { addPledgedHours: 'pledgeSchema' },
-    authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
