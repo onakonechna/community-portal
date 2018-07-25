@@ -3,8 +3,8 @@ custom:
     secret: ${env:JWT_SECRET}
     expiration_time: 20d
   github:
-    client_id: ${self:provider.github_client_id} #github auth app client_id
-    client_secret: ${self:provider.github_client_secret} #github auth app client_secret
+    client_id: ${self:provider.github_client_id} # github auth app client_id
+    client_secret: ${self:provider.github_client_secret} # github auth app client_secret
   dynamodb:
     start:
       migrate: true
