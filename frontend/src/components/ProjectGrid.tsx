@@ -149,11 +149,8 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
               />
             </Grid>
           ))}
-          {
-            classes &&
-              <Grid item className={classes.hiddenGridSmall}><div className={classes.invisibleCard} /></Grid>
-              <Grid item className={classes.hiddenGridLarge}><div className={classes.invisibleCard} /></Grid>
-          }
+          {classes && <Grid item className={classes.hiddenGridSmall}><div className={classes.invisibleCard} /></Grid>}
+          {classes && <Grid item className={classes.hiddenGridLarge}><div className={classes.invisibleCard} /></Grid>}
         </Grid>
       </div>
     );
