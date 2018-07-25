@@ -294,7 +294,7 @@ export default class PackageService {
     return (
       event: CustomAuthorizerEvent,
       context: APIGatewayEventRequestContext,
-      callback: Callback
+      callback: Callback,
     ) => this.endpoint.wrap()(event, context, callback);
   }
 }
