@@ -1,10 +1,10 @@
 custom:
   jwt:
-    secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    secret: ${env:JWT_SECRET}
     expiration_time: 20d
   github:
-    client_id: ${self:provider.github_client_id} #github auth app client_id
-    client_secret: ${self:provider.github_client_secret} #github auth app client_secret
+    client_id: ${self:provider.github_client_id} # github auth app client_id
+    client_secret: ${self:provider.github_client_secret} # github auth app client_secret
   dynamodb:
     start:
       migrate: true
@@ -25,8 +25,8 @@ custom:
       stage: ${opt:stage, ''}
     production:
       name: api.opensource.magento.com
-      path: ${opt:branch, ''}  
-      stage: ${opt:stage, ''} 
+      path: ${opt:branch, ''}
+      stage: ${opt:stage, ''}
   customDomain:
    domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
