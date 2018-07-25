@@ -45,6 +45,11 @@ interface IProject {
   created_date: string;
 }
 
+interface StateProps: {
+  project: IProject;
+  user: any;
+}
+
 interface DispatchProps {
   loadProject: (project_id: string) => void;
 }
@@ -167,9 +172,9 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default compose<{}, ProjectMainProps>(
+export default compose<StateProps, ProjectMainProps>(
   withStyles(styles, {
     name: 'ProjectMain',
   }),
-  connect<{}, DispatchProps, ProjectMainProps>(mapStateToProps, mapDispatchToProps),
+  connect<StateProps, DispatchProps, ProjectMainProps>(mapStateToProps, mapDispatchToProps),
 )(ProjectMain);

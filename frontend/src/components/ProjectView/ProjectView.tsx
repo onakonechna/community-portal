@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -121,17 +119,4 @@ export class ProjectView extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {};
-};
-
-export default compose<{}, {}>(
-  withStyles(styles, {
-    name: 'ProjectView',
-  }),
-  connect<{}, {}, {}>(mapStateToProps, mapDispatchToProps),
-)(ProjectView);
+export default withStyles(styles)(ProjectView);
