@@ -1,0 +1,16 @@
+bookmarkProject:
+  name: ${self:provider.stage}-bookmarkProject
+  role: bookmarkProjectRole
+  handler: handlers/user/bookmarkProject/handler.handler
+  timeout: 10
+  events:
+  - http:
+      path: /user/bookmarkProject
+      method: post
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token

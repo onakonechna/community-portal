@@ -2,7 +2,8 @@ import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Request, Response } from './../../config/Types';
+import { Callback, Request, Response } from './../../config/Types';
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
 import Endpoint from './../Endpoint';
@@ -273,6 +274,13 @@ export default class PackageService {
     return dataflow.controller[dataflow.controllerMethod](this.dataStore);
   }
 
+  respond(res: Response) {
+    return (response: any) => {
+      res.status(response.status).json(response.payload);
+      this.dataStore = {};
+    };
+  }
+
   package() {
     this.endpoint.configure((req: Request, res: Response) => {
       this.initialData = _.assign(req.query, req.params, req.body);
@@ -281,15 +289,12 @@ export default class PackageService {
       this.tokenContents = req.tokenContents;
 
       const dataflowsPromise = new Promise(this.executeDataflows);
-      dataflowsPromise
-        .then(({ status, payload }) => {
-          res.status(status).json(payload);
-        })
-        .catch(({ status, payload }) => {
-          res.status(status).json(payload);
-        });
+      dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
     });
-    return this.endpoint.wrap();
+    return (
+      event: CustomAuthorizerEvent,
+      context: APIGatewayEventRequestContext,
+      callback: Callback,
+    ) => this.endpoint.wrap()(event, context, callback);
   }
-
 }

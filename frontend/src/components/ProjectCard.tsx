@@ -1,25 +1,29 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { likeProject } from '../actions';
+import { likeProject, bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
+import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
-import ContributorAvatar from './ContributorAvatar';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { CardActions, CardContent } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import LinesEllipsis from 'react-lines-ellipsis';
 
 const styles = (theme:any) => ({
   avatar: {
@@ -51,7 +55,7 @@ const styles = (theme:any) => ({
     'margin-bottom': '1rem',
   },
   chip: {
-    margin: '1.5rem 1rem 1rem 0',
+    margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
   },
   contributorDiv: {
@@ -76,8 +80,9 @@ const styles = (theme:any) => ({
     'margin-left': 'auto',
   },
   progress: {
-    // color: '#48BF61',
-    // colorSecondary: '#FF0000',
+    color: '#48BF61',
+    'z-index': '1',
+    position: 'absolute' as 'absolute',
   },
   progressText: {
     position: 'absolute' as 'absolute',
@@ -109,6 +114,8 @@ const styles = (theme:any) => ({
   upvotes: {
     'font-size': '1rem',
     color: '#27A2AA',
+    position: 'relative' as 'relative',
+    right: '0.5rem',
   },
 });
 
@@ -146,20 +153,24 @@ interface CardProps {
   toggleEdit?: () => void;
   classes?: any;
   liked: boolean;
+  bookmarked: boolean;
 }
 
 interface DispatchProps {
   likeProject: any;
+  bookmarkProject: any;
 }
 
 interface CardState {
   editOpen: boolean;
   pledgeOpen: boolean;
   liked: boolean;
+  bookmarked: boolean;
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
+const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
@@ -170,15 +181,19 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       editOpen: false,
       pledgeOpen: false,
       liked: this.props.liked,
+      bookmarked: this.props.bookmarked,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
+    this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
+    this.toggleStatus = this.toggleStatus.bind(this);
   }
 
   componentWillReceiveProps(nextProps:any) {
     this.setState({
       liked: nextProps.liked,
+      bookmarked: nextProps.bookmarked,
     });
   }
 
@@ -216,6 +231,13 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     return (pledged / estimated) * 100;
   }
 
+  toggleStatus(field: string) {
+    this.setState((prevState: CardState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
+  }
+
   toggleEdit() {
     this.setState((prevState: CardState) => ({
       editOpen: !prevState.editOpen,
@@ -234,12 +256,31 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }));
   }
 
+  toggleBookmark() {
+    this.setState((prevState: CardState) => ({
+      bookmarked: !prevState.bookmarked,
+    }));
+  }
+
   handleLike() {
     const { project_id } = this.props.project;
     if (!this.state.liked) {
       this.props.likeProject(project_id)
         .then((response: any) => {
           this.toggleLike();
+        })
+        .catch((err: Error) => {
+          console.error(err);
+        });
+    }
+  }
+
+  handleBookmark() {
+    const { project_id } = this.props.project;
+    if (!this.state.bookmarked) {
+      this.props.bookmarkProject(project_id)
+        .then((response: any) => {
+          this.toggleBookmark();
         })
         .catch((err: Error) => {
           console.error(err);
@@ -268,9 +309,14 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <Typography className={classes.centered}>
               {this.props.project.name}
             </Typography>
-            <Typography className={classes.description} component="p">
-              {this.props.project.description}
-            </Typography>
+            <LinesEllipsis
+              className={classes.description}
+              text={this.props.project.description}
+              maxLine="3"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
             {this.props.project.technologies.map(technology => (
               <Chip className={classes.chip} key={technology} label={technology} />
             ))}
@@ -286,10 +332,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <div className={classes.progressDiv}>
                 <CircularProgress
                   className={classes.progress}
-                  color={'primary'}
-                  variant="determinate"
+                  variant="static"
                   size={90}
                   value={this.getPercentage()}
+                />
+                <CircularProgress
+                  variant="static"
+                  style={{ color: '#E0E0E0' }}
+                  size={90}
+                  value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
@@ -301,7 +352,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <ContributorAvatar key={pledger} avatar_url={pledgers[pledger].avatar_url} />
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
@@ -317,6 +368,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
+            <Bookmark bookmarked={this.state.bookmarked} handler={this.handleBookmark} project_id={this.props.project.project_id} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
@@ -329,6 +381,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 const mapDispatchToProps = (dispatch: any) => {
   return {
     likeProject: (id: string) => dispatch(likeProject(id)),
+    bookmarkProject: (id: string) => dispatch(bookmarkProjectAction(id)),
   };
 };
 

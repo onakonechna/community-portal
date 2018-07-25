@@ -23,6 +23,11 @@
   "pledged_projects": {
     "M": {}
   },
+  "upvoted_projects": {
+    "SS": [
+      "test8"
+    ]
+  },
   "scopes": {
     "SS": [
       "write:project"

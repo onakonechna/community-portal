@@ -1,11 +1,6 @@
 import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
-import {
-  ProjectController,
-  UserController,
-  ProjectResource,
-  UserResource,
-} from './../../../config/Components';
+import { UserController, UserResource } from './../../../config/Components';
 
 const endpoint = new Endpoint('/user/likedProjects', 'get');
 
