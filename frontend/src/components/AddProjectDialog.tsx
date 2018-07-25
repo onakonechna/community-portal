@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 
 import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
+import Message from './Message';
 
 import { withStyles, Theme } from '@material-ui/core/styles';
 
@@ -134,6 +135,8 @@ interface DialogState {
   github: string;
   slack: string;
   [key: string]: boolean | string | number | Technology[];
+  errorMessage: string;
+  messageOpen: boolean;
 }
 
 interface Technology {
@@ -154,6 +157,8 @@ const state = {
   goal: 0,
   github: '',
   slack: '',
+  errorMessage: '',
+  messageOpen: false,
 };
 
 export class AddProjectDialog extends React.Component<DispatchProps & DialogProps, DialogState> {
@@ -241,7 +246,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         })
         .catch((error: Error) => {
           this.setLoadingState(false, false);
-          console.log(error);
+          this.onFailure(new Error('Opps, something went wrong while saving this project'));
         });
     }
   }
@@ -271,6 +276,23 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       success,
       loading,
     });
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      messageOpen: true,
+      errorMessage: message,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   render() {
@@ -427,6 +449,11 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
             </DialogActions>
           </div>
         </Dialog>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }

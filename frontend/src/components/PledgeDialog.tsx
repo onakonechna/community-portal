@@ -62,6 +62,17 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     }
   }
 
+  handleMessageChange(message: string) {
+    this.setState({
+      message,
+      messageOpen: true,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
+  }
+
   handleMessageClose() {
     this.setState({
       messageOpen: false,
@@ -71,10 +82,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   handleSubmit(event: any) {
     const { pledged, estimated } = this.props.project;
     if (pledged + this.state.hours > estimated) {
-      this.setState({
-        message: 'Actually, we don\'t need that much commitment :)',
-        messageOpen: true
-      });
+      this.handleMessageChange('Actually, we don\'t need that much commitment :)');
       return;
     }
     const body = {
@@ -96,14 +104,14 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
           });
         })
         .catch((err: Error) => {
+          this.onFailure(new Error('Pledging is unsuccessful'));
           this.setState((prevState: PledgeState) => ({
             success: false,
             loading: false,
-            messageOpen: true,
-            message: 'Pledging was unsuccessful. Please let us know if you keep experiencing this issue.',
           }));
         });
     }
+    return;
   }
 
   render() {
