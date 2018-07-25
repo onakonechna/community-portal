@@ -3,6 +3,8 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Bookmark from '@material-ui/icons/Bookmark';
 
+import { withStyles, Theme } from '@material-ui/core/styles';
+
 interface BookmarkProjectProps {
   bookmarked: boolean;
   project_id: string;
@@ -11,12 +13,23 @@ interface BookmarkProjectProps {
   toggleBookmark: () => void;
   bookmarkProject?: any;
   handler?: any;
+  classes?: any;
 }
 
+const styles = (theme:Theme) => ({
+  bookmark: {
+    'margin-left': 'auto',
+    position: 'relative' as 'relative',
+    left: '1rem',
+  },
+});
+
 const BookmarkButton = (props: BookmarkProjectProps) => {
+  const { classes } = props;
   return (
     <IconButton
       aria-label="Bookmark"
+      className={classes.bookmark}
       onClick={props.handler}
     >
       <Bookmark
@@ -26,4 +39,4 @@ const BookmarkButton = (props: BookmarkProjectProps) => {
   );
 };
 
-export default BookmarkButton;
+export default withStyles(styles)(BookmarkButton);
