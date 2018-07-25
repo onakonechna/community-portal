@@ -49,7 +49,7 @@ module.exports = {
             API_ENDPOINT: apiHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
-            GIT_ID: JSON.stringify(process.env.GIT_ID),
+            GITHUB_CLIENT_ID: JSON.stringify(process.env.GITHUB_CLIENT_ID),
             PUBLIC_URL: JSON.stringify(public)
           }),
     ],

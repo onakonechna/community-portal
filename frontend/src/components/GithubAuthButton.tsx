@@ -8,8 +8,8 @@ import { API } from './../api/Config';
 //import './auth.css';
 
 declare const __FRONTEND__: string;
-declare const GIT_ID: string;
-export const gitId = GIT_ID;
+declare const GITHUB_CLIENT_ID: string;
+export const gitId = GITHUB_CLIENT_ID;
 export const frontEnd = __FRONTEND__;
 
 interface GithubAuthButtonProps {
