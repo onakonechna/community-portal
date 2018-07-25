@@ -23,6 +23,8 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import LinesEllipsis from 'react-lines-ellipsis';
+
 const styles = (theme:any) => ({
   avatar: {
     margin: 10,
@@ -53,7 +55,7 @@ const styles = (theme:any) => ({
     'margin-bottom': '1rem',
   },
   chip: {
-    margin: '1.5rem 1rem 1rem 0',
+    margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
   },
   contributorDiv: {
@@ -307,9 +309,14 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <Typography className={classes.centered}>
               {this.props.project.name}
             </Typography>
-            <Typography className={classes.description} component="p">
-              {this.props.project.description}
-            </Typography>
+            <LinesEllipsis
+              className={classes.description}
+              text={this.props.project.description}
+              maxLine="3"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
             {this.props.project.technologies.map(technology => (
               <Chip className={classes.chip} key={technology} label={technology} />
             ))}
