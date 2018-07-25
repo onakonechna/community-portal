@@ -1,7 +1,7 @@
 bookmarkProjectRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: bookmarkProjectRole
+    RoleName: ${self:provider.stage}-bookmarkProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ bookmarkProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: bookmarkProjectRole
+      - PolicyName: ${self:provider.stage}-bookmarkProjectPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

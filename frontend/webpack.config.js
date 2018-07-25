@@ -18,18 +18,22 @@ switch(process.env.STAGE) {
         frontendHost = "'https://opensource.engcom.magento.com'";
         break;  
     case "dev":
-        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'https://api.dev.opensource.engcom.magento.com'";
+        apiHost = process.env.ENDPOINT_URL ? 
+            JSON.stringify(process.env.ENDPOINT_URL) : 
+            JSON.stringify('https://dev.api.opensource.engcom.magento.com');
         frontendHost = "'https://dev.opensource.engcom.magento.com'";
         break;    
     case "local":
-        apiHost = "'http://localhost:3000'";
-        frontendHost = "'http://localhost:8080'";
+        apiHost = JSON.stringify('http://localhost:3000')
+        frontendHost = JSON.stringify('http://localhost:8080');
         break;
     case "custom":
-        apiHost = process.env.ENDPOINT_URL ? JSON.stringify(process.env.ENDPOINT_URL) : "'http://localhost'";
+        apiHost = process.env.ENDPOINT_URL ? 
+            JSON.stringify(process.env.ENDPOINT_URL) : 
+            JSON.stringify('http://localhost');
         frontendHost = process.env.FRONTEND 
             ? JSON.stringify(process.env.FRONTEND) 
-            : "'http://dev.opensource.engcom.magento.com.s3-website-us-east-1.amazonaws.com'";
+            : JSON.stringify('http://localhost:8080');
         break;  
 }
 
@@ -45,7 +49,7 @@ module.exports = {
             API_ENDPOINT: apiHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
-            GIT_ID: JSON.stringify(process.env.GIT_ID),
+            GITHUB_CLIENT_ID: JSON.stringify(process.env.GITHUB_CLIENT_ID),
             PUBLIC_URL: JSON.stringify(public)
           }),
     ],

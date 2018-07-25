@@ -48,7 +48,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "projects"
+      "TableName": "projects-${self:provider.stage}"
     }
   },
   "Users": {
@@ -96,7 +96,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "users"
+      "TableName": "users-${self:provider.stage}"
     }
   },
   "Tags": {
@@ -118,7 +118,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "tags"
+      "TableName": "tags-${self:provider.stage}"
     }
   },
   "Skills": {
@@ -140,7 +140,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "skills"
+      "TableName": "skills-${self:provider.stage}"
     }
   },
   "PullRequests": {
@@ -192,7 +192,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "pull-requests"
+      "TableName": "pull-requests-${self:provider.stage}"
     }
   },
   "Epics": {
@@ -244,7 +244,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "epics"
+      "TableName": "epics-${self:provider.stage}"
     }
   },
   "Issues": {
@@ -296,7 +296,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "issues"
+      "TableName": "issues-${self:provider.stage}"
     }
   }
 }

@@ -1,4 +1,5 @@
 authorization:
+    name: ${self:provider.stage}-authorization
     role: authorizationRole
     handler: handlers/authorization/handler.handler
     events:
