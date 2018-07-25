@@ -22,11 +22,13 @@ export default class Endpoint {
   private url: string;
   private method: string;
   private app: any;
+  private router: any;
 
   constructor(url: string, method: string) {
     this.url = url;
     this.method = method;
     this.app = express();
+    this.router = express.Router();
     this.app.use(cors(corsOptions));
     this.app.use(bodyParser.json({ strict: false }));
   }
@@ -36,9 +38,10 @@ export default class Endpoint {
   }
 
   configure(execute: (req: Request, res: Response) => any) {
-    this.app[this.method](this.url, (req: Request, res: Response) => {
+    this.router[this.method](this.url, (req: Request, res: Response) => {
       execute(req, res);
     });
+    this.app.use(process.env.BASE_PATH, this.router);
   }
 
   execute() {

@@ -1,4 +1,5 @@
 getLikedProjects:
+  name: ${self:provider.stage}-getLikedProjects
   role: getLikedProjectsRole
   handler: handlers/user/getLikedProjects/handler.handler
   timeout: 10

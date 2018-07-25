@@ -4,7 +4,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-const Message = (props: any) => {
+interface MessageProp {
+  open: boolean;
+  handleClose: () => void;
+  message?: string;
+}
+
+const Message = (props: MessageProp) => {
   const { open } = props;
   return (
     <Snackbar
@@ -13,7 +19,7 @@ const Message = (props: any) => {
         horizontal: 'center',
       }}
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={5000}
       onClose={props.handleClose}
       ContentProps={{
         'aria-describedby': 'message-id',
@@ -29,6 +35,6 @@ const Message = (props: any) => {
         </IconButton>,
       ]}
     />);
-}
+};
 
 export default Message;

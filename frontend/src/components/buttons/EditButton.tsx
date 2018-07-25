@@ -3,14 +3,24 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Edit from '@material-ui/icons/Edit';
 
-export default function editButton(props:any) {
+import { withStyles, Theme } from '@material-ui/core/styles';
+
+const styles = (theme: Theme) => ({
+  editButton: {
+    color: '#27A2AA',
+  },
+});
+
+const editButton = (props:any) => {
   return (
     <IconButton
       aria-label="Edit"
       onClick={props.handler}
-      style={{ color: '#27A2AA' }}
+      className={props.classes.editButton}
     >
       <Edit />
     </IconButton>
   );
-}
+};
+
+export default withStyles(styles)(editButton);
