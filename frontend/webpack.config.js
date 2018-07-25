@@ -61,7 +61,7 @@ module.exports = {
 
     // Enable sourcemaps for debugging webpack's output.
     // Enabled debugging with React Dev Tool 
-    // devtool: "eval",
+    devtool: "eval",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.

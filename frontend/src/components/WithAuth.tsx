@@ -3,7 +3,7 @@ import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import GithubAuthButton, { User }from './GithubAuthButton';
+import GithubAuthButton, { User } from './GithubAuthButton';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,

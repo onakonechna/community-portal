@@ -10,8 +10,6 @@ declare const GITHUB_CLIENT_ID: string;
 export const gitId = GITHUB_CLIENT_ID;
 export const frontEnd = __FRONTEND__;
 
-console.log(gitId);
-
 interface GithubAuthButtonProps {
   label?: string;
   scope: string;
