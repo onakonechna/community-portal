@@ -1,7 +1,7 @@
 likeProjectRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: likeProjectRole
+    RoleName: ${self:provider.stage}-likeProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ likeProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: likeProjectRole
+      - PolicyName: ${self:provider.stage}-likeProjectPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

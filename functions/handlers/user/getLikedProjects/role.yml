@@ -1,7 +1,7 @@
 getLikedProjectsRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: getLikedProjectsRole
+    RoleName: ${self:provider.stage}-getLikedProjectsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ getLikedProjectsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: getLikedProjectsRole
+      - PolicyName: ${self:provider.stage}-getLikedProjectsPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

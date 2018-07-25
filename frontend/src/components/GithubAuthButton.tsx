@@ -1,13 +1,20 @@
 import * as React from 'react';
+import axios from 'axios';
+
 import GithubAuthModal, { toQuery } from './GithubAuthModal';
+import Message from './Message';
+import { API } from './../api/Config';
+
+//import './auth.css';
+
+declare const __FRONTEND__: string;
+declare const GITHUB_CLIENT_ID: string;
+export const gitId = GITHUB_CLIENT_ID;
+export const frontEnd = __FRONTEND__;
 
 interface GithubAuthButtonProps {
-  clientId: string;
   label?: string;
-  redirectUri: string;
   scope: string;
-  onSuccess: any;
-  onFailure: any;
   className?: string;
   buttonText?: string;
   children?: any;
@@ -18,6 +25,11 @@ interface GithubAuthButtonProps {
   getLikedProjects?: any;
   getBookmarkedProjects?: any;
   loadUser?: any;
+}
+
+interface GithubAuthButtonState {
+  errorMessage: string;
+  messageOpen: boolean;
 }
 
 export interface User {
@@ -39,34 +51,62 @@ const defaultUser: User = {
 };
 
 const withLogin = (WrappedCompoent: any) => {
-  class GithubAuthButton extends React.Component<GithubAuthButtonProps, {}> {
+  class GithubAuthButton extends React.Component<GithubAuthButtonProps, GithubAuthButtonState> {
     constructor(props: GithubAuthButtonProps) {
       super(props);
       this.handleLogin = this.handleLogin.bind(this);
       this.handleLogout = this.handleLogout.bind(this);
+      this.handleMessageClose = this.handleMessageClose.bind(this);
+      this.state = {
+        errorMessage: 'hola amigos, que tal?',
+        messageOpen: false,
+      };
     }
+
     public static defaultProps: Partial<GithubAuthButtonProps> = {
       buttonText: 'Sign In',
-      onFailure: () => { return; },
-      onRequest: () => { return; },
-      onSuccess: () => { return; },
       scope: 'user:email',
     };
 
     private popup: any;
 
+    authorize(response: string) {
+      return axios.post(`${API}/authorize`, { code: response });
+    }
+
+    processAuthorizeFailure(response: string) {
+      return new Promise((resolve, reject) => {
+        this.handleMessageChange(response);
+        resolve(response);
+      });
+    }
+
+    handleMessageClose() {
+      this.setState({
+        messageOpen: false,
+      });
+    }
+
+    handleMessageChange(message: string) {
+      console.log('handling message...');
+      this.setState((prevState: GithubAuthButtonState) => ({
+        errorMessage: message,
+        messageOpen: true,
+      }));
+    }
+
     handleLogin() {
+      console.log('logging in');
       const search = toQuery({
-        client_id: this.props.clientId,
-        redirect_uri: this.props.redirectUri,
-        scope: this.props.scope,
+        client_id: gitId,
+        redirect_uri: `${frontEnd}/auth`,
+        scope: '',
       });
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
         `https://github.com/login/oauth/authorize?${search}`,
         { height: 1000, width: 600 },
       );
-      this.props.onRequest();
       popup.then(
         (data: string) => this.onSuccess(data),
         (error: Error) => this.onFailure(error),
@@ -74,10 +114,13 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleLogout() {
-      localStorage.removeItem('oAuth');
-      this.props.loadUser(defaultUser);
-      this.props.updateUserRole(this.props.user.user_id, 'guest');
-      this.props.updateUserScopes(this.props.user.user_id, []);
+      this.clearToken();
+      Promise.all([
+        this.props.loadUser(defaultUser),
+        this.props.updateUserRole(this.props.user.user_id, 'guest'),
+        this.props.updateUserScopes(this.props.user.user_id, []),
+      ])
+      .catch((err: Error) => this.onFailure(err));
     }
 
     decodeToken(token: string) {
@@ -97,11 +140,15 @@ const withLogin = (WrappedCompoent: any) => {
       await localStorage.setItem('oAuth', JSON.stringify(token));
     }
 
+    async clearToken() {
+      await localStorage.removeItem('oAuth');
+    }
+
     onSuccess(code: string) {
       if (!code) {
         return this.onFailure(new Error('\'code\' not found'));
       }
-      this.props.onSuccess(code)
+      this.authorize(code)
         .then((res: any) => {
           const token = res.data.token;
           this.saveToken(token);
@@ -113,19 +160,25 @@ const withLogin = (WrappedCompoent: any) => {
             this.props.getLikedProjects(),
             this.props.getBookmarkedProjects(),
           ])
-            .catch((err: Error) => console.error(err));
+          .catch((err: Error) => this.onFailure(err));
         })
-        .catch((err: Error) => console.error(err));
+        .catch((err: Error) => this.onFailure(err));
     }
 
     onFailure(error: Error) {
-      this.props.onFailure(error)
-        .then((err: Error) => console.log(err))
+      this.processAuthorizeFailure(error.message)
         .then(() => this.props.updateUserRole(this.props.user.user_id, 'guest'));
     }
 
     render() {
-      return <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />;
+      return <div className="auth">
+        <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
+      </div>;
     }
   }
   return GithubAuthButton;

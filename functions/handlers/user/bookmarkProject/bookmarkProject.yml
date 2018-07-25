@@ -1,4 +1,5 @@
 bookmarkProject:
+  name: ${self:provider.stage}-bookmarkProject
   role: bookmarkProjectRole
   handler: handlers/user/bookmarkProject/handler.handler
   timeout: 10

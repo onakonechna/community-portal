@@ -1,4 +1,6 @@
-import * as _ from 'lodash';
+
+import _filter from 'lodash/filter';
+import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -7,8 +9,6 @@ import ProjectCard from './ProjectCard';
 import { loadProjects } from './../actions';
 
 import Grid from '@material-ui/core/Grid';
-
-const projectsData = require('../data/projects.json');
 
 const styles = {
   margin: '0 auto',
@@ -40,11 +40,12 @@ interface IProject {
   github: string;
   slack?: string;
   size?: string;
-  backers: [{
-    name?: string,
-    pledge?: number;
-  }];
+  pledgers: Pledger[];
   created_date: string;
+}
+
+interface Pledger {
+  avatar_url?: string;
 }
 
 interface GridState {
@@ -52,10 +53,6 @@ interface GridState {
 }
 
 export class ProjectGrid extends React.Component<GridProps & GridStateProps, GridState> {
-
-  public state: GridState = {
-    projects: projectsData,
-  };
 
   constructor(props: GridProps & GridStateProps) {
     super(props);
@@ -76,13 +73,19 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
 
   filter() {
     if (typeof this.props.filter !== 'undefined') {
+      if (this.props.filter === 'pledgedProjects') {
+        return _filter(this.props.projects, (project: any) => {
+          return includes(Object.keys(project.pledgers), this.props.user.user_id);
+        });
+      }
+
       if (typeof this.props.user === 'undefined' || !Array.isArray(this.props.user[this.props.filter])) {
         throw `The filter ${this.props.filter} must be an array in the user redux store`;
       }
 
-      return _.filter(this.props.projects, (project: any) => {
+      return _filter(this.props.projects, (project: any) => {
         const filter:any = this.props.filter;
-        return _.includes(this.props.user[filter], project.project_id);
+        return includes(this.props.user[filter], project.project_id);
       });
     }
     return this.props.projects;

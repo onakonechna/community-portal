@@ -1,4 +1,5 @@
 pledge:
+  name: ${self:provider.stage}-pledge
   role: pledgeRole
   handler: handlers/user/pledge/handler.handler
   timeout: 10

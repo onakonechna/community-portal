@@ -8,7 +8,7 @@ const styles = (theme: any) => ({
       display: 'none',
     },
   },
-})
+});
 
 const UserAvatar = (props: any) => (
   <Avatar className={props.classes.avatar} src={props.user.avatar_url} />

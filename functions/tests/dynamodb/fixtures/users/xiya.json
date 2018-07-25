@@ -28,6 +28,11 @@
       "test8"
     ]
   },
+  "scopes": {
+    "SS": [
+      "write:project"
+    ]
+  },
   "url": {
     "S": "https://api.github.com/users/XiyaMagento"
   },

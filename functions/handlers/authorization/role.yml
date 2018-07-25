@@ -1,6 +1,7 @@
 authorizationRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-authorizationRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ authorizationRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: authorizationRole
+      - PolicyName: ${self:provider.stage}-authorizationPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
