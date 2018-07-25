@@ -20,7 +20,7 @@ switch(process.env.STAGE) {
     case "dev":
         apiHost = process.env.ENDPOINT_URL ? 
             JSON.stringify(process.env.ENDPOINT_URL) : 
-            JSON.stringify('https://api.dev.opensource.engcom.magento.com');
+            JSON.stringify('https://dev.api.opensource.engcom.magento.com');
         frontendHost = "'https://dev.opensource.engcom.magento.com'";
         break;    
     case "local":
