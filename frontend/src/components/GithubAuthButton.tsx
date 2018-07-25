@@ -5,8 +5,6 @@ import GithubAuthModal, { toQuery } from './GithubAuthModal';
 import Message from './Message';
 import { API } from './../api/Config';
 
-//import './auth.css';
-
 declare const __FRONTEND__: string;
 declare const GITHUB_CLIENT_ID: string;
 export const gitId = GITHUB_CLIENT_ID;
@@ -88,7 +86,6 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleMessageChange(message: string) {
-      console.log('handling message...');
       this.setState((prevState: GithubAuthButtonState) => ({
         errorMessage: message,
         messageOpen: true,
@@ -96,7 +93,6 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleLogin() {
-      console.log('logging in');
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
