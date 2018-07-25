@@ -30,6 +30,7 @@ interface PledgeState {
   hours?: number;
   success: boolean;
   loading: boolean;
+  message: string;
   messageOpen: boolean;
 }
 
@@ -46,6 +47,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
       success: false,
       loading: false,
       messageOpen: false,
+      message: '',
     };
     this.handlePledgeChange = this.handlePledgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -69,7 +71,10 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   handleSubmit(event: any) {
     const { pledged, estimated } = this.props.project;
     if (pledged + this.state.hours > estimated) {
-      this.setState({ messageOpen: true });
+      this.setState({
+        message: 'Actually, we don\'t need that much commitment :)',
+        messageOpen: true
+      });
       return;
     }
     const body = {
@@ -94,6 +99,8 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
           this.setState((prevState: PledgeState) => ({
             success: false,
             loading: false,
+            messageOpen: true,
+            message: 'Pledging was unsuccessful. Please let us know if you keep experiencing this issue.',
           }));
         });
     }
@@ -134,7 +141,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
           </DialogActions>
         </Dialog>
         <Message
-          message={'Actually, we don\'t need that much commitment :)'}
+          message={this.state.message}
           open={this.state.messageOpen}
           handleClose={this.handleMessageClose}
         />
