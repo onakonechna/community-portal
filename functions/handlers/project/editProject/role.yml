@@ -1,6 +1,7 @@
 editProjectRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-editProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ editProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: editProjectRole
+      - PolicyName: ${self:provider.stage}-editProjecPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

@@ -10,7 +10,7 @@ class Auth extends React.Component<{}, IAuthState> {
     super(props);
 
     this.state = {
-      size: 150,
+      size: 250,
     };
   }
 
@@ -29,7 +29,6 @@ class Auth extends React.Component<{}, IAuthState> {
           left: (window.innerWidth / 2) - (this.state.size / 2),
         }}
         size={this.state.size}
-        color="primary"
       />
     );
   }

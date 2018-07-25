@@ -1,6 +1,7 @@
 createProjectRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-createProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +11,7 @@ createProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: createProjectRole
+      - PolicyName: ${self:provider.stage}-createProjectPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -19,3 +20,8 @@ createProjectRole:
                 - dynamodb:PutItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"

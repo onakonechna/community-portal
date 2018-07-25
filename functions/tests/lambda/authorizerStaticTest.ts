@@ -1,7 +1,12 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 const _ = require('lodash');
-const { entries } = require('./../../lib/utils');
+
+function* entries(obj: any) {
+  for (const key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+}
 
 const authorizerSnippet = {
   name: 'authorizer',
