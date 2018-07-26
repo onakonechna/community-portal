@@ -250,7 +250,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
         });
       })
       .catch((err: Error) => {
-        this.onFailure(new Error('Oops, something went wrong while editing this project'));
+        this.onFailure(new Error('Something went wrong while editing this project'));
         this.setState({
           success: false,
           loading: false,

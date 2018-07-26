@@ -277,7 +277,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleLike();
         })
         .catch((err: Error) => {
-          this.onFailure(new Error('Oops, something went wrong while liking this project'));
+          this.onFailure(new Error('Something went wrong while liking this project'));
         });
     }
   }
@@ -290,7 +290,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleBookmark();
         })
         .catch((err: Error) => {
-          this.onFailure(new Error('Oops, something went wrong while bookmarking this project'));
+          this.onFailure(new Error('Something went wrong while bookmarking this project'));
         });
     }
   }
