@@ -1,11 +1,6 @@
 import * as actions from '../src/actions';
-
-var axios = require('axios');
-var MockAdapter = require('axios-mock-adapter');
-
-// This sets the mock adapter on the default instance
-var mock = new MockAdapter(axios);
-
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -31,11 +26,6 @@ describe('test actions', () => {
 
   const store = mockStore({ projects: [] });
 
-  afterEach(() => {
-    mock.reset();
-    mock.restore();
-  });
-
   it('test projectsLoaded action', () => {
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
@@ -45,27 +35,21 @@ describe('test actions', () => {
   });
 
   it('test addProject action', () => {
-    mock.onGet(`http://localhost:3000/projects`).reply(200, { projects: projectList });
+    const axiosMock = new MockAdapter(axios);
+    axiosMock.onGet(`${API}/projects`).reply(200, projectList);
+    axiosMock.onPost(`${API}/project`).reply(200, projectList);
     const expectedAction: any = [];
 
-    const addProjectAction = (dispatch: any) => {
-      axios.get(`http://localhost:3000/projects`)
-        .then((response) => {
-          expect(response.data.projects).toBe(projectList);
-        });
-    };
-
-    store.dispatch<any>(addProjectAction).then(() => {});
-
-    // return store.dispatch<any>(addProjectAction)
-    //   .then(() => {
-    //     expect(store.getActions()).toEqual(expectedAction);
-    //   });
+    return store.dispatch<any>(actions.addProject(projectList))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedAction);
+      });
   });
 
   it('test editProject action', () => {
-    mock.onGet(`${API}/projects`).reply(200, projectList);
-    mock.onPost(`${API}/projects`).reply(200, projectList);
+    const axiosMock = new MockAdapter(axios);
+    axiosMock.onGet(`${API}/projects`).reply(200, projectList);
+    axiosMock.onPut(`${API}/project`).reply(200, projectList);
 
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
@@ -80,12 +64,13 @@ describe('test actions', () => {
   });
 
   it('test loadProject action', () => {
+    const axiosMock = new MockAdapter(axios);
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
       projects: projectList,
     };
 
-    mock.onGet(`${API}/projects`).replyOnce(200, projectList);
+    axiosMock.onGet(`${API}/projects`).replyOnce(200, projectList);
 
     return store.dispatch<any>(actions.loadProjects())
       .then(() => {
