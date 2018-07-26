@@ -30,6 +30,9 @@ const styles = (theme:any) => ({
   avatar: {
     margin: 10,
   },
+  bookmark: {
+    'margin-left': 'auto',
+  },
   card: {
     'background-color': '#F2F3F3',
     height: '25rem',
@@ -111,6 +114,9 @@ const styles = (theme:any) => ({
   },
   smallText: {
     'margin-bottom': '0.25rem',
+  },
+  topRow: {
+    display: 'flex',
   },
   upvotes: {
     'font-size': '1rem',
@@ -330,9 +336,17 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            <Typography className={classes.centered}>
-              {this.props.project.name}
-            </Typography>
+            <div className={classes.topRow}>
+              <Typography className={classes.centered}>
+                {this.props.project.name}
+              </Typography>
+              <Bookmark
+                bookmarked={this.state.bookmarked}
+                className={classes.bookmark}
+                handler={this.handleBookmark}
+                project_id={this.props.project.project_id}
+              />
+            </div>
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
@@ -392,7 +406,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Bookmark bookmarked={this.state.bookmarked} handler={this.handleBookmark} project_id={this.props.project.project_id} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>

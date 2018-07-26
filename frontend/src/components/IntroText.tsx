@@ -28,18 +28,6 @@ const styles = (theme: Theme) => ({
       'margin-bottom': '2rem',
     },
   },
-  text: {
-    margin: '1rem 0',
-    'font-weight': '500',
-    'text-align': 'center',
-    'font-size': '2rem',
-  },
-  subtext: {
-    'margin-bottom': '3rem',
-    'font-weight': '300',
-    'text-align': 'center',
-    'font-size': '1.2rem',
-  },
 });
 
 const IntroText = (props: any) => {
@@ -51,8 +39,6 @@ const IntroText = (props: any) => {
         Join thousands of community developers{'\n'}
         working on different projects
       </Typography>
-      <Typography className={classes.text}>Ongoing Projects</Typography>
-      <Typography className={classes.subtext}>Pick a project that you like, pledge hours, start working and have fun!</Typography>
     </Grid>
   );
 };
