@@ -47,19 +47,18 @@ const styles = (theme:any) => ({
   },
   cardContent: {
     'margin-bottom': 'auto',
-  },
-  centered: {
-    display: 'flex',
-    justifyContent: 'left',
-    'font-size': '2rem',
-    'margin-bottom': '1rem',
+    position: 'relative' as 'relative',
   },
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
+    position: 'absolute' as 'absolute',
+    top: '10rem',
   },
   contributorDiv: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '18rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -72,6 +71,12 @@ const styles = (theme:any) => ({
     'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
+    position: 'absolute' as 'absolute',
+    top: '6.5rem',
+    [theme.breakpoints.down('md')]: {
+      left: '1rem',
+      right: '1rem',
+    },
   },
   estimatedText: {
     'font-weight': '200',
@@ -102,10 +107,16 @@ const styles = (theme:any) => ({
   },
   progressDiv: {
     'margin-left': 'auto',
-    position: 'relative' as 'relative',
+    position: 'absolute' as 'absolute',
+    left: '20rem',
+    [theme.breakpoints.down('md')]: {
+      left: '12rem',
+    },
   },
   row: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '14rem',
   },
   sidebar: {
     display: 'flex',
@@ -113,6 +124,13 @@ const styles = (theme:any) => ({
   },
   smallText: {
     'margin-bottom': '0.25rem',
+  },
+  title: {
+    'font-size': '2rem',
+    'font-family': 'system-ui',
+    [theme.breakpoints.down('md')]: {
+      'font-size': '1.5rem',
+    },
   },
   upvotes: {
     'font-size': '1rem',
@@ -309,9 +327,14 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            <Typography className={classes.centered}>
-              {this.props.project.name}
-            </Typography>
+            <LinesEllipsis
+              className={classes.title}
+              text={this.props.project.name}
+              maxLine="2"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}

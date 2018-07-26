@@ -45,7 +45,6 @@ const styles = (theme:Theme) => ({
   },
   companyText: {
     'font-size': '1.5rem',
-    'font-family': 'Times New Roman',
   },
   editButton: {
     'margin-left': '1rem',
