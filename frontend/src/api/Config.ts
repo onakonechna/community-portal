@@ -8,7 +8,6 @@ function getToken() {
 }
 
 export const headers = () => ({
-  mode: <RequestMode>'cors',
   headers: {
     Authorization : getToken(),
     Accept: 'application/json',
@@ -16,10 +15,10 @@ export const headers = () => ({
   },
 });
 
-export const postHeaders = (body:any) => {
+export const postHeaders = (data:any) => {
   return {
-    method: 'POST',
-    body: JSON.stringify(body),
+    data,
+    method: 'post',
     headers: {
       Authorization: getToken(),
       Accept: 'application/json',
@@ -28,10 +27,10 @@ export const postHeaders = (body:any) => {
   };
 };
 
-export const putHeaders = (body:any) => {
+export const putHeaders = (data:any) => {
   return {
-    method: 'PUT',
-    body: JSON.stringify(body),
+    data,
+    method: 'put',
     headers: {
       Authorization: getToken(),
       Accept: 'application/json',

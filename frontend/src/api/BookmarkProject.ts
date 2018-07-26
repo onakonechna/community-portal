@@ -1,7 +1,8 @@
+import { default as axios } from 'axios';
 import { API, postHeaders } from './Config';
 
 const bookmarkProject = (id: string) => {
-  return fetch(`${API}/user/bookmarkProject`, postHeaders({ project_id: id }))
+  return axios(`${API}/user/bookmarkProject`, postHeaders({ project_id: id }))
       .then((res: any) => res.json());
 };
 

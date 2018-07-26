@@ -241,10 +241,12 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       const data = this.prepareData();
       this.props.addProject(data)
         .then((response: any) => {
+          console.log('succeed');
           this.setLoadingState(true, false);
           this.setState(state);
         })
         .catch((error: Error) => {
+          console.log('fail');
           this.setLoadingState(false, false);
           this.onFailure(new Error('Opps, something went wrong while saving this project'));
         });
