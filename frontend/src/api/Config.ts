@@ -1,7 +1,7 @@
 declare const API_ENDPOINT: string;
 export const API = API_ENDPOINT;
 
-import { default as axios } from 'axios';
+import axios from 'axios';
 
 function getToken() {
   const localToken = localStorage.getItem('oAuth');
@@ -43,7 +43,6 @@ export const putHeaders = (data:any) => {
 
 export const request = (url: string, headers: any) => {
   return axios(url, headers).then((res: any) => {
-      return res.data;
-    }
-  );
+    return res.data;
+  });
 };

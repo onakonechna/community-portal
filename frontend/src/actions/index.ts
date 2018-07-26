@@ -86,7 +86,6 @@ export const addProject = (project: {}) => {
   return (dispatch: Dispatch) => {
     return saveProject(projectBody)
       .then(() => {
-        console.log('then called');
         dispatch(loadProjects());
       });
   };
