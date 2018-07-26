@@ -1,11 +1,9 @@
-import { default as axios } from 'axios';
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 import { PledgeBody } from '../components/PledgeDialog';
 
 const pledgeProject = (body: PledgeBody) => {
-  return axios(`${API}/user/pledge`, postHeaders(body))
-    .then((res: any) => res.json());
+  return request(`${API}/user/pledge`, postHeaders(body));
 };
 
 export default pledgeProject;

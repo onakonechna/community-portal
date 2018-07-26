@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
 const getLikedProjects = () => {
-  return axios(`${API}/user/likedProjects`, headers())
-    .then((res: any) => res.json());
+  return request(`${API}/user/likedProjects`, headers());
 };
 
 export default getLikedProjects;

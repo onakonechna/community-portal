@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
 const fetchProjects = () => {
-  return axios(`${API}/projects`, headers())
-          .then((res:any) => res.json());
+  return request(`${API}/projects`, headers());
 };
 
 export default fetchProjects;

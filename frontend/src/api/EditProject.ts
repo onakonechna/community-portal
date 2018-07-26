@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, putHeaders } from './Config';
+import { API, putHeaders, request } from './Config';
 
 export const editProject = (project:any) => {
-  return axios(`${API}/project`, putHeaders(project))
-    .then((res: any) => res.json());
+  return request(`${API}/project`, putHeaders(project));
 };
 
 export const editProjectStatus = (id: string, status: string) => {
@@ -11,6 +9,5 @@ export const editProjectStatus = (id: string, status: string) => {
     id,
     status,
   };
-  return axios(`${API}/project`, putHeaders(body))
-    .then((res: any) => res.json());
+  return request(`${API}/project/status`, putHeaders(body));
 };

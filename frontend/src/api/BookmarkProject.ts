@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 const bookmarkProject = (id: string) => {
-  return axios(`${API}/user/bookmarkProject`, postHeaders({ project_id: id }))
-      .then((res: any) => res.json());
+  return request(`${API}/user/bookmarkProject`, postHeaders({ project_id: id }));
 };
 
 export default bookmarkProject;

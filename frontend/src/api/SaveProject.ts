@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 const saveProject = (project:any) => {
-  return axios(`${API}/project`, postHeaders(project))
-      .then((res: any) => res.json());
+  return request(`${API}/project`, postHeaders(project));
 };
 
 export default saveProject;

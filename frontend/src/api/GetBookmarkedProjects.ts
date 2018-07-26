@@ -1,9 +1,7 @@
-import { default as axios } from 'axios';
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
 const getBookmarkedProjects = () => {
-  return axios(`${API}/user/bookmarkedProjects`, headers())
-    .then((res:any) => res.json());
+  return request(`${API}/user/bookmarkedProjects`, headers());
 };
 
 export default getBookmarkedProjects;
