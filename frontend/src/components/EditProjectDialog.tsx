@@ -335,7 +335,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
                     id="goal"
                     type="number"
                     InputProps={{ className:classes.goalInput }}
-                    onChange={this.handleChange('goal')}
+                    onChange={this.handleGoalChange()}
                     value={this.state.goal}
                   />
                 </div>

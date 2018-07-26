@@ -152,6 +152,8 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.state = state;
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleGoalChange = this.handleGoalChange.bind(this);
+    this.handleTechChange = this.handleTechChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -164,20 +166,28 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   handleChange(field: string) {
     return (event: any) => {
       const newItem = event.target.value;
-      if (field === 'technologies') {
-        this.setState({
-          technologiesString: newItem,
-        });
-      } else if (field === 'goal') {
-        if (newItem === 'NaN') {
-          this.setState({ goal: 0 });
-        } else {
-          this.setState({ goal: parseInt(newItem, 10) });
-        }
+      this.setState({
+        [field]: newItem,
+      });
+    };
+  }
+
+  handleTechChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      this.setState({
+        technologiesString: newItem,
+      });
+    };
+  }
+
+  handleGoalChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      if (newItem === 'NaN') {
+        this.setState({ goal: 0 });
       } else {
-        this.setState({
-          [field]: newItem,
-        });
+        this.setState({ goal: parseInt(newItem, 10) });
       }
     };
   }
@@ -332,7 +342,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 margin="dense"
                 InputProps={{ className:classes.input }}
                 id="technologies"
-                onChange={this.handleChange('technologies')}
+                onChange={this.handleTechChange()}
                 onKeyPress={this.handleKeyPress}
                 value={this.state.technologiesString}
                 type="text"
@@ -358,7 +368,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                     id="goal"
                     type="number"
                     InputProps={{ className:classes.goalInput }}
-                    onChange={this.handleChange('goal')}
+                    onChange={this.handleGoalChange()}
                     value={this.state.goal}
                   />
                 </div>
