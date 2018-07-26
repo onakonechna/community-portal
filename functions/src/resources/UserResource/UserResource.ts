@@ -83,12 +83,12 @@ export default class UserResource implements UserResourceInterface {
 
   getUpvotedProjects(data: any): Promise<any> {
     const { user_id } = data;
-    return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, upvoted_projects');
+    return this.adapter.getById(USERS_TABLE, { user_id });
   }
 
   getBookmarkedProjects(data: any): Promise<any> {
     const { user_id } = data;
-    return this.adapter.getById(USERS_TABLE, { user_id }, 'user_id, bookmarked_projects');
+    return this.adapter.getById(USERS_TABLE, { user_id });
   }
 
   pledge(data: any): Promise<any> {
