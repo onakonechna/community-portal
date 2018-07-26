@@ -91,6 +91,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
           });
         })
         .catch((err: Error) => {
+          console.log('pledge error');
           this.setState((prevState: PledgeState) => ({
             success: false,
             loading: false,

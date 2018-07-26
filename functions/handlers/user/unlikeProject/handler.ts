@@ -1,3 +1,5 @@
+import { Request, Response } from './../../../config/Types';
+
 import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
 import {
@@ -6,8 +8,6 @@ import {
   ProjectResource,
   UserResource,
 } from './../../../config/Components';
-
-const endpoint = new Endpoint('/user/unlikeProject', 'post');
 
 // need to specify data dependencies for the first dataFlow
 // in order to retrieve user_id from authorization context
@@ -34,5 +34,8 @@ const dataflows = [
   },
 ];
 
-const handler = new PackageService(endpoint, dataflows).package();
-export { handler };
+const endpoint = new Endpoint('/user/unlikeProject', 'post');
+endpoint.configure((req: Request, res: Response) => {
+  new PackageService(dataflows).package(req, res);
+});
+export const handler = endpoint.execute();
