@@ -29,6 +29,11 @@ const styles = (theme:any) => ({
   avatar: {
     margin: 10,
   },
+  bookmark: {
+    'margin-left': 'auto',
+    position: 'relative' as 'relative',
+    left: '1rem',
+  },
   card: {
     'background-color': '#F2F3F3',
     height: '25rem',
@@ -315,6 +320,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </Typography>
               <Bookmark
                 bookmarked={this.state.bookmarked}
+                className={classes.bookmark}
                 handler={this.handleBookmark}
                 project_id={this.props.project.project_id}
               />

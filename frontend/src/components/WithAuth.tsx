@@ -72,6 +72,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
       if (!allowedRoles.includes(role)) {
         return <Login
           scope=""
+          className={this.props.className}
           user={this.props.user}
           loadUser={this.props.loadUser}
           updateUserRole={this.props.updateUserRole}

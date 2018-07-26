@@ -167,7 +167,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     render() {
-      return <div className="auth">
+      return <div className={this.props.className}>
         <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />
         <Message
           message={this.state.errorMessage}
