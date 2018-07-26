@@ -1,9 +1,7 @@
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 const saveProject = (project:any) => {
-  return fetch(`${API}/project`, postHeaders(project))
-      .then((res: any) => res.json())
-      .catch((err: Error) => console.error(err));
+  return request(`${API}/project`, postHeaders(project));
 };
 
 export default saveProject;

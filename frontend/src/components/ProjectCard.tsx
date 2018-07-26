@@ -9,6 +9,7 @@ import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
+import Message from './Message';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -193,6 +194,8 @@ interface CardState {
   pledgeOpen: boolean;
   liked: boolean;
   bookmarked: boolean;
+  messageOpen: boolean;
+  errorMessage: string;
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
@@ -209,12 +212,16 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       pledgeOpen: false,
       liked: this.props.liked,
       bookmarked: this.props.bookmarked,
+      messageOpen: false,
+      errorMessage: '',
     };
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -297,7 +304,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleLike();
         })
         .catch((err: Error) => {
-          console.error(err);
+          this.onFailure(new Error('Something went wrong while liking this project'));
         });
     }
   }
@@ -310,9 +317,26 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleBookmark();
         })
         .catch((err: Error) => {
-          console.error(err);
+          this.onFailure(new Error('Something went wrong while bookmarking this project'));
         });
     }
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      errorMessage: message,
+      messageOpen: true,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   render() {
@@ -412,6 +436,11 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }

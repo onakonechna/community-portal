@@ -54,6 +54,7 @@ const withLogin = (WrappedCompoent: any) => {
       super(props);
       this.handleLogin = this.handleLogin.bind(this);
       this.handleLogout = this.handleLogout.bind(this);
+      this.handleMessageChange = this.handleMessageChange.bind(this);
       this.handleMessageClose = this.handleMessageClose.bind(this);
       this.state = {
         errorMessage: 'hola amigos, que tal?',

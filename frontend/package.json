@@ -55,6 +55,7 @@
     "@types/redux-mock-store": "0.0.13",
     "@types/uuid": "^3.4.3",
     "awesome-typescript-loader": "^5.2.0",
+    "axios-mock-adapter": "^1.15.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",

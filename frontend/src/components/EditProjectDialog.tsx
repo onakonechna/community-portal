@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
+import Message from './Message';
+
 import { editProjectBody } from '../actions';
 
 import { withStyles, Theme } from '@material-ui/core/styles';
@@ -127,6 +129,8 @@ interface EditDialogState {
   github: string;
   slack: string;
   [key: string]: boolean | Date | string | number | string[];
+  errorMessage: string;
+  messageOpen: boolean;
 }
 
 export class EditProjectDialog extends React.Component<DispatchProps & EditDialogProps, EditDialogState> {
@@ -145,6 +149,8 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       goal: project.estimated,
       github: project.github_address,
       slack: project.slack_channel,
+      errorMessage: '',
+      messageOpen: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -153,6 +159,8 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   handleChange(field: string) {
@@ -242,11 +250,29 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
         });
       })
       .catch((err: Error) => {
+        this.onFailure(new Error('Something went wrong while editing this project'));
         this.setState({
           success: false,
           loading: false,
         });
       });
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      errorMessage: message,
+      messageOpen: true,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   render() {
@@ -395,6 +421,11 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
           </DialogActions>
           </div>
         </Dialog>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }

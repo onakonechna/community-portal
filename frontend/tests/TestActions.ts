@@ -1,5 +1,11 @@
 import * as actions from '../src/actions';
-import * as fetchMock from 'fetch-mock';
+
+var axios = require('axios');
+var MockAdapter = require('axios-mock-adapter');
+
+// This sets the mock adapter on the default instance
+var mock = new MockAdapter(axios);
+
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -26,8 +32,8 @@ describe('test actions', () => {
   const store = mockStore({ projects: [] });
 
   afterEach(() => {
-    fetchMock.reset();
-    fetchMock.restore();
+    mock.reset();
+    mock.restore();
   });
 
   it('test projectsLoaded action', () => {
@@ -39,22 +45,27 @@ describe('test actions', () => {
   });
 
   it('test addProject action', () => {
-    fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.post(`${API}/project`, projectList);
-    // const expectedAction = {
-    //   type: actions.TypeKeys.PROJECTS_LOADED,
-    // };
+    mock.onGet(`http://localhost:3000/projects`).reply(200, { projects: projectList });
     const expectedAction: any = [];
 
-    return store.dispatch<any>(actions.addProject(projectList))
-      .then(() => {
-        expect(store.getActions()).toEqual(expectedAction);
-      });
+    const addProjectAction = (dispatch: any) => {
+      axios.get(`http://localhost:3000/projects`)
+        .then((response) => {
+          expect(response.data.projects).toBe(projectList);
+        });
+    };
+
+    store.dispatch<any>(addProjectAction).then(() => {});
+
+    // return store.dispatch<any>(addProjectAction)
+    //   .then(() => {
+    //     expect(store.getActions()).toEqual(expectedAction);
+    //   });
   });
 
   it('test editProject action', () => {
-    fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.put(`${API}/project`, projectList);
+    mock.onGet(`${API}/projects`).reply(200, projectList);
+    mock.onPost(`${API}/projects`).reply(200, projectList);
 
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
@@ -74,7 +85,7 @@ describe('test actions', () => {
       projects: projectList,
     };
 
-    fetchMock.getOnce(`${API}/projects`, projectList);
+    mock.onGet(`${API}/projects`).replyOnce(200, projectList);
 
     return store.dispatch<any>(actions.loadProjects())
       .then(() => {
