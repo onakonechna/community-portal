@@ -173,6 +173,8 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleSave = this.handleSave.bind(this);
     this.handleTechSubmission = this.handleTechSubmission.bind(this);
     this.setLoadingState = this.setLoadingState.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   handleChange(field: string) {
@@ -241,12 +243,10 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       const data = this.prepareData();
       this.props.addProject(data)
         .then((response: any) => {
-          console.log('succeed');
           this.setLoadingState(true, false);
           this.setState(state);
         })
         .catch((error: Error) => {
-          console.log('fail');
           this.setLoadingState(false, false);
           this.onFailure(new Error('Opps, something went wrong while saving this project'));
         });

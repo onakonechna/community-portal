@@ -165,6 +165,8 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   handleChange(field: string) {

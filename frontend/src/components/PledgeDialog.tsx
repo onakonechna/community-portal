@@ -51,6 +51,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
     };
     this.handlePledgeChange = this.handlePledgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
