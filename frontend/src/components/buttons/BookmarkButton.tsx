@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Bookmark from '@material-ui/icons/Bookmark';
 
-// import { withStyles, Theme } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
 interface BookmarkProjectProps {
   bookmarked: boolean;
@@ -17,16 +17,17 @@ interface BookmarkProjectProps {
   className: string;
 }
 
-// const styles = (theme:Theme) => ({
-//   bookmark: {
-//     'margin-left': 'auto',
-//     position: 'relative' as 'relative',
-//     left: '1rem',
-//   },
-// });
+const styles = (theme:Theme) => ({
+  bookmarked: {
+    color: '#FF2B00',
+  },
+  unbookmarked: {
+    color: '#27A2AA',
+  },
+});
 
 const BookmarkButton = (props: BookmarkProjectProps) => {
-  // const { classes } = props;
+  const { classes } = props;
   return (
     <IconButton
       aria-label="Bookmark"
@@ -34,12 +35,10 @@ const BookmarkButton = (props: BookmarkProjectProps) => {
       onClick={props.handler}
     >
       <Bookmark
-        style={{ color: props.bookmarked ? '#FF2B00' : '#27A2AA' }}
+        className={props.bookmarked ? classes.bookmarked : classes.unbookmarked}
       />
     </IconButton>
   );
 };
 
-export default BookmarkButton;
-
-// export default withStyles(styles)(BookmarkButton);
+export default withStyles(styles)(BookmarkButton);

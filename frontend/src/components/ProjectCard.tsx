@@ -31,8 +31,6 @@ const styles = (theme:any) => ({
   },
   bookmark: {
     'margin-left': 'auto',
-    position: 'relative' as 'relative',
-    left: '1rem',
   },
   card: {
     'background-color': '#F2F3F3',
