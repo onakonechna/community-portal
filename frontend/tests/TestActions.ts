@@ -1,5 +1,6 @@
 import * as actions from '../src/actions';
-import * as fetchMock from 'fetch-mock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -25,11 +26,6 @@ describe('test actions', () => {
 
   const store = mockStore({ projects: [] });
 
-  afterEach(() => {
-    fetchMock.reset();
-    fetchMock.restore();
-  });
-
   it('test projectsLoaded action', () => {
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
@@ -39,11 +35,9 @@ describe('test actions', () => {
   });
 
   it('test addProject action', () => {
-    fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.post(`${API}/project`, projectList);
-    // const expectedAction = {
-    //   type: actions.TypeKeys.PROJECTS_LOADED,
-    // };
+    const axiosMock = new MockAdapter(axios);
+    axiosMock.onGet(`${API}/projects`).reply(200, projectList);
+    axiosMock.onPost(`${API}/project`).reply(200, projectList);
     const expectedAction: any = [];
 
     return store.dispatch<any>(actions.addProject(projectList))
@@ -53,8 +47,9 @@ describe('test actions', () => {
   });
 
   it('test editProject action', () => {
-    fetchMock.get(`${API}/projects`, projectList);
-    fetchMock.put(`${API}/project`, projectList);
+    const axiosMock = new MockAdapter(axios);
+    axiosMock.onGet(`${API}/projects`).reply(200, projectList);
+    axiosMock.onPut(`${API}/project`).reply(200, projectList);
 
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
@@ -69,12 +64,13 @@ describe('test actions', () => {
   });
 
   it('test loadProject action', () => {
+    const axiosMock = new MockAdapter(axios);
     const expectedAction = {
       type: actions.TypeKeys.PROJECTS_LOADED,
       projects: projectList,
     };
 
-    fetchMock.getOnce(`${API}/projects`, projectList);
+    axiosMock.onGet(`${API}/projects`).replyOnce(200, projectList);
 
     return store.dispatch<any>(actions.loadProjects())
       .then(() => {

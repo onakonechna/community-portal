@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { Request, Response } from './../config/Types';
+import { Callback, Request, Response } from './../config/Types';
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
@@ -43,8 +44,8 @@ export default class Endpoint {
     this.app.use(process.env.BASE_PATH, this.router);
   }
 
-  wrap() {
-    return serverless(this.app, {
+  execute() {
+    const handler = serverless(this.app, {
       request(request: Request, event: any, context: any) {
         if (event.requestContext.authorizer !== undefined) {
           if (event.requestContext.authorizer.claims !== undefined) {
@@ -55,5 +56,11 @@ export default class Endpoint {
         }
       },
     });
+
+    return (
+      event: CustomAuthorizerEvent,
+      context: APIGatewayEventRequestContext,
+      callback: Callback,
+    ) => handler(event, context, callback);
   }
 }

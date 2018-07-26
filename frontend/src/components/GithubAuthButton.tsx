@@ -10,8 +10,6 @@ declare const GITHUB_CLIENT_ID: string;
 export const gitId = GITHUB_CLIENT_ID;
 export const frontEnd = __FRONTEND__;
 
-console.log(gitId);
-
 interface GithubAuthButtonProps {
   label?: string;
   scope: string;
@@ -56,6 +54,7 @@ const withLogin = (WrappedCompoent: any) => {
       super(props);
       this.handleLogin = this.handleLogin.bind(this);
       this.handleLogout = this.handleLogout.bind(this);
+      this.handleMessageChange = this.handleMessageChange.bind(this);
       this.handleMessageClose = this.handleMessageClose.bind(this);
       this.state = {
         errorMessage: 'hola amigos, que tal?',
@@ -169,7 +168,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     render() {
-      return <div className="auth">
+      return <div className={this.props.className}>
         <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />
         <Message
           message={this.state.errorMessage}

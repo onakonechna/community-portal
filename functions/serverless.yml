@@ -3,8 +3,17 @@ custom:
     secret: ${env:JWT_SECRET}
     expiration_time: 20d
   github:
-    client_id: ${self:provider.github_client_id} # github auth app client_id
-    client_secret: ${self:provider.github_client_secret} # github auth app client_secret
+    dev:
+      github_client_id: ${env:DEV_GITHUB_CLIENT_ID}
+      github_client_secret: ${env:DEV_GITHUB_CLIENT_SECRET}
+    staging:
+      github_client_id: ${env:STAGING_GITHUB_CLIENT_ID}
+      github_client_secret: ${env:STAGING_GITHUB_CLIENT_SECRET}
+    production:
+      github_client_id: ${env:GITHUB_CLIENT_ID}
+      github_client_secret: ${env:GITHUB_CLIENT_SECRET}
+    client_id: ${self:custom.github.${opt:stage, 'dev'}.github_client_id} # github auth app client_id
+    client_secret: ${self:custom.github.${opt:stage, 'dev'}.github_client_secret} # github auth app client_secret
   dynamodb:
     start:
       migrate: true
@@ -31,14 +40,12 @@ custom:
    domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
    stage: ${self:provider.stage} # Stage will be created for every branch
-   createRoute53Record: false
+   createRoute53Record: false 
 
 provider:
   name: aws
   runtime: nodejs8.10
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
-  github_client_id: ${env:GITHUB_CLIENT_ID}
-  github_client_secret: ${env:GITHUB_CLIENT_SECRET}
   region: us-east-1
   environment:
     REGION: ${self:provider.region}

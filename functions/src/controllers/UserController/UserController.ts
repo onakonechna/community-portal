@@ -70,11 +70,12 @@ export default class UserController implements UserControllerInterface {
     return (result: any) => {
       if (result.Item) {
         const { user_id, upvoted_projects } = result.Item;
+        const returned_projects = upvoted_projects ? upvoted_projects.values : [];
         return {
           status: 200,
           payload: {
             user_id,
-            upvoted_projects: upvoted_projects.values,
+            upvoted_projects: returned_projects,
           },
         };
       }
@@ -89,11 +90,12 @@ export default class UserController implements UserControllerInterface {
     return (result: any) => {
       if (result.Item) {
         const { user_id, bookmarked_projects } = result.Item;
+        const returned_projects = bookmarked_projects ? bookmarked_projects.values : [];
         return {
           status: 200,
           payload: {
             user_id,
-            bookmarked_projects: bookmarked_projects.values,
+            bookmarked_projects: returned_projects,
           },
         };
       }

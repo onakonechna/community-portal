@@ -9,6 +9,7 @@ import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
+import Message from './Message';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -25,9 +26,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LinesEllipsis from 'react-lines-ellipsis';
 
-const styles = (theme:any) => ({
+const styles = (theme: any) => ({
   avatar: {
     margin: 10,
+  },
+  bookmark: {
+    'margin-left': 'auto',
   },
   card: {
     'background-color': '#F2F3F3',
@@ -47,19 +51,18 @@ const styles = (theme:any) => ({
   },
   cardContent: {
     'margin-bottom': 'auto',
-  },
-  centered: {
-    display: 'flex',
-    justifyContent: 'left',
-    'font-size': '2rem',
-    'margin-bottom': '1rem',
+    position: 'relative' as 'relative',
   },
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
+    position: 'absolute' as 'absolute',
+    top: '10rem',
   },
   contributorDiv: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '18rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -72,9 +75,18 @@ const styles = (theme:any) => ({
     'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
+    position: 'absolute' as 'absolute',
+    top: '6.5rem',
+    [theme.breakpoints.down('md')]: {
+      left: '1rem',
+      right: '1rem',
+    },
   },
   estimatedText: {
     'font-weight': '200',
+  },
+  hourText: {
+    'font-size': '1rem',
   },
   github: {
     'margin-left': 'auto',
@@ -99,10 +111,16 @@ const styles = (theme:any) => ({
   },
   progressDiv: {
     'margin-left': 'auto',
-    position: 'relative' as 'relative',
+    position: 'absolute' as 'absolute',
+    left: '20rem',
+    [theme.breakpoints.down('md')]: {
+      left: '12rem',
+    },
   },
   row: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '14rem',
   },
   sidebar: {
     display: 'flex',
@@ -110,6 +128,16 @@ const styles = (theme:any) => ({
   },
   smallText: {
     'margin-bottom': '0.25rem',
+  },
+  title: {
+    'font-size': '2rem',
+    'font-family': 'system-ui',
+    [theme.breakpoints.down('md')]: {
+      'font-size': '1.5rem',
+    },
+  },
+  topRow: {
+    display: 'flex',
   },
   upvotes: {
     'font-size': '1rem',
@@ -166,6 +194,8 @@ interface CardState {
   pledgeOpen: boolean;
   liked: boolean;
   bookmarked: boolean;
+  messageOpen: boolean;
+  errorMessage: string;
 }
 
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
@@ -182,15 +212,19 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       pledgeOpen: false,
       liked: this.props.liked,
       bookmarked: this.props.bookmarked,
+      messageOpen: false,
+      errorMessage: '',
     };
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
-  componentWillReceiveProps(nextProps:any) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState({
       liked: nextProps.liked,
       bookmarked: nextProps.bookmarked,
@@ -270,7 +304,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleLike();
         })
         .catch((err: Error) => {
-          console.error(err);
+          this.onFailure(new Error('Something went wrong while liking this project'));
         });
     }
   }
@@ -283,9 +317,26 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           this.toggleBookmark();
         })
         .catch((err: Error) => {
-          console.error(err);
+          this.onFailure(new Error('Something went wrong while bookmarking this project'));
         });
     }
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      errorMessage: message,
+      messageOpen: true,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   render() {
@@ -306,9 +357,22 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            <Typography className={classes.centered}>
-              {this.props.project.name}
-            </Typography>
+            <div className={classes.topRow}>
+              <LinesEllipsis
+                className={classes.title}
+                text={this.props.project.name}
+                maxLine="2"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
+              <Bookmark
+                bookmarked={this.state.bookmarked}
+                className={classes.bookmark}
+                handler={this.handleBookmark}
+                project_id={this.props.project.project_id}
+              />
+            </div>
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
@@ -333,26 +397,26 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <CircularProgress
                   className={classes.progress}
                   variant="static"
-                  size={90}
+                  size={100}
                   value={this.getPercentage()}
                 />
                 <CircularProgress
                   variant="static"
                   style={{ color: '#E0E0E0' }}
-                  size={90}
+                  size={100}
                   value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
-                  <label className={classes.estimatedText}>{`${this.props.project.estimated}\n`}</label>
-                  <label>hours</label>
+                  <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
+                  <Typography className={classes.hourText}>{`hours`}</Typography>
                 </Typography>
               </div>
             </div>
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
@@ -368,11 +432,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Bookmark bookmarked={this.state.bookmarked} handler={this.handleBookmark} project_id={this.props.project.project_id} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }
