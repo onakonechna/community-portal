@@ -15,7 +15,7 @@ function loadYAML(filename) {
 
 const projects = require('./fixtures/projects.json');
 const config = loadYAML('./serverless.yml');
-const authUserId = '12760373';
+const authUserId = '39741185';
 
 const secret = process.env.JWT_SECRET;
 
