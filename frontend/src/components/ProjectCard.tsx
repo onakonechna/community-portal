@@ -25,9 +25,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LinesEllipsis from 'react-lines-ellipsis';
 
-const styles = (theme:any) => ({
+const styles = (theme: any) => ({
   avatar: {
     margin: 10,
+  },
+  bookmark: {
+    'margin-left': 'auto',
   },
   card: {
     'background-color': '#F2F3F3',
@@ -132,6 +135,9 @@ const styles = (theme:any) => ({
       'font-size': '1.5rem',
     },
   },
+  topRow: {
+    display: 'flex',
+  },
   upvotes: {
     'font-size': '1rem',
     color: '#27A2AA',
@@ -211,7 +217,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.toggleStatus = this.toggleStatus.bind(this);
   }
 
-  componentWillReceiveProps(nextProps:any) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState({
       liked: nextProps.liked,
       bookmarked: nextProps.bookmarked,
@@ -327,14 +333,22 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            <LinesEllipsis
-              className={classes.title}
-              text={this.props.project.name}
-              maxLine="2"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
-            />
+            <div className={classes.topRow}>
+              <LinesEllipsis
+                className={classes.title}
+                text={this.props.project.name}
+                maxLine="2"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
+              <Bookmark
+                bookmarked={this.state.bookmarked}
+                className={classes.bookmark}
+                handler={this.handleBookmark}
+                project_id={this.props.project.project_id}
+              />
+            </div>
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
@@ -378,7 +392,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
@@ -394,7 +408,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Bookmark bookmarked={this.state.bookmarked} handler={this.handleBookmark} project_id={this.props.project.project_id} />
             <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>

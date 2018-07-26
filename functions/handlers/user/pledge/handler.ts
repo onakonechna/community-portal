@@ -1,3 +1,5 @@
+import { Request, Response } from './../../../config/Types';
+
 import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
 import {
@@ -6,8 +8,6 @@ import {
   ProjectResource,
   UserResource,
 } from './../../../config/Components';
-
-const endpoint = new Endpoint('/user/pledge', 'post');
 
 const dataflows = [
   {
@@ -65,5 +65,8 @@ const dataflows = [
   },
 ];
 
-const handler = new PackageService(endpoint, dataflows).package();
-export { handler };
+const endpoint = new Endpoint('/user/pledge', 'post');
+endpoint.configure((req: Request, res: Response) => {
+  new PackageService(dataflows).package(req, res);
+});
+export const handler = endpoint.execute();

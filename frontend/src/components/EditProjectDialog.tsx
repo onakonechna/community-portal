@@ -21,8 +21,11 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-import Calendar from '@material-ui/icons/DateRange';
 import Close from '@material-ui/icons/Close';
+
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DatePicker from 'material-ui-pickers/DatePicker';
 
 const styles = (theme: Theme) => ({
   actions: {
@@ -33,16 +36,6 @@ const styles = (theme: Theme) => ({
   },
   cardButton: {
     color: '#27A2AA',
-  },
-  calendarIcon: {
-    position: 'absolute' as 'absolute',
-    right: '1rem',
-    top: '2rem',
-    width: '1.5rem',
-    height: '1.5rem',
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
   },
   saveButton: {
     'background-color': '#F16321',
@@ -66,12 +59,13 @@ const styles = (theme: Theme) => ({
     margin: '5px 5px',
     'text-transform': 'capitalize',
   },
+  date: {
+    color: '#F16321',
+  },
   input: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
   },
   goalInput: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
     'text-align': 'center',
   },
@@ -94,7 +88,6 @@ const styles = (theme: Theme) => ({
     },
   },
   select: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
     width: '90%',
   },
@@ -129,11 +122,11 @@ interface EditDialogState {
   size: string;
   name: string;
   description: string;
-  due: string;
+  due: Date;
   goal: number;
   github: string;
   slack: string;
-  [key: string]: boolean | string | number | string[];
+  [key: string]: boolean | Date | string | number | string[];
 }
 
 export class EditProjectDialog extends React.Component<DispatchProps & EditDialogProps, EditDialogState> {
@@ -148,12 +141,13 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       size: project.size,
       name: project.name,
       description: project.description,
-      due: this.handleReadTime(project.due),
+      due: project.due,
       goal: project.estimated,
       github: project.github_address,
       slack: project.slack_channel,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -190,6 +184,12 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
   }
 
+  handleDateChange(setDate: Date) {
+    this.setState({
+      due: setDate,
+    });
+  }
+
   handleDelete(tech: string) {
     return () => {
       const technologies = _.without(this.state.technologies, tech);
@@ -223,7 +223,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       name: this.state.name,
       description: this.state.description,
       size: this.state.size,
-      due: new Date(this.state.due).getTime(),
+      due: this.state.due.getTime(),
       technologies: this.state.technologies,
       github_address: this.state.github,
       estimated: this.state.goal,
@@ -318,19 +318,15 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               <div className={classes.row}>
                 <div className={classes.rowItem} style={{ position: 'relative' }}>
                   <Typography className={classes.label}>Due Date*</Typography>
-                  <Calendar className={classes.calendarIcon}/>
-                  <TextField
-                    required
-                    id="due"
-                    type="date"
-                    InputProps={{ className:classes.input }}
-                    className={classes.textField}
-                    onChange={this.handleChange('due')}
-                    value={this.state.due}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      id="due"
+                      className={classes.date}
+                      onChange={this.handleDateChange}
+                      value={this.state.due}
+                      format="YYYY/MM/DD"
+                    />
+                  </MuiPickersUtilsProvider>
                 </div>
                 <div className={classes.rowItem}>
                   <Typography className={classes.label}>Goal(total hours)*</Typography>
