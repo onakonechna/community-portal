@@ -48,7 +48,7 @@ describe('AddProjectGrid Test Suite', () => {
     const wrapper = mount(<AddProjectDialog classes={classes} addProject={addProject}/>);
     wrapper.setProps({ scope: 'write:project' });
     wrapper.setProps({ role: 'user' });
-    const toggleButton = wrapper.findWhere((b: any) => b.name() === 'button' && b.prop('id') === 'addProject');
+    // const toggleButton = wrapper.findWhere((b: any) => b.name() === 'button' && b.prop('id') === 'addProject');
     // toggleButton.simulate('click');
   });
   const classes = {
