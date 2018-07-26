@@ -6,26 +6,31 @@ let apiHost = "'http://localhost:3000'";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 let public = '';
+let githubClientId = ''
 
 switch(process.env.STAGE) {
     case "production":
-        apiHost = "'https://api.opensource.magento.com'";
-        frontendHost = "'https://opensource.magento.com'";
+        apiHost = JSON.stringify('https://api.opensource.magento.com');
+        frontendHost = JSON.stringify('https://opensource.magento.com');
         reactMode = "production"
+        githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID);
         break;
     case "qa":
-        apiHost = "'https://api.opensource.engcom.magento.com'";
-        frontendHost = "'https://opensource.engcom.magento.com'";
+        apiHost = JSON.stringify('https://api.opensource.engcom.magento.com');
+        frontendHost = JSON.stringify('https://opensource.engcom.magento.com');
+        githubClientId = JSON.stringify(process.env.STAGING_GITHUB_CLIENT_ID);
         break;  
     case "dev":
         apiHost = process.env.ENDPOINT_URL ? 
             JSON.stringify(process.env.ENDPOINT_URL) : 
             JSON.stringify('https://dev.api.opensource.engcom.magento.com');
         frontendHost = "'https://dev.opensource.engcom.magento.com'";
+        githubClientId = JSON.stringify(process.env.DEV_GITHUB_CLIENT_ID);
         break;    
     case "local":
         apiHost = JSON.stringify('http://localhost:3000')
         frontendHost = JSON.stringify('http://localhost:8080');
+        githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)
         break;
     case "custom":
         apiHost = process.env.ENDPOINT_URL ? 
@@ -34,7 +39,8 @@ switch(process.env.STAGE) {
         frontendHost = process.env.FRONTEND 
             ? JSON.stringify(process.env.FRONTEND) 
             : JSON.stringify('http://localhost:8080');
-        break;  
+            githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)    
+        break;
 }
 
 module.exports = {
@@ -49,7 +55,7 @@ module.exports = {
             API_ENDPOINT: apiHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
-            GITHUB_CLIENT_ID: JSON.stringify(process.env.GITHUB_CLIENT_ID),
+            GITHUB_CLIENT_ID: githubClientId,
             PUBLIC_URL: JSON.stringify(public)
           }),
     ],
