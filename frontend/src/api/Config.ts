@@ -1,6 +1,8 @@
 declare const API_ENDPOINT: string;
 export const API = API_ENDPOINT;
 
+import axios from 'axios';
+
 function getToken() {
   const localToken = localStorage.getItem('oAuth');
   const token: any = localToken !== null ? JSON.parse(localToken) : '';
@@ -8,7 +10,6 @@ function getToken() {
 }
 
 export const headers = () => ({
-  mode: <RequestMode>'cors',
   headers: {
     Authorization : getToken(),
     Accept: 'application/json',
@@ -16,10 +17,10 @@ export const headers = () => ({
   },
 });
 
-export const postHeaders = (body:any) => {
+export const postHeaders = (data:any) => {
   return {
-    method: 'POST',
-    body: JSON.stringify(body),
+    data,
+    method: 'post',
     headers: {
       Authorization: getToken(),
       Accept: 'application/json',
@@ -28,14 +29,20 @@ export const postHeaders = (body:any) => {
   };
 };
 
-export const putHeaders = (body:any) => {
+export const putHeaders = (data:any) => {
   return {
-    method: 'PUT',
-    body: JSON.stringify(body),
+    data,
+    method: 'put',
     headers: {
       Authorization: getToken(),
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   };
+};
+
+export const request = (url: string, headers: any) => {
+  return axios(url, headers).then((res: any) => {
+    return res.data;
+  });
 };

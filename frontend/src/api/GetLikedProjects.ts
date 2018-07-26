@@ -1,9 +1,7 @@
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
 const getLikedProjects = () => {
-  return fetch(`${API}/user/likedProjects`, headers())
-    .then((res: any) => res.json())
-    .catch((err: Error) => console.error(err));
+  return request(`${API}/user/likedProjects`, headers());
 };
 
 export default getLikedProjects;

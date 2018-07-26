@@ -1,9 +1,7 @@
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
 const getBookmarkedProjects = () => {
-  return fetch(`${API}/user/bookmarkedProjects`, headers())
-    .then((res:any) => res.json())
-    .catch((err: Error) => console.error(err));
+  return request(`${API}/user/bookmarkedProjects`, headers());
 };
 
 export default getBookmarkedProjects;
