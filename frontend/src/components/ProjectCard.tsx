@@ -25,7 +25,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LinesEllipsis from 'react-lines-ellipsis';
 
-const styles = (theme:any) => ({
+const styles = (theme: any) => ({
   avatar: {
     margin: 10,
   },
@@ -50,19 +50,18 @@ const styles = (theme:any) => ({
   },
   cardContent: {
     'margin-bottom': 'auto',
-  },
-  centered: {
-    display: 'flex',
-    justifyContent: 'left',
-    'font-size': '2rem',
-    'margin-bottom': '1rem',
+    position: 'relative' as 'relative',
   },
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
+    position: 'absolute' as 'absolute',
+    top: '10rem',
   },
   contributorDiv: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '18rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -75,9 +74,18 @@ const styles = (theme:any) => ({
     'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
+    position: 'absolute' as 'absolute',
+    top: '6.5rem',
+    [theme.breakpoints.down('md')]: {
+      left: '1rem',
+      right: '1rem',
+    },
   },
   estimatedText: {
     'font-weight': '200',
+  },
+  hourText: {
+    'font-size': '1rem',
   },
   github: {
     'margin-left': 'auto',
@@ -102,10 +110,16 @@ const styles = (theme:any) => ({
   },
   progressDiv: {
     'margin-left': 'auto',
-    position: 'relative' as 'relative',
+    position: 'absolute' as 'absolute',
+    left: '20rem',
+    [theme.breakpoints.down('md')]: {
+      left: '12rem',
+    },
   },
   row: {
     display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '14rem',
   },
   sidebar: {
     display: 'flex',
@@ -113,6 +127,13 @@ const styles = (theme:any) => ({
   },
   smallText: {
     'margin-bottom': '0.25rem',
+  },
+  title: {
+    'font-size': '2rem',
+    'font-family': 'system-ui',
+    [theme.breakpoints.down('md')]: {
+      'font-size': '1.5rem',
+    },
   },
   topRow: {
     display: 'flex',
@@ -196,7 +217,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.toggleStatus = this.toggleStatus.bind(this);
   }
 
-  componentWillReceiveProps(nextProps:any) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState({
       liked: nextProps.liked,
       bookmarked: nextProps.bookmarked,
@@ -313,9 +334,14 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
             <div className={classes.topRow}>
-              <Typography className={classes.centered}>
-                {this.props.project.name}
-              </Typography>
+              <LinesEllipsis
+                className={classes.title}
+                text={this.props.project.name}
+                maxLine="2"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
               <Bookmark
                 bookmarked={this.state.bookmarked}
                 className={classes.bookmark}
@@ -347,26 +373,26 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <CircularProgress
                   className={classes.progress}
                   variant="static"
-                  size={90}
+                  size={100}
                   value={this.getPercentage()}
                 />
                 <CircularProgress
                   variant="static"
                   style={{ color: '#E0E0E0' }}
-                  size={90}
+                  size={100}
                   value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
-                  <label className={classes.estimatedText}>{`${this.props.project.estimated}\n`}</label>
-                  <label>hours</label>
+                  <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
+                  <Typography className={classes.hourText}>{`hours`}</Typography>
                 </Typography>
               </div>
             </div>
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url}/>
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
