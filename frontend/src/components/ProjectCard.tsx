@@ -76,6 +76,9 @@ const styles = (theme:any) => ({
   estimatedText: {
     'font-weight': '200',
   },
+  hourText: {
+    'font-size': '1rem',
+  },
   github: {
     'margin-left': 'auto',
   },
@@ -333,19 +336,19 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <CircularProgress
                   className={classes.progress}
                   variant="static"
-                  size={90}
+                  size={100}
                   value={this.getPercentage()}
                 />
                 <CircularProgress
                   variant="static"
                   style={{ color: '#E0E0E0' }}
-                  size={90}
+                  size={100}
                   value={100}
                 />
                 <Typography className={classes.progressText}>
                   {`${this.props.project.pledged}/`}
-                  <label className={classes.estimatedText}>{`${this.props.project.estimated}\n`}</label>
-                  <label>hours</label>
+                  <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
+                  <Typography className={classes.hourText}>{`hours`}</Typography>
                 </Typography>
               </div>
             </div>
