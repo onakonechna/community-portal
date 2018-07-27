@@ -1,11 +1,9 @@
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 import { ScheduleMeetingBody } from '../components/ProjectView/ScheduleMeetingDialog';
 
 const scheduleMeeting = (body: ScheduleMeetingBody) => {
-  return fetch(`${API}/project/meeting`, postHeaders(body))
-    .then((res: any) => res.json())
-    .catch((err: Error) => console.error(err));
+  return request(`${API}/project/meeting`, postHeaders(body));
 };
 
-export default scheduleMeeting;
+export default saveProject;
