@@ -2,10 +2,10 @@ import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Request, Response } from './../../config/Types';
+import { Callback, Request, Response } from './../../config/Types';
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
-import Endpoint from './../Endpoint';
 import Validator from './../Validator';
 
 const terminate = (error: Error) => {
@@ -60,13 +60,11 @@ export default class PackageService {
   private dataStore: any;
   private initialData: any;
   private tokenContents: any;
-  private endpoint: Endpoint;
 
-  constructor(endpoint: Endpoint, dataflows: DataflowDefinition[]) {
+  constructor(dataflows: DataflowDefinition[]) {
     this.dataflows = [];
     this.dataStore = {};
 
-    this.endpoint = endpoint;
     this.addDataflows(dataflows);
 
     this.executeDataflows = this.executeDataflows.bind(this);
@@ -280,16 +278,13 @@ export default class PackageService {
     };
   }
 
-  package() {
-    this.endpoint.configure((req: Request, res: Response) => {
-      this.initialData = _.assign(req.query, req.params, req.body);
+  package(req: Request, res: Response) {
+    this.initialData = _.assign(req.query, req.params, req.body);
 
-      // append data from authorization context
-      this.tokenContents = req.tokenContents;
+    // append data from authorization context
+    this.tokenContents = req.tokenContents;
 
-      const dataflowsPromise = new Promise(this.executeDataflows);
-      dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
-    });
-    return this.endpoint.wrap();
+    const dataflowsPromise = new Promise(this.executeDataflows);
+    dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
   }
 }

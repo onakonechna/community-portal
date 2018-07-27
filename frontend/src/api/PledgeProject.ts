@@ -1,11 +1,9 @@
-import { API, postHeaders } from './Config';
+import { API, postHeaders, request } from './Config';
 
 import { PledgeBody } from '../components/PledgeDialog';
 
 const pledgeProject = (body: PledgeBody) => {
-  return fetch(`${API}/user/pledge`, postHeaders(body))
-    .then((res: any) => res.json())
-    .catch((err: Error) => console.error(err));
+  return request(`${API}/user/pledge`, postHeaders(body));
 };
 
 export default pledgeProject;

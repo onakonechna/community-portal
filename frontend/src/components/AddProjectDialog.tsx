@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 
 import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
+import Message from './Message';
 
 import { withStyles, Theme } from '@material-ui/core/styles';
 
@@ -15,13 +16,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Calendar from '@material-ui/icons/DateRange';
 import Close from '@material-ui/icons/Close';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DatePicker from 'material-ui-pickers/DatePicker';
 
 const styles = (theme: Theme) => ({
   actions: {
@@ -32,16 +36,6 @@ const styles = (theme: Theme) => ({
   },
   cardButton: {
     color: '#27A2AA',
-  },
-  calendarIcon: {
-    position: 'absolute' as 'absolute',
-    right: '1rem',
-    top: '2rem',
-    width: '1.5rem',
-    height: '1.5rem',
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
   },
   saveButton: {
     'background-color': '#F16321',
@@ -66,11 +60,9 @@ const styles = (theme: Theme) => ({
     'text-transform': 'capitalize',
   },
   input: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
   },
   goalInput: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
     'text-align': 'center',
   },
@@ -93,7 +85,6 @@ const styles = (theme: Theme) => ({
     },
   },
   select: {
-    border: '0.1rem solid #E0E0E0',
     'border-radius': '5px',
     width: '90%',
   },
@@ -129,11 +120,13 @@ interface DialogState {
   size: string;
   name: string;
   description: string;
-  due: string;
+  due: Date;
   goal: number;
   github: string;
   slack: string;
-  [key: string]: boolean | string | number | Technology[];
+  [key: string]: boolean | Date | string | number | Technology[];
+  errorMessage: string;
+  messageOpen: boolean;
 }
 
 interface Technology {
@@ -150,10 +143,12 @@ const state = {
   loading: false,
   name: '',
   description: '',
-  due: '',
+  due: new Date(),
   goal: 0,
   github: '',
   slack: '',
+  errorMessage: '',
+  messageOpen: false,
 };
 
 export class AddProjectDialog extends React.Component<DispatchProps & DialogProps, DialogState> {
@@ -162,33 +157,52 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.state = state;
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleGoalChange = this.handleGoalChange.bind(this);
+    this.handleTechChange = this.handleTechChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleTechSubmission = this.handleTechSubmission.bind(this);
     this.setLoadingState = this.setLoadingState.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   handleChange(field: string) {
     return (event: any) => {
       const newItem = event.target.value;
-      if (field === 'technologies') {
-        this.setState({
-          technologiesString: newItem,
-        });
-      } else if (field === 'goal') {
-        if (newItem === 'NaN') {
-          this.setState({ goal: 0 });
-        } else {
-          this.setState({ goal: parseInt(newItem, 10) });
-        }
+      this.setState({
+        [field]: newItem,
+      });
+    };
+  }
+
+  handleTechChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      this.setState({
+        technologiesString: newItem,
+      });
+    };
+  }
+
+  handleGoalChange() {
+    return (event: any) => {
+      const newItem = event.target.value;
+      if (newItem === 'NaN') {
+        this.setState({ goal: 0 });
       } else {
-        this.setState({
-          [field]: newItem,
-        });
+        this.setState({ goal: parseInt(newItem, 10) });
       }
     };
+  }
+
+  handleDateChange(setDate: Date) {
+    this.setState({
+      due: setDate,
+    });
   }
 
   handleDelete(tech:string) {
@@ -241,7 +255,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         })
         .catch((error: Error) => {
           this.setLoadingState(false, false);
-          console.log(error);
+          this.onFailure(new Error('Something went wrong while saving this project'));
         });
     }
   }
@@ -256,7 +270,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       name: this.state.name,
       description: this.state.description,
       size: this.state.size,
-      due: new Date(this.state.due).getTime(),
+      due: this.state.due.getTime(),
       technologies: this.handleTechSubmission(tech),
       github_address: this.state.github,
       estimated: this.state.goal,
@@ -271,6 +285,23 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       success,
       loading,
     });
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      messageOpen: true,
+      errorMessage: message,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   render() {
@@ -335,7 +366,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 margin="dense"
                 InputProps={{ className:classes.input }}
                 id="technologies"
-                onChange={this.handleChange('technologies')}
+                onChange={this.handleTechChange()}
                 onKeyPress={this.handleKeyPress}
                 value={this.state.technologiesString}
                 type="text"
@@ -345,19 +376,14 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               <div className={classes.row}>
                 <div className={classes.rowItem} style={{ position: 'relative' }}>
                   <Typography className={classes.label}>Due Date*</Typography>
-                  <Calendar className={classes.calendarIcon}/>
-                  <TextField
-                    required
-                    id="due"
-                    type="date"
-                    InputProps={{ className:classes.input }}
-                    className={classes.textField}
-                    onChange={this.handleChange('due')}
-                    value={this.state.due}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      id="due"
+                      onChange={this.handleDateChange}
+                      value={this.state.due}
+                      format="YYYY/MM/DD"
+                    />
+                  </MuiPickersUtilsProvider>
                 </div>
                 <div className={classes.rowItem}>
                   <Typography className={classes.label}>Goal(total hours)*</Typography>
@@ -366,7 +392,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                     id="goal"
                     type="number"
                     InputProps={{ className:classes.goalInput }}
-                    onChange={this.handleChange('goal')}
+                    onChange={this.handleGoalChange()}
                     value={this.state.goal}
                   />
                 </div>
@@ -427,6 +453,11 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
             </DialogActions>
           </div>
         </Dialog>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }

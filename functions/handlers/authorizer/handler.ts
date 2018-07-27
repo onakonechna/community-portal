@@ -1,4 +1,5 @@
 import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
+import { Callback } from './../../config/Types';
 
 const jwt = require('jsonwebtoken');
 
@@ -30,10 +31,6 @@ const getUniversalPath = function (methodArn: string) {
 };
 
 const IS_OFFLINE = process.env.IS_OFFLINE;
-
-// Override aws-lambda type definition to support string errors
-// string error supported in latest Github version but not in npm version as of 06-06-2018
-type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
 
 interface customErrorInterface {
   customErrorString: string;

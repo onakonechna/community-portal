@@ -1,11 +1,7 @@
-import { API, headers } from './Config';
+import { API, headers, request } from './Config';
 
-const fetchProject = (project_id: string) => {
-  return fetch(`${API}/project/${project_id}`, headers)
-          .then((res:any) => res.json())
-          .catch((err:any) => {
-            console.log(err);
-          });
+const fetchProjects = (project_id: string) => {
+  return request(`${API}/project/${project_id}`, headers());
 };
 
-export default fetchProject;
+export default fetchProjects;

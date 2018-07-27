@@ -3,6 +3,9 @@ import _filter from 'lodash/filter';
 import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+
+import { withStyles, Theme } from '@material-ui/core/styles';
 
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
@@ -10,21 +13,51 @@ import { loadProjects } from './../actions';
 
 import Grid from '@material-ui/core/Grid';
 
-const styles = {
-  margin: '0 auto',
-  justifyContent: 'center',
-};
+const styles = (theme: Theme) => ({
+  invisibleCard: {
+    'background-color': '#FFFFFF',
+    'opacity': 0,
+    height: '1rem',
+    [theme.breakpoints.down('md')]: {
+      width: '20rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '25rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '30rem',
+    },
+    display: 'flex',
+    'flex-direction': 'column',
+    'justify-content': 'space-between',
+  },
+  hiddenGridSmall: {
+    [theme.breakpoints.down(783)]: {
+      display: 'none',
+    },
+  },
+  hiddenGridLarge: {
+    [theme.breakpoints.down(1615)]: {
+      display: 'none',
+    },
+  },
+});
 
 interface GridStateProps {
   projects: any;
+  user: any;
+}
+
+interface DispatchProps {
+  loadProjects: () => void;
 }
 
 interface GridProps {
   project?: {};
   user?: any;
-  loadProjects: () => void;
   handler?: () => void;
   filter?: string;
+  classes?: any;
 }
 
 interface IProject {
@@ -52,9 +85,9 @@ interface GridState {
   projects: IProject[];
 }
 
-export class ProjectGrid extends React.Component<GridProps & GridStateProps, GridState> {
+export class ProjectGrid extends React.Component<GridProps & GridStateProps & DispatchProps, GridState> {
 
-  constructor(props: GridProps & GridStateProps) {
+  constructor(props: GridProps & GridStateProps & DispatchProps) {
     super(props);
     this.updateGrid = this.updateGrid.bind(this);
   }
@@ -96,6 +129,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div style={{ padding: '40px' }}>
       <IntroText />
@@ -103,7 +137,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
           container
           direction="row"
           spacing={32}
-          style={styles}
+          justify="center"
         >
           {this.props.projects && this.filter().map((project: any) => (
             <Grid item key={project.project_id}>
@@ -115,6 +149,8 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps, Gri
               />
             </Grid>
           ))}
+          {classes && <Grid item className={classes.hiddenGridSmall}><div className={classes.invisibleCard} /></Grid>}
+          {classes && <Grid item className={classes.hiddenGridLarge}><div className={classes.invisibleCard} /></Grid>}
         </Grid>
       </div>
     );
@@ -134,6 +170,11 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(
-  mapStateToProps, mapDispatchToProps,
+export default compose<GridStateProps, GridProps>(
+  withStyles(styles, {
+    name: 'ProjectGrid',
+  }),
+  connect<GridStateProps, DispatchProps, GridProps>(
+    mapStateToProps, mapDispatchToProps,
+  ),
 )(ProjectGrid);
