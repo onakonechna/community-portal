@@ -5,8 +5,6 @@ import GithubAuthModal, { toQuery } from './GithubAuthModal';
 import Message from './Message';
 import { API } from './../api/Config';
 
-//import './auth.css';
-
 declare const __FRONTEND__: string;
 declare const GITHUB_CLIENT_ID: string;
 export const gitId = GITHUB_CLIENT_ID;
@@ -56,6 +54,7 @@ const withLogin = (WrappedCompoent: any) => {
       super(props);
       this.handleLogin = this.handleLogin.bind(this);
       this.handleLogout = this.handleLogout.bind(this);
+      this.handleMessageChange = this.handleMessageChange.bind(this);
       this.handleMessageClose = this.handleMessageClose.bind(this);
       this.state = {
         errorMessage: 'hola amigos, que tal?',
@@ -88,7 +87,6 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleMessageChange(message: string) {
-      console.log('handling message...');
       this.setState((prevState: GithubAuthButtonState) => ({
         errorMessage: message,
         messageOpen: true,
@@ -96,7 +94,6 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleLogin() {
-      console.log('logging in');
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
@@ -171,7 +168,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     render() {
-      return <div className="auth">
+      return <div className={this.props.className}>
         <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />
         <Message
           message={this.state.errorMessage}

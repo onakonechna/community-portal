@@ -3,7 +3,7 @@ import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import GithubAuthButton, { User }from './GithubAuthButton';
+import GithubAuthButton, { User } from './GithubAuthButton';
 import { LoadUserAction,
          UpdateUserRoleAction,
          getLikedProjectsAction,
@@ -72,6 +72,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
       if (!allowedRoles.includes(role)) {
         return <Login
           scope=""
+          className={this.props.className}
           user={this.props.user}
           loadUser={this.props.loadUser}
           updateUserRole={this.props.updateUserRole}

@@ -143,8 +143,7 @@ export const getLikedProjectsAction: (any) = () => {
           projects = res['upvoted_projects'] || [];
           dispatch(loadLikedProjectsAction(projects));
         }
-      })
-      .catch((err: Error) => console.error(err));
+      });
   };
 };
 
@@ -157,8 +156,7 @@ export const getBookmarkedProjectsAction: (any) = () => {
           projects = res['bookmarked_projects'] || [];
           dispatch(loadBookmarkedProjectsAction(projects));
         }
-      })
-      .catch((err: Error) => console.error(err));
+      });
   };
 };
 
@@ -193,9 +191,6 @@ export const loadProjects: (any) = () => {
     return fetchProjects()
       .then((projects: any) => {
         dispatch(projectsLoaded(projects));
-      })
-      .catch((err: any) => {
-        console.log(err);
       });
   };
 };

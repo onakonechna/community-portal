@@ -33,6 +33,10 @@ const styles = (theme:any) => ({
       padding: '0',
     },
   },
+  rightSide: {
+    display: 'flex',
+    'margin-left': 'auto',
+  },
 });
 
 interface HeadBarProps {
@@ -98,8 +102,10 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
             />
           </span>
           <Logo />
-          <AddProject className={classes.addButton} />
-          <Login />
+            <div className={classes.rightSide}>
+              <AddProject className={classes.addButton} />
+              <Login />
+            </div>
         </Toolbar>
       </AppBar>
     );
