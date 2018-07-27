@@ -131,7 +131,7 @@ const styles = (theme: any) => ({
   slack: {
     width: '3rem',
     height: '3rem',
-    color: '##27A2AA',
+    fill: '##27A2AA',
   },
   smallText: {
     'margin-bottom': '0.25rem',
