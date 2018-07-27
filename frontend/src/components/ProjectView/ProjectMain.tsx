@@ -40,7 +40,7 @@ interface IProject {
   created_date: string;
 }
 
-interface StateProps: {
+interface StateProps {
   project: IProject;
   user: any;
 }
@@ -140,7 +140,7 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default compose<StateProps, ProjectMainProps>(
+export default compose<{}, ProjectMainProps>(
   withStyles(styles, {
     name: 'ProjectMain',
   }),

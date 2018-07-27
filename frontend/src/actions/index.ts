@@ -170,7 +170,7 @@ export const loadLikedProjectsAction = (projects: any) => {
 export const loadProject = (project_id: string) => {
   return (dispatch: Dispatch) => {
     return fetchProject(project_id)
-      .then((project) => {
+      .then((project: any) => {
         dispatch(projectLoaded(project));
       })
       .catch((err: any) => {
