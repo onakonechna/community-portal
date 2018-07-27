@@ -56,6 +56,7 @@ const styles = (theme: any) => ({
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
+
   },
   contributorDiv: {
     display: 'flex',
@@ -82,6 +83,9 @@ const styles = (theme: any) => ({
   },
   estimatedText: {
     'font-weight': '200',
+  },
+  github: {
+    'margin-left': 'auto',
   },
   hourText: {
     'font-size': '1rem',
