@@ -59,12 +59,17 @@ class GithubAuthModal {
             reject(new Error('The popup was closed'));
           }
 
-          if (popup.location.href === this.url ||
-            popup.location.pathname === 'blank' ||
-            !popup.location.pathname
-          ) {
+          try {
+            if (popup.location.href === this.url ||
+              popup.location.pathname === 'blank' ||
+              !popup.location.pathname
+            ) {
+              return;
+            }
+          } catch (error) {
             return;
           }
+
           const params = qs.parse(popup.location.search.substr(1)).code;
           resolve(params);
           this.close();
