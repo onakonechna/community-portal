@@ -255,7 +255,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         })
         .catch((error: Error) => {
           this.setLoadingState(false, false);
-          this.onFailure(new Error('Opps, something went wrong while saving this project'));
+          this.onFailure(new Error('Something went wrong while saving this project'));
         });
     }
   }
