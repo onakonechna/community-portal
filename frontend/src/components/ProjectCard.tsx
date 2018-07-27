@@ -381,7 +381,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               basedOn="letters"
             />
             <div className={classes.labels}>
-              {this.props.project.technologies.map(technology => (
+              {this.props.project.technologies.slice(0, 5).map(technology => (
                 <Chip className={classes.chip} key={technology} label={technology} />
               ))}
             </div>
