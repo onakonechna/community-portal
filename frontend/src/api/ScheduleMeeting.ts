@@ -6,4 +6,4 @@ const scheduleMeeting = (body: ScheduleMeetingBody) => {
   return request(`${API}/project/meeting`, postHeaders(body));
 };
 
-export default saveProject;
+export default scheduleMeeting;
