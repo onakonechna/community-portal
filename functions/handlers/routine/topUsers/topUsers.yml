@@ -1,0 +1,6 @@
+pledge:
+  name: ${self:provider.stage}-topUsers
+  role: topUsersRole
+  handler: handlers/routine/topUsers/handler.handler
+  events:
+  - schedule: rate(1 minute)

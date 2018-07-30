@@ -40,7 +40,7 @@ custom:
    domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
    stage: ${self:provider.stage} # Stage will be created for every branch
-   createRoute53Record: false 
+   createRoute53Record: false
 
 provider:
   name: aws
@@ -107,6 +107,7 @@ functions:
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
+  - ${file(./handlers/routine/topUsers/topUsers.yml)}
 
 resources:
   Resources:
@@ -142,6 +143,7 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
+    topUsersRole: ${file(./handlers/routine/topUsers/role.yml):topUsersRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
