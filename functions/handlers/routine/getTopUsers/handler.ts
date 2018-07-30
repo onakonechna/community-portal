@@ -1,7 +1,8 @@
-import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 import { Request, Response } from './../../../config/Types';
 
 import PackageService from './../../../src/services/PackageService';
+
+import rankUsers from './../../../src/algorithms/rankUsers';
 
 import {
   SkillController,
@@ -17,16 +18,17 @@ const dataflows = [
 ];
 
 const onSuccess = (response: any) => {
-  console.log('success', response);
+  const results = rankUsers(response.data);
+  console.log('results:', results);
 };
 
 const onFailure = (response: any) => {
-  console.log('failure', response);
+  console.log('rankUsers failed to run:', JSON.stringify(response));
 };
 
-export const handler = (event: CustomAuthorizerEvent, context: APIGatewayEventRequestContext) => {
+export const handler = (event: any, context: any) => {
   const time = new Date();
-  console.log(`Your cron function ran at ${time}`);
+  console.log(`${context.functionName} ran at ${time}`);
 
   const packageService = new PackageService(dataflows);
   packageService.package(onSuccess, onFailure);
