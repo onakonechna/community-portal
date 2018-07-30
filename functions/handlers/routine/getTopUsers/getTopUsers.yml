@@ -1,0 +1,6 @@
+getTopUsers:
+  name: ${self:provider.stage}-getTopUsers
+  role: getTopUsersRole
+  handler: handlers/routine/getTopUsers/handler.handler
+  events:
+  - schedule: rate(1 minute)

@@ -107,7 +107,7 @@ functions:
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
-  - ${file(./handlers/routine/topUsers/topUsers.yml)}
+  - ${file(./handlers/routine/getTopUsers/getTopUsers.yml)}
 
 resources:
   Resources:
@@ -143,7 +143,7 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
-    topUsersRole: ${file(./handlers/routine/topUsers/role.yml):topUsersRole}
+    getTopUsersRole: ${file(./handlers/routine/getTopUsers/role.yml):getTopUsersRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:
