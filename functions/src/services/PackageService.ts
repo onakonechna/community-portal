@@ -145,9 +145,6 @@ export default class PackageService {
   }
 
   executeDataflows(resolve: any, reject: any) {
-    if (this.initialData === undefined) {
-      throw 'initialData has not been set yet';
-    }
     if (this.dataflows.length === 0) {
       throw 'No dataflow has been added';
     }
@@ -278,7 +275,7 @@ export default class PackageService {
     };
   }
 
-  package(initialData: any, onSuccess: any, onFailure: any, tokenContents: any = undefined) {
+  package(onSuccess: any, onFailure: any, initialData: any = undefined, tokenContents: any = undefined) {
     this.initialData = initialData;
     this.tokenContents = tokenContents;
     const dataflowsPromise = new Promise(this.executeDataflows);
