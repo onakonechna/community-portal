@@ -153,7 +153,7 @@ interface CardProps {
     name?: string,
     description: string,
     status: string,
-    estimated?: number,
+    estimated: number,
     pledged?: number,
     upvotes: number,
     owner: string,
@@ -247,8 +247,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 
   countContributors(project: any) {
-    const contributors = Object.keys(project.pledgers);
-    const numOfPledgers = contributors.length;
+    const numOfPledgers = Object.keys(project.pledgers).length;
     switch (numOfPledgers) {
       case 0:
         return 'No contributors yet';
@@ -259,10 +258,10 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }
   }
 
-  getPercentage() {
-    const { estimated, pledged } = this.props.project;
-    if (!pledged || !estimated || pledged === 0) { return 0; }
-    return (pledged / estimated) * 100;
+  getPercentage(project: any) {
+    const numOfPledgers = Object.keys(project.pledgers).length;
+    const { estimated } = this.props.project;
+    return (numOfPledgers / estimated) * 100;
   }
 
   toggleStatus(field: string) {
@@ -398,7 +397,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                   className={classes.progress}
                   variant="static"
                   size={100}
-                  value={this.getPercentage()}
+                  value={this.getPercentage(this.props.project)}
                 />
                 <CircularProgress
                   variant="static"
@@ -407,9 +406,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                   value={100}
                 />
                 <Typography className={classes.progressText}>
-                  {`${this.props.project.pledged}/`}
+                  {`${Object.keys(this.props.project.pledgers).length}/`}
                   <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                  <Typography className={classes.hourText}>{`hours`}</Typography>
+                  <Typography className={classes.hourText}>{`pledgers`}</Typography>
                 </Typography>
               </div>
             </div>

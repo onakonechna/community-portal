@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 const styles = (theme: Theme) => ({
   invisibleCard: {
     'background-color': '#FFFFFF',
-    'opacity': 0,
+    opacity: 0,
     height: '1rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
