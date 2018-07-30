@@ -25,6 +25,7 @@ export default class Endpoint {
   private method: string;
   private app: any;
   private router: any;
+  private packageService: PackageService;
 
   constructor(url: string, method: string, packageService: PackageService) {
     this.url = url;
@@ -34,18 +35,20 @@ export default class Endpoint {
     this.app.use(cors(corsOptions));
     this.app.use(bodyParser.json({ strict: false }));
     this.packageService = packageService;
+
+    this.configure();
   }
 
   getMethod() {
     return this.method;
   }
 
-  configure(execute: (req: Request, res: Response) => any) {
+  configure() {
     this.router[this.method](this.url, (req: Request, res: Response) => {
       const initialData = _.assign(req.query, req.params, req.body);
       const callback = (response: any) => {
         res.status(response.status).json(response.payload);
-      }
+      };
       this.packageService.package(initialData, callback, callback, req.tokenContents);
     });
     this.app.use(process.env.BASE_PATH, this.router);
