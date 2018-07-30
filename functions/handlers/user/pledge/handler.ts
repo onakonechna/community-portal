@@ -65,8 +65,5 @@ const dataflows = [
   },
 ];
 
-const endpoint = new Endpoint('/user/pledge', 'post');
-endpoint.configure((req: Request, res: Response) => {
-  new PackageService(dataflows).package(req, res);
-});
+const endpoint = new Endpoint('/user/pledge', 'post', new PackageService(dataflows));
 export const handler = endpoint.execute();

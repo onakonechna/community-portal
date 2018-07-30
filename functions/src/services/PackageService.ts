@@ -278,8 +278,9 @@ export default class PackageService {
     };
   }
 
-  package(initialize: any, onSuccess: any, onFailure: any) {
-    initialize(this);
+  package(initialData: any, onSuccess: any, onFailure: any, tokenContents: any = undefined) {
+    this.initialData = initialData;
+    this.tokenContents = tokenContents;
     const dataflowsPromise = new Promise(this.executeDataflows);
     dataflowsPromise.then(this.respond(onSuccess)).catch(this.respond(onFailure));
   }
