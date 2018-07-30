@@ -67,7 +67,7 @@ const styles = (theme: any) => ({
   contributorText: {
     'font-size': '1rem',
     'font-weight': '300',
-    'margin-left': '2rem',
+    'margin-left': '1rem',
     'margin-top': 'auto',
   },
   description: {
@@ -415,7 +415,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             </div>
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
-                ? Object.keys(pledgers).map(pledger => (
+                ? Object.keys(pledgers).slice(0, 5).map(pledger => (
                   <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
