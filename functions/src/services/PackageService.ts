@@ -275,7 +275,12 @@ export default class PackageService {
     };
   }
 
-  package(onSuccess: any, onFailure: any, initialData: any = undefined, tokenContents: any = undefined) {
+  package(
+    onSuccess: any,
+    onFailure: any,
+    initialData: any = undefined,
+    tokenContents: any = undefined
+  ) {
     this.initialData = initialData;
     this.tokenContents = tokenContents;
     const dataflowsPromise = new Promise(this.executeDataflows);
