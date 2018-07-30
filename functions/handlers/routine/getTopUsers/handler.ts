@@ -1,17 +1,18 @@
+import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 import { Request, Response } from './../../../config/Types';
 
 import PackageService from './../../../src/services/PackageService';
-import Endpoint from './../../../src/Endpoint';
+
 import {
-  SkillsController,
-  SkillsResource,
+  SkillController,
+  SkillResource,
 } from './../../../config/Components';
 
 const dataflows = [
   {
-    controller: SkillsController,
+    controller: SkillController,
     method: 'scan',
-    target: SkillsResource,
+    target: SkillResource,
   },
 ];
 
@@ -23,6 +24,10 @@ const onFailure = (response: any) => {
   console.log('failure', response);
 };
 
-const packageService = new PackageService(dataflows).package(onSuccess, onFailure);
+export const handler = (event: CustomAuthorizerEvent, context: APIGatewayEventRequestContext) => {
+  const time = new Date();
+  console.log(`Your cron function ran at ${time}`);
 
-export const handler = ();
+  const packageService = new PackageService(dataflows);
+  packageService.package(onSuccess, onFailure);
+};
