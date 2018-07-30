@@ -56,8 +56,7 @@ const styles = (theme: any) => ({
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
-    position: 'absolute' as 'absolute',
-    top: '10rem',
+
   },
   contributorDiv: {
     display: 'flex',
@@ -85,11 +84,15 @@ const styles = (theme: any) => ({
   estimatedText: {
     'font-weight': '200',
   },
+  github: {
+    'margin-left': 'auto',
+  },
   hourText: {
     'font-size': '1rem',
   },
-  github: {
-    'margin-left': 'auto',
+  labels: {
+    position: 'absolute' as 'absolute',
+    top: '10rem',
   },
   progress: {
     color: '#48BF61',
@@ -381,9 +384,11 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               trimRight
               basedOn="letters"
             />
-            {this.props.project.technologies.map(technology => (
-              <Chip className={classes.chip} key={technology} label={technology} />
-            ))}
+            <div className={classes.labels}>
+              {this.props.project.technologies.slice(0, 5).map(technology => (
+                <Chip className={classes.chip} key={technology} label={technology} />
+              ))}
+            </div>
             <div className={classes.row}>
               <div className={classes.sidebar}>
                 <Typography className={classes.smallText}>
