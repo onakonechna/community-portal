@@ -271,20 +271,16 @@ export default class PackageService {
     return dataflow.controller[dataflow.controllerMethod](this.dataStore);
   }
 
-  respond(res: Response) {
+  respond(callback: any) {
     return (response: any) => {
-      res.status(response.status).json(response.payload);
+      callback(response);
       this.dataStore = {};
     };
   }
 
-  package(req: Request, res: Response) {
-    this.initialData = _.assign(req.query, req.params, req.body);
-
-    // append data from authorization context
-    this.tokenContents = req.tokenContents;
-
+  package(initialize: any, onSuccess: any, onFailure: any) {
+    initialize(this);
     const dataflowsPromise = new Promise(this.executeDataflows);
-    dataflowsPromise.then(this.respond(res)).catch(this.respond(res));
+    dataflowsPromise.then(this.respond(onSuccess)).catch(this.respond(onFailure));
   }
 }
