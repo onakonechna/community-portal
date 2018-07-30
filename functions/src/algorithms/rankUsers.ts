@@ -6,23 +6,26 @@ interface DataInterface {
 
 function rankUsers(data: DataInterface[]) {
   let results = new Map();
-  for (let entry of data) {
-    for (let project of entry.projects.values) {
-      if (!results.has(project)) results.set(project, new Map());
 
-      for (let user of entry.users.values) {
-        if (!results.get(project).has(user)) results.get(project).set(user, 0);
-        results.get(project).set(user, results.get(project).get(user)+1);
+  try {
+
+    for (let entry of data) {
+      for (let project of entry.projects.values) {
+        if (!results.has(project)) results.set(project, new Map());
+
+        for (let user of entry.users.values) {
+          if (!results.get(project).has(user)) results.get(project).set(user, 0);
+          results.get(project).set(user, results.get(project).get(user)+1);
+        }
       }
     }
-  }
 
-  for (let [skill, counts] of results) {
-    results.set(skill, new Map([...counts.entries].sort(
-      (first: any, second: any) => {
-        return second[1] - first[1];
-      }
-    )));
+    for (let [project, counts] of results) {
+      results.set(project, [...counts.entries()].sort(([k1, v1], [k2, v2]) => v2-v1));
+    }
+
+  } catch (error) {
+    console.log(error);
   }
 
   return results;
