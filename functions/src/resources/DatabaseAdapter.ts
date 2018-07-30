@@ -48,6 +48,14 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.put(params).promise();
   }
 
+  scan(tableName: string): Promise<any> {
+    const params = {
+      TableName: tableName,
+    };
+
+    return this.db.scan(params).promise();
+  }
+
   get(
     tableName: string,
     key: string,
