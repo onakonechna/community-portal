@@ -5,7 +5,9 @@ import { likeProject, bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
+
 import BookmarkButton from './buttons/BookmarkButton';
+import DetailButton from './buttons/DetailButton';
 import EditButton from './buttons/EditButton';
 import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
@@ -183,6 +185,7 @@ interface CardProps {
   handler?: () => void;
   toggleEdit?: () => void;
   classes?: any;
+  history?: any;
   liked: boolean;
   bookmarked: boolean;
 }
@@ -225,6 +228,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.toggleStatus = this.toggleStatus.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
+    this.goDetail = this.goDetail.bind(this);
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -266,6 +270,11 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     const { estimated, pledged } = this.props.project;
     if (!pledged || !estimated || pledged === 0) { return 0; }
     return (pledged / estimated) * 100;
+  }
+
+  goDetail() {
+    const { project_id } = this.props.project;
+    this.props.history.push(`./project/${project_id}`);
   }
 
   toggleStatus(field: string) {
@@ -429,6 +438,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           </CardContent>
           <CardActions>
             <Pledge handler={this.togglePledge} label="Pledge" />
+            <DetailButton handler={this.goDetail}/>
             <a className={classes.github} href={this.props.project.github_address}>
               <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
                 <SvgIcon>
