@@ -20,8 +20,9 @@ function rankUsers(data: DataInterface[]) {
       }
     }
 
+    // sort and limit to top 10 users
     for (let [project, counts] of results) {
-      results.set(project, [...counts.entries()].sort(([k1, v1], [k2, v2]) => v2-v1));
+      results.set(project, [...counts.entries()].sort(([k1, v1], [k2, v2]) => v2-v1).slice(0,10));
     }
 
   } catch (error) {

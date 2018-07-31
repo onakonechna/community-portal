@@ -161,4 +161,19 @@ export default class ProjectResource implements ProjectResourceInterface {
     const { project_id } = data;
     return this.adapter.delete(PROJECTS_TABLE, { project_id });
   }
+
+  storeRankedUsers(data: any): Promise<any> {
+    const { ranked_users } = data;
+    let promises = [];
+    for (let [project_id, counts] of ranked_users) {
+      console.log(counts);
+      let promise = this.adapter.update(
+        PROJECTS_TABLE,
+        { project_id },
+        { ranked_users: counts }
+      );
+      promises.push(promise);
+    }
+    return Promise.all(promises);
+  }
 }

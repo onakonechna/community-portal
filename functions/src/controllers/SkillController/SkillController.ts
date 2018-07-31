@@ -1,18 +1,18 @@
+import rankUsers from './../../algorithms/rankUsers';
+
 interface SkillControllerInterface {
-  scan(data: any): (result: any) => any;
+  rankUsers(data: any): (result: any) => any;
 }
 
 export default class SkillController implements SkillControllerInterface {
-  scan(data: any) {
+  rankUsers(data: any) {
     return (result: any) => {
       if (result.Items) {
         return {
-          data: result.Items,
+          ranked_users: rankUsers(result.Items),
         };
       }
-      return {
-        data: [],
-      };
+      throw 'No data found inside the skills table';
     };
   }
 }

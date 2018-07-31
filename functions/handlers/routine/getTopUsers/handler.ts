@@ -12,29 +12,31 @@ import {
 const dataflows = [
   {
     controller: SkillController,
-    method: 'scan',
+    method: 'rankUsers',
     target: SkillResource,
-    storageSpecs: ['matched_users'],
+    methodMap: { rankUsers: 'scan' },
+    storageSpecs: ['ranked_users'],
   },
   {
     controller: ProjectController,
-    method: 'storeMatchedUsers',
+    method: 'null',
     target: ProjectResource,
-    dataDependencies: ['matched_users'],
+    methodMap: { null: 'storeRankedUsers' },
+    dataDependencies: ['ranked_users'],
   },
 ];
 
-const onSuccess = (response: any) => {
+const onSuccess = (context: any) => (response: any) => {
   const time = new Date();
   console.log(`${context.functionName} ran at ${time}`);
 };
 
-const onFailure = (response: any) => {
+const onFailure = (context: any) => (response: any) => {
   const time = new Date();
   console.log(`${context.functionName} failed to run at ${time}`);
 };
 
 export const handler = (event: any, context: any) => {
   const packageService = new PackageService(dataflows);
-  packageService.package(onSuccess, onFailure);
+  packageService.package(onSuccess(context), onFailure(context));
 };
