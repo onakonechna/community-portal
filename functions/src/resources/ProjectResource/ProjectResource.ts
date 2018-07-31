@@ -164,12 +164,12 @@ export default class ProjectResource implements ProjectResourceInterface {
 
   storeRankedUsers(data: any): Promise<any> {
     const { ranked_users } = data;
-    let promises = [];
-    for (let [project_id, counts] of ranked_users) {
-      let promise = this.adapter.update(
+    const promises = [];
+    for (const [project_id, counts] of ranked_users) {
+      const promise = this.adapter.update(
         PROJECTS_TABLE,
         { project_id },
-        { ranked_users: counts }
+        { ranked_users: counts },
       );
       promises.push(promise);
     }

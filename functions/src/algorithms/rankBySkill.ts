@@ -10,7 +10,7 @@ function setIfNotExists(map: Map<string, any>, key: any, value: any) {
 
 function increment(map: Map<string, number>, key: any) {
   setIfNotExists(map, key, 0);
-  map.set(key, map.get(key)+1);
+  map.set(key, map.get(key) + 1);
 }
 
 function divide(map: Map<string, number>, key: any, divider: number) {
@@ -31,22 +31,22 @@ function divideByDict(dividerDict: Map<string, number>) {
 }
 
 function topValues(map: Map<string, number>, k: number) {
-  return [...map.entries()].sort(([k1, v1], [k2, v2]) => v2-v1).slice(0,k);
+  return [...map.entries()].sort(([k1, v1], [k2, v2]) => v2 - v1).slice(0, k);
 }
 
 function rankBySkill(data: DataInterface[]) {
-  let rankedUsersByProject = new Map();
-  let rankedProjectsByUser = new Map();
-  let numSkillsByProject = new Map();
+  const rankedUsersByProject = new Map();
+  const rankedProjectsByUser = new Map();
+  const numSkillsByProject = new Map();
 
   try {
 
-    for (let entry of data) {
-      for (let project of entry.projects.values) {
+    for (const entry of data) {
+      for (const project of entry.projects.values) {
         setIfNotExists(rankedUsersByProject, project, new Map());
         increment(numSkillsByProject, project);
 
-        for (let user of entry.users.values) {
+        for (const user of entry.users.values) {
           setIfNotExists(rankedProjectsByUser, user, new Map());
 
           increment(rankedUsersByProject.get(project), user);
@@ -56,11 +56,11 @@ function rankBySkill(data: DataInterface[]) {
     }
 
     // sort and limit to top 10
-    for (let [project, counts] of rankedUsersByProject) {
+    for (const [project, counts] of rankedUsersByProject) {
       counts.forEach(divideByConstant(numSkillsByProject.get(project)));
       rankedUsersByProject.set(project, topValues(counts, 10));
     }
-    for (let [user, counts] of rankedProjectsByUser) {
+    for (const [user, counts] of rankedProjectsByUser) {
       counts.forEach(divideByDict(numSkillsByProject));
       rankedProjectsByUser.set(user, topValues(counts, 10));
     }

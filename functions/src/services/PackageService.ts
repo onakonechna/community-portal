@@ -279,7 +279,7 @@ export default class PackageService {
     onSuccess: any,
     onFailure: any,
     initialData: any = undefined,
-    tokenContents: any = undefined
+    tokenContents: any = undefined,
   ) {
     this.initialData = initialData;
     this.tokenContents = tokenContents;
