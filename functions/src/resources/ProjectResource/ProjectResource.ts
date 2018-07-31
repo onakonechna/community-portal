@@ -54,7 +54,6 @@ export default class ProjectResource implements ProjectResourceInterface {
     data.pledgers = {};
     data.pledged_history = {};
     data.completed_history = {};
-    data.matched_users = {};
 
     return this.adapter.create(PROJECTS_TABLE, data);
   }
