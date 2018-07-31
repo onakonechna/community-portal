@@ -9,9 +9,7 @@ interface UserControllerInterface {
   getUpvotedProjects(data: any): (result: any) => any;
   getBookmarkedProjects(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
-  addUpvotedProject(data: any): (result: any) => any;
   addBookmarkedProject(data: any): (result: any) => any;
-  removeUpvotedProject(data: any): (result: any) => any;
   pledge(data: any): (result: any) => any;
   subscribe(data: any): (result: any) => any;
   checkExistence(data: any): (result: any) => any;

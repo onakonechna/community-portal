@@ -28,7 +28,7 @@ const dataflows = [
     controller: ProjectController,
     method: 'null',
     target: ProjectResource,
-    methodMap: { null: addPledgedHistory },
+    methodMap: { null: 'addPledgedHistory' },
     dataDependencies: ['project_id', 'hours'],
   },
   // we want to get the avatar url

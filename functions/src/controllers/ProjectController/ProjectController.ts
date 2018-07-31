@@ -8,12 +8,6 @@ interface ProjectControllerInterface {
   downvote(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   updateStatus(data: any): (result: any) => any;
-  addUpvoter(data: any): (result: any) => any;
-  removeUpvoter(data: any): (result: any) => any;
-  addPledgedHours(data: any): (result: any) => any;
-  addPledgedHistory(data: any): (result: any) => any;
-  addPledger(data: any): (result: any) => any;
-  addSubscriber(data: any): (result: any) => any;
   checkOwner(data: any): (result: any) => any;
   checkPledgedHours(data: any): (result: any) => any;
 }
