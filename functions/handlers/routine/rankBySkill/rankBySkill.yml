@@ -1,0 +1,6 @@
+rankBySkill:
+  name: ${self:provider.stage}-rankBySkill
+  role: rankBySkillRole
+  handler: handlers/routine/rankBySkill/handler.handler
+  events:
+  - schedule: rate(1 minute)

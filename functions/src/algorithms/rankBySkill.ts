@@ -31,7 +31,7 @@ function divideByDict(dividerDict: Map<string, number>) {
 }
 
 function topValues(map: Map<string, number>, k: number) {
-  return [...map.entries()].sort(([k1, v1], [k2, v2]) => v2-v1).slice(0,k)
+  return [...map.entries()].sort(([k1, v1], [k2, v2]) => v2-v1).slice(0,k);
 }
 
 function rankBySkill(data: DataInterface[]) {

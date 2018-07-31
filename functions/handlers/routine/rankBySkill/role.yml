@@ -1,7 +1,7 @@
-getTopUsersRole:
+rankBySkillRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: ${self:provider.stage}-getTopUsersRole
+    RoleName: ${self:provider.stage}-rankBySkillRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,20 +11,18 @@ getTopUsersRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: ${self:provider.stage}-getTopUsersPolicy
+      - PolicyName: ${self:provider.stage}-rankBySkillPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:GetItem
                 - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
             - Effect: Allow
               Action:
-                - dynamodb:GetItem
                 - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
