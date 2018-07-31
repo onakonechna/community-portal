@@ -12,6 +12,16 @@ interface ProjectControllerInterface {
   checkPledgedHours(data: any): (result: any) => any;
 }
 
+function deleteField(object: any, field: string) {
+  delete object[field];
+  return object;
+}
+
+function deleteFieldFromList(array: any[], field: string) {
+  array.forEach((object: any) => delete object[field]);
+  return array;
+}
+
 export default class ProjectController implements ProjectControllerInterface {
   create(data: any) {
     const { project_id } = data;
@@ -31,7 +41,7 @@ export default class ProjectController implements ProjectControllerInterface {
       if (result.Items) {
         return {
           status: 200,
-          payload: result.Items,
+          payload: deleteFieldFromList(result.Items, 'ranked_users'),
         };
       }
       return {
@@ -46,7 +56,7 @@ export default class ProjectController implements ProjectControllerInterface {
       if (result.Item) {
         return {
           status: 200,
-          payload: result.Item,
+          payload: deleteField(result.Item, 'ranked_users'),
         };
       }
       return {
