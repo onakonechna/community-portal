@@ -5,17 +5,26 @@ import PackageService from './../../../src/services/PackageService';
 import {
   SkillController,
   ProjectController,
+  UserController,
   SkillResource,
   ProjectResource,
+  UserResource,
 } from './../../../config/Components';
 
 const dataflows = [
   {
     controller: SkillController,
-    method: 'rankUsers',
+    method: 'rank',
     target: SkillResource,
-    methodMap: { rankUsers: 'scan' },
-    storageSpecs: ['ranked_users'],
+    methodMap: { rank: 'scan' },
+    storageSpecs: ['ranked_users', 'ranked_projects'],
+  },
+  {
+    controller: UserController,
+    method: 'null',
+    target: UserResource,
+    methodMap: { null: 'storeRankedProjects' },
+    dataDependencies: ['ranked_projects'],
   },
   {
     controller: ProjectController,

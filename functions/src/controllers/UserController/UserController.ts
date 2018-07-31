@@ -156,7 +156,7 @@ export default class UserController implements UserControllerInterface {
     };
   }
 
-  // Controllers for intermediaries
+  // intermediary controllers
 
   addUpvotedProject(data: any) {
     return (result: any) => { return {}; };
@@ -199,6 +199,11 @@ export default class UserController implements UserControllerInterface {
       console.log('Warning: User not found - attempt to retrieve user scopes gives empty map');
       return {};
     };
+  }
+
+  // Special controllers
+  null(data: any) {
+    return (result: any) => {};
   }
 
 }

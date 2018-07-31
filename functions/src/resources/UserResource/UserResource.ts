@@ -110,4 +110,19 @@ export default class UserResource implements UserResourceInterface {
   delete(data: any): Promise<any> {
     return this.adapter.delete(USERS_TABLE, data);
   }
+
+  storeRankedProjects(data: any): Promise<any> {
+    const { ranked_projects } = data;
+    let promises = [];
+    for (let [user_id, counts] of ranked_projects) {
+      console.log(counts);
+      let promise = this.adapter.update(
+        USERS_TABLE,
+        { user_id },
+        { ranked_projects: counts }
+      );
+      promises.push(promise);
+    }
+    return Promise.all(promises);
+  }
 }
