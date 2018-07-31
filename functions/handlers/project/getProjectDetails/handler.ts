@@ -10,6 +10,7 @@ const dataflows = [
     method: 'getById',
     target: ProjectResource,
     validationMap: { getById: 'projectIdOnlySchema' },
+    authDataDependencies: ['user_id'],
   },
 ];
 
