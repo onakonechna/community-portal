@@ -62,6 +62,7 @@ provider:
     EPICS_INDEX: ${file(./schema.json):Epics.Properties.TableName}-index
     ISSUES_TABLE: ${file(./schema.json):Issues.Properties.TableName}
     ISSUES_INDEX: ${file(./schema.json):Issues.Properties.TableName}-index
+    TRAFFIC_STATISTICS_TABLE: ${file(./schema.json):TrafficStatistics.Properties.TableName}
     JWT_SECRET: ${self:custom.jwt.secret}
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
@@ -132,6 +133,7 @@ resources:
     PullRequestsTable: ${file(./schema.json):PullRequests}
     EpicsTable: ${file(./schema.json):Epics}
     IssuesTable: ${file(./schema.json):Issues}
+    TrafficStatisticsTable: ${file(./schema.json):TrafficStatistics}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
     getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
     getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
