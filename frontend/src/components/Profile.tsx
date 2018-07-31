@@ -12,10 +12,15 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
+import LineChart from './visualizations/UserContribution';
+
 const styles = (theme:Theme) => ({
   avatar: {
     height: '10rem',
     width: '10rem',
+  },
+  bio: {
+    'margin-right': '2rem',
   },
   card: {
     'background-color': '#F2F3F3',
@@ -35,6 +40,7 @@ const styles = (theme:Theme) => ({
     'margin-left': '30rem',
   },
   content: {
+    display: 'flex',
     'margin-left': '3rem',
     'margin-top': '3rem',
   },
@@ -93,25 +99,28 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   render() {
     const { user, classes } = this.props;
     return (
-      <Card className={classes.card}>
-        <CardContent className={classes.content}>
-          <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
-          <Typography className={classes.nameText}>
-            {user.name}
-          </Typography>
-          <Typography className={classes.companyText}>
-            {user.company}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <IconButton>
-            <Edit
-              className={classes.editButton}
-              onClick={this.toggleEditUser}
-            />
-          </IconButton>
-        </CardActions>
-      </Card>
+        <Card className={classes.card}>
+          <CardContent className={classes.content}>
+            <div className={classes.bio}>
+              <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
+              <Typography className={classes.nameText}>
+                {user.name}
+              </Typography>
+              <Typography className={classes.companyText}>
+                {user.company}
+              </Typography>
+            </div>
+            <LineChart width={450} height={300}/>
+          </CardContent>
+          <CardActions>
+            <IconButton>
+              <Edit
+                className={classes.editButton}
+                onClick={this.toggleEditUser}
+              />
+            </IconButton>
+          </CardActions>
+        </Card>
     );
   }
 }
