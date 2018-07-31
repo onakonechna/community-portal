@@ -158,14 +158,6 @@ export default class UserController implements UserControllerInterface {
 
   // intermediary controllers
 
-  addUpvotedProject(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  removeUpvotedProject(data: any) {
-    return (result: any) => { return {}; };
-  }
-
   checkExistence(data: any) {
     return (result: any) => {
       const flag = { user_exists: false };
@@ -201,7 +193,7 @@ export default class UserController implements UserControllerInterface {
     };
   }
 
-  // Special controllers
+  // special controllers
   null(data: any) {
     return (result: any) => {};
   }

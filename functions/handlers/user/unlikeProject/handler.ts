@@ -15,15 +15,17 @@ import {
 const dataflows = [
   {
     controller: UserController,
-    method: 'removeUpvotedProject',
+    method: 'null',
     target: UserResource,
-    validationMap: { removeUpvotedProject: 'projectIdOnlySchema' },
+    methodMap: { null: 'removeUpvotedProject' },
+    validationMap: { null: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
-    method: 'removeUpvoter',
+    method: 'null',
     target: ProjectResource,
+    methodMap: { null: 'removeUpvoter' },
     dataDependencies: ['project_id', 'user_id'],
   },
   {

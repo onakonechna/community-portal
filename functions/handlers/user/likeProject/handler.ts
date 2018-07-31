@@ -15,15 +15,17 @@ import {
 const dataflows = [
   {
     controller: ProjectController,
-    method: 'addUpvoter',
+    method: 'null',
     target: ProjectResource,
-    validationMap: { addUpvoter: 'projectIdOnlySchema' },
+    methodMap: { null: 'addUpvoter' },
+    validationMap: { null: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
   },
   {
     controller: UserController,
-    method: 'addUpvotedProject',
+    method: 'null',
     target: UserResource,
+    methodMap: { null: 'addUpvotedProject' },
     dataDependencies: ['project_id', 'user_id'],
   },
   {
