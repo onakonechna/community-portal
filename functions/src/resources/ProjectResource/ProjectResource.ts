@@ -144,7 +144,7 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   addPledgedHistory(data: any): Promise<any> {
-    const { project_id, hours } = data;
+    const { project_id, user_id } = data;
     const unixTimestamp = new Date().getTime();
 
     return this.adapter.addToMap(
@@ -152,7 +152,7 @@ export default class ProjectResource implements ProjectResourceInterface {
       { project_id },
       'pledged_history',
       unixTimestamp,
-      hours,
+      user_id,
     );
   }
 

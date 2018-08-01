@@ -27,7 +27,7 @@ const dataflows = [
     controller: ProjectController,
     method: 'addPledgedHistory',
     target: ProjectResource,
-    dataDependencies: ['project_id', 'hours'],
+    dataDependencies: ['project_id', 'user_id'],
   },
   // we want to get the avatar url
   {

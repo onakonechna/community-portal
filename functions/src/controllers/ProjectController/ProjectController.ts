@@ -177,7 +177,7 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  // check if pledged hours would exceed total
+  // check if pledged would exceed total
   checkPledged(data: any) {
     return (result: any) => {
       const flag = { will_exceed: false };
