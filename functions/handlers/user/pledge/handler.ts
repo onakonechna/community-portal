@@ -61,7 +61,7 @@ const dataflows = [
     controller: UserController,
     method: 'pledge',
     target: UserResource,
-    dataDependencies: ['user_id', 'project_id', 'hours'],
+    dataDependencies: ['user_id', 'project_id'],
   },
 ];
 
