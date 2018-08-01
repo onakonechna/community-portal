@@ -5,6 +5,7 @@ import Auth from '../components/Auth';
 import HeadBar from '../components/HeadBar';
 import Profile from '../components/Profile';
 import ProjectGrid from '../components/ProjectGrid';
+import ProjectView from '../components/ProjectView/ProjectView';
 
 const Routes = () => (
   <div>
@@ -17,8 +18,8 @@ const Routes = () => (
     } />
     <Route exact path="/pledged" render={
       () => <ProjectGrid filter="pledgedProjects" />
-    }
-    />
+    } />
+    <Route exact path="/project/:project_id" component={ProjectView} />
   </div>
 );
 
