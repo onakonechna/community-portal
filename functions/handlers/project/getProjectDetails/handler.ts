@@ -13,13 +13,19 @@ import {
 
 const dataflows = [
   {
+    controller: ProjectController,
+    method: 'getById',
+    target: ProjectResource,
+    validationMap: { getById: 'projectIdOnlySchema' },
+    authDataDependencies: ['user_id'],
+    storageSpecs: ['project'],
+  },
+  {
     controller: ProjectTrafficController,
     method: 'getLastVisited',
     target: ProjectTrafficResource,
-    validationMap: { getLastVisited: 'projectIdOnlySchema' },
-    authDataDependencies: ['user_id'],
     storageSpecs: ['last_visited'],
-    skipWithout: ['user_id'],
+    skipWithout: ['user_id', 'project'],
   },
   {
     controller: ProjectRecommendationController,
@@ -27,7 +33,7 @@ const dataflows = [
     target: ProjectRecommendationEngine,
     dataDependencies: ['last_visited'],
     storageSpecs: ['recommended'],
-    skipWithout: ['user_id'],
+    skipWithout: ['user_id', 'project'],
   },
   {
     controller: ProjectTrafficController,
@@ -35,12 +41,13 @@ const dataflows = [
     target: ProjectTrafficResource,
     methodMap: { null: 'recordProjectView' },
     dataDependencies: ['user_id', 'project_id', 'recommended'],
-    skipWithout: ['user_id'],
+    skipWithout: ['user_id', 'project'],
   },
   {
     controller: ProjectController,
-    method: 'getById',
+    method: 'returnProjectDetails',
     target: ProjectResource,
+    methodMap: { returnProjectDetails: 'null' },
   },
 ];
 

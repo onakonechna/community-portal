@@ -21,6 +21,7 @@ interface ProjectResourceInterface {
   addPledgedHours(data: any): Promise<any>;
   addPledgedHistory(data: any): Promise<any>;
   delete(data: any): Promise<any>;
+  null(data: any): Promise<any>;
 }
 
 export default class ProjectResource implements ProjectResourceInterface {
@@ -173,5 +174,10 @@ export default class ProjectResource implements ProjectResourceInterface {
       promises.push(promise);
     }
     return Promise.all(promises);
+  }
+
+  // special methods
+  null(data: any): Promise<any> {
+    return new Promise((resolve: any) => resolve({}));
   }
 }

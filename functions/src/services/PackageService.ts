@@ -169,20 +169,12 @@ export default class PackageService {
     _.assign(this.dataStore, this.initialData);
 
     let chainedPromise = this.getPromise(this.initialData, this.dataflows[0]);
-    let thisDataflow: Dataflow = this.dataflows[0];
+    let thisDataflow: Dataflow;
     let nextDataflow: Dataflow;
 
     _.forEach(_.range(this.dataflows.length - 1), (i: number) => {
-      // handle the case where the first data flow is skipped
-      if (!chainedPromise) {
-        thisDataflow = this.dataflows[i];
-        chainedPromise = this.getPromise(this.initialData, thisDataflow);
-        if (!chainedPromise) return;
-      }
-      // skip next data flow if conditions is satisfied
+      thisDataflow = this.dataflows[i];
       nextDataflow = this.dataflows[i + 1];
-      if (this.shouldSkip(nextDataflow)) return;
-
       chainedPromise = this.chainPromise(
         chainedPromise,
         thisDataflow,
@@ -190,21 +182,15 @@ export default class PackageService {
         resolve,
         reject,
       );
-
-      thisDataflow = nextDataflow;
     });
 
     const lastDataflow = this.dataflows[this.dataflows.length - 1];
-    if (!chainedPromise) chainedPromise = this.getPromise(this.initialData, lastDataflow);
-    if (!chainedPromise) reject(terminate('All dataflows were skipped'));
-
     chainedPromise
       .then((result: any) => resolve(this.transform(lastDataflow)(result)))
       .catch((error: string) => reject(terminate(error)));
   }
 
   getPromise(data: any, dataflow: Dataflow) {
-    if (this.shouldSkip(dataflow)) return;
     return dataflow.target[dataflow.targetMethod](data);
   }
 
@@ -225,6 +211,9 @@ export default class PackageService {
   shouldSkip(dataflow: Dataflow) {
     let flag = false;
     if (dataflow.skipWithout) {
+      console.log(dataflow.skipWithout);
+      console.log(this.dataStore);
+      console.log('==='); // xxx
       dataflow.skipWithout.forEach((key: string) => {
         if (!(key in this.dataStore)) flag = true;
       });
@@ -274,18 +263,26 @@ export default class PackageService {
 
     return promise
       .then((result: any) => {
-        // store output from thisDataflow to dataStore if storageSpecs is specified
-        let output = this.transform(thisDataflow)(result);
-        if (storageSpecs !== undefined) {
-          output = _.pick(output, storageSpecs);
-          _.assign(this.dataStore, output);
+
+        if (!this.shouldSkip(thisDataflow)) {
+          // store output from thisDataflow to dataStore if storageSpecs is specified
+          let output = this.transform(thisDataflow)(result);
+          if (storageSpecs !== undefined) {
+            output = _.pick(output, storageSpecs);
+            _.assign(this.dataStore, output);
+          }
         }
 
-        // obtain data fields for nextDataflow
-        const data = this.pickData(nextDataflow);
-        // validate data fields
-        this.validate(nextDataflow, data, resolve, reject);
-        return this.getPromise(data, nextDataflow);
+        if (!this.shouldSkip(nextDataflow)) {
+          // obtain data fields for nextDataflow
+          const data = this.pickData(nextDataflow);
+          // validate data fields
+          this.validate(nextDataflow, data, resolve, reject);
+          return this.getPromise(data, nextDataflow);
+        }
+
+        // return empty promise if skipped
+        return new Promise((resolve: any) => resolve({}));
       });
   }
 

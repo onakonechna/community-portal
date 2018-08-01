@@ -53,13 +53,14 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  getById(data: any) {
-    const { recommended } = data;
-    return (result: any) => {
-      if (result.Item) {
+  returnProjectDetails(data: any) {
+    const { project, recommended } = data;
+    console.log('details', data);
+    return () => {
+      if (project) {
         return {
           status: 200,
-          payload: _.assign(deleteField(result.Item, 'ranked_users'), { recommended }),
+          payload: _.assign(deleteField(project, 'ranked_users'), { recommended }),
         };
       }
       return {
@@ -135,6 +136,10 @@ export default class ProjectController implements ProjectControllerInterface {
   }
 
   // intermediary controllers
+
+  getById(data: any) {
+    return (result: any) => result.Item ? { project: result.Item } : {};
+  }
 
   updateStatus(data: any) {
     // display == true only if status == open after update
