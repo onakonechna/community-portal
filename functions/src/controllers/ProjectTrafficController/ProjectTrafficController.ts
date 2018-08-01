@@ -6,12 +6,7 @@ interface ProjectTrafficControllerInterface {
 export default class ProjectTrafficController implements ProjectTrafficControllerInterface {
 
   getLastVisited(data: any) {
-    return (result: any) => {
-      if (result.Items) {
-        return { last_visted: result.Items };
-      }
-      return { last_visited: [] };
-    };
+    return (result: any) => ({ last_visited: result.Items ? result.Items : [] });
   }
 
   // intermediary controllers

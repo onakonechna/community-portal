@@ -4,20 +4,18 @@ import PackageService from './../../../src/services/PackageService';
 import Endpoint from './../../../src/Endpoint';
 import {
   ProjectController,
-  UserController,
-  TrafficController,
+  ProjectTrafficController,
   ProjectRecommendationController,
   ProjectResource,
-  UserResource,
-  TrafficResource,
+  ProjectTrafficResource,
   ProjectRecommendationEngine,
 } from './../../../config/Components';
 
 const dataflows = [
   {
-    controller: TrafficController,
+    controller: ProjectTrafficController,
     method: 'getLastVisited',
-    target: TrafficResource,
+    target: ProjectTrafficResource,
     validationMap: { getLastVisited: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
     storageSpecs: ['last_visited'],
@@ -30,10 +28,10 @@ const dataflows = [
     storageSpecs: ['recommended'],
   },
   {
-    controller: TrafficController,
+    controller: ProjectTrafficController,
     method: 'null',
-    target: TrafficResource,
-    methodMap: { null: recordProjectView },
+    target: ProjectTrafficResource,
+    methodMap: { null: 'recordProjectView' },
     dataDependencies: ['user_id', 'project_id', 'recommended'],
   },
   {

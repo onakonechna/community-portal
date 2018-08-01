@@ -8,7 +8,7 @@ import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda
 import DatabaseConnection from './../resources/DatabaseConnection';
 import Validator from './../Validator';
 
-const terminate = (error: Error) => {
+const terminate = (error: string) => {
   return {
     status: 400,
     payload: { error },
@@ -39,7 +39,7 @@ interface DataflowDefinition {
   validationMap?: any;
   methodMap?: any; // a map of methods on controller to methods on target
   storageSpecs?: string[]; // a list of output names to store to intermediary data store
-  skipOn?: any; // skip current data flow if key-value pair can be found in data store
+  skipOn?: any; // skip current data flow if any key-value pair can be found in data store
 }
 
 interface Dataflow {
@@ -149,7 +149,7 @@ export default class PackageService {
 
   executeDataflows(resolve: any, reject: any) {
     if (this.dataflows.length === 0) {
-      throw 'No dataflow has been added';
+      reject(terminate('No dataflow has been added'));
     }
 
     this.validate(this.dataflows[0], this.initialData, resolve, reject);
@@ -166,12 +166,19 @@ export default class PackageService {
     _.assign(this.dataStore, this.initialData);
 
     let chainedPromise = this.getPromise(this.initialData, this.dataflows[0]);
-    let thisDataflow: Dataflow;
+    let thisDataflow: Dataflow = this.dataflows[0];
     let nextDataflow: Dataflow;
 
     _.forEach(_.range(this.dataflows.length - 1), (i: number) => {
-      thisDataflow = this.dataflows[i];
+      // handle the case where the first data flow is skipped
+      if (!chainedPromise) {
+        thisDataflow = this.dataflows[i];
+        chainedPromise = this.getPromise(this.initialData, thisDataflow);
+        if (!chainedPromise) return;
+      }
+      // skip next data flow if conditions is satisfied
       nextDataflow = this.dataflows[i + 1];
+      if (this.shouldSkip(nextDataflow)) return;
 
       chainedPromise = this.chainPromise(
         chainedPromise,
@@ -180,21 +187,21 @@ export default class PackageService {
         resolve,
         reject,
       );
+
+      thisDataflow = nextDataflow;
     });
+
+    if (!chainedPromise) reject(terminate('All dataflows were skipped'));
 
     // handle last promise without chaining
     const lastDataflow = this.dataflows[this.dataflows.length - 1];
-
     chainedPromise
-      .then((result: any) => {
-        resolve(this.transform(lastDataflow)(result));
-      })
-      .catch((error: Error) => {
-        reject(terminate(error));
-      });
+      .then((result: any) => resolve(this.transform(lastDataflow)(result)))
+      .catch((error: string) => reject(terminate(error)));
   }
 
   getPromise(data: any, dataflow: Dataflow) {
+    if (this.shouldSkip(dataflow)) return;
     return dataflow.target[dataflow.targetMethod](data);
   }
 
@@ -213,7 +220,12 @@ export default class PackageService {
   }
 
   shouldSkip(dataflow: Dataflow) {
-
+    if (!dataflow.skipOn) return false;
+    let flag = false;
+    _.forOwn(dataflow.skipOn, (value: any, key: any) => {
+      if (key in this.dataStore && this.dataStore[key] === value) flag = true;
+    });
+    return flag;
   }
 
   validate(dataflow: Dataflow, data: any, resolve: any, reject: any) {
