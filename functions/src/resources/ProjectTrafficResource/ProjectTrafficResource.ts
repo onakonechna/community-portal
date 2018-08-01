@@ -28,4 +28,14 @@ export default class ProjectTrafficResource implements ProjectTrafficResourceInt
     );
   }
 
+  recordProjectView(data: any): Promise<any> {
+    const { user_id, project_id, recommended } = data;
+    const timestamp = new Date().getTime();
+
+    return this.adapter.create(
+      PROJECT_TRAFFIC_TABLE,
+      { user_id, timestamp, project_id, recommended },
+    );
+  }
+
 }

@@ -31,8 +31,9 @@ const dataflows = [
   },
   {
     controller: TrafficController,
-    method: 'recordProjectView',
+    method: 'null',
     target: TrafficResource,
+    methodMap: { null: recordProjectView },
     dataDependencies: ['user_id', 'project_id', 'recommended'],
   },
   {
