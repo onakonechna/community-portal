@@ -1,7 +1,7 @@
 scheduleMeetingRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: scheduleMeetingRole
+    RoleName: ${self:provider.stage}-scheduleMeetingRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ scheduleMeetingRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: scheduleMeetingRole
+      - PolicyName: ${self:provider.stage}-scheduleMeetingPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
