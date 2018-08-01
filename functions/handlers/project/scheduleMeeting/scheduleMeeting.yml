@@ -1,4 +1,5 @@
 scheduleMeeting:
+  name: ${self:provider.stage}-scheduleMeeting
   role: scheduleMeetingRole
   handler: handlers/project/scheduleMeeting/handler.handler
   events:
