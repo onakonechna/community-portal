@@ -168,7 +168,10 @@ export default class PackageService {
     // store initialData in dataStore
     _.assign(this.dataStore, this.initialData);
 
-    let chainedPromise = this.getPromise(this.initialData, this.dataflows[0]);
+    let chainedPromise = this.shouldSkip(this.dataflows[0])
+      ? new Promise((resolve: any) => resolve({}))
+      : this.getPromise(this.initialData, this.dataflows[0]);
+
     let thisDataflow: Dataflow;
     let nextDataflow: Dataflow;
 
@@ -186,7 +189,13 @@ export default class PackageService {
 
     const lastDataflow = this.dataflows[this.dataflows.length - 1];
     chainedPromise
-      .then((result: any) => resolve(this.transform(lastDataflow)(result)))
+      .then((result: any) => {
+        if (this.shouldSkip(lastDataflow)) {
+          reject(terminate('Last data flow cannot be skipped'));
+          return;
+        }
+        resolve(this.transform(lastDataflow)(result));
+      })
       .catch((error: string) => reject(terminate(error)));
   }
 
@@ -211,9 +220,6 @@ export default class PackageService {
   shouldSkip(dataflow: Dataflow) {
     let flag = false;
     if (dataflow.skipWithout) {
-      console.log(dataflow.skipWithout);
-      console.log(this.dataStore);
-      console.log('==='); // xxx
       dataflow.skipWithout.forEach((key: string) => {
         if (!(key in this.dataStore)) flag = true;
       });

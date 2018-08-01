@@ -55,7 +55,6 @@ export default class ProjectController implements ProjectControllerInterface {
 
   returnProjectDetails(data: any) {
     const { project, recommended } = data;
-    console.log('details', data);
     return () => {
       if (project) {
         return {
