@@ -299,7 +299,7 @@
       "TableName": "issues-${self:provider.stage}"
     }
   },
-  "TrafficStatistics": {
+  "ProjectTraffic": {
     "Type": "AWS::DynamoDB::Table",
     "Properties": {
       "AttributeDefinitions": [
@@ -326,7 +326,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "traffic-statistics-${self:provider.stage}"
+      "TableName": "project-traffic-${self:provider.stage}"
     }
   }
 }
