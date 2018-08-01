@@ -39,6 +39,7 @@ interface DataflowDefinition {
   validationMap?: any;
   methodMap?: any; // a map of methods on controller to methods on target
   storageSpecs?: string[]; // a list of output names to store to intermediary data store
+  skipOn?: any; // skip current data flow if key-value pair can be found in data store
 }
 
 interface Dataflow {
@@ -50,6 +51,7 @@ interface Dataflow {
   target: any;
   targetMethod: string;
   storageSpecs: string[];
+  skipOn: any;
 }
 
 export default class PackageService {
@@ -110,7 +112,7 @@ export default class PackageService {
     }
 
     // get storageSpecs
-    const { storageSpecs } = dataflowDefinition;
+    const { storageSpecs, skipOn } = dataflowDefinition;
 
     const dataflow = {
       dataDependencies,
@@ -121,6 +123,7 @@ export default class PackageService {
       target,
       targetMethod,
       storageSpecs,
+      skipOn,
     };
 
     this.dataflows.push(dataflow);
@@ -169,6 +172,7 @@ export default class PackageService {
     _.forEach(_.range(this.dataflows.length - 1), (i: number) => {
       thisDataflow = this.dataflows[i];
       nextDataflow = this.dataflows[i + 1];
+
       chainedPromise = this.chainPromise(
         chainedPromise,
         thisDataflow,
@@ -206,6 +210,10 @@ export default class PackageService {
       return _.pick(this.dataStore, dataflow.dataDependencies);
     }
     return Object.assign({}, this.dataStore);
+  }
+
+  shouldSkip(dataflow: Dataflow) {
+
   }
 
   validate(dataflow: Dataflow, data: any, resolve: any, reject: any) {
