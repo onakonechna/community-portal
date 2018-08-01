@@ -339,7 +339,7 @@ describe('pledge endpoint', () => {
         const { pledged, pledgers, pledged_history, subscribers } = response.data;
         expect(pledged).toBe(1);
         expect(authUserId in pledgers).toBeTruthy();
-        expect(_.includes(pledged_history, 1)).toBeTruthy();
+        expect(_.includes(pledged_history, authUserId)).toBeTruthy();
         expect(_.includes(subscribers.values, authUserId)).toBeTruthy();
       });
   });
