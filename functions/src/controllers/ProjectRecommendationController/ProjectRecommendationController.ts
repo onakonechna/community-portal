@@ -8,7 +8,10 @@ export default class ProjectTrafficController implements ProjectTrafficControlle
 
   // special controllers
   getRecommendations(data: any) {
-    return (result: any) => {};
+    return (result: any) => {
+      const { recommended } = result;
+      return { recommended };
+    };
   }
 
 }
