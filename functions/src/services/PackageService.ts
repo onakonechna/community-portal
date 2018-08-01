@@ -39,6 +39,7 @@ interface DataflowDefinition {
   validationMap?: any;
   methodMap?: any; // a map of methods on controller to methods on target
   storageSpecs?: string[]; // a list of output names to store to intermediary data store
+  skipWithout?: string[]; // skip current data flow if any key cannot be found in data store
   skipOn?: any; // skip current data flow if any key-value pair can be found in data store
 }
 
@@ -51,6 +52,7 @@ interface Dataflow {
   target: any;
   targetMethod: string;
   storageSpecs: string[];
+  skipWithout: string[];
   skipOn: any;
 }
 
@@ -112,7 +114,7 @@ export default class PackageService {
     }
 
     // get storageSpecs
-    const { storageSpecs, skipOn } = dataflowDefinition;
+    const { storageSpecs, skipWithout, skipOn } = dataflowDefinition;
 
     const dataflow = {
       dataDependencies,
@@ -123,6 +125,7 @@ export default class PackageService {
       target,
       targetMethod,
       storageSpecs,
+      skipWithout,
       skipOn,
     };
 
@@ -191,10 +194,10 @@ export default class PackageService {
       thisDataflow = nextDataflow;
     });
 
+    const lastDataflow = this.dataflows[this.dataflows.length - 1];
+    if (!chainedPromise) chainedPromise = this.getPromise(this.initialData, lastDataflow);
     if (!chainedPromise) reject(terminate('All dataflows were skipped'));
 
-    // handle last promise without chaining
-    const lastDataflow = this.dataflows[this.dataflows.length - 1];
     chainedPromise
       .then((result: any) => resolve(this.transform(lastDataflow)(result)))
       .catch((error: string) => reject(terminate(error)));
@@ -220,11 +223,17 @@ export default class PackageService {
   }
 
   shouldSkip(dataflow: Dataflow) {
-    if (!dataflow.skipOn) return false;
     let flag = false;
-    _.forOwn(dataflow.skipOn, (value: any, key: any) => {
-      if (key in this.dataStore && this.dataStore[key] === value) flag = true;
-    });
+    if (dataflow.skipWithout) {
+      dataflow.skipWithout.forEach((key: string) => {
+        if (!(key in this.dataStore)) flag = true;
+      });
+    }
+    if (dataflow.skipOn) {
+      _.forOwn(dataflow.skipOn, (value: any, key: any) => {
+        if (key in this.dataStore && this.dataStore[key] === value) flag = true;
+      });
+    }
     return flag;
   }
 

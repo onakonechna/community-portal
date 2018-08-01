@@ -19,6 +19,7 @@ const dataflows = [
     validationMap: { getLastVisited: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
     storageSpecs: ['last_visited'],
+    skipWithout: ['user_id'],
   },
   {
     controller: ProjectRecommendationController,
@@ -26,6 +27,7 @@ const dataflows = [
     target: ProjectRecommendationEngine,
     dataDependencies: ['last_visited'],
     storageSpecs: ['recommended'],
+    skipWithout: ['user_id'],
   },
   {
     controller: ProjectTrafficController,
@@ -33,12 +35,12 @@ const dataflows = [
     target: ProjectTrafficResource,
     methodMap: { null: 'recordProjectView' },
     dataDependencies: ['user_id', 'project_id', 'recommended'],
+    skipWithout: ['user_id'],
   },
   {
     controller: ProjectController,
     method: 'getById',
     target: ProjectResource,
-    dataDependencies: ['project_id'],
   },
 ];
 

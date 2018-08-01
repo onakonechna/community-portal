@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 interface ProjectControllerInterface {
   create(data: any): (result: any) => any;
   getCards(data: any): (result: any) => any;
@@ -52,11 +54,12 @@ export default class ProjectController implements ProjectControllerInterface {
   }
 
   getById(data: any) {
+    const { recommended } = data;
     return (result: any) => {
       if (result.Item) {
         return {
           status: 200,
-          payload: deleteField(result.Item, 'ranked_users'),
+          payload: _.assign(deleteField(result.Item, 'ranked_users'), { recommended }),
         };
       }
       return {
