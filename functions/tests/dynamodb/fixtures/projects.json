@@ -2,7 +2,7 @@
     {
         "description": "This is a test project.",
         "due": 1528850000,
-        "estimated": 8,
+        "estimated": 12,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test1",
         "project_id": "test1",
