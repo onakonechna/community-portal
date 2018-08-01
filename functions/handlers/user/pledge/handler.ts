@@ -12,15 +12,15 @@ import {
 const dataflows = [
   {
     controller: ProjectController,
-    method: 'checkPledgedHours',
+    method: 'checkPledged',
     target: ProjectResource,
-    methodMap: { checkPledgedHours: 'getById' },
-    validationMap: { checkPledgedHours: 'pledgeSchema' },
+    methodMap: { checkPledged: 'getById' },
+    validationMap: { checkPledged: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
-    method: 'addPledgedHours',
+    method: 'addPledged',
     target: ProjectResource,
   },
   {
