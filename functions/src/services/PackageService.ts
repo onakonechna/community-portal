@@ -277,7 +277,6 @@ export default class PackageService {
         // validate data fields
         this.validate(nextDataflow, data, resolve, reject);
         return this.getPromise(data, nextDataflow);
-
       });
   }
 
