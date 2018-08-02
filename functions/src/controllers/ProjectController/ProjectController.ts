@@ -20,6 +20,16 @@ interface ProjectControllerInterface {
   checkPledged(data: any): (result: any) => any;
 }
 
+function deleteField(object: any, field: string) {
+  delete object[field];
+  return object;
+}
+
+function deleteFieldFromList(array: any[], field: string) {
+  array.forEach((object: any) => delete object[field]);
+  return array;
+}
+
 export default class ProjectController implements ProjectControllerInterface {
   create(data: any) {
     const { project_id } = data;
