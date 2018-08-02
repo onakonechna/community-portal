@@ -386,7 +386,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                   </MuiPickersUtilsProvider>
                 </div>
                 <div className={classes.rowItem}>
-                  <Typography className={classes.label}>Goal(total hours)*</Typography>
+                  <Typography className={classes.label}>Goal(total pledgers)*</Typography>
                   <TextField
                     required
                     id="goal"

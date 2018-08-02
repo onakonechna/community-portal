@@ -18,7 +18,7 @@ interface ProjectResourceInterface {
   removeUpvoter(data: any): Promise<any>;
   upvote(data: any): Promise<any>;
   downvote(data: any): Promise<any>;
-  addPledgedHours(data: any): Promise<any>;
+  addPledged(data: any): Promise<any>;
   addPledgedHistory(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
@@ -138,13 +138,13 @@ export default class ProjectResource implements ProjectResourceInterface {
     return this.adapter.add(PROJECTS_TABLE, { project_id }, 'upvotes', -1);
   }
 
-  addPledgedHours(data: any): Promise<any> {
-    const { project_id, hours } = data;
-    return this.adapter.add(PROJECTS_TABLE, { project_id }, 'pledged', hours);
+  addPledged(data: any): Promise<any> {
+    const { project_id } = data;
+    return this.adapter.add(PROJECTS_TABLE, { project_id }, 'pledged', 1);
   }
 
   addPledgedHistory(data: any): Promise<any> {
-    const { project_id, hours } = data;
+    const { project_id, user_id } = data;
     const unixTimestamp = new Date().getTime();
 
     return this.adapter.addToMap(
@@ -152,7 +152,7 @@ export default class ProjectResource implements ProjectResourceInterface {
       { project_id },
       'pledged_history',
       unixTimestamp,
-      hours,
+      user_id,
     );
   }
 

@@ -20,7 +20,8 @@ describe('HeadBar Test Suite', () => {
 
   it('should render the navigation bar', () => {
     const context = { store };
-    const wrapper = mount(<HeadBar />, { context, childContextTypes: { store: jest.fn() } });
+    const location = { pathname: '/' };
+    const wrapper = mount(<HeadBar location={location} />, { context, childContextTypes: { store: jest.fn() } });
     const paper = wrapper.find('Paper');
     expect(paper.props().elevation).toBe(4);
   });

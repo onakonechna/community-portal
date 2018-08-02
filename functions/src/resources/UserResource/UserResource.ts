@@ -34,7 +34,6 @@ export default class UserResource implements UserResourceInterface {
     }
 
     delete data['user_exists'];
-    data.pledged_projects = {};
 
     return this.adapter.create(USERS_TABLE, data);
   }
@@ -92,13 +91,12 @@ export default class UserResource implements UserResourceInterface {
   }
 
   pledge(data: any): Promise<any> {
-    const { project_id, user_id, hours } = data;
-    return this.adapter.incrementMapKey(
+    const { project_id, user_id } = data;
+    return this.adapter.addToSetIfNotExists(
       USERS_TABLE,
       { user_id },
       'pledged_projects',
       project_id,
-      hours,
     );
   }
 

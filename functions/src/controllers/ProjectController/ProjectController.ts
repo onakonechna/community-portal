@@ -8,18 +8,14 @@ interface ProjectControllerInterface {
   downvote(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   updateStatus(data: any): (result: any) => any;
+  addUpvoter(data: any): (result: any) => any;
+  removeUpvoter(data: any): (result: any) => any;
+  addPledged(data: any): (result: any) => any;
+  addPledgedHistory(data: any): (result: any) => any;
+  addPledger(data: any): (result: any) => any;
+  addSubscriber(data: any): (result: any) => any;
   checkOwner(data: any): (result: any) => any;
-  checkPledgedHours(data: any): (result: any) => any;
-}
-
-function deleteField(object: any, field: string) {
-  delete object[field];
-  return object;
-}
-
-function deleteFieldFromList(array: any[], field: string) {
-  array.forEach((object: any) => delete object[field]);
-  return array;
+  checkPledged(data: any): (result: any) => any;
 }
 
 export default class ProjectController implements ProjectControllerInterface {
@@ -41,7 +37,7 @@ export default class ProjectController implements ProjectControllerInterface {
       if (result.Items) {
         return {
           status: 200,
-          payload: deleteFieldFromList(result.Items, 'ranked_users'),
+          payload: result.Items,
         };
       }
       return {
@@ -56,7 +52,7 @@ export default class ProjectController implements ProjectControllerInterface {
       if (result.Item) {
         return {
           status: 200,
-          payload: deleteField(result.Item, 'ranked_users'),
+          payload: result.Item,
         };
       }
       return {
@@ -132,7 +128,6 @@ export default class ProjectController implements ProjectControllerInterface {
   }
 
   // intermediary controllers
-
   updateStatus(data: any) {
     // display == true only if status == open after update
     return (result: any) => {
@@ -141,6 +136,32 @@ export default class ProjectController implements ProjectControllerInterface {
         display: String(status === 'open'),
       };
     };
+  }
+
+  addUpvoter(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  removeUpvoter(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledged(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledgedHistory(data: any) {
+    return (result: any) => { return {}; };
+  }
+
+  addPledger(data: any) {
+    return (result: any) => {
+      return {};
+    };
+  }
+
+  addSubscriber(data: any) {
+    return (result: any) => { return {}; };
   }
 
   // check if user is owner of project
@@ -155,26 +176,20 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  // check if pledged hours would exceed total
-  checkPledgedHours(data: any) {
-    const { hours } = data;
+  // check if pledged would exceed total
+  checkPledged(data: any) {
     return (result: any) => {
       const flag = { will_exceed: false };
       if (result.Item) {
         const { pledged, estimated } = result.Item;
-        if (pledged + hours > estimated) {
-          throw 'Total number of hours exceed estimated hours to completion';
+        if (pledged + 1 > estimated) {
+          throw 'Total number of pledgers exceed estimated number of pledgers required';
         }
       } else {
         throw 'Project not found';
       }
       return {};
     };
-  }
-
-  // special controllers
-  null(data: any) {
-    return (result: any) => {};
   }
 
 }
