@@ -31,7 +31,7 @@ const dataflows = [
     controller: ProjectRecommendationController,
     method: 'getRecommendations',
     target: ProjectRecommendationEngine,
-    dataDependencies: ['last_visited'],
+    dataDependencies: ['last_visited', 'project_id'],
     storageSpecs: ['recommended'],
     skipWithout: ['user_id', 'project'],
   },

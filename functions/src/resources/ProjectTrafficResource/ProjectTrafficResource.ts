@@ -3,6 +3,7 @@ import DatabaseConnection from './../DatabaseConnection';
 import DatabaseAdapter from './../DatabaseAdapter';
 
 const PROJECT_TRAFFIC_TABLE = process.env.PROJECT_TRAFFIC_TABLE;
+const PROJECT_TRAFFIC_INDEX = process.env.PROJECT_TRAFFIC_INDEX;
 
 interface ProjectTrafficResourceInterface {
   getLastVisited(data: any): Promise<any>;
@@ -24,7 +25,7 @@ export default class ProjectTrafficResource implements ProjectTrafficResourceInt
       user_id,
       undefined,
       false,
-      5,
+      2,
     );
   }
 
