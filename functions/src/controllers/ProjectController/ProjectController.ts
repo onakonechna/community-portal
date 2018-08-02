@@ -192,4 +192,9 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
+  // special controllers
+  null(data: any) {
+    return (result: any) => {};
+  }
+
 }
