@@ -3,9 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Home from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -49,16 +47,6 @@ const SideBar = (props: any) => {
           onClick={props.toPledged}
         >
           <ListItemText primary="Pledged Projects" />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          className={classes.homeIcon}
-          onClick={props.toHome}
-        >
-          <ListItemIcon className={classes.homeIcon}>
-            <Home />
-          </ListItemIcon>
         </ListItem>
       </List>
     </div>
