@@ -20,13 +20,15 @@ const dataflows = [
   },
   {
     controller: ProjectController,
-    method: 'addPledged',
+    method: 'null',
     target: ProjectResource,
+    methodMap: { null: 'addPledged' },
   },
   {
     controller: ProjectController,
-    method: 'addPledgedHistory',
+    method: 'null',
     target: ProjectResource,
+    methodMap: { null: 'addPledgedHistory' },
     dataDependencies: ['project_id', 'user_id'],
   },
   // we want to get the avatar url
@@ -41,8 +43,9 @@ const dataflows = [
   // save both user_id and avartar_url in the list of pledgers
   {
     controller: ProjectController,
-    method: 'addPledger',
+    method: 'null',
     target: ProjectResource,
+    methodMap: { null: 'addPledger' },
     dataDependencies: ['project_id', 'user_id', 'avatar_url'],
   },
   {
@@ -53,8 +56,9 @@ const dataflows = [
   },
   {
     controller: ProjectController,
-    method: 'addSubscriber',
+    method: 'null',
     target: ProjectResource,
+    methodMap: { null: 'addSubscriber' },
     dataDependencies: ['project_id', 'user_id'],
   },
   {

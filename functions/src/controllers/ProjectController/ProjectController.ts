@@ -155,32 +155,6 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  addUpvoter(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  removeUpvoter(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  addPledged(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  addPledgedHistory(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  addPledger(data: any) {
-    return (result: any) => {
-      return {};
-    };
-  }
-
-  addSubscriber(data: any) {
-    return (result: any) => { return {}; };
-  }
-
   // check if user is owner of project
   checkOwner(data: any) {
     const { user_id } = data;
