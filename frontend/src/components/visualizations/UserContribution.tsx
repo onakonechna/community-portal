@@ -61,10 +61,10 @@ class LineChart extends React.Component<LineChartProps, {}> {
     x.domain(d3.extent(data, d => d.time) as any);
     y.domain(d3.extent(data, d => d.pr) as any);
 
-    const xAxis = d3.axisBottom(x);
+    const xAxis = d3.axisBottom(x).ticks(12).tickSizeInner(10);
 
     const yAxis = d3.axisLeft(y)
-      .ticks(10);
+      .ticks(6);
 
     // Create the element
     const div = new ReactFauxDOM.Element('div');
@@ -83,13 +83,13 @@ class LineChart extends React.Component<LineChartProps, {}> {
 
     svg.append('g')
       .attr('class', 'y axis')
-      .call(yAxis)
-      .append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', 6)
-      .attr('dy', '.71em')
-      .style('text-anchor', 'end')
-      .text('#PR');
+      .call(yAxis);
+      // .append('text')
+      // .attr('transform', 'rotate(-90)')
+      // .attr('y', 60)
+      // .attr('dy', '.71em')
+      // .style('text-anchor', 'end')
+      // .text('#PR');
 
     svg.append('g')
       .append('path')
