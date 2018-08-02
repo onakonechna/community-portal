@@ -12,24 +12,22 @@ import {
 const dataflows = [
   {
     controller: ProjectController,
-    method: 'checkPledgedHours',
+    method: 'checkPledged',
     target: ProjectResource,
-    methodMap: { checkPledgedHours: 'getById' },
-    validationMap: { checkPledgedHours: 'pledgeSchema' },
+    methodMap: { checkPledged: 'getById' },
+    validationMap: { checkPledged: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
-    method: 'null',
+    method: 'addPledged',
     target: ProjectResource,
-    methodMap: { null: 'addPledgedHours' },
   },
   {
     controller: ProjectController,
-    method: 'null',
+    method: 'addPledgedHistory',
     target: ProjectResource,
-    methodMap: { null: 'addPledgedHistory' },
-    dataDependencies: ['project_id', 'hours'],
+    dataDependencies: ['project_id', 'user_id'],
   },
   // we want to get the avatar url
   {
@@ -43,9 +41,8 @@ const dataflows = [
   // save both user_id and avartar_url in the list of pledgers
   {
     controller: ProjectController,
-    method: 'null',
+    method: 'addPledger',
     target: ProjectResource,
-    methodMap: { null: 'addPledger' },
     dataDependencies: ['project_id', 'user_id', 'avatar_url'],
   },
   {
@@ -56,16 +53,15 @@ const dataflows = [
   },
   {
     controller: ProjectController,
-    method: 'null',
+    method: 'addSubscriber',
     target: ProjectResource,
-    methodMap: { null: 'addSubscriber' },
     dataDependencies: ['project_id', 'user_id'],
   },
   {
     controller: UserController,
     method: 'pledge',
     target: UserResource,
-    dataDependencies: ['user_id', 'project_id', 'hours'],
+    dataDependencies: ['user_id', 'project_id'],
   },
 ];
 

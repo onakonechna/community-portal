@@ -3,6 +3,7 @@ import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import Home from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -41,6 +42,7 @@ const styles = (theme:any) => ({
 
 interface HeadBarProps {
   classes: any;
+  location?: any;
   history?: any;
 }
 
@@ -72,7 +74,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 
   toHome() {
-    this.props.history.push('.');
+    this.props.history.push('/');
   }
 
   toPledged() {
@@ -85,12 +87,18 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
 
   render() {
     const { classes } = this.props;
+    // console.log(this.props.location.pathname);
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
-          <IconButton onClick={this.toggleSideBar} aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
+          {this.props.location.pathname === '/'
+            ? <IconButton onClick={this.toggleSideBar} aria-label="Menu">
+                <MenuIcon />
+              </IconButton>
+            : <IconButton onClick={this.toHome} aria-label="Home">
+                <Home />
+              </IconButton>
+          }
           <span>
             <SideNav
               open={this.state.sideBarOpen}
@@ -98,7 +106,6 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
               toBookMark={this.toBookMark}
               toPledged={this.toPledged}
               toProfile={this.toProfile}
-              toHome={this.toHome}
             />
           </span>
           <Logo />

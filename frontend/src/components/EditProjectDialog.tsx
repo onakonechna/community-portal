@@ -145,7 +145,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       size: project.size,
       name: project.name,
       description: project.description,
-      due: new Date(project.due * 1000),
+      due: new Date(project.due),
       goal: project.estimated,
       github: project.github_address,
       slack: project.slack_channel,
@@ -290,7 +290,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
             disableTypography
             id="form-dialog-title"
             className={classes.title}>
-            New Project
+            Edit Project
             <Button
               className={classes.exitButton}
               onClick={this.props.toggleEdit}
@@ -355,7 +355,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
                   </MuiPickersUtilsProvider>
                 </div>
                 <div className={classes.rowItem}>
-                  <Typography className={classes.label}>Goal(total hours)*</Typography>
+                  <Typography className={classes.label}>Goal(total pledgers)*</Typography>
                   <TextField
                     required
                     id="goal"
