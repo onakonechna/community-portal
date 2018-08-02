@@ -14,8 +14,5 @@ const dataflows = [
   },
 ];
 
-const endpoint = new Endpoint('/user/likedProjects', 'get');
-endpoint.configure((req: Request, res: Response) => {
-  new PackageService(dataflows).package(req, res);
-});
+const endpoint = new Endpoint('/user/likedProjects', 'get', new PackageService(dataflows));
 export const handler = endpoint.execute();

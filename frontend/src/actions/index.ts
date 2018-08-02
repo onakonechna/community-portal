@@ -1,3 +1,4 @@
+import fetchProject from '../api/FetchProject';
 import bookmarkProject from '../api/BookmarkProject';
 import fetchProjects from '../api/FetchProjects';
 import getBookmarkedProjects from '../api/GetBookmarkedProjects';
@@ -17,6 +18,7 @@ export enum TypeKeys {
  LOAD_PROJECT = 'LOAD_PROJECT',
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
  LOAD_BOOKMARKED_PROJECTS = 'LOAD_BOOKMARKED_PROJECTS',
+ PROJECT_LOADED = 'PROJECT_LOADED',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
@@ -49,6 +51,11 @@ export interface EditProjectAction {
 }
 
 export interface ProjectLoadedAction {
+  type: TypeKeys.PROJECT_LOADED;
+  project: any;
+}
+
+export interface ProjectsLoadedAction {
   type: TypeKeys.PROJECTS_LOADED;
   projects: any;
 }
@@ -74,6 +81,7 @@ export type ActionTypes =
  | LoadUserAction
  | EditProjectAction
  | ProjectLoadedAction
+ | ProjectsLoadedAction
  | UpdateUserRoleAction
  | UpdateUserScopeAction
  | OtherAction;
@@ -159,6 +167,18 @@ export const loadLikedProjectsAction = (projects: any) => {
   };
 };
 
+export const loadProject = (project_id: string) => {
+  return (dispatch: Dispatch) => {
+    return fetchProject(project_id)
+      .then((project: any) => {
+        dispatch(projectLoaded(project));
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  };
+};
+
 export const loadBookmarkedProjectsAction = (projects: any) => {
   return {
     projects,
@@ -183,6 +203,13 @@ export const pledgeProjectAction = (body: any) => {
       });
   };
 };
+
+export const projectLoaded = (project: {}) => {
+  return {
+    project,
+    type: TypeKeys.PROJECT_LOADED,
+  };
+}
 
 export const projectsLoaded = (projects: {}) => {
   return {
