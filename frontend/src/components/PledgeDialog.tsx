@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import Message from './Message';
 
@@ -8,12 +9,19 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import { pledgeProjectAction } from '../actions';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Typography from '@material-ui/core/Typography';
+
+const styles = {
+  pledgeText: {
+    'font-size': '0.9rem',
+    'text-align': 'justify',
+  },
+};
 
 interface PledgeProps {
   classes?: any;
@@ -27,7 +35,6 @@ interface PledgeDispatchProps {
 }
 
 interface PledgeState {
-  hours?: number;
   success: boolean;
   loading: boolean;
   message: string;
@@ -36,31 +43,20 @@ interface PledgeState {
 
 export interface PledgeBody {
   project_id: string;
-  hours: number;
 }
 
 export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchProps, PledgeState> {
   constructor(props: PledgeProps & PledgeDispatchProps) {
     super(props);
     this.state = {
-      hours: 0,
       success: false,
       loading: false,
       messageOpen: false,
       message: '',
     };
-    this.handlePledgeChange = this.handlePledgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
-  }
-
-  handlePledgeChange(event: any) {
-    if (event.target.value === null) {
-      this.setState({ hours: 0 });
-    } else {
-      this.setState({ hours: parseInt(event.target.value, 10) });
-    }
   }
 
   handleMessageChange(message: string) {
@@ -81,71 +77,60 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   }
 
   handleSubmit(event: any) {
-    const { pledged, estimated } = this.props.project;
-    if (pledged + this.state.hours > estimated) {
-      this.handleMessageChange('Actually, we don\'t need that much commitment :)');
-      return;
-    }
     const body = {
       project_id: this.props.project.project_id,
-      hours: this.state.hours,
     };
-    if (body.hours != null && body.hours !== 0) {
-      this.props.pledgeProject(body)
-        .then((res: any) => {
-          this.setState((prevState: PledgeState) => ({
-            success: true,
-            loading: false,
-          }), () => {
-            this.props.toggle();
-            this.setState((prevState: PledgeState) => ({
-              hours: 0,
-              success: false,
-            }));
-          });
-        })
-        .catch((err: Error) => {
-          this.onFailure(new Error('Pledging is unsuccessful'));
+    this.props.pledgeProject(body)
+      .then((res: any) => {
+        this.setState((prevState: PledgeState) => ({
+          success: true,
+          loading: false,
+        }), () => {
+          this.props.toggle();
           this.setState((prevState: PledgeState) => ({
             success: false,
-            loading: false,
           }));
         });
-    }
+      })
+      .catch((err: Error) => {
+        this.onFailure(new Error('Pledging is unsuccessful'));
+        this.setState((prevState: PledgeState) => ({
+          success: false,
+          loading: false,
+        }));
+      });
     return;
   }
 
   render() {
-    const { project } = this.props;
+    const { classes, project } = this.props;
     return (
       <div>
-      <Dialog open={this.props.open}>
-        <DialogTitle>Pledge a Project</DialogTitle>
-        <DialogContent>
-          <h3>{project.goal}</h3>
-          <TextField
-            id="hours_pledged"
-            label="hours to pledge"
-            type="number"
-            value={this.state.hours || ''}
-            onChange={this.handlePledgeChange}
-            fullWidth
-          />
-          <Snackbar
-            open={this.state.messageOpen}
-          >
-           <SnackbarContent message="That\'s beyond the expectation!"/>
-          </Snackbar>
-        </DialogContent>
-        <DialogActions>
-          {this.state.loading && <LinearProgress
+        <Dialog open={this.props.open}>
+          <DialogContent>
+            <Typography className={classes.pledgeText}>
+            By pledging to this project, you'll commit to making active
+            contributions to this project and working with project owners
+            and other pledgers through online meetings and chats. If you're
+             willing to make this commitment, please click the 'Count Me In'
+              button. We look forward to working with you!
+            </Typography>
+            <h3>{project.goal}</h3>
+            <Snackbar
+              open={this.state.messageOpen}
+            >
+              <SnackbarContent message="That\'s beyond the expectation!" />
+            </Snackbar>
+          </DialogContent>
+          <DialogActions>
+            {this.state.loading && <LinearProgress
               style={{ display: 'block', width: '60%' }}
               variant="indeterminate" />}
             <Button onClick={this.props.toggle}>
               {this.state.success ? 'Done' : 'Cancel'}
             </Button>
             <Button onClick={this.handleSubmit}>
-              {this.state.success ? 'Pledged' : 'Pledge'}
+              {this.state.success ? 'Pledged' : 'Count Me In!'}
             </Button>
           </DialogActions>
         </Dialog>
@@ -165,4 +150,9 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect<{}, PledgeDispatchProps, PledgeProps>(null, mapDispatchToProps)(PledgeDialog);
+export default compose<{}, PledgeProps>(
+  withStyles(styles, {
+    name: 'PledgeDialog',
+  }),
+  connect<{}, PledgeDispatchProps, PledgeProps>(null, mapDispatchToProps),
+)(PledgeDialog);
