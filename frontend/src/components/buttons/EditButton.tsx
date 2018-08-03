@@ -8,6 +8,8 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 const styles = (theme: Theme) => ({
   editButton: {
     color: '#27A2AA',
+    position: 'relative' as 'relative',
+    bottom: '0.1rem',
   },
 });
 

@@ -58,6 +58,7 @@ interface GridProps {
   handler?: () => void;
   filter?: string;
   classes?: any;
+  history?: any;
 }
 
 interface IProject {
@@ -144,6 +145,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
               <ProjectCard
                 project={project}
                 handler={this.updateGrid}
+                history={this.props.history}
                 liked={this.checkLike(project.project_id)}
                 bookmarked={this.checkBookmark(project.project_id)}
               />
