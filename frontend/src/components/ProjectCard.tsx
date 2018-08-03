@@ -149,6 +149,7 @@ const styles = (theme: any) => ({
     'margin-bottom': '0.25rem',
   },
   title: {
+    display: 'inline-block',
     'font-size': '2rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
@@ -157,6 +158,7 @@ const styles = (theme: any) => ({
   },
   topRow: {
     display: 'flex',
+    width: '100%',
   },
   upvotes: {
     'font-size': '1rem',
