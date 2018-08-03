@@ -88,7 +88,11 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
-          <IconButton onClick={this.toggleSideBar} aria-label="Menu">
+          <IconButton
+            className={classes.menuButton}
+            onClick={this.toggleSideBar}
+            aria-label="Menu"
+          >
             <MenuIcon />
           </IconButton>
           <span>

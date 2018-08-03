@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 const styles = (theme: Theme) => ({
   invisibleCard: {
     'background-color': '#FFFFFF',
-    'opacity': 0,
+    opacity: 0,
     height: '1rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
@@ -131,7 +131,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   render() {
     const { classes } = this.props;
     return (
-      <div style={{ padding: '40px' }}>
+      <div>
       <IntroText />
         <Grid
           container

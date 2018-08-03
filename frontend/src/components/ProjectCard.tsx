@@ -428,7 +428,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             </div>
           </CardContent>
           <CardActions>
-            <Pledge handler={this.togglePledge} label="Pledge" />
+            <Pledge handler={this.togglePledge} label="Join" />
             <a className={classes.github} href={this.props.project.github_address}>
               <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
                 <SvgIcon>

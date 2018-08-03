@@ -48,7 +48,7 @@ const SideBar = (props: any) => {
           className={classes.listItem}
           onClick={props.toPledged}
         >
-          <ListItemText primary="Pledged Projects" />
+          <ListItemText primary="Joined Projects" />
         </ListItem>
         <Divider />
         <ListItem
