@@ -28,6 +28,8 @@ interface PledgeProps {
   project?: any;
   open: boolean;
   toggle: () => void;
+  join: () => void;
+  joined: boolean;
 }
 
 interface PledgeDispatchProps {
@@ -87,6 +89,7 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
           loading: false,
         }), () => {
           this.props.toggle();
+          this.props.join();
           this.setState((prevState: PledgeState) => ({
             success: false,
           }));
@@ -103,36 +106,52 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
   }
 
   render() {
-    const { classes, project } = this.props;
+    const { classes, joined, project } = this.props;
     return (
       <div>
         <Dialog open={this.props.open}>
-          <DialogContent>
-            <Typography className={classes.pledgeText}>
-            By joining this project, you'll commit to making active
-            contributions to this project and working with project owners
-            and fellow developers through online meetings and chats. If you're
-             willing to make this commitment, please click the 'Count Me In'
-              button. We look forward to working with you!
-            </Typography>
-            <h3>{project.goal}</h3>
-            <Snackbar
-              open={this.state.messageOpen}
-            >
-              <SnackbarContent message="That\'s beyond the expectation!" />
-            </Snackbar>
-          </DialogContent>
-          <DialogActions>
-            {this.state.loading && <LinearProgress
-              style={{ display: 'block', width: '60%' }}
-              variant="indeterminate" />}
-            <Button onClick={this.props.toggle}>
-              {this.state.success ? 'Done' : 'Cancel'}
-            </Button>
-            <Button onClick={this.handleSubmit}>
-              {this.state.success ? 'Pledged' : 'Count Me In!'}
-            </Button>
-          </DialogActions>
+          {joined ?
+            <span>
+              <DialogContent>
+                <Typography className={classes.pledgeText}>
+                  Thank you, you've already joined this project!
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={this.props.toggle}>
+                    {this.state.success ? 'Done' : 'Exit'}
+                  </Button>
+              </DialogActions>
+            </span>
+            : <span>
+              <DialogContent>
+                <Typography className={classes.pledgeText}>
+                  By joining this project, you'll commit to making active
+                  contributions to this project and working with project owners
+                  and fellow developers through online meetings and chats. If you're
+                   willing to make this commitment, please click the 'Count Me In'
+                    button. We look forward to working with you!
+                </Typography>
+                <h3>{project.goal}</h3>
+                <Snackbar
+                  open={this.state.messageOpen}
+                >
+                  <SnackbarContent message="That\'s beyond the expectation!" />
+                </Snackbar>
+              </DialogContent>
+              <DialogActions>
+                {this.state.loading && <LinearProgress
+                  style={{ display: 'block', width: '60%' }}
+                  variant="indeterminate" />}
+                <Button onClick={this.props.toggle}>
+                  {this.state.success ? 'Done' : 'Cancel'}
+                </Button>
+                <Button onClick={this.handleSubmit}>
+                  {this.state.success ? 'Pledged' : 'Count Me In!'}
+                </Button>
+              </DialogActions>
+            </span>
+          }
         </Dialog>
         <Message
           message={this.state.message}
