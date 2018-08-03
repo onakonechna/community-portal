@@ -40,6 +40,9 @@ const styles = (theme: any) => ({
   bottomButtons: {
     position: 'relative' as 'relative',
     bottom: '0.1rem',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
   },
   card: {
     'background-color': '#F2F3F3',
