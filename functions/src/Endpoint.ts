@@ -57,8 +57,8 @@ export default class Endpoint {
   execute() {
     const handler = serverless(this.app, {
       request(request: Request, event: any, context: any) {
-        if (event.requestContext.authorizer !== undefined) {
-          if (event.requestContext.authorizer.claims !== undefined) {
+        if (typeof event.requestContext.authorizer !== 'undefined') {
+          if (typeof event.requestContext.authorizer.claims !== 'undefined') {
             request.tokenContents = event.requestContext.authorizer.claims;
           } else {
             request.tokenContents = event.requestContext.authorizer;
