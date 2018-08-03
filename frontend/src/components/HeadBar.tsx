@@ -92,10 +92,18 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
           {this.props.location.pathname === '/'
-            ? <IconButton onClick={this.toggleSideBar} aria-label="Menu">
+            ? <IconButton
+                className={classes.menuButton}
+                onClick={this.toggleSideBar}
+                aria-label="Menu"
+              >
                 <MenuIcon />
               </IconButton>
-            : <IconButton onClick={this.toHome} aria-label="Home">
+            : <IconButton
+                className={classes.menuButton}
+                onClick={this.toHome}
+                aria-label="Home"
+              >
                 <Home />
               </IconButton>
           }

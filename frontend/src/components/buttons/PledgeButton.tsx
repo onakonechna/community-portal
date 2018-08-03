@@ -15,7 +15,7 @@ export const styles = {
 function pledgeButton(props:any) {
   const { classes } = props;
   return (
-    <Button className={classes.pledge} onClick={props.handler}>Pledge</Button>
+    <Button className={classes.pledge} onClick={props.handler}>Join</Button>
   );
 }
 

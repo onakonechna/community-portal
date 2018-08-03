@@ -132,7 +132,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   render() {
     const { classes } = this.props;
     return (
-      <div style={{ padding: '40px' }}>
+      <div>
       <IntroText />
         <Grid
           container

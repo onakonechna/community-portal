@@ -37,6 +37,13 @@ const styles = (theme: any) => ({
   bookmark: {
     'margin-left': 'auto',
   },
+  bottomButtons: {
+    position: 'relative' as 'relative',
+    bottom: '0.1rem',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
   card: {
     'background-color': '#F2F3F3',
     height: '25rem',
@@ -429,7 +436,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <Typography className={classes.progressText}>
                   {`${Object.keys(this.props.project.pledgers).length}/`}
                   <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                  <Typography className={classes.hourText}>{`pledgers`}</Typography>
+                  <Typography className={classes.hourText}>{`joined`}</Typography>
                 </Typography>
               </div>
             </div>
@@ -443,7 +450,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             </div>
           </CardContent>
           <CardActions>
-            <Pledge handler={this.togglePledge} label="Pledge" />
+            <Pledge handler={this.togglePledge} label="Join" />
             <DetailButton handler={this.goDetail}/>
             <a className={classes.github} href={this.props.project.github_address}>
               <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
@@ -453,7 +460,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <a href={this.props.project.slack_channel}>
-              <IconButton aria-label="slack">
+              <IconButton aria-label="slack" className={classes.bottomButtons}>
                 <SvgIcon className={classes.slack}>
                   <Slack />
                 </SvgIcon>
