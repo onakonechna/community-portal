@@ -17,6 +17,21 @@ const data = [
   { time: '2018-07-29T22:53:13Z', project: 'Community Portal' },
 ];
 
+const monthMap = {
+  1: 'Jan',
+  2: 'Feb',
+  3: 'Mar',
+  4: 'Apr',
+  5: 'May',
+  6: 'Jun',
+  7: 'Jul',
+  8: 'Aug',
+  9: 'Sep',
+  10: 'Oct',
+  11: 'Nov',
+  12: 'Dec',
+};
+
 interface LineChartProps {
   chart?: any;
   data?: any;
@@ -27,6 +42,13 @@ interface LineChartProps {
 interface Tally {
   month?: string;
   frequency?: number;
+}
+
+function displayText(frequency: number, month: string) {
+  if (frequency === 1) {
+    return `1 PR for ${month}`;
+  }
+  return `${frequency} PRs for ${month}`;
 }
 
 class LineChart extends React.Component<LineChartProps, {}> {
@@ -53,7 +75,7 @@ class LineChart extends React.Component<LineChartProps, {}> {
     const tally: Tally = {};
 
     data.forEach((record) => {
-      const month = parseTime(record.time)!.getMonth();
+      const month = monthMap[parseTime(record.time)!.getMonth()];
       tally[month] = (tally[month] || 0) + 1;
     });
 
@@ -69,31 +91,29 @@ class LineChart extends React.Component<LineChartProps, {}> {
     }
 
     const line = d3.line<Tally>()
+      .curve(d3.curveNatural)
       .x(d => x(d.month as any) as any)
       .y(d => y(d.frequency as any) as any);
 
     x.domain(newData.map(d => d.month));
     y.domain([0, d3.max(newData, d => d.frequency)]);
 
-    const xAxis = d3.axisBottom(x);
+    const xAxis = d3.axisBottom(x).tickSize(10);
 
-    const yAxis = d3.axisLeft(y);
+    const yAxis = d3.axisLeft(y).ticks(4);
 
-    // Create the element
     const div = new ReactFauxDOM.Element('div');
 
-    const focus = d3.select(div)
+    d3.select(div)
       .append('div')
       .attr('class', 'tooltip')
-      .style('background-color', 'beige')
-      .style('width', '30%')
+      .style('background-color', 'steelblue')
+      .style('color', 'white')
+      .style('width', '20%')
       .style('opacity', 0)
       .style('position', 'relative')
       .text('tooltip');
 
-    console.log(focus);
-
-    // Pass it to d3.select and proceed as normal
     const svg = d3.select(div).append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
@@ -107,13 +127,23 @@ class LineChart extends React.Component<LineChartProps, {}> {
 
     svg.append('g')
       .attr('class', 'y axis')
-      .call(yAxis);
-    // .append('text')
-    // .attr('transform', 'rotate(-90)')
-    // .attr('y', 60)
-    // .attr('dy', '.71em')
-    // .style('text-anchor', 'end')
-    // .text('#PR');
+      .call(yAxis)
+      .append('text')
+      .attr('x', -5)
+      .attr('y', -7)
+      .attr('font-size', '15px')
+      .attr('fill', 'black')
+      .style('text-anchor', 'end')
+      .text('#PR');
+
+    svg.append('g')
+      .attr('class', 'line chart title')
+      .append('text')
+      .attr('x', 200)
+      .attr('fill', 'black')
+      .style('text-anchor', 'middle')
+      .text('#PRs over time')
+      .style('font-family', 'system-ui');
 
     svg.append('g')
       .append('path')
@@ -130,14 +160,14 @@ class LineChart extends React.Component<LineChartProps, {}> {
       .attr('r', 5)
       .attr('cx', d => x(d.month) as any)
       .attr('cy', (d:any) => y(d.frequency))
-      .attr('fill', 'brown')
+      .attr('fill', 'steelblue')
       .on('mouseover', (d:any) => {
         d3.select('.tooltip')
           .transition()
-          .duration(200)
+          .duration(300)
           .style('left', d3.event.pageX - 780 + 'px')
           .style('top', d3.event.pageY - 200 + 'px')
-          .text(d.frequency + ' PRs for this month')
+          .text(displayText(d.frequency, d.month))
           .style('opacity', 0.9);
       })
       .on('mouseout', (d:any) => {
