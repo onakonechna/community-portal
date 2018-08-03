@@ -204,6 +204,7 @@ interface CardProps {
   history?: any;
   liked: boolean;
   bookmarked: boolean;
+  joined: boolean;
 }
 
 interface DispatchProps {
@@ -216,6 +217,7 @@ interface CardState {
   pledgeOpen: boolean;
   liked: boolean;
   bookmarked: boolean;
+  joined: boolean;
   messageOpen: boolean;
   errorMessage: string;
 }
@@ -234,9 +236,11 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       pledgeOpen: false,
       liked: this.props.liked,
       bookmarked: this.props.bookmarked,
+      joined: this.props.joined,
       messageOpen: false,
       errorMessage: '',
     };
+    this.confirmJoin = this.confirmJoin.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
@@ -267,6 +271,10 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       default:
         return `Opened ${dateDifference + 1} days ago`;
     }
+  }
+
+  confirmJoin() {
+    this.setState({ joined: true });
   }
 
   countContributors(project: any) {
@@ -381,6 +389,8 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           open={this.state.pledgeOpen}
           project={this.props.project}
           toggle={this.togglePledge}
+          join={this.confirmJoin}
+          joined={this.props.joined}
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
