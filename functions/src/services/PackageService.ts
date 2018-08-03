@@ -166,7 +166,7 @@ export default class PackageService {
     this.extractInitialDataDependencies();
 
     // store initialData in dataStore
-    _.assign(this.dataStore, this.initialData);1
+    _.assign(this.dataStore, this.initialData); 1;
 
     let chainedPromise = this.shouldSkip(this.dataflows[0])
       ? new Promise((resolve: any) => resolve({}))
