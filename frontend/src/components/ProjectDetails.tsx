@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 
 import { loadProject } from '../actions';
 
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -37,6 +38,17 @@ const styles: any = (theme:any) => ({
   },
   content: {
     'margin': '1rem',
+  },
+  contributorDiv: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginTop: '2rem',
+  },
+  contributorText: {
+    'font-size': '1rem',
+    'font-weight': '300',
+    'margin-left': '1rem',
+    'margin-top': 'auto',
   },
 });
 
@@ -104,8 +116,21 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
+  countContributors(project: any) {
+    const numOfPledgers = Object.keys(project.pledgers).length;
+    switch (numOfPledgers) {
+      case 0:
+        return 'No contributors yet';
+      case 1:
+        return '1 Contributor';
+      default:
+        return `${numOfPledgers} Contributors`;
+    }
+  }
+
   render() {
     const { classes } = this.props;
+    const { pledgers } = this.props.project;
     return (
       <div>
         <Typography className={classes.titleText}>
@@ -114,6 +139,15 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
         <Card className={classes.card}>
           <CardContent className={classes.content}>
             <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
+
+            <div className={classes.contributorDiv}>
+              {Object.keys(pledgers).length > 0
+                ? Object.keys(pledgers).map(pledger => (
+                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
+                ))
+                : null}
+              <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
+            </div>
           </CardContent>
         </Card>
       </div>
