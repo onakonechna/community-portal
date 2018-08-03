@@ -109,9 +109,9 @@ export class PledgeDialog extends React.Component<PledgeProps & PledgeDispatchPr
         <Dialog open={this.props.open}>
           <DialogContent>
             <Typography className={classes.pledgeText}>
-            By pledging to this project, you'll commit to making active
+            By joining this project, you'll commit to making active
             contributions to this project and working with project owners
-            and other pledgers through online meetings and chats. If you're
+            and fellow developers through online meetings and chats. If you're
              willing to make this commitment, please click the 'Count Me In'
               button. We look forward to working with you!
             </Typography>
