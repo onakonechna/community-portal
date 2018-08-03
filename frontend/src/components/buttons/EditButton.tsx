@@ -10,6 +10,9 @@ const styles = (theme: Theme) => ({
     color: '#27A2AA',
     position: 'relative' as 'relative',
     bottom: '0.1rem',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
   },
 });
 

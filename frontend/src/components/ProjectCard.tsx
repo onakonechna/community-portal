@@ -40,13 +40,10 @@ const styles = (theme: any) => ({
   bottomButtons: {
     position: 'relative' as 'relative',
     bottom: '0.1rem',
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '25rem',
+    height: '30rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
@@ -67,12 +64,11 @@ const styles = (theme: any) => ({
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
-
   },
   contributorDiv: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '18rem',
+    top: '24rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -86,7 +82,7 @@ const styles = (theme: any) => ({
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
-    top: '6.5rem',
+    top: '4rem',
     [theme.breakpoints.down('md')]: {
       left: '1rem',
       right: '1rem',
@@ -103,7 +99,7 @@ const styles = (theme: any) => ({
   },
   labels: {
     position: 'absolute' as 'absolute',
-    top: '10rem',
+    top: '15rem',
   },
   progress: {
     color: '#48BF61',
@@ -134,7 +130,7 @@ const styles = (theme: any) => ({
   row: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '14rem',
+    top: '18.5rem',
   },
   sidebar: {
     display: 'flex',
@@ -273,7 +269,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     const numOfPledgers = Object.keys(project.pledgers).length;
     switch (numOfPledgers) {
       case 0:
-        return 'No contributors yet';
+        return 'Nobody joined yet';
       case 1:
         return '1 Contributor';
       default:
@@ -388,7 +384,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="2"
+                maxLine="1"
                 ellipsis="..."
                 trimRight
                 basedOn="letters"
@@ -403,7 +399,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
-              maxLine="3"
+              maxLine="10"
               ellipsis="..."
               trimRight
               basedOn="letters"
