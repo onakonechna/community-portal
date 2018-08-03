@@ -36,6 +36,10 @@ const styles = (theme: any) => ({
   },
   bookmark: {
     'margin-left': 'auto',
+    [theme.breakpoints.down('md')]: {
+      position: 'relative' as 'relative',
+      bottom: '0.5rem',
+    },
   },
   bottomButtons: {
     position: 'relative' as 'relative',
