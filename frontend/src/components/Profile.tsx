@@ -63,6 +63,7 @@ interface ProfileProps {
 interface ProfileState {
   editUserOpen: boolean;
   displayedUser: any;
+  message: string;
 }
 
 interface ProfileMapProps {
@@ -86,7 +87,8 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     super(props);
     this.state = {
       editUserOpen: false,
-      displayedUser: {},
+      displayedUser: null,
+      message: '',
     };
     this.toggleEditUser = this.toggleEditUser.bind(this);
   }
@@ -96,6 +98,9 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     fetchUser(currentUser)
       .then((displayedUser: any) => {
         this.setState({ displayedUser });
+      })
+      .catch((err: Error) => {
+        this.setState({ message: 'User not Found' });
       });
   }
 
@@ -108,7 +113,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   render() {
     const { classes } = this.props;
     const { displayedUser } = this.state;
-    const cardContent = displayedUser !== {}
+    const cardContent = displayedUser
       ?
         <span>
           <UserAvatar className={classes.avatar} src={displayedUser.avatar_url} />
@@ -119,7 +124,9 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
             {displayedUser.company}
           </Typography>
         </span>
-      : null;
+      : <Typography style={{ fontSize: '3rem', textAlign: 'center' }}>
+          {this.state.message}
+        </Typography>;
 
     return (
       <Card className={classes.card}>
