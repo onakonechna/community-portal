@@ -33,11 +33,11 @@ const styles: any = (theme:any) => ({
     },
     display: 'flex',
     'flex-direction': 'column',
-    'margin': 'auto',
+    margin: 'auto',
     'margin-top': '1rem',
   },
   content: {
-    'margin': '1rem',
+    margin: '1rem',
   },
   contributorDiv: {
     display: 'flex',
@@ -151,7 +151,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 }
 

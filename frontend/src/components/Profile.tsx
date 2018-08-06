@@ -11,8 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
+import { Dispatch } from '../../node_modules/redux';
 
-const styles = (theme:Theme) => ({
+import fetchUser from '../api/FetchUser';
+
+const styles = (theme: Theme) => ({
   avatar: {
     height: '10rem',
     width: '10rem',
@@ -54,10 +57,12 @@ const styles = (theme:Theme) => ({
 
 interface ProfileProps {
   classes: Classes;
+  match: any;
 }
 
 interface ProfileState {
   editUserOpen: boolean;
+  displayedUser: any;
 }
 
 interface ProfileMapProps {
@@ -81,8 +86,17 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     super(props);
     this.state = {
       editUserOpen: false,
+      displayedUser: {},
     };
     this.toggleEditUser = this.toggleEditUser.bind(this);
+  }
+
+  componentDidMount() {
+    const currentUser = this.props.match.params.user_id;
+    fetchUser(currentUser)
+      .then((displayedUser: any) => {
+        this.setState({ displayedUser });
+      });
   }
 
   toggleEditUser() {
@@ -93,9 +107,9 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
 
   render() {
     const { user, classes } = this.props;
-    return (
-      <Card className={classes.card}>
-        <CardContent className={classes.content}>
+    const cardContent = this.state.displayedUser !== {}
+      ?
+        <span>
           <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
           <Typography className={classes.nameText}>
             {user.name}
@@ -103,6 +117,13 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
           <Typography className={classes.companyText}>
             {user.company}
           </Typography>
+        </span>
+      : null;
+
+    return (
+      <Card className={classes.card}>
+        <CardContent className={classes.content}>
+          {cardContent}
         </CardContent>
         <CardActions>
           <IconButton>
@@ -124,7 +145,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
 
 };
 
