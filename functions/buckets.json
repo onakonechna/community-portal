@@ -11,7 +11,7 @@
               "GET",
               "PUT",
               "POST",
-              "HEAD",
+              "HEAD"
             ],
             "AllowedOrigins": "*",
             "AllowedHeaders": "*"

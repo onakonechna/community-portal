@@ -8,7 +8,7 @@ interface ProjectRecommendationEngineInterface {
 }
 
 export default class ProjectRecommendationEngine implements ProjectRecommendationEngineInterface {
-  private s3: any;
+  private adapter: any;
 
   constructor(s3: S3Connection) {
     this.adapter = new S3Adapter(s3);
@@ -17,14 +17,6 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
   getRecommendations(data: any): Promise<any> {
     const { last_visited, project_id } = data;
 
-    this.adapter.put(PROJECT_RECOMMENDATION_BUCKET, 'test-key', 'abab');
-
-    return this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, 'test-key');
-
-    // new Promise((resolve: any) => {
-    //   return resolve({
-    //     recommended: [],
-    //   });
-    // });
+    return this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, 'recommended');
   }
 }

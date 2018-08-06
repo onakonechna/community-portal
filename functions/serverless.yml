@@ -44,7 +44,7 @@ custom:
   s3:
     host: 0.0.0.0
     port: 8888
-    directory: /s3Local
+    directory: /tmp
 
 provider:
   name: aws

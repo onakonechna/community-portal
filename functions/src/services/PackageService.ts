@@ -34,7 +34,7 @@ interface DataflowDefinition {
   controller: any; // class to instantiate from
   method: string;
   target: any; // class to instantiate from
-  targetType?: string; // resource (default) | api
+  targetType?: string; // resource (default) | api | engine
   dataDependencies?: string[];
   authDataDependencies?: string[];
   validationMap?: any;
