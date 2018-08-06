@@ -13,8 +13,12 @@
               "POST",
               "HEAD"
             ],
-            "AllowedOrigins": "*",
-            "AllowedHeaders": "*"
+            "AllowedOrigins": [
+              "*"
+            ],
+            "AllowedHeaders": [
+              "*"
+            ]
           }
         ]
       }
