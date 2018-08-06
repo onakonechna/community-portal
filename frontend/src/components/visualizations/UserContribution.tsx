@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import * as ReactFauxDOM from 'react-faux-dom';
 
-const data = [
+const test = [
   { time: '2017-11-30T22:53:13Z', project: 'PHP' },
   { time: '2018-02-23T22:53:13Z', project: 'Community Portal' },
   { time: '2018-03-14T22:53:13Z', project: 'AWS DynamoDB' },
@@ -18,18 +18,18 @@ const data = [
 ];
 
 const monthMap = {
-  1: 'Jan',
-  2: 'Feb',
-  3: 'Mar',
-  4: 'Apr',
-  5: 'May',
-  6: 'Jun',
-  7: 'Jul',
-  8: 'Aug',
-  9: 'Sep',
-  10: 'Oct',
-  11: 'Nov',
-  12: 'Dec',
+  Jan: 1,
+  Feb: 2,
+  Mar: 3,
+  Apr: 4,
+  May: 5,
+  Jun: 6,
+  Jul: 7,
+  Aug: 8,
+  Sep: 9,
+  Oct: 10,
+  Nov: 11,
+  Dec: 12,
 };
 
 interface LineChartProps {
@@ -40,8 +40,8 @@ interface LineChartProps {
 }
 
 interface Tally {
-  month?: string;
-  frequency?: number;
+  key: string;
+  value: number;
 }
 
 function displayText(frequency: number, month: string) {
@@ -64,44 +64,49 @@ class LineChart extends React.Component<LineChartProps, {}> {
     const width = this.props.width - margin.left - margin.right;
     const height = this.props.height - margin.top - margin.bottom;
 
-    const x = d3.scalePoint()
+    const x = d3.scaleTime()
       .rangeRound([0, width]);
-    console.log(x);
 
     const y = d3.scaleLinear()
       .rangeRound([height, 0]);
 
     const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%SZ');
+    const parseFormattedTime = d3.timeParse('%Y%m');
 
-    const tally: Tally = {};
+    function convertToDate(input: string) {
+      const year = input.split(' ')[0];
+      const month = input.split(' ')[1];
+      const convertedMonth = monthMap[month];
+      return parseFormattedTime(year + convertedMonth);
+    }
 
-    data.forEach((record) => {
-      const month = monthMap[parseTime(record.time)!.getMonth()];
-      tally[month] = (tally[month] || 0) + 1;
+    const MonthFormatter = d3.timeFormat('%B');
+    const YearFormatter = d3.timeFormat('%Y');
+
+    const toMonth = (d:any) => YearFormatter(d.time) + ' ' + MonthFormatter(d.time).substring(0, 3);
+
+    test.forEach((record) => {
+      record.time = parseTime(record.time) as any;
     });
 
-    const newData = [];
-
-    for (const month in tally) {
-      if (tally.hasOwnProperty(month)) {
-        newData.push({
-          month,
-          frequency: tally[month],
-        });
-      }
-    }
+    const formattedData = d3.nest()
+      .key(toMonth)
+      .rollup(leaves => leaves.length as any)
+      .entries(test);
 
     const line = d3.line<Tally>()
       .curve(d3.curveNatural)
-      .x(d => x(d.month as any) as any)
-      .y(d => y(d.frequency as any) as any);
+      .x(d => x(convertToDate(d.key) as Date) as number)
+      .y(d => y(d.value));
 
-    x.domain(newData.map(d => d.month));
-    y.domain([0, d3.max(newData, d => d.frequency)]);
+    x.domain(d3.extent(formattedData, d => convertToDate(d.key)) as any);
+    y.domain([0, d3.max(formattedData, d => d.value)] as any);
 
-    const xAxis = d3.axisBottom(x).tickSize(10);
+    const xAxis = d3.axisBottom(x)
+      .tickFormat(d3.timeFormat('%b'));
 
-    const yAxis = d3.axisLeft(y).ticks(4);
+    const yAxis = d3.axisLeft(y)
+      .ticks(4);
 
     const div = new ReactFauxDOM.Element('div');
 
@@ -148,19 +153,19 @@ class LineChart extends React.Component<LineChartProps, {}> {
 
     svg.append('g')
       .append('path')
-      .datum(newData)
+      .datum(formattedData)
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 1.5)
-      .attr('d', line);
+      .attr('d', line as any);
 
     svg.selectAll('dot')
-      .data(newData)
+      .data(formattedData)
       .enter()
       .append('circle')
       .attr('r', 5)
-      .attr('cx', d => x(d.month) as any)
-      .attr('cy', (d:any) => y(d.frequency))
+      .attr('cx', d => x(convertToDate(d.key) as any))
+      .attr('cy', (d:any) => y(d.value))
       .attr('fill', 'steelblue')
       .on('mouseover', (d:any) => {
         d3.select('.tooltip')
@@ -168,7 +173,7 @@ class LineChart extends React.Component<LineChartProps, {}> {
           .duration(300)
           .style('left', d3.event.pageX - 780 + 'px')
           .style('top', d3.event.pageY - 200 + 'px')
-          .text(displayText(d.frequency, d.month))
+          .text(displayText(d.value, d.key))
           .style('opacity', 0.9);
       })
       .on('mouseout', (d:any) => {
