@@ -1,0 +1,10 @@
+getUserInfo:
+  name: ${self:provider.stage}-getUserInfo
+  role: getUserInfoRole
+  handler: handlers/user/getUserInfo/handler.handler
+  timeout: 10
+  events:
+  - http:
+      path: /user/{user_id}
+      method: get
+      cors: true
