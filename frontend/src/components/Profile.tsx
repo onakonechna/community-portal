@@ -106,16 +106,17 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   }
 
   render() {
-    const { user, classes } = this.props;
-    const cardContent = this.state.displayedUser !== {}
+    const { classes } = this.props;
+    const { displayedUser } = this.state;
+    const cardContent = displayedUser !== {}
       ?
         <span>
-          <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
+          <UserAvatar className={classes.avatar} src={displayedUser.avatar_url} />
           <Typography className={classes.nameText}>
-            {user.name}
+            {displayedUser.name}
           </Typography>
           <Typography className={classes.companyText}>
-            {user.company}
+            {displayedUser.company}
           </Typography>
         </span>
       : null;
