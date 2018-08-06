@@ -17,6 +17,10 @@ export default class ProjectTrafficResource implements ProjectTrafficResourceInt
     this.adapter = new DatabaseAdapter(db);
   }
 
+  scan(data: any): Promise<any> {
+    return this.adapter.scan(PROJECT_TRAFFIC_TABLE);
+  }
+
   getLastVisited(data: any): Promise<any> {
     const { user_id } = data;
     return this.adapter.get(

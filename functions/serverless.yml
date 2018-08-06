@@ -114,6 +114,7 @@ functions:
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
   - ${file(./handlers/routine/rankBySkill/rankBySkill.yml)}
+  - ${file(./handlers/routine/trainProjectRecommendationModel/trainProjectRecommendationModel.yml)}
 
 resources:
   Resources:
@@ -151,6 +152,7 @@ resources:
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     rankBySkillRole: ${file(./handlers/routine/rankBySkill/role.yml):rankBySkillRole}
+    trainProjectRecommendationModelRole: ${file(./handlers/routine/trainProjectRecommendationModel/role.yml):trainProjectRecommendationModelRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
     ProjectRecommendationBucket: ${file(./buckets.json):ProjectRecommendationBucket}
 

@@ -1,0 +1,6 @@
+trainProjectRecommendationModel:
+  name: ${self:provider.stage}-trainProjectRecommendationModel
+  role: trainProjectRecommendationModelRole
+  handler: handlers/routine/trainProjectRecommendationModel/handler.handler
+  events:
+  - schedule: rate(1 minute)

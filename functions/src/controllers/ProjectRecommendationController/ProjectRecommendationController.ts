@@ -13,5 +13,8 @@ export default class ProjectRecommendationController implements ProjectTrafficCo
   }
 
   // special controllers
+  null(data: any) {
+    return (result: any) => {};
+  }
 
 }

@@ -19,4 +19,10 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
 
     return this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, 'recommended');
   }
+
+  storeModel(data: any): Promise<any> {
+    const { model } = data;
+
+    return this.adapter.put(PROJECT_RECOMMENDATION_BUCKET, 'model', model);
+  }
 }
