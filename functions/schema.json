@@ -126,13 +126,13 @@
     "Properties": {
       "AttributeDefinitions": [
         {
-          "AttributeName": "skill_id",
+          "AttributeName": "skill_name",
           "AttributeType": "S"
         }
       ],
       "KeySchema": [
         {
-          "AttributeName": "skill_id",
+          "AttributeName": "skill_name",
           "KeyType": "HASH"
         }
       ],

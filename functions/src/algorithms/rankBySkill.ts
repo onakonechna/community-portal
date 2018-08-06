@@ -1,7 +1,7 @@
 interface DataInterface {
   users: any;
   projects: any;
-  skill_id: string;
+  skill_name: string;
 }
 
 function setIfNotExists(map: Map<string, any>, key: any, value: any) {
