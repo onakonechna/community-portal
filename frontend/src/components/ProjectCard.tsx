@@ -364,9 +364,8 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="2"
+                maxLine="1"
                 ellipsis="..."
-                trimRight
                 basedOn="letters"
               />
               <Bookmark

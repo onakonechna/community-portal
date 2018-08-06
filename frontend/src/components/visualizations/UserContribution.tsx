@@ -66,6 +66,7 @@ class LineChart extends React.Component<LineChartProps, {}> {
 
     const x = d3.scalePoint()
       .rangeRound([0, width]);
+    console.log(x);
 
     const y = d3.scaleLinear()
       .rangeRound([height, 0]);
