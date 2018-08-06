@@ -4,8 +4,6 @@ const IS_OFFLINE = process.env.IS_OFFLINE;
 
 export default class DatabaseConnection {
 
-  constructor() {}
-
   connect() {
     if (IS_OFFLINE === 'true') {
       return new DynamoDB.DocumentClient({

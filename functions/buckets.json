@@ -1,0 +1,23 @@
+{
+  "ProjectRecommendationBucket": {
+    "Type": "AWS::S3::Bucket",
+    "Properties": {
+      "BucketName": "project-recommendation-${self:provider.stage}",
+      "AccessControl": "Private",
+      "CorsConfiguration": {
+        "CorsRules": [
+          {
+            "AllowedMethods": [
+              "GET",
+              "PUT",
+              "POST",
+              "HEAD",
+            ],
+            "AllowedOrigins": "*",
+            "AllowedHeaders": "*"
+          }
+        ]
+      }
+    }
+  }
+}

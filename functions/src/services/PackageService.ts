@@ -6,6 +6,7 @@ import { Callback, Request, Response } from './../../config/Types';
 import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
 
 import DatabaseConnection from './../resources/DatabaseConnection';
+import S3Connection from './../engines/S3Connection';
 import Validator from './../Validator';
 
 const terminate = (error: string) => {
@@ -86,6 +87,9 @@ export default class PackageService {
       case 'api':
         target = this.createAPI(dataflowDefinition.target);
         break;
+      case 'engine':
+        target = this.createEngine(dataflowDefinition.target);
+        break;
       default:
         throw `Target type ${dataflowDefinition.targetType} is not supported`;
     }
@@ -148,6 +152,10 @@ export default class PackageService {
 
   createAPI(API: any) {
     return new API();
+  }
+
+  createEngine(Engine: any) {
+    return new Engine(new S3Connection());
   }
 
   executeDataflows(resolve: any, reject: any) {

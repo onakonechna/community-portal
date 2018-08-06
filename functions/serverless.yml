@@ -41,6 +41,10 @@ custom:
    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
    stage: ${self:provider.stage} # Stage will be created for every branch
    createRoute53Record: false
+  s3:
+    host: 0.0.0.0
+    port: 8888
+    directory: /s3Local
 
 provider:
   name: aws
@@ -68,6 +72,7 @@ provider:
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
+    PROJECT_RECOMMENDATION_BUCKET: ${file(./buckets.json):ProjectRecommendationBucket.Properties.BucketName}
   iamRoleStatements:
       - Effect: Allow
         Action:
@@ -125,7 +130,7 @@ resources:
         StatusCode: '401'
         ResponseTemplates:
           application/json: "{\"error\": $context.error.messageString}"
-    # Add references to defined tables and roles here before deployment
+    # Add references to defined tables, roles and buckets here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
@@ -147,10 +152,12 @@ resources:
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     rankBySkillRole: ${file(./handlers/routine/rankBySkill/role.yml):rankBySkillRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
+    ProjectRecommendationBucket: ${file(./buckets.json):ProjectRecommendationBucket}
 
 plugins:
   - serverless-domain-manager
   - serverless-webpack
   - serverless-dynamodb-local
+  - serverless-s3-local
   - serverless-offline-scheduler
   - serverless-offline # serverless-offline needs to be last in the list
