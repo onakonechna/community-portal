@@ -3,8 +3,10 @@ import { Request, Response } from './../../../config/Types';
 import PackageService from './../../../src/services/PackageService';
 
 import {
+  ProjectController,
   ProjectTrafficController,
   ProjectRecommendationController,
+  ProjectResource,
   ProjectTrafficResource,
   ProjectRecommendationEngine,
 } from './../../../config/Components';
@@ -28,7 +30,7 @@ const dataflows = [
     method: 'null',
     target: ProjectRecommendationEngine,
     methodMap: { null: 'trainModel' },
-    dataDependencies: ['model'],
+    dataDependencies: ['projects', 'traffic'],
   },
 ];
 
