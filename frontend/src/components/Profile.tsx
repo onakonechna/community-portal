@@ -13,6 +13,7 @@ import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
 import LineChart from './visualizations/UserContribution';
+import { testData } from './visualizations/source';
 
 const styles = (theme:Theme) => ({
   avatar: {
@@ -24,7 +25,7 @@ const styles = (theme:Theme) => ({
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '25rem',
+    height: '40rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
@@ -32,12 +33,12 @@ const styles = (theme:Theme) => ({
       width: '25rem',
     },
     [theme.breakpoints.up('lg')]: {
-      width: '45rem',
+      width: '70rem',
     },
     display: 'flex',
     'flex-direction': 'column',
-    'margin-top': '5rem',
-    'margin-left': '30rem',
+    'margin-top': '5%',
+    'margin-left': '20%',
   },
   content: {
     display: 'flex',
@@ -54,6 +55,7 @@ const styles = (theme:Theme) => ({
   },
   editButton: {
     'margin-left': '1rem',
+    display: 'none',
   },
 });
 
@@ -110,7 +112,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
                 {user.company}
               </Typography>
             </div>
-            <LineChart width={450} height={300}/>
+            <LineChart data={testData} width={450} height={300}/>
           </CardContent>
           <CardActions>
             <IconButton>

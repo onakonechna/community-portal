@@ -2,20 +2,10 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import * as ReactFauxDOM from 'react-faux-dom';
 
-const test = [
-  { time: '2017-11-30T22:53:13Z', project: 'PHP' },
-  { time: '2018-02-23T22:53:13Z', project: 'Community Portal' },
-  { time: '2018-03-14T22:53:13Z', project: 'AWS DynamoDB' },
-  { time: '2018-03-19T22:53:13Z', project: 'Serverless Framework' },
-  { time: '2018-04-05T22:54:23Z', project: 'AWS DynamoDB' },
-  { time: '2018-05-03T22:53:13Z', project: 'AWS DynamoDB' },
-  { time: '2018-05-31T22:53:13Z', project: 'Community Portal' },
-  { time: '2018-06-21T22:57:13Z', project: 'Community Portal' },
-  { time: '2018-06-30T22:53:15Z', project: 'AWS DynamoDB' },
-  { time: '2018-07-07T22:53:13Z', project: 'Community Portal' },
-  { time: '2018-07-10T22:53:13Z', project: 'Serverless Framework' },
-  { time: '2018-07-29T22:53:13Z', project: 'Community Portal' },
-];
+import { Range } from 'rc-slider';
+import SliderTooltip from './SliderTooltip';
+
+import 'rc-slider/assets/index.css';
 
 const monthMap = {
   Jan: 1,
@@ -33,10 +23,23 @@ const monthMap = {
 };
 
 interface LineChartProps {
-  chart?: any;
   data?: any;
+  chart?: any;
   width: number;
   height: number;
+}
+
+interface LineChartState {
+  data: any;
+  slider: number[];
+  minTime: any;
+  maxTime: any;
+  margin: {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  };
 }
 
 interface Tally {
@@ -51,24 +54,34 @@ function displayText(frequency: number, month: string) {
   return `${frequency} PRs for ${month}`;
 }
 
-class LineChart extends React.Component<LineChartProps, {}> {
+class LineChart extends React.Component<LineChartProps, LineChartState> {
   static defaultProps: Partial<LineChartProps> = {
     chart: 'loading',
   };
   constructor(props: LineChartProps) {
     super(props);
+    this.state = {
+      data: this.props.data,
+      slider: [0, 100],
+      minTime: new Date('December 17, 1995 03:24:00'),
+      maxTime: new Date(),
+      margin: {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40,
+      },
+    };
+    this.onSliderChange = this.onSliderChange.bind(this);
+  }
+
+  onSliderChange(value:any) {
+    this.setState({ slider: value });
   }
 
   drawChart() {
-    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
-    const width = this.props.width - margin.left - margin.right;
-    const height = this.props.height - margin.top - margin.bottom;
-
-    const x = d3.scaleTime()
-      .rangeRound([0, width]);
-
-    const y = d3.scaleLinear()
-      .rangeRound([height, 0]);
+    const width = this.props.width - this.state.margin.left - this.state.margin.right;
+    const height = this.props.height - this.state.margin.top - this.state.margin.bottom;
 
     const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%SZ');
     const parseFormattedTime = d3.timeParse('%Y%m');
@@ -85,24 +98,40 @@ class LineChart extends React.Component<LineChartProps, {}> {
 
     const toMonth = (d:any) => YearFormatter(d.time) + ' ' + MonthFormatter(d.time).substring(0, 3);
 
-    test.forEach((record) => {
+    const data = this.state.data.map((d:any) => ({ ...d }));
+
+    data.forEach((record:any) => {
       record.time = parseTime(record.time) as any;
     });
+
+    const x = d3.scaleTime()
+    .rangeRound([0, width])
+    .domain(d3.extent(data, (d: any) => d.time) as any);
+
+    const y = d3.scaleLinear()
+    .rangeRound([height, 0]);
 
     const formattedData = d3.nest()
       .key(toMonth)
       .rollup(leaves => leaves.length as any)
-      .entries(test);
+      .entries(data)
+      .filter((record: any) => {
+        const scale = width / 100;
+        const minTime = x.invert(scale * this.state.slider[0]);
+        const maxTime = x.invert(scale * this.state.slider[1]);
+        return convertToDate(record.key)! >= minTime && convertToDate(record.key)! <= maxTime;
+      });
+
+    x.domain(d3.extent(formattedData, d => convertToDate(d.key)) as any);
+    y.domain([0, d3.max(formattedData, d => d.value)] as any);
 
     const line = d3.line<Tally>()
       .curve(d3.curveNatural)
       .x(d => x(convertToDate(d.key) as Date) as number)
       .y(d => y(d.value));
 
-    x.domain(d3.extent(formattedData, d => convertToDate(d.key)) as any);
-    y.domain([0, d3.max(formattedData, d => d.value)] as any);
-
     const xAxis = d3.axisBottom(x)
+      .ticks(d3.timeMonth)
       .tickFormat(d3.timeFormat('%b'));
 
     const yAxis = d3.axisLeft(y)
@@ -121,10 +150,10 @@ class LineChart extends React.Component<LineChartProps, {}> {
       .text('tooltip');
 
     const svg = d3.select(div).append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('width', width + this.state.margin.left + this.state.margin.right)
+      .attr('height', height + this.state.margin.top + this.state.margin.bottom)
       .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .attr('transform', `translate(${this.state.margin.left},${this.state.margin.top})`);
 
     svg.append('g')
       .attr('class', 'x axis')
@@ -149,6 +178,8 @@ class LineChart extends React.Component<LineChartProps, {}> {
       .attr('fill', 'black')
       .style('text-anchor', 'middle')
       .text('#PRs over time')
+      .style('position', 'relative')
+      .style('bottom', '30px')
       .style('font-family', 'system-ui');
 
     svg.append('g')
@@ -186,7 +217,24 @@ class LineChart extends React.Component<LineChartProps, {}> {
   }
 
   render() {
-    return this.drawChart();
+    const chart = this.drawChart();
+    return (
+      <div>
+        {chart}
+        <Range
+          min={0}
+          max={100}
+          value={this.state.slider}
+          handle={SliderTooltip}
+          onChange={this.onSliderChange}
+          style={{
+            width: this.props.width - 50,
+            position: 'relative',
+            left: '35px',
+          }}
+        />
+      </div>
+    );
   }
 }
 
