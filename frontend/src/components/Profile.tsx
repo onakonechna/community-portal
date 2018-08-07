@@ -13,6 +13,7 @@ import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
 import LineChart from './visualizations/UserContribution';
+import PieChart from './visualizations/PieChart';
 import { testData } from './visualizations/source';
 
 const styles = (theme:Theme) => ({
@@ -113,6 +114,11 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
               </Typography>
             </div>
             <LineChart data={testData} width={450} height={300}/>
+            <PieChart
+              data={testData}
+              width={400}
+              height={400}
+            />
           </CardContent>
           <CardActions>
             <IconButton>
