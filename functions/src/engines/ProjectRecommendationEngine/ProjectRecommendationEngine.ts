@@ -1,5 +1,6 @@
 import S3Adapter from './../S3Adapter';
 import S3Connection from './../S3Connection';
+import trainProjectRecommendationModel from './../../algorithms/trainProjectRecommendationModel';
 
 const PROJECT_RECOMMENDATION_BUCKET = process.env.PROJECT_RECOMMENDATION_BUCKET;
 
@@ -20,9 +21,9 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
     return this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, 'recommended');
   }
 
-  storeModel(data: any): Promise<any> {
-    const { model } = data;
-
+  trainModel(data: any): Promise<any> {
+    const { projects, traffic } = data;
+    const model = trainProjectRecommendationModel(projects, traffic);
     return this.adapter.put(PROJECT_RECOMMENDATION_BUCKET, 'model', model);
   }
 }

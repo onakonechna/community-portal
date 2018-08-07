@@ -49,7 +49,7 @@ function getTransitions(data: DataInterface[], k: number) {
   return { hitTransitions, totalTransitions };
 }
 
-function trainProjectRecommendationModel(data: DataInterface[]) {
+function trainProjectRecommendationModel(projects: any, data: DataInterface[]) {
 
   const model = { success: true };
 
@@ -57,6 +57,8 @@ function trainProjectRecommendationModel(data: DataInterface[]) {
 
     console.log('logging all data..');
     console.log(data);
+    console.log('logging all projects..');
+    console.log(projects);
     console.log(getTransitions(data));
 
   } catch (error) {

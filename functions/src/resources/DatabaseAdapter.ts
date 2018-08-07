@@ -48,9 +48,10 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.put(params).promise();
   }
 
-  scan(tableName: string): Promise<any> {
+  scan(tableName: string, projectionExpression: string = undefined): Promise<any> {
     const params = {
       TableName: tableName,
+      ProjectionExpression: projectionExpression,
     };
 
     return this.db.scan(params).promise();

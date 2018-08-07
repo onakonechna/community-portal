@@ -176,6 +176,10 @@ export default class ProjectResource implements ProjectResourceInterface {
     return Promise.all(promises);
   }
 
+  scanPledgingStats(data: any): Promise<any> {
+    return this.adapter.scan(PROJECTS_TABLE, 'project_id, estimated, pledged');
+  }
+
   // special methods
   null(data: any): Promise<any> {
     return new Promise((resolve: any) => resolve({}));

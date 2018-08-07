@@ -11,17 +11,23 @@ import {
 
 const dataflows = [
   {
+    controller: ProjectController,
+    method: 'storeItems',
+    target: ProjectResource,
+    methodMap: { storeItems: 'scanPledgingStats' },
+    storageSpecs: ['projects'],
+  },
+  {
     controller: ProjectTrafficController,
-    method: 'train',
+    method: 'scan',
     target: ProjectTrafficResource,
-    methodMap: { train: 'scan' },
-    storageSpecs: ['model'],
+    storageSpecs: ['traffic'],
   },
   {
     controller: ProjectRecommendationController,
     method: 'null',
     target: ProjectRecommendationEngine,
-    methodMap: { null: 'storeModel' },
+    methodMap: { null: 'trainModel' },
     dataDependencies: ['model'],
   },
 ];

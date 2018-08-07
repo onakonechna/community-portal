@@ -1,5 +1,3 @@
-import trainProjectRecommendationModel from './../../algorithms/trainProjectRecommendationModel';
-
 interface ProjectTrafficControllerInterface {
   getLastVisited(data: any): (result: any) => any;
   null(data: any): (result: any) => any;
@@ -11,12 +9,9 @@ export default class ProjectTrafficController implements ProjectTrafficControlle
     return (result: any) => ({ last_visited: result.Items ? result.Items : [] });
   }
 
-  train(data: any) {
+  scan(data: any) {
     return (result: any) => {
-      if (result.Items) {
-        const { model } = trainProjectRecommendationModel(result.Items);
-        return { model };
-      }
+      if (result.Items) return { traffic: result.Items };
       throw 'No data found inside the project-traffic table';
     };
   }

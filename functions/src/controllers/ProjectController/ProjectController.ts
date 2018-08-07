@@ -4,6 +4,7 @@ interface ProjectControllerInterface {
   create(data: any): (result: any) => any;
   getCards(data: any): (result: any) => any;
   getById(data: any): (result: any) => any;
+  storeItems(data: any): (result: any) => any;
   edit(data: any): (result: any) => any;
   updateDisplay(data: any): (result: any) => any;
   upvote(data: any): (result: any) => any;
@@ -137,6 +138,10 @@ export default class ProjectController implements ProjectControllerInterface {
   // intermediary controllers
   getById(data: any) {
     return (result: any) => result.Item ? { project: result.Item } : {};
+  }
+
+  storeItems(data: any) {
+    return (result: any) => result.Items ? { projects: result.Items } : {};
   }
 
   updateStatus(data: any) {
