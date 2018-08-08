@@ -30,6 +30,7 @@ interface LineChartProps {
 }
 
 interface LineChartState {
+  colorScale: any;
   data: any;
   slider: number[];
   minTime: any;
@@ -57,7 +58,7 @@ function displayText(frequency: number, month: string) {
 }
 
 class LineChart extends React.Component<LineChartProps, LineChartState> {
-  private lineRef : React.RefObject<HTMLDivElement>;
+  private lineRef: React.RefObject<HTMLDivElement>;
   static defaultProps: Partial<LineChartProps> = {
     chart: 'loading',
   };
@@ -65,6 +66,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
     super(props);
     this.lineRef = React.createRef();
     this.state = {
+      colorScale: d3.scaleOrdinal().range(['#6BC644', '#6E5394']).domain(['opened', 'merged']),
       data: this.props.data,
       slider: [0, 100],
       minTime: new Date('December 17, 1995 03:24:00'),
@@ -82,7 +84,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
     this.onSliderChange = this.onSliderChange.bind(this);
   }
 
-  onMouseMove(e:any) {
+  onMouseMove(e: any) {
     const position = this.lineRef.current!.getBoundingClientRect();
     this.setState({
       x: e.nativeEvent.offsetX + (position as any).x,
@@ -90,7 +92,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
     });
   }
 
-  onSliderChange(value:any) {
+  onSliderChange(value: any) {
     this.setState({ slider: value });
   }
 
@@ -111,31 +113,58 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
     const MonthFormatter = d3.timeFormat('%B');
     const YearFormatter = d3.timeFormat('%Y');
 
-    const toMonth = (d:any) => YearFormatter(d.time) + ' ' + MonthFormatter(d.time).substring(0, 3);
+    const toMonth = (d: any) => YearFormatter(d.time) + ' ' + MonthFormatter(d.time).substring(0, 3);
 
-    const data = this.state.data.map((d:any) => ({ ...d }));
+    const data = this.state.data.map((d: any) => ({ ...d }));
 
-    data.forEach((record:any) => {
+    data.forEach((record: any) => {
       record.time = parseTime(record.time) as any;
     });
 
+    const opened = data.filter((d: any) => d.merged === false);
+    const merged = data.filter((d: any) => d.merged === true);
+
     const x = d3.scaleTime()
-    .rangeRound([0, width])
-    .domain(d3.extent(data, (d: any) => d.time) as any);
+      .rangeRound([0, width])
+      .domain(d3.extent(data, (d: any) => d.time) as any);
 
     const y = d3.scaleLinear()
-    .rangeRound([height, 0]);
+      .rangeRound([height, 0]);
 
-    const formattedData = d3.nest()
-      .key(toMonth)
-      .rollup(leaves => leaves.length as any)
-      .entries(data)
-      .filter((record: any) => {
-        const scale = width / 100;
-        const minTime = x.invert(scale * this.state.slider[0]);
-        const maxTime = x.invert(scale * this.state.slider[1]);
-        return convertToDate(record.key)! >= minTime && convertToDate(record.key)! <= maxTime;
-      });
+    const formatData = (data: any) => {
+      return d3.nest()
+        .key(toMonth)
+        .rollup(leaves => leaves.length as any)
+        .entries(data)
+        .filter((record: any) => {
+          const scale = width / 100;
+          const minTime = x.invert(scale * this.state.slider[0]);
+          const maxTime = x.invert(scale * this.state.slider[1]);
+          return convertToDate(record.key)! >= minTime && convertToDate(record.key)! <= maxTime;
+        });
+    };
+
+    const formattedData = formatData(data);
+    const formattedOpenData = formatData(opened);
+    const formattedMergedData = formatData(merged);
+    const legendData = ['opened', 'merged'];
+
+    formattedData.forEach((record: any, i: number) => {
+      const emptyValue = {
+        key: record.key,
+        value: 0 as any,
+        values: 0,
+      };
+      if (!formattedMergedData.find(d => d.key === record.key)) {
+        formattedMergedData.push(emptyValue);
+      }
+      if (!formattedOpenData.find(d => d.key === record.key)) {
+        formattedOpenData.push(emptyValue);
+      }
+    });
+
+    this.sortData(formattedMergedData);
+    this.sortData(formattedOpenData);
 
     x.domain(d3.extent(formattedData, d => convertToDate(d.key)) as any);
     y.domain([0, d3.max(formattedData, d => d.value)] as any);
@@ -192,28 +221,36 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
       .attr('x', 200)
       .attr('fill', 'black')
       .style('text-anchor', 'middle')
-      .text('#PRs over time')
+      .text('Contribution Timeline')
       .style('position', 'relative')
       .style('bottom', '30px')
       .style('font-family', 'system-ui');
 
     svg.append('g')
       .append('path')
-      .datum(formattedData)
+      .datum(formattedOpenData)
       .attr('fill', 'none')
-      .attr('stroke', 'steelblue')
+      .attr('stroke', this.state.colorScale('opened'))
+      .attr('stroke-width', 1.5)
+      .attr('d', line as any);
+
+    svg.append('g')
+      .append('path')
+      .datum(formattedMergedData)
+      .attr('fill', 'none')
+      .attr('stroke', this.state.colorScale('merged'))
       .attr('stroke-width', 1.5)
       .attr('d', line as any);
 
     svg.selectAll('dot')
-      .data(formattedData)
+      .data(formattedOpenData)
       .enter()
       .append('circle')
       .attr('r', 5)
       .attr('cx', d => x(convertToDate(d.key) as any))
-      .attr('cy', (d:any) => y(d.value))
-      .attr('fill', 'steelblue')
-      .on('mouseover', (d:any) => {
+      .attr('cy', (d: any) => y(d.value))
+      .attr('fill', this.state.colorScale('opened'))
+      .on('mouseover', (d: any) => {
         d3.select('.tooltip')
           .transition()
           .duration(300)
@@ -222,13 +259,55 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
           .text(displayText(d.value, d.key))
           .style('opacity', 0.9);
       })
-      .on('mouseout', (d:any) => {
+      .on('mouseout', (d: any) => {
         d3.select('.tooltip')
           .transition()
           .duration(500)
           .style('opacity', 0);
       });
+
+    svg.selectAll('dot')
+      .data(formattedMergedData)
+      .enter()
+      .append('circle')
+      .attr('r', 5)
+      .attr('cx', d => x(convertToDate(d.key) as any))
+      .attr('cy', (d: any) => y(d.value))
+      .attr('fill', this.state.colorScale('merged'));
+
+    const legend = svg.selectAll('legend')
+      .data(legendData)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', (d:string, i:number) => {
+        const y = -15 + 25 * i;
+        return `translate(330, ${y})`;
+      });
+
+    legend
+      .append('rect')
+      .attr('width', '1rem')
+      .attr('height', '1rem')
+      .style('fill', (d:string) => this.state.colorScale(d));
+
+    legend
+      .append('text')
+      .attr('x', '1.5rem')
+      .attr('y', '1rem')
+      .text((d:string) => d)
+      .style('font-family', 'system-ui')
+      .style('font-size', '0.875rem');
+
     return div.toReact();
+  }
+
+  sortData(data:any) {
+    if (!data) return;
+    data.forEach((d:any) => {
+      d.month = d.key.split(' ')[1];
+    });
+    data.sort((a:any, b:any) => monthMap[a.month] - monthMap[b.month]);
   }
 
   render() {

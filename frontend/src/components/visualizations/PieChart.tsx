@@ -80,6 +80,7 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
     const svg = d3.select(div).append('svg')
       .attr('width', this.props.width)
       .attr('height', this.props.height)
+      .style('overflow', 'visible')
       .append('g')
       .attr('transform', `translate(${this.props.width / 2}, ${this.props.height / 2})`);
 
@@ -88,15 +89,15 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
       .value((d:any) => d.value);
 
     const path = d3.arc()
-      .outerRadius(0)
-      .innerRadius(this.state.radius - 30)
+      .outerRadius(this.state.radius * .8)
+      .innerRadius(this.state.radius * .2)
       .cornerRadius(7)
       .padAngle(.05);
 
     svg.append('g')
       .attr('class', 'title')
       .append('text')
-      .text('Pull Requests by project')
+      .text('Pull Requests by Project')
       .style('font-family', 'system-ui')
       .attr('transform', `translate(-${this.state.margin.right}, -${this.props.height / 2 - this.state.margin.top})`);
 
@@ -113,8 +114,8 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
         d3.select('.pietip')
           .transition()
           .duration(300)
-          .style('left', this.state.x - this.state.margin.left + 'px')
-          .style('top', this.state.y - this.state.margin.top + 'px')
+          .style('left', this.state.x + 'px')
+          .style('top', this.state.y + 'px')
           .style('opacity', 0.9)
           .style('font-family', 'system-ui');
         d3.select('.pietip').html(this.displayKey(d.data) + '<br />' + this.displayNumberOfPR(d.data));
@@ -125,6 +126,29 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
           .duration(300)
           .style('opacity', 0);
       });
+
+    const legend = svg.selectAll('legend')
+      .data(formattedData)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', ((d:any, i: number) => {
+        return `translate(0, ${this.props.height / 2 + i * 30})`;
+      }));
+
+    legend
+      .append('rect')
+      .attr('width', '1rem')
+      .attr('height', '1rem')
+      .style('fill', ((d:any) => this.state.colorScale(d.key)));
+
+    legend
+      .append('text')
+      .attr('x', '1.5rem')
+      .attr('y', '1rem')
+      .text((d:any) => d.key)
+      .style('font-family', 'system-ui')
+      .style('font-size', '0.875rem');
 
     return div.toReact();
   }
