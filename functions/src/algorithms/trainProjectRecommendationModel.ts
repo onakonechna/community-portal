@@ -126,6 +126,14 @@ class Counter {
   }
 }
 
+function mapToObject(map: Map<string, any>) {
+  const obj = Object.create(null);
+  for (const [k, v] of map) {
+    obj[k] = v;
+  }
+  return obj;
+}
+
 function setIfNotExists(map: Map<string, any>, key: any, value: any) {
   if (!map.has(key)) map.set(key, value);
 }
@@ -340,30 +348,23 @@ function policyIteration(
 }
 
 function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]) {
-
   try {
-
     // normalize MDP tree
     const { hitTransitions, totalTransitions, MDPTree } = getTransitions(traffic, 3);
-
     MDPTree.forEach((actionSpace: Map<string, Counter>) => {
       actionSpace.forEach((counter: Counter) => counter.normalize());
     });
 
     // initialize values and policy
     const values = new Counter(1);
-
     const rewards = new Counter();
     for (const { project_id, pledged, estimated } of projects) {
       if (estimated === 0) continue;
       rewards.set(project_id, exp_decay(pledged / estimated));
     }
-
     const policy = initializePolicy(MDPTree, rewards);
-
     policyIteration(MDPTree, values, policy, rewards);
-
-    return { model: policy };
+    return { model: mapToObject(policy) };
 
   } catch (error) {
     console.log(error);

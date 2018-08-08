@@ -29,6 +29,7 @@ const dataflows = [
     controller: ProjectRecommendationController,
     method: 'null',
     target: ProjectRecommendationEngine,
+    targetType: 'engine',
     methodMap: { null: 'trainModel' },
     dataDependencies: ['projects', 'traffic'],
   },
