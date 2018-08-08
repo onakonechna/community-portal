@@ -1,502 +1,61 @@
 [
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 12,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test1",
-        "project_id": "test1",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test2",
-        "project_id": "test2",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test3",
-        "project_id": "test3",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test4",
-        "project_id": "test4",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test5",
-        "project_id": "test5",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test6",
-        "project_id": "test6",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test7",
-        "project_id": "test7",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test8",
-        "project_id": "test8",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test9",
-        "project_id": "test9",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test10",
-        "project_id": "test10",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test11",
-        "project_id": "test11",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test12",
-        "project_id": "test12",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test13",
-        "project_id": "test13",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test14",
-        "project_id": "test14",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test15",
-        "project_id": "test15",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test16",
-        "project_id": "test16",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test17",
-        "project_id": "test17",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test18",
-        "project_id": "test18",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test19",
-        "project_id": "test19",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test20",
-        "project_id": "test20",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test21",
-        "project_id": "test21",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test22",
-        "project_id": "test22",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test23",
-        "project_id": "test23",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test24",
-        "project_id": "test24",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    },
-    {
-        "description": "This is a test project.",
-        "due": 1528850000,
-        "estimated": 8,
-        "github_address": "https://github.com/magento-engcom/community-portal/",
-        "name": "test25",
-        "project_id": "test25",
-        "size": "M",
-        "skills": [
-            "JavaScript"
-        ],
-        "slack_channel": "test",
-        "tags": [
-            "test"
-        ],
-        "technologies": [
-            "serverless",
-            "DynamoDB"
-        ]
-    }
+  {
+    "description": "The Payment Request API (PR API) is designed to eliminate standard checkout forms.",
+    "due": 1538370000000,
+    "estimated": 20,
+    "github_address": "https://github.com/magento/payment-improvements/wiki/1.-Payment-Request-API",
+    "name": "Magento Payments Improvements",
+    "project_id": "8f1b18ab-907f-4c59-8778-f56154fd6c27",
+    "size": "M",
+    "slack_channel": "https://magentocommeng.slack.com/messages/C8MSFSK1N",
+    "technologies": [
+      "Payments",
+      "API",
+      "JavaScript"
+    ]
+  },
+  {
+    "description": "Multi-Source Inventory (MSI) project is designed to enable stock management in multiple locations so that merchants can properly reflect their physical inventory in Magento without having to use extensions or customization.",
+    "due": 1537506000000,
+    "estimated": 40,
+    "github_address": "https://github.com/magento-engcom/msi/wiki",
+    "name": "Magento MSI Phase 2",
+    "project_id": "d2de6415-403f-41d1-b722-c178653828c7",
+    "size": "M",
+    "slack_channel": "https://magentocommeng.slack.com/messages/C5FU5E2HY",
+    "technologies": [
+      "PHP",
+      "API",
+      "MFTF"
+    ]
+  },
+  {
+    "description": "Contributions can take the form of new components or features, changes to existing features, tests, documentation (such as developer guides, user guides, examples, or specifications), bug fixes, optimizations, or just good suggestions.\nTo learn about how to make a contribution, click here.",
+    "due": 4101084000000,
+    "estimated": 40,
+    "github_address": "https://github.com/magento-engcom/php-7.2-support/blob/2.3.1-develop/README.md",
+    "name": "PHP 7.2",
+    "project_id": "b8c129ed-d004-4fa7-9012-61f3e95bd757",
+    "size": "L",
+    "slack_channel": "https://slack.com",
+    "technologies": [
+      "Magento",
+      "PHP"
+    ]
+  },
+  {
+    "description": "For the last few months, the internal team has been hard at work on the initial implementation for GraphQL in Magento. GraphQL is a flexible and performant API for building custom front-end experiences, including headless storefronts and PWAs. To learn more about GraphQL, please visit graphql.org. To get a head start on the GraphQL implementation in Magento, our DevDocs are here.",
+    "due": 1538370000000,
+    "estimated": 40,
+    "github_address": "https://github.com/magento/graphql-ce/wiki",
+    "name": "Magento GraphQL",
+    "project_id": "e701e6b3-c39c-408e-9188-2df4e6fc6a81",
+    "size": "L",
+    "slack_channel": "https://magentocommeng.slack.com/messages/C8076E0KS",
+    "technologies": [
+      "graphql",
+      "API",
+      "Apollo"
+    ]
+  }
 ]
