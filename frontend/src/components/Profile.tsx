@@ -14,9 +14,10 @@ import { Classes } from '../../node_modules/@types/jss';
 
 import LineChart from './visualizations/UserContribution';
 import PieChart from './visualizations/PieChart';
+import ProfileText from './visualizations/ProfileText';
 import { testData } from './visualizations/source';
 
-const styles = (theme:Theme) => ({
+const styles = (theme: Theme) => ({
   avatar: {
     height: '10rem',
     width: '10rem',
@@ -46,6 +47,10 @@ const styles = (theme:Theme) => ({
     'margin-left': '3rem',
     'margin-top': '3rem',
   },
+  mid: {
+    display: 'flex',
+    'flex-direction': 'column',
+  },
   nameText: {
     'margin-top': '1rem',
     'font-size': '2rem',
@@ -57,6 +62,9 @@ const styles = (theme:Theme) => ({
   editButton: {
     'margin-left': '1rem',
     display: 'none',
+  },
+  topLeft: {
+    display: 'flex',
   },
 });
 
@@ -102,33 +110,38 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   render() {
     const { user, classes } = this.props;
     return (
-        <Card className={classes.card}>
-          <CardContent className={classes.content}>
-            <div className={classes.bio}>
-              <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
-              <Typography className={classes.nameText}>
-                {user.name}
-              </Typography>
-              <Typography className={classes.companyText}>
-                {user.company}
-              </Typography>
+      <Card className={classes.card}>
+        <CardContent className={classes.content}>
+          <div className={classes.mid}>
+            <div className={classes.topLeft}>
+              <div className={classes.bio}>
+                <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
+                <Typography className={classes.nameText}>
+                  {user.name}
+                </Typography>
+                <Typography className={classes.companyText}>
+                  {user.company}
+                </Typography>
+              </div>
+              <LineChart data={testData} width={450} height={300} />
             </div>
-            <LineChart data={testData} width={450} height={300}/>
-            <PieChart
-              data={testData}
-              width={400}
-              height={400}
+            <ProfileText totalPR={16} mergedPR={5} openPR={11} />
+          </div>
+          <PieChart
+            data={testData}
+            width={400}
+            height={400}
+          />
+        </CardContent>
+        <CardActions>
+          <IconButton>
+            <Edit
+              className={classes.editButton}
+              onClick={this.toggleEditUser}
             />
-          </CardContent>
-          <CardActions>
-            <IconButton>
-              <Edit
-                className={classes.editButton}
-                onClick={this.toggleEditUser}
-              />
-            </IconButton>
-          </CardActions>
-        </Card>
+          </IconButton>
+        </CardActions>
+      </Card>
     );
   }
 }
