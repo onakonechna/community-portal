@@ -42,18 +42,20 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
   }
 
   onMouseMove(e:any) {
-    console.log(e);
     const position = this.pieRef.current!.getBoundingClientRect();
-    console.log((position as any).x, (position as any).y);
-    // this.setState({ x: position.x, y: position: y })
-    // const position = (this.refs.pc as any).findDOMNode().getBoundingClientRect();
-    // console.log(position, e.nativeEvent.offsetX, e.screenX);
-
-    // this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
+    this.setState({
+      x: e.nativeEvent.offsetX + (position as any).x,
+      y: e.nativeEvent.offsetY + (position as any).y,
+    });
   }
 
-  displayText(data: any) {
-    return `Project: ${data.key} has ${data.value} Pull Requests`;
+  displayKey(data: any) {
+    return data.key;
+  }
+
+  displayNumberOfPR(data: any) {
+    if (data.value === 1) return '1PR';
+    return `${data.value} PRs`;
   }
 
   drawChart() {
@@ -64,6 +66,16 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
     .key((d: any) => d.project)
     .rollup(leaves => leaves.length as any)
     .entries(data);
+
+    d3.select(div)
+      .append('div')
+      .attr('class', 'pietip')
+      .style('width', '10%')
+      .style('color', 'black')
+      .style('background-color', 'white')
+      .style('border-radius', '0.2rem')
+      .style('opacity', 0)
+      .style('position', 'absolute');
 
     const svg = d3.select(div).append('svg')
       .attr('width', this.props.width)
@@ -76,15 +88,10 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
       .value((d:any) => d.value);
 
     const path = d3.arc()
-      .outerRadius(this.state.radius - 30)
-      .innerRadius(0);
-
-    d3.select(div)
-      .append('div')
-      .attr('class', 'pietip')
-      .style('color', 'black')
-      .style('opacity', 0)
-      .style('position', 'relative');
+      .outerRadius(0)
+      .innerRadius(this.state.radius - 30)
+      .cornerRadius(7)
+      .padAngle(.05);
 
     svg.append('g')
       .attr('class', 'title')
@@ -106,11 +113,11 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
         d3.select('.pietip')
           .transition()
           .duration(300)
-          .style('left', d3.event.pageX + 'px')
-          .style('top', d3.event.pageY + 'px')
+          .style('left', this.state.x - this.state.margin.left + 'px')
+          .style('top', this.state.y - this.state.margin.top + 'px')
           .style('opacity', 0.9)
-          .text(this.displayText(d.data))
           .style('font-family', 'system-ui');
+        d3.select('.pietip').html(this.displayKey(d.data) + '<br />' + this.displayNumberOfPR(d.data));
       })
       .on('mouseout', () => {
         d3.select('.pietip')

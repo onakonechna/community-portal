@@ -40,6 +40,8 @@ interface LineChartState {
     top: number;
     bottom: number;
   };
+  x: number;
+  y: number;
 }
 
 interface Tally {
@@ -55,11 +57,13 @@ function displayText(frequency: number, month: string) {
 }
 
 class LineChart extends React.Component<LineChartProps, LineChartState> {
+  private lineRef : React.RefObject<HTMLDivElement>;
   static defaultProps: Partial<LineChartProps> = {
     chart: 'loading',
   };
   constructor(props: LineChartProps) {
     super(props);
+    this.lineRef = React.createRef();
     this.state = {
       data: this.props.data,
       slider: [0, 100],
@@ -71,8 +75,19 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
         bottom: 30,
         left: 40,
       },
+      x: 0,
+      y: 0,
     };
+    this.onMouseMove = this.onMouseMove.bind(this);
     this.onSliderChange = this.onSliderChange.bind(this);
+  }
+
+  onMouseMove(e:any) {
+    const position = this.lineRef.current!.getBoundingClientRect();
+    this.setState({
+      x: e.nativeEvent.offsetX + (position as any).x,
+      y: e.nativeEvent.offsetY + (position as any).y,
+    });
   }
 
   onSliderChange(value:any) {
@@ -144,9 +159,9 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
       .attr('class', 'tooltip')
       .style('background-color', 'steelblue')
       .style('color', 'white')
-      .style('width', '20%')
+      .style('width', '5%')
       .style('opacity', 0)
-      .style('position', 'relative')
+      .style('position', 'absolute')
       .text('tooltip');
 
     const svg = d3.select(div).append('svg')
@@ -202,8 +217,8 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
         d3.select('.tooltip')
           .transition()
           .duration(300)
-          .style('left', d3.event.pageX - 780 + 'px')
-          .style('top', d3.event.pageY - 200 + 'px')
+          .style('left', this.state.x + 'px')
+          .style('top', this.state.y + 'px')
           .text(displayText(d.value, d.key))
           .style('opacity', 0.9);
       })
@@ -219,7 +234,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
   render() {
     const chart = this.drawChart();
     return (
-      <div>
+      <div ref={this.lineRef} onMouseMove={this.onMouseMove}>
         {chart}
         <Range
           min={0}
