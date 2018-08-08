@@ -37,6 +37,8 @@ export default class ProjectTrafficResource implements ProjectTrafficResourceInt
     const { user_id, project_id, recommended } = data;
     const timestamp = new Date().getTime();
 
+    console.log(recommended);
+
     return this.adapter.create(
       PROJECT_TRAFFIC_TABLE,
       { user_id, timestamp, project_id, recommended },

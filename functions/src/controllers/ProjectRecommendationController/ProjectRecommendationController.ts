@@ -7,7 +7,8 @@ export default class ProjectRecommendationController implements ProjectTrafficCo
   // intermediary controllers
   getRecommendations(data: any) {
     return (result: any) => {
-      const { recommended } = JSON.parse(result.Body.toString());
+      // const { recommended } = JSON.parse(result.Body.toString());
+      const { recommended } = result;
       return { recommended };
     };
   }
