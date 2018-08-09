@@ -23,6 +23,7 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
+      - postGithubData
   domainNames:
     dev:
       name: dev.api.opensource.engcom.magento.com
@@ -107,6 +108,7 @@ functions:
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
+  - ${file(./handlers/user/postGithubData/postGithubData.yml)}
 
 resources:
   Resources:
@@ -142,6 +144,7 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
+    postGithubDataRole: ${file(./handlers/user/postGithubData/role.yml)}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

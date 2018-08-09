@@ -17,6 +17,7 @@ interface UserControllerInterface {
   checkExistence(data: any): (result: any) => any;
   storeAvatarUrl(data: any): (result: any) => any;
   getScopes(data: any): (result: any) => any;
+  postGithubData(data:any): (result: any) => any;
 }
 
 export default class UserController implements UserControllerInterface {
@@ -154,6 +155,17 @@ export default class UserController implements UserControllerInterface {
         },
       };
     };
+  }
+
+  postGithubData(data:any) {
+    const { user_id } = data;
+    return (result: any) => ({
+      status: 200,
+      payload: {
+        user_id,
+        message: 'user\'s contribution data updated',
+      },
+    });
   }
 
   // Controllers for intermediaries

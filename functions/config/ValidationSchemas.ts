@@ -73,6 +73,25 @@ const pledgeSchema = {
   required: ['project_id', 'hours'],
 };
 
+const contributionSchema = {
+  properties: {
+    time: { type: 'date' },
+    merged: { type: 'boolean' },
+    project: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['time', 'merged', 'project'],
+};
+
+const postGithubDataSchema = {
+  properties: {
+    user_id: { type: 'string' },
+    contribution: contributionSchema,
+  },
+  additionalProperties: false,
+  required: ['user_id', 'contribution'],
+};
+
 // Special JSON validation schemas
 const nullSchema = {
   maxProperties: 0,
@@ -93,6 +112,7 @@ const ValidationSchemas: any = {
   editProjectSchema,
   updateProjectStatusSchema,
   pledgeSchema,
+  postGithubDataSchema,
   nullSchema,
   projectIdOnlySchema,
 };

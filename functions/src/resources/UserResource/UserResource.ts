@@ -17,6 +17,7 @@ interface UserResourceInterface {
   pledge(data: any): Promise<any>;
   subscribe(data: any): Promise<any>;
   delete(data: any): Promise<any>;
+  postGithubData(data:any): Promise<any>;
 }
 
 export default class UserResource implements UserResourceInterface {
@@ -48,6 +49,16 @@ export default class UserResource implements UserResourceInterface {
     delete data['user_id'];
 
     return this.adapter.update(USERS_TABLE, { user_id }, data);
+  }
+
+  postGithubData(data: any): Promise<any> {
+    const { user_id, contribution } = data;
+    return this.adapter.addToSetIfNotExists(
+      USERS_TABLE,
+      { user_id },
+      'contribution',
+      contribution,
+    );
   }
 
   addUpvotedProject(data: any): Promise<any> {
