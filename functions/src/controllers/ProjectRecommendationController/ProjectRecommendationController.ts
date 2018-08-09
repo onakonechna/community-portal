@@ -136,7 +136,16 @@ export default class ProjectRecommendationController
   implements ProjectRecommendationControllerInterface {
 
   // intermediary controllers
+
+  /**
+   * result would be undefined
+   */
   getModel(data: any) {
+    return (result: any) => ({ model: result });
+  }
+
+  getRecommender(data: any) {
+    const { model } = data;
     return (result: any) => {
       try {
         let {
@@ -145,7 +154,7 @@ export default class ProjectRecommendationController
           hitTransitionMap,
           missTransitionMap,
           observedTransitions,
-        } = JSON.parse(result.Body.toString());
+        } = JSON.parse(model.Body.toString());
 
         values = new Map(values);
         rewards = new Map(rewards);
@@ -153,7 +162,7 @@ export default class ProjectRecommendationController
         hitTransitionMap = buildSecondLevelMap(hitTransitionMap);
         missTransitionMap = buildSecondLevelMap(missTransitionMap);
 
-        const model = packageModel(
+        const recommender = packageModel(
           values,
           rewards,
           hitTransitionMap,
@@ -161,7 +170,7 @@ export default class ProjectRecommendationController
           observedTransitions,
         );
 
-        return { model };
+        return { recommender };
       } catch (e) {
         console.log(e);
       }

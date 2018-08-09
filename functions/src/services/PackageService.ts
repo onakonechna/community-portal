@@ -234,7 +234,7 @@ export default class PackageService {
     }
     if (dataflow.skipOn) {
       dataflow.skipOn.forEach((key: string) => {
-        if (key in this.dataStore) flag = true;
+        if (key in this.dataStore && typeof this.dataStore[key] !== 'undefined') flag = true;
       });
     }
     return flag;
