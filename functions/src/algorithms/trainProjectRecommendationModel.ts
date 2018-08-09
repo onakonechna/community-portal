@@ -26,23 +26,23 @@ function increment(map: Map<string, number>, key: any) {
 
 function recordTransition(
   transitions: Map<string, any>,
-  project_seq_signature: string,
+  signature: string,
   project_id: string,
 ) {
-  setIfNotExists(transitions, project_seq_signature, new Map());
-  increment(transitions.get(project_seq_signature), project_id);
+  setIfNotExists(transitions, signature, new Map());
+  increment(transitions.get(signature), project_id);
 }
 
 function recordTransitionWithActions(
   transitions: Map<string, any>,
-  project_seq_signature: string,
+  signature: string,
   recommended: string[],
   project_id: string,
 ) {
-  setIfNotExists(transitions, project_seq_signature, new Map());
+  setIfNotExists(transitions, signature, new Map());
   for (const recommended_project of recommended) {
-    setIfNotExists(transitions.get(project_seq_signature), recommended_project, new Counter());
-    transitions.get(project_seq_signature).get(recommended_project).increment(project_id);
+    setIfNotExists(transitions.get(signature), recommended_project, new Counter());
+    transitions.get(signature).get(recommended_project).increment(project_id);
   }
 }
 
@@ -61,8 +61,8 @@ function getStateFromSignature(signature: string) {
   return JSON.parse(signature);
 }
 
-function getNextStateSignature(project_seq_signature: string, next_proj: string) {
-  const next_state = getStateFromSignature(project_seq_signature).slice(1);
+function getNextStateSignature(signature: string, next_proj: string) {
+  const next_state = getStateFromSignature(signature).slice(1);
   next_state.push(next_proj);
   return getSignature(next_state);
 }
@@ -91,28 +91,28 @@ function getTransitions(data: DataInterface[], k: number) {
   const hitTransitions = new Map();
   const totalTransitions = new Map();
   const MDPTree = new Map();
-  let project_seq = [data[0].project_id];
+  let state = data.length > 0 ? [data[0].project_id] : [];
 
   for (let i = 1; i < data.length; i += 1) {
-    if (data[i].user_id !== data[i - 1].user_id) project_seq = [];
-    if (project_seq.length === k && project_seq[k - 1] !== data[i].project_id) {
-      const project_seq_signature = getSignature(project_seq);
+    if (data[i].user_id !== data[i - 1].user_id) state = [];
+    if (state.length === k && state[k - 1] !== data[i].project_id) {
+      const signature = getSignature(state);
       // build MDP tree
       recordTransitionWithActions(
         MDPTree,
-        project_seq_signature,
+        signature,
         data[i - 1].recommended,
         data[i].project_id,
       );
 
       // record total and hit transitions (miss transitions calculated later)
       if (data[i - 1].recommended.includes(data[i].project_id)) {
-        recordTransition(hitTransitions, project_seq_signature, data[i].project_id);
+        recordTransition(hitTransitions, signature, data[i].project_id);
       }
-      recordTransition(totalTransitions, project_seq_signature, data[i].project_id);
+      recordTransition(totalTransitions, signature, data[i].project_id);
     }
-    project_seq.push(data[i].project_id);
-    if (project_seq.length > k) project_seq.shift();
+    state.push(data[i].project_id);
+    if (state.length > k) state.shift();
   }
 
   return { hitTransitions, totalTransitions, MDPTree };
@@ -124,12 +124,12 @@ function exp_decay(frac: number, param: number = 1) {
 
 function initializePolicy(MDPTree: Map<string, any>, rewards: Counter) {
   const policy = new Map();
-  MDPTree.forEach((actions: Map<string, Counter>, project_seq_signature: string) => {
-    policy.set(project_seq_signature, new Counter());
+  MDPTree.forEach((actions: Map<string, Counter>, signature: string) => {
+    policy.set(signature, new Counter());
     actions.forEach((nextState: Counter, recommended_project: string) => {
-      policy.get(project_seq_signature).set(recommended_project, rewards.get(recommended_project));
+      policy.get(signature).set(recommended_project, rewards.get(recommended_project));
     });
-    policy.set(project_seq_signature, policy.get(project_seq_signature).argMax());
+    policy.set(signature, policy.get(signature).argMax());
   });
   return policy;
 }
@@ -221,18 +221,18 @@ function buildTransitionMaps(hitTransitions: Map<string, any>, totalTransitions:
   const hitTransitionMap = new Map();
   const missTransitionMap = new Map();
 
-  totalTransitions.forEach((next_state: Map<string, number>, project_seq_signature: string) => {
+  totalTransitions.forEach((next_state: Map<string, number>, signature: string) => {
     next_state.forEach((totalCount: number, next_proj: string) => {
-      const hitCount = getSecondLevelCount(hitTransitions, project_seq_signature, next_proj);
+      const hitCount = getSecondLevelCount(hitTransitions, signature, next_proj);
       setSecondLevel(
         hitTransitionMap,
-        project_seq_signature,
+        signature,
         next_proj,
         hitCount / totalCount,
       );
       setSecondLevel(
         missTransitionMap,
-        project_seq_signature,
+        signature,
         next_proj,
         (totalCount - hitCount) / totalCount,
       );
@@ -252,7 +252,6 @@ function getObservedTransitions(totalTransitions: Map<string, any>) {
 
 function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]) {
   try {
-    // normalize MDP tree
     const { hitTransitions, totalTransitions, MDPTree } = getTransitions(traffic, 3);
     const {
       hitTransitionMap,
