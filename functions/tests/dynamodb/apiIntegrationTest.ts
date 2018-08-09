@@ -253,6 +253,15 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
       });
   });
+
+  it('should change the status of 8f1b18ab-907f-4c59-8778-f56154fd6c27 to open', () => {
+    expect.assertions(1);
+
+    return updateProjectStatus('8f1b18ab-907f-4c59-8778-f56154fd6c27', 'open')
+      .then((response) => {
+        expect(response.data.message).toBe('Project status updated successfully');
+      });
+  });
 });
 
 describe('editProject endpoint', () => {
@@ -284,7 +293,7 @@ describe('getProjectDetails endpoint', () => {
 
     return getProjectDetails('8f1b18ab-907f-4c59-8778-f56154fd6c27')
       .then((response) => {
-        expect(response.data.status).toBe('closed');
+        expect(response.data.status).toBe('open');
         expect(response.data.description).toBe('Magento Payment API is a W3C standard candidate so most of the modern browsers support it. PR API allows improving user workflow during the purchase process, providing a more consistent user experience and enabling merchants to easily leverage different payment methods. To get more details, please, read Introducing the Payment Request API.');
         expect(response.data.upvotes).toBe(1);
       });
