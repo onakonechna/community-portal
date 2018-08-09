@@ -110,7 +110,6 @@ function packageModel(
       // generate up to k recommendations with highest rewards (least pledgers)
       const signature = getSignature(state);
       if (!observedTransitions.has(signature)) {
-        console.log('rewards:', rewards);
         return getRewardModel(rewards, k)(state);
       }
 

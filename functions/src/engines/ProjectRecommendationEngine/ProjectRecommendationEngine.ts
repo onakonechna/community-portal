@@ -44,7 +44,8 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
   trainModel(data: any): Promise<any> {
     const { projects, traffic } = data;
     const model = trainProjectRecommendationModel(projects, traffic);
-    console.log('trained model:', model);
+    console.log('Logging model..');
+    console.log(model);
     return this.adapter.put(PROJECT_RECOMMENDATION_BUCKET, 'model', model);
   }
 
