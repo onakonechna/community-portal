@@ -50,8 +50,8 @@ function getRandomElements(array: any[], n: number) {
   which helps the model to better adapt to unknown states
   k represents the maximum number of projects to recommend
  */
-function getRandomModel(values: Map<string, number>, k: number) {
-  const projects = [...values.keys()];
+function getRandomModel(rewards: Map<string, number>, k: number) {
+  const projects = [...rewards.keys()];
   return (state: string[]) => {
     if (state.length === 0) return getRandomElements(projects, k);
 
@@ -63,12 +63,12 @@ function getRandomModel(values: Map<string, number>, k: number) {
   };
 }
 
-/** get the project IDs with highest trained values
+/** get the project IDs with highest trained rewards (least pledgers)
   we fall back to this approach when we have not recorded any observations
   for the current sequence of projects viewed by the user
  */
-function getValueModel(values: Map<string, number>, k: number) {
-  return (state: string[]) => [...values.entries()]
+function getRewardModel(rewards: Map<string, number>, k: number) {
+  return (state: string[]) => [...rewards.entries()]
     .sort(([k1, v1], [k2, v2]) => v2 - v1)
     .slice(0, k)
     .map(([k, v]) => k);
@@ -83,13 +83,14 @@ function getValueModel(values: Map<string, number>, k: number) {
   refer to the documentation for more details
 
   when past observations are not available, the model will recommend the projects with the
-  highest values using getValueModel
+  highest rewards using getRewardModel
 
   with a small probability @param epsilon the model randomly recommends k projects to the user
   this encourages the reinforcement learning model to explore unknown states
  */
 function packageModel(
   values: Map<string, number>,
+  rewards: Map<string, number>,
   hitTransitionMap: any,
   missTransitionMap: any,
   observedTransitions: any,
@@ -99,13 +100,13 @@ function packageModel(
   return (state: string[]) => {
     try {
       // generate up to k random recommendations
-      if (Math.random() < .05) return getRandomModel(values, k)(state);
+      if (Math.random() < .05) return getRandomModel(rewards, k)(state);
 
-      // generate up to k recommendations with highest trained values
+      // generate up to k recommendations with highest rewards (least pledgers)
       const signature = getSignature(state);
       if (!observedTransitions.has(signature)) {
-        console.log('values:', values);
-        return getValueModel(values, k)(state);
+        console.log('rewards:', rewards);
+        return getRewardModel(rewards, k)(state);
       }
 
       // generate up to k recommendations with highest deltas
@@ -140,18 +141,21 @@ export default class ProjectRecommendationController
       try {
         let {
           values,
+          rewards,
           hitTransitionMap,
           missTransitionMap,
           observedTransitions,
         } = JSON.parse(result.Body.toString());
 
         values = new Map(values);
+        rewards = new Map(rewards);
         observedTransitions = new Map(observedTransitions);
         hitTransitionMap = buildSecondLevelMap(hitTransitionMap);
         missTransitionMap = buildSecondLevelMap(missTransitionMap);
 
         const model = packageModel(
           values,
+          rewards,
           hitTransitionMap,
           missTransitionMap,
           observedTransitions,

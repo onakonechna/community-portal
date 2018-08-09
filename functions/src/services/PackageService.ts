@@ -41,7 +41,7 @@ interface DataflowDefinition {
   methodMap?: any; // a map of methods on controller to methods on target
   storageSpecs?: string[]; // a list of output names to store to intermediary data store
   skipWithout?: string[]; // skip current data flow if any key cannot be found in data store
-  skipOn?: any; // skip current data flow if any key-value pair can be found in data store
+  skipOn?: string[]; // skip current data flow if any key can be found in data store
 }
 
 interface Dataflow {
@@ -54,7 +54,7 @@ interface Dataflow {
   targetMethod: string;
   storageSpecs: string[];
   skipWithout: string[];
-  skipOn: any;
+  skipOn: string[];
 }
 
 export default class PackageService {
@@ -100,8 +100,8 @@ export default class PackageService {
     const controllerMethod = dataflowDefinition.method;
     let targetMethod = controllerMethod;
 
-    if (dataflowDefinition.methodMap !== undefined) {
-      if (dataflowDefinition.methodMap[controllerMethod] === undefined) {
+    if (typeof dataflowDefinition.methodMap !== 'undefined') {
+      if (typeof dataflowDefinition.methodMap[controllerMethod] === 'undefined') {
         throw 'Controller method not defined in method map';
       }
       targetMethod = dataflowDefinition.methodMap[controllerMethod];
@@ -113,7 +113,7 @@ export default class PackageService {
 
     // create validator
     let validator = undefined;
-    if (dataflowDefinition.validationMap !== undefined) {
+    if (typeof dataflowDefinition.validationMap !== 'undefined') {
       validator = new Validator(dataflowDefinition.validationMap[controllerMethod]);
     }
 
@@ -212,7 +212,7 @@ export default class PackageService {
   }
 
   pickData(dataflow: Dataflow) {
-    if (dataflow.dataDependencies !== undefined && dataflow.dataDependencies.length > 0) {
+    if (typeof dataflow.dataDependencies !== 'undefined' && dataflow.dataDependencies.length > 0) {
       dataflow.dataDependencies.forEach((field: string) => {
         if (!(field in this.dataStore)) {
           console.log('Logging intermediate data store between data flows..');
@@ -233,8 +233,8 @@ export default class PackageService {
       });
     }
     if (dataflow.skipOn) {
-      _.forOwn(dataflow.skipOn, (value: any, key: any) => {
-        if (key in this.dataStore && this.dataStore[key] === value) flag = true;
+      dataflow.skipOn.forEach((key: string) => {
+        if (key in this.dataStore) flag = true;
       });
     }
     return flag;
@@ -242,14 +242,14 @@ export default class PackageService {
 
   validate(dataflow: Dataflow, data: any, resolve: any, reject: any) {
     const validator = dataflow.validator;
-    if (validator === undefined) return;
+    if (typeof validator === 'undefined') return;
     const valid = validator.validate(data);
     if (!valid) reject(validator.getErrorResponse());
   }
 
   extractInitialDataDependencies() {
     // extract data from token if authDataDependencies is defined
-    if (this.dataflows[0].authDataDependencies !== undefined
+    if (typeof this.dataflows[0].authDataDependencies !== 'undefined'
       && typeof this.dataflows[0].authDataDependencies.length === 'number'
       && this.dataflows[0].authDataDependencies.length > 0
     ) {
@@ -257,7 +257,7 @@ export default class PackageService {
       _.assign(this.initialData, authorizerData);
     }
     // prune data is dataDependencies is defined
-    if (this.dataflows[0].dataDependencies !== undefined
+    if (typeof this.dataflows[0].dataDependencies !== 'undefined'
       && typeof this.dataflows[0].dataDependencies.length === 'number'
       && this.dataflows[0].dataDependencies.length > 0
     ) {
@@ -280,7 +280,7 @@ export default class PackageService {
         if (!this.shouldSkip(thisDataflow)) {
           // store output from thisDataflow to dataStore if storageSpecs is specified
           let output = this.transform(thisDataflow)(result);
-          if (storageSpecs !== undefined) {
+          if (typeof storageSpecs !== 'undefined') {
             output = _.pick(output, storageSpecs);
             _.assign(this.dataStore, output);
           }
