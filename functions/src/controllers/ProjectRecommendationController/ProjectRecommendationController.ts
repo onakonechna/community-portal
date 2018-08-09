@@ -1,5 +1,3 @@
-import Counter from './../../custom/Counter';
-
 interface ProjectRecommendationControllerInterface {
   getModel(data: any): (result: any) => any;
   getRecommendations(data: any): (result: any) => any;
@@ -32,7 +30,7 @@ function delta(
   nextProj: string,
   hitTransitionMap: any,
   missTransitionMap: any,
-  values: Counter,
+  values: Map<string, number>,
 ) {
   return (
     getSecondLevelCount(hitTransitionMap, signature, nextProj)
@@ -52,14 +50,14 @@ function getRandomElements(array: any[], n: number) {
   which helps the model to better adapt to unknown states
   k represents the maximum number of projects to recommend
  */
-function getRandomModel(projects: string[], k: number) {
+function getRandomModel(values: Map<string, number>, k: number) {
   const projects = [...values.keys()];
   return (state: string[]) => {
     if (state.length === 0) return getRandomElements(projects, k);
 
     const projectPool: any = [];
     for (const project of projects) {
-      if (project !== state[state.length-1]) projectPool.push(project);
+      if (project !== state[state.length - 1]) projectPool.push(project);
     }
     return getRandomElements(projectPool, k);
   };
@@ -91,7 +89,7 @@ function getValueModel(values: Map<string, number>, k: number) {
   this encourages the reinforcement learning model to explore unknown states
  */
 function packageModel(
-  values: Counter,
+  values: Map<string, number>,
   hitTransitionMap: any,
   missTransitionMap: any,
   observedTransitions: any,
@@ -100,11 +98,17 @@ function packageModel(
 ) {
   return (state: string[]) => {
     try {
+      // generate up to k random recommendations
+      if (Math.random() < .05) return getRandomModel(values, k)(state);
+
+      // generate up to k recommendations with highest trained values
       const signature = getSignature(state);
       if (!observedTransitions.has(signature)) {
-        return getRandomModel(values, k)(state);
+        console.log('values:', values);
+        return getValueModel(values, k)(state);
       }
 
+      // generate up to k recommendations with highest deltas
       const nextProjects = observedTransitions.get(signature);
       const nextStates = nextProjects.map((nextProj: string) => ({
         delta: delta(signature, nextProj, hitTransitionMap, missTransitionMap, values),
@@ -123,18 +127,17 @@ function buildSecondLevelMap(nestedList: any) {
   const result = new Map(nestedList);
   result.forEach((list: any, key: any, map: Map<any, any>) => {
     map.set(key, new Map(list));
-  })
+  });
   return result;
 }
 
-export default class ProjectRecommendationController implements ProjectRecommendationControllerInterface {
+export default class ProjectRecommendationController
+  implements ProjectRecommendationControllerInterface {
 
   // intermediary controllers
   getModel(data: any) {
     return (result: any) => {
       try {
-        if (typeof result === 'undefined') return { model: randomModel };
-
         let {
           values,
           hitTransitionMap,
