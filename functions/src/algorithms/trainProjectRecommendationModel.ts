@@ -278,7 +278,7 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
       missTransitionMap,
       observedTransitions,
       values: values.getMap(),
-      rewards: rewards.getMap()
+      rewards: rewards.getMap(),
     };
 
   } catch (error) {

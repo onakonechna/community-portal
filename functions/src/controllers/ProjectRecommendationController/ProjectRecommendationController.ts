@@ -63,15 +63,20 @@ function getRandomModel(rewards: Map<string, number>, k: number) {
   };
 }
 
-/** get the project IDs with highest trained rewards (least pledgers)
-  we fall back to this approach when we have not recorded any observations
-  for the current sequence of projects viewed by the user
+/**
+ * get the project IDs with highest trained rewards (least pledgers)
+ * we fall back to this approach when we have not recorded any observations
+ * for the current sequence of projects viewed by the user
  */
 function getRewardModel(rewards: Map<string, number>, k: number) {
-  return (state: string[]) => [...rewards.entries()]
-    .sort(([k1, v1], [k2, v2]) => v2 - v1)
-    .slice(0, k)
-    .map(([k, v]) => k);
+  return (state: string[]) => {
+    const thisProj = state[state.length - 1];
+    return [...rewards.entries()]
+      .filter(([project, reward]) => project !== thisProj)
+      .sort(([p1, r1], [p2, r2]) => r2 - r1)
+      .slice(0, k)
+      .map(([project, reward]) => project);
+  };
 }
 
 /**
