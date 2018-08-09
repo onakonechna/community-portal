@@ -12,10 +12,9 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
-import LineChart from './visualizations/UserContribution';
+import LineChart from './visualizations/LineChart';
 import PieChart from './visualizations/PieChart';
 import ProfileText from './visualizations/ProfileText';
-import { testData } from './visualizations/source';
 
 const styles = (theme: Theme) => ({
   avatar: {
@@ -80,6 +79,7 @@ interface ProfileMapProps {
   user: {
     user_id: string,
     avatar_url: string,
+    contribution: any,
     name: string,
     role: string,
     likedProjects: string[],
@@ -109,6 +109,12 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
 
   render() {
     const { user, classes } = this.props;
+    const data = user.contribution;
+
+    const total = data.length;
+    const merged = data.filter((d:any) => d.merged).length;
+    const open = total - merged;
+
     return (
       <Card className={classes.card}>
         <CardContent className={classes.content}>
@@ -123,12 +129,12 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
                   {user.company}
                 </Typography>
               </div>
-              <LineChart data={testData} width={450} height={300} />
+              <LineChart data={data} width={450} height={300} />
             </div>
-            <ProfileText totalPR={16} mergedPR={5} openPR={11} />
+            <ProfileText totalPR={total} mergedPR={merged} openPR={open} />
           </div>
           <PieChart
-            data={testData}
+            data={data}
             width={400}
             height={400}
           />

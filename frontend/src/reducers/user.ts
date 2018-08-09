@@ -1,8 +1,10 @@
 import { ActionTypes, TypeKeys } from '../actions';
+import { testData } from '../components/visualizations/source';
 
 const defaultUser = {
   user_id: '',
   avatar_url: '',
+  contribution: testData,
   name: '',
   role: 'guest',
   likedProjects: [],

@@ -209,7 +209,7 @@ export const projectLoaded = (project: {}) => {
     project,
     type: TypeKeys.PROJECT_LOADED,
   };
-}
+};
 
 export const projectsLoaded = (projects: {}) => {
   return {
