@@ -47,6 +47,7 @@ const styles = (theme:Theme) => ({
     'font-size': '1.5rem',
   },
   editButton: {
+    display: 'none',
     'margin-left': '1rem',
   },
 });

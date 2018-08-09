@@ -36,10 +36,18 @@ const styles = (theme: any) => ({
   },
   bookmark: {
     'margin-left': 'auto',
+    [theme.breakpoints.down('md')]: {
+      position: 'relative' as 'relative',
+      bottom: '0.5rem',
+    },
+  },
+  bottomButtons: {
+    position: 'relative' as 'relative',
+    bottom: '0.1rem',
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '25rem',
+    height: '30rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
@@ -60,12 +68,11 @@ const styles = (theme: any) => ({
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
-
   },
   contributorDiv: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '18rem',
+    top: '24rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -79,7 +86,7 @@ const styles = (theme: any) => ({
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
-    top: '6.5rem',
+    top: '4rem',
     [theme.breakpoints.down('md')]: {
       left: '1rem',
       right: '1rem',
@@ -96,7 +103,7 @@ const styles = (theme: any) => ({
   },
   labels: {
     position: 'absolute' as 'absolute',
-    top: '10rem',
+    top: '15rem',
   },
   progress: {
     color: '#48BF61',
@@ -127,7 +134,7 @@ const styles = (theme: any) => ({
   row: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '14rem',
+    top: '18.5rem',
   },
   sidebar: {
     display: 'flex',
@@ -142,6 +149,7 @@ const styles = (theme: any) => ({
     'margin-bottom': '0.25rem',
   },
   title: {
+    display: 'inline-block',
     'font-size': '2rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
@@ -150,6 +158,7 @@ const styles = (theme: any) => ({
   },
   topRow: {
     display: 'flex',
+    width: '100%',
   },
   upvotes: {
     'font-size': '1rem',
@@ -195,6 +204,7 @@ interface CardProps {
   history?: any;
   liked: boolean;
   bookmarked: boolean;
+  joined: boolean;
 }
 
 interface DispatchProps {
@@ -207,6 +217,7 @@ interface CardState {
   pledgeOpen: boolean;
   liked: boolean;
   bookmarked: boolean;
+  joined: boolean;
   messageOpen: boolean;
   errorMessage: string;
 }
@@ -225,9 +236,11 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
       pledgeOpen: false,
       liked: this.props.liked,
       bookmarked: this.props.bookmarked,
+      joined: this.props.joined,
       messageOpen: false,
       errorMessage: '',
     };
+    this.confirmJoin = this.confirmJoin.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
@@ -260,11 +273,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }
   }
 
+  confirmJoin() {
+    this.setState({ joined: true });
+  }
+
   countContributors(project: any) {
     const numOfPledgers = Object.keys(project.pledgers).length;
     switch (numOfPledgers) {
       case 0:
-        return 'No contributors yet';
+        return 'Nobody joined yet';
       case 1:
         return '1 Contributor';
       default:
@@ -372,6 +389,8 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
           open={this.state.pledgeOpen}
           project={this.props.project}
           toggle={this.togglePledge}
+          join={this.confirmJoin}
+          joined={this.props.joined}
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
@@ -379,7 +398,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="2"
+                maxLine="1"
                 ellipsis="..."
                 trimRight
                 basedOn="letters"
@@ -394,7 +413,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
-              maxLine="3"
+              maxLine="10"
               ellipsis="..."
               trimRight
               basedOn="letters"
@@ -429,7 +448,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <Typography className={classes.progressText}>
                   {`${Object.keys(this.props.project.pledgers).length}/`}
                   <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                  <Typography className={classes.hourText}>{`pledgers`}</Typography>
+                  <Typography className={classes.hourText}>{`joined`}</Typography>
                 </Typography>
               </div>
             </div>
@@ -443,7 +462,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             </div>
           </CardContent>
           <CardActions>
-            <Pledge handler={this.togglePledge} label="Pledge" />
+            <Pledge handler={this.togglePledge} label="Join" />
             <DetailButton handler={this.goDetail}/>
             <a className={classes.github} href={this.props.project.github_address}>
               <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
@@ -453,7 +472,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <a href={this.props.project.slack_channel}>
-              <IconButton aria-label="slack">
+              <IconButton aria-label="slack" className={classes.bottomButtons}>
                 <SvgIcon className={classes.slack}>
                   <Slack />
                 </SvgIcon>
