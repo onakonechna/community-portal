@@ -68,7 +68,7 @@ function getRandomModel(values: Map<string, number>, k: number) {
   for the current sequence of projects viewed by the user
  */
 function getValueModel(values: Map<string, number>, k: number) {
-  return () => [...values.entries()]
+  return (state: string[]) => [...values.entries()]
     .sort(([k1, v1], [k2, v2]) => v2 - v1)
     .slice(0, k)
     .map(([k, v]) => k);
