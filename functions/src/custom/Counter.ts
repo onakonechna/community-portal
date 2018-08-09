@@ -9,6 +9,10 @@ export default class Counter {
     this.isCounter = true;
   }
 
+  getMap() {
+    return this.map;
+  }
+
   size() {
     return this.map.size;
   }

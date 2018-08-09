@@ -273,7 +273,7 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
     }
     const policy = initializePolicy(MDPTree, rewards);
     policyIteration(MDPTree, values, policy, rewards);
-    return { values, hitTransitionMap, missTransitionMap, observedTransitions };
+    return { hitTransitionMap, missTransitionMap, observedTransitions, values: values.getMap() };
 
   } catch (error) {
     console.log(error);
