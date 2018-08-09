@@ -5,10 +5,10 @@ interface ProjectTrafficControllerInterface {
 }
 
 function getSecondLevelCount(map: Map<string, any>, firstKey: string, secondKey: string) {
-    if (map.has(firstKey)) {
-        if (map.get(firstKey).has(secondKey)) return map.get(firstKey).get(secondKey);
-    }
-    return 0;
+  if (map.has(firstKey)) {
+    if (map.get(firstKey).has(secondKey)) return map.get(firstKey).get(secondKey);
+  }
+  return 0;
 }
 
 function getSignature(array: string[]) {
@@ -20,7 +20,7 @@ function getStateFromSignature(signature: string) {
 }
 
 function getNextStateSignature(signature: string, next: string) {
-  let nextState = getStateFromSignature(signature).slice(1);
+  const nextState = getStateFromSignature(signature).slice(1);
   nextState.push(next);
   return getSignature(nextState);
 }
@@ -57,7 +57,7 @@ function packageModel(
     }));
     nextStates.sort((a: any, b: any) => a.delta < b.delta);
     return nextStates.slice(0, k).map((project: any) => project.id);
-  }
+  };
 }
 
 export default class ProjectRecommendationController implements ProjectTrafficControllerInterface {
@@ -65,8 +65,20 @@ export default class ProjectRecommendationController implements ProjectTrafficCo
   // intermediary controllers
   getModel(data: any) {
     return (result: any) => {
-      const { values, hitTransitionMap, missTransitionMap, observedTransitions } = JSON.parse(result.Body.toString());
-      const model = packageModel(values, hitTransitionMap, missTransitionMap, observedTransitions, 3);
+      const {
+        values,
+        hitTransitionMap,
+        missTransitionMap,
+        observedTransitions,
+      } = JSON.parse(result.Body.toString());
+
+      const model = packageModel(
+        values,
+        hitTransitionMap,
+        missTransitionMap,
+        observedTransitions,
+        3,
+      );
 
       return { model };
     };

@@ -223,9 +223,19 @@ function buildTransitionMaps(hitTransitions: Map<string, any>, totalTransitions:
 
   totalTransitions.forEach((next_state: Map<string, number>, project_seq_signature: string) => {
     next_state.forEach((totalCount: number, next_proj: string) => {
-      let hitCount = getSecondLevelCount(hitTransitions, project_seq_signature, next_proj);
-      setSecondLevel(hitTransitionMap, project_seq_signature, next_proj, hitCount/totalCount);
-      setSecondLevel(missTransitionMap, project_seq_signature, next_proj, (totalCount-hitCount)/totalCount);
+      const hitCount = getSecondLevelCount(hitTransitions, project_seq_signature, next_proj);
+      setSecondLevel(
+        hitTransitionMap,
+        project_seq_signature,
+        next_proj,
+        hitCount / totalCount,
+      );
+      setSecondLevel(
+        missTransitionMap,
+        project_seq_signature,
+        next_proj,
+        (totalCount - hitCount) / totalCount,
+      );
     });
   });
 
@@ -244,7 +254,11 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
   try {
     // normalize MDP tree
     const { hitTransitions, totalTransitions, MDPTree } = getTransitions(traffic, 3);
-    const { hitTransitionMap, missTransitionMap } = buildTransitionMaps(hitTransitions, totalTransitions);
+    const {
+      hitTransitionMap,
+      missTransitionMap,
+    } = buildTransitionMaps(hitTransitions, totalTransitions);
+
     const observedTransitions = getObservedTransitions(totalTransitions);
     MDPTree.forEach((actionSpace: Map<string, Counter>) => {
       actionSpace.forEach((counter: Counter) => counter.normalize());
