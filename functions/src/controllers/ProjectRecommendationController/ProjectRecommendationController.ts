@@ -1,7 +1,12 @@
 interface ProjectRecommendationControllerInterface {
-  getModel(data: any): (result: any) => any;
   getRecommendations(data: any): (result: any) => any;
+  getDefaultRecommendations(data: any): (result: any) => any;
   null(data: any): (result: any) => any;
+}
+
+function getRandomElements(array: any[], n: number) {
+  const shuffled = array.sort(() => .5 - Math.random());
+  return shuffled.slice(0, n);
 }
 
 /** get random projects
@@ -10,82 +15,25 @@ interface ProjectRecommendationControllerInterface {
   which helps the model to better adapt to unknown states
   k represents the maximum number of projects to recommend
  */
-function getRandomModel(rewards: Map<string, number>, k: number) {
-  const projects = [...rewards.keys()];
-  return (state: string[]) => {
-    if (state.length === 0) return getRandomElements(projects, k);
-
-    const projectPool: any = [];
-    for (const project of projects) {
-      if (project !== state[state.length - 1]) projectPool.push(project);
-    }
-    return getRandomElements(projectPool, k);
-  };
+function getRandomProjects(project_id: string, projects: string[], k: number) {
+  const projectPool: any = [];
+  for (const project of projects) {
+    if (project !== state[state.length - 1]) projectPool.push(project);
+  }
+  return getRandomElements(projectPool, k);
+}
 }
 
 /**
- * get the project IDs with highest trained rewards (least pledgers)
+ * get the projects with highest rewards (least proportion of pledgers)
  * we fall back to this approach when we have not recorded any observations
  * for the current sequence of projects viewed by the user
  */
-function getRewardModel(rewards: Map<string, number>, k: number) {
-  return (state: string[]) => {
-    const thisProj = state[state.length - 1];
-    return [...rewards.entries()]
-      .filter(([project, reward]) => project !== thisProj)
-      .sort(([p1, r1], [p2, r2]) => r2 - r1)
-      .slice(0, k)
-      .map(([project, reward]) => project);
-  };
-}
-
-/**
-  packageModel puts together the various components of the stored model
-  it outputs a function that takes in a current state and generates up to k recommendations
-
-  whenever possible, the model generates up to @param k recommendations based on the
-  deltas of the project, where delta is calculated as (P(hit) - P(miss)) * value
-  refer to the documentation for more details
-
-  when past observations are not available, the model will recommend the projects with the
-  highest rewards using getRewardModel
-
-  with a small probability @param epsilon the model randomly recommends k projects to the user
-  this encourages the reinforcement learning model to explore unknown states
- */
-function packageModel(
-  values: Map<string, number>,
-  rewards: Map<string, number>,
-  hitTransitionMap: any,
-  missTransitionMap: any,
-  observedTransitions: any,
-  k: number = 3,
-  epsilon: number = 0.05,
-) {
-  return (state: string[]) => {
-    try {
-      // generate up to k random recommendations
-      if (Math.random() < .05) return getRandomModel(rewards, k)(state);
-
-      // generate up to k recommendations with highest rewards (least pledgers)
-      const signature = getSignature(state);
-      if (!observedTransitions.has(signature)) {
-        return getRewardModel(rewards, k)(state);
-      }
-
-      // generate up to k recommendations with highest deltas
-      const nextProjects = observedTransitions.get(signature);
-      const nextStates = nextProjects.map((nextProj: string) => ({
-        delta: delta(signature, nextProj, hitTransitionMap, missTransitionMap, values),
-        id: nextProj,
-      }));
-      nextStates.sort((a: any, b: any) => a.delta < b.delta);
-      return nextStates.slice(0, k).map((project: any) => project.id);
-
-    } catch (e) {
-      console.log('error:', e);
-    }
-  };
+function getTopProjects(project_id: string, projects: string[], k: number) {
+  return projects
+    .slice(0, k + 1)
+    .filter((project: string) => project !== project_id)
+    .slice(0, k);
 }
 
 function buildSecondLevelMap(nestedList: any) {
@@ -103,8 +51,38 @@ export default class ProjectRecommendationController
   getRecommendations(data: any) {
     return (result: any) => {
       try {
+        /**
+         * with 5% probability, we allow the recommender to randomly recommend projects
+         * to the user to encourage exploration to enhance the reinforcement learning
+         * process as it will be able to record transitions to currently unknown states
+         */
+        if (Math.random() < .05) return { should_explore: true };
         const recommended = result ? JSON.parse(result.Body.toString()) : undefined;
         return { recommended };
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }
+
+  getDefaultRecommendations(data: any) {
+    const { project_id, should_explore, num_recommended } = data;
+    return (result: any) => {
+      try {
+        /**
+         * if defaultRecommendations does not exist on S3
+         * it means we have not trained the model yet
+         * we do not store anything so that the handler
+         * will initiate the model training process
+         * this solves the chicken and egg problem
+         */
+        if (!result) return {};
+
+        const projects = JSON.parse(result.Body.toString());
+        if (should_explore) {
+          return { recommended : getRandomProjects(project_id, projects, num_recommended) };
+        }
+        return { recommended: getTopProjects(project_id, projects, num_recommended) };
       } catch (e) {
         console.log(e);
       }

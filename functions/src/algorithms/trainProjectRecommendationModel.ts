@@ -295,17 +295,17 @@ function getRecommendations(
 }
 
 /**
- * This function gets the top k+1 projects with the reward values
+ * This function all projects ranked by reward
  * reward is calculated as e^(-pledged/estimated)
  * we give higher rewards to projects with less proportion of pledgers
  * so they will be recommended more frequently
- * we get the top k+1 projects so that we can remove the project currently
- * being viewed from the list if it exists in the k+1 projects
+ * we store all projects so that we can also use the projects list
+ * when we want to randomly recommend k projects to encourage exploration
+ * and facilitate learning in the reinforcement learning process
  */
 function getDefaultRecommendations(rewards: Map<string, number>, k: number = 3) {
   return [...rewards.entries()]
     .sort(([p1, r1], [p2, r2]) => r2 - r1)
-    .slice(0, k + 1)
     .map(([project, reward]) => project);
 }
 
@@ -345,8 +345,6 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
     );
 
     const defaultRecommendations = getDefaultRecommendations(rewards);
-
-    // generate default (k+1) recommendations based on rewards
 
     return {
       recommendations,

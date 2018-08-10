@@ -229,7 +229,7 @@ export default class PackageService {
     let flag = false;
     if (dataflow.skipWithout) {
       dataflow.skipWithout.forEach((key: string) => {
-        if (!(key in this.dataStore)) flag = true;
+        if (!(key in this.dataStore) || typeof this.dataStore[key] === 'undefined') flag = true;
       });
     }
     if (dataflow.skipOn) {

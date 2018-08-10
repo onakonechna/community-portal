@@ -8,6 +8,8 @@ const PROJECT_RECOMMENDATION_BUCKET = process.env.PROJECT_RECOMMENDATION_BUCKET;
 
 interface ProjectRecommendationEngineInterface {
   getRecommendations(data: any): Promise<any>;
+  getDefaultRecommendations(data: any): Promise<any>;
+  trainModel(data: any): Promise<any>;
 }
 
 function getSignature(array: string[]) {
@@ -34,6 +36,14 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
 
     return new Promise((resolve: any) => {
       this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, getSignature(state))
+        .then((result: any) => resolve(result))
+        .catch((error: any) => resolve());
+    });
+  }
+
+  getDefaultRecommendations(data: any): Promise<any> {
+    return new Promise((resolve: any) => {
+      this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, 'defaultRecommendations')
         .then((result: any) => resolve(result))
         .catch((error: any) => resolve());
     });
