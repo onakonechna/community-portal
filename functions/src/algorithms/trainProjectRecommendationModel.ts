@@ -158,7 +158,11 @@ function valueIteration(
 ) {
   MDPTree.forEach((actions: Map<string, Counter>, state: string) => {
     const transitionProb = actions.get(policy.get(state));
-    values.set(state, getExpectedValue(transitionProb, values, state, rewards, gamma));
+
+    // when previously recommended projects are empty, transition prob may be undefined
+    if (typeof transitionProb !== 'undefined') {
+      values.set(state, getExpectedValue(transitionProb, values, state, rewards, gamma));
+    }
   });
 }
 
@@ -262,6 +266,8 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
     MDPTree.forEach((actionSpace: Map<string, Counter>) => {
       actionSpace.forEach((counter: Counter) => counter.normalize());
     });
+
+    console.log(MDPTree);
 
     // initialize values and policy
     const values = new Counter(1);
