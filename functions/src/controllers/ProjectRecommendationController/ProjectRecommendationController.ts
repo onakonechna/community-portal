@@ -1,3 +1,5 @@
+import { numProjectsToRecommend } from './../../../config/Config';
+
 interface ProjectRecommendationControllerInterface {
   getRecommendations(data: any): (result: any) => any;
   getDefaultRecommendations(data: any): (result: any) => any;
@@ -10,10 +12,10 @@ function getRandomElements(array: any[], n: number) {
 }
 
 /** get random projects
-  with a small probability, we randomly recommend projects to the user
-  this is to encourage exporation in the reinforcement learning process
-  which helps the model to better adapt to unknown states
-  k represents the maximum number of projects to recommend
+ * with a small probability, we randomly recommend projects to the user
+ * this is to encourage exporation in the reinforcement learning process
+ * which helps the model to better adapt to unknown states
+ * k represents the maximum number of projects to *recommend*
  */
 function getRandomProjects(project_id: string, projects: string[], k: number) {
   const projectPool: any = [];
@@ -27,6 +29,7 @@ function getRandomProjects(project_id: string, projects: string[], k: number) {
  * get the projects with highest rewards (least proportion of pledgers)
  * we fall back to this approach when we have not recorded any observations
  * for the current sequence of projects viewed by the user
+ * k represents the maximum number of projects to *recommend*
  */
 function getTopProjects(project_id: string, projects: string[], k: number) {
   return projects
@@ -65,7 +68,7 @@ export default class ProjectRecommendationController
   }
 
   getDefaultRecommendations(data: any) {
-    const { project_id, should_explore, num_recommended } = data;
+    const { project_id, should_explore } = data;
     return (result: any) => {
       try {
         /**
@@ -79,9 +82,9 @@ export default class ProjectRecommendationController
 
         const projects = JSON.parse(result.Body.toString());
         if (should_explore) {
-          return { recommended : getRandomProjects(project_id, projects, num_recommended) };
+          return { recommended : getRandomProjects(project_id, projects, numProjectsToRecommend) };
         }
-        return { recommended: getTopProjects(project_id, projects, num_recommended) };
+        return { recommended: getTopProjects(project_id, projects, numProjectsToRecommend) };
       } catch (e) {
         console.log(e);
       }

@@ -1,3 +1,4 @@
+import { numProjectsToTrack, numProjectsToRecommend } from './../../config/Config';
 import Counter from './../custom/Counter';
 import { exp } from 'mathjs';
 import * as _ from 'lodash';
@@ -71,14 +72,15 @@ function resolveLastProjectInSignature(signature: string) {
   return getStateFromSignature(signature).pop();
 }
 
-/** The data is partitioned by user_id and sorted by timestamp
-    We just need to iterate over the data to get the state transitions
-    k indicates the length of the sequence in a state
-    That is, how many projects into the past do we consider when making recommendations
+/**
+ * The data is partitioned by user_id and sorted by timestamp
+ * We just need to iterate over the data to get the state transitions
+ * k indicates the length of the sequence in a state
+ * That is, how many projects into the past do we consider when making recommendations
 
-    hitTransitions keeps track of the state transitions where user adopts a recommendation
-    totalTransitions keeps track of the total transitiions regardless of
-    whether user adopts a recommendation
+ * hitTransitions keeps track of the state transitions where user adopts a recommendation
+ * totalTransitions keeps track of the total transitiions regardless of
+ * whether user adopts a recommendation
  */
 interface DataInterface {
   user_id: string;
@@ -87,6 +89,9 @@ interface DataInterface {
   timestamp: number;
 }
 
+/**
+ * k represents the number of projects to *track*
+ */
 function getTransitions(data: DataInterface[], k: number) {
   const hitTransitions = new Map();
   const totalTransitions = new Map();
@@ -274,13 +279,14 @@ function delta(
  * this approach has been proven to optimize total rewards
  * corresponding to total project views adjusted by pledger proportions
  * proof can be found at http://www.jmlr.org/papers/volume6/shani05a/shani05a.pdf
+ * k represents the maximum number of projects to *recommend*
  */
 function getRecommendations(
   hitTransitionMap: any,
   missTransitionMap: any,
   values: Counter,
   observedTransitions: Map<string, string[]>,
-  k: number = 3,
+  k: number,
 ) {
   const recommendations: any = {};
   observedTransitions.forEach((nextProjects: string[], signature: string) => {
@@ -302,8 +308,9 @@ function getRecommendations(
  * we store all projects so that we can also use the projects list
  * when we want to randomly recommend k projects to encourage exploration
  * and facilitate learning in the reinforcement learning process
+ * k represents the maximum number of projects to *recommend*
  */
-function getDefaultRecommendations(rewards: Counter, k: number = 3) {
+function getDefaultRecommendations(rewards: Counter, k: number) {
   return [...rewards.getMap().entries()]
     .sort(([p1, r1], [p2, r2]) => r2 - r1)
     .map(([project, reward]) => project);
@@ -312,7 +319,12 @@ function getDefaultRecommendations(rewards: Counter, k: number = 3) {
 function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]) {
   try {
     // construct data structures from input data for model building
-    const { hitTransitions, totalTransitions, MDPTree } = getTransitions(traffic, 3);
+    const {
+      hitTransitions,
+      totalTransitions,
+      MDPTree,
+    } = getTransitions(traffic, numProjectsToTrack);
+
     const {
       hitTransitionMap,
       missTransitionMap,
@@ -342,9 +354,10 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
       missTransitionMap,
       values,
       observedTransitions,
+      numProjectsToRecommend,
     );
 
-    const defaultRecommendations = getDefaultRecommendations(rewards);
+    const defaultRecommendations = getDefaultRecommendations(rewards, numProjectsToRecommend);
 
     return {
       recommendations,
