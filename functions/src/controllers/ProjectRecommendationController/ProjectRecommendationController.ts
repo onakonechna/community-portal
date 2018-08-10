@@ -4,46 +4,6 @@ interface ProjectRecommendationControllerInterface {
   null(data: any): (result: any) => any;
 }
 
-function getSecondLevelCount(map: Map<string, any>, firstKey: string, secondKey: string) {
-  if (map.has(firstKey)) {
-    if (map.get(firstKey).has(secondKey)) return map.get(firstKey).get(secondKey);
-  }
-  return 0;
-}
-
-function getSignature(array: string[]) {
-  return JSON.stringify(array);
-}
-
-function getStateFromSignature(signature: string) {
-  return JSON.parse(signature);
-}
-
-function getNextStateSignature(signature: string, next: string) {
-  const nextState = getStateFromSignature(signature).slice(1);
-  nextState.push(next);
-  return getSignature(nextState);
-}
-
-function delta(
-  signature: string,
-  nextProj: string,
-  hitTransitionMap: any,
-  missTransitionMap: any,
-  values: Map<string, number>,
-) {
-  return (
-    getSecondLevelCount(hitTransitionMap, signature, nextProj)
-      - getSecondLevelCount(missTransitionMap, signature, nextProj)
-  )
-    * values.get(getNextStateSignature(signature, nextProj));
-}
-
-function getRandomElements(array: any[], n: number) {
-  const shuffled = array.sort(() => .5 - Math.random());
-  return shuffled.slice(0, n);
-}
-
 /** get random projects
   with a small probability, we randomly recommend projects to the user
   this is to encourage exporation in the reinforcement learning process
@@ -140,51 +100,14 @@ export default class ProjectRecommendationController
   implements ProjectRecommendationControllerInterface {
 
   // intermediary controllers
-
-  /**
-   * result would be undefined
-   */
-  getModel(data: any) {
-    return (result: any) => ({ model: result });
-  }
-
-  getRecommender(data: any) {
-    const { model } = data;
+  getRecommendations(data: any) {
     return (result: any) => {
       try {
-        let {
-          values,
-          rewards,
-          hitTransitionMap,
-          missTransitionMap,
-          observedTransitions,
-        } = JSON.parse(model.Body.toString());
-
-        values = new Map(values);
-        rewards = new Map(rewards);
-        observedTransitions = new Map(observedTransitions);
-        hitTransitionMap = buildSecondLevelMap(hitTransitionMap);
-        missTransitionMap = buildSecondLevelMap(missTransitionMap);
-
-        const recommender = packageModel(
-          values,
-          rewards,
-          hitTransitionMap,
-          missTransitionMap,
-          observedTransitions,
-        );
-
-        return { recommender };
+        const recommended = result ? JSON.parse(result.Body.toString()) : undefined;
+        return { recommended };
       } catch (e) {
         console.log(e);
       }
-    };
-  }
-
-  getRecommendations(data: any) {
-    return (result: any) => {
-      const { recommended } = result;
-      return { recommended };
     };
   }
 

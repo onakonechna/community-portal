@@ -302,8 +302,11 @@ function getRecommendations(
  * we get the top k+1 projects so that we can remove the project currently
  * being viewed from the list if it exists in the k+1 projects
  */
-function getDefaultRecommendations() {
-
+function getDefaultRecommendations(rewards: Map<string, number>, k: number = 3) {
+  return [...rewards.entries()]
+    .sort(([p1, r1], [p2, r2]) => r2 - r1)
+    .slice(0, k + 1)
+    .map(([project, reward]) => project);
 }
 
 function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]) {
@@ -338,17 +341,16 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
       hitTransitionMap,
       missTransitionMap,
       observedTransitions,
-      values
+      values,
     );
+
+    const defaultRecommendations = getDefaultRecommendations(rewards);
 
     // generate default (k+1) recommendations based on rewards
 
     return {
-      hitTransitionMap,
-      missTransitionMap,
-      observedTransitions,
-      values: values.getMap(),
-      rewards: rewards.getMap(),
+      recommendations,
+      defaultRecommendations,
     };
 
   } catch (error) {

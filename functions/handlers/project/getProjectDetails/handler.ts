@@ -29,17 +29,27 @@ const dataflows = [
   },
   {
     controller: ProjectRecommendationController,
-    method: 'getModel',
+    method: 'getRecommendations',
     target: ProjectRecommendationEngine,
     targetType: 'engine',
-    storageSpecs: ['model'],
+    dataDependencies: ['last_visited', 'project_id'],
+    storageSpecs: ['recommended'],
     skipWithout: ['user_id', 'project'],
   },
+  // {
+  //   controller: ProjectRecommendationController,
+  //   method: 'getModel',
+  //   target: ProjectRecommendationEngine,
+  //   targetType: 'engine',
+  //   storageSpecs: ['model'],
+  //   skipWithout: ['user_id', 'project'],
+  // },
 
-  /** train a model for the first time if no model exists yet
-      we need to do this to solve the chicken and egg problem
-      the following data flows are adapted from the trainProjectRecommendationModel routine
-      they are always skipped when a model exists
+  /**
+   * train a model for the first time if no model exists yet
+   * we need to do this to solve the chicken and egg problem
+   * the following data flows are adapted from the trainProjectRecommendationModel routine
+   * they are always skipped when a model exists
    */
   {
     controller: ProjectController,
@@ -77,27 +87,18 @@ const dataflows = [
     skipWithout: ['user_id', 'project'],
     skipOn: ['model'],
   },
-  /** End of first-time model training and retrieval section */
+  // End of first-time model training and retrieval section
 
-  {
-    controller: ProjectRecommendationController,
-    method: 'getRecommender',
-    target: ProjectRecommendationEngine,
-    targetType: 'engine',
-    methodMap: { getRecommender: 'null' },
-    dataDependencies: ['model'],
-    storageSpecs: ['recommender'],
-    skipWithout: ['user_id', 'project'],
-  },
-  {
-    controller: ProjectRecommendationController,
-    method: 'getRecommendations',
-    target: ProjectRecommendationEngine,
-    targetType: 'engine',
-    dataDependencies: ['recommender', 'last_visited', 'project_id'],
-    storageSpecs: ['recommended'],
-    skipWithout: ['user_id', 'project'],
-  },
+  // {
+  //   controller: ProjectRecommendationController,
+  //   method: 'getRecommender',
+  //   target: ProjectRecommendationEngine,
+  //   targetType: 'engine',
+  //   methodMap: { getRecommender: 'null' },
+  //   dataDependencies: ['model'],
+  //   storageSpecs: ['recommender'],
+  //   skipWithout: ['user_id', 'project'],
+  // },
   {
     controller: ProjectTrafficController,
     method: 'null',
