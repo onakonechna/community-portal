@@ -18,10 +18,9 @@ function getRandomElements(array: any[], n: number) {
 function getRandomProjects(project_id: string, projects: string[], k: number) {
   const projectPool: any = [];
   for (const project of projects) {
-    if (project !== state[state.length - 1]) projectPool.push(project);
+    if (project !== project_id) projectPool.push(project);
   }
   return getRandomElements(projectPool, k);
-}
 }
 
 /**

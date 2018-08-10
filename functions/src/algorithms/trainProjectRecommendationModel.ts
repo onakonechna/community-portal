@@ -259,7 +259,7 @@ function delta(
   nextProj: string,
   hitTransitionMap: any,
   missTransitionMap: any,
-  values: Map<string, number>,
+  values: Counter,
 ) {
   return (
     getSecondLevelCount(hitTransitionMap, signature, nextProj)
@@ -278,17 +278,17 @@ function delta(
 function getRecommendations(
   hitTransitionMap: any,
   missTransitionMap: any,
-  values: Map<string, number>,
+  values: Counter,
   observedTransitions: Map<string, string[]>,
   k: number = 3,
 ) {
-  const recommendations = {};
-  observedTransitions.forEach((signature: string, nextProjects: string[]) => {
+  const recommendations: any = {};
+  observedTransitions.forEach((nextProjects: string[], signature: string) => {
     const nextStates = nextProjects.map((nextProj: string) => ({
       delta: delta(signature, nextProj, hitTransitionMap, missTransitionMap, values),
       id: nextProj,
     }));
-    nextStates.sort((a: any, b: any) => a.delta < b.delta);
+    nextStates.sort((a: any, b: any) => a.delta < b.delta ? 1 : -1);
     recommendations[signature] = nextStates.slice(0, k).map((project: any) => project.id);
   });
   return recommendations;
@@ -303,8 +303,8 @@ function getRecommendations(
  * when we want to randomly recommend k projects to encourage exploration
  * and facilitate learning in the reinforcement learning process
  */
-function getDefaultRecommendations(rewards: Map<string, number>, k: number = 3) {
-  return [...rewards.entries()]
+function getDefaultRecommendations(rewards: Counter, k: number = 3) {
+  return [...rewards.getMap().entries()]
     .sort(([p1, r1], [p2, r2]) => r2 - r1)
     .map(([project, reward]) => project);
 }
@@ -340,8 +340,8 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
     const recommendations = getRecommendations(
       hitTransitionMap,
       missTransitionMap,
-      observedTransitions,
       values,
+      observedTransitions,
     );
 
     const defaultRecommendations = getDefaultRecommendations(rewards);
