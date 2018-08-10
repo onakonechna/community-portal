@@ -183,7 +183,6 @@ export default class ProjectResource implements ProjectResourceInterface {
   getRecommended(data: any): Promise<any> {
     const { recommended } = data;
     const promises: any = [];
-    console.log(recommended);
 
     if (Array.isArray(recommended)) {
       recommended.forEach((project_id: string) => {

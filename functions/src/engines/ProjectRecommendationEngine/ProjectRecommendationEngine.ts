@@ -57,9 +57,6 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
       defaultRecommendations,
     } = trainProjectRecommendationModel(projects, traffic);
 
-    console.log('recommendations', recommendations);
-    console.log('defaultRecommendations', defaultRecommendations);
-
     promises.push(this.adapter.put(
       PROJECT_RECOMMENDATION_BUCKET,
       'defaultRecommendations',
