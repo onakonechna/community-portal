@@ -1,5 +1,5 @@
 postGithubData:
-  name: ${self.provider.stage}-postGithubData
+  name: ${self:provider.stage}-postGithubData
   role: postGithubDataRole
   handler: handlers/user/postGithubData/handler.handler
   timeout: 10
