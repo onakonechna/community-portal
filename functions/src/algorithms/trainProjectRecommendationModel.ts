@@ -254,20 +254,71 @@ function getObservedTransitions(totalTransitions: Map<string, any>) {
   return result;
 }
 
+function delta(
+  signature: string,
+  nextProj: string,
+  hitTransitionMap: any,
+  missTransitionMap: any,
+  values: Map<string, number>,
+) {
+  return (
+    getSecondLevelCount(hitTransitionMap, signature, nextProj)
+      - getSecondLevelCount(missTransitionMap, signature, nextProj)
+  )
+    * values.get(getNextStateSignature(signature, nextProj));
+}
+
+/**
+ * This function gets the top k projects with the highest delta values
+ * delta values are calculated as (P(hit) - P(miss)) * value(state)
+ * this approach has been proven to optimize total rewards
+ * corresponding to total project views adjusted by pledger proportions
+ * proof can be found at http://www.jmlr.org/papers/volume6/shani05a/shani05a.pdf
+ */
+function getRecommendations(
+  hitTransitionMap: any,
+  missTransitionMap: any,
+  values: Map<string, number>,
+  observedTransitions: Map<string, string[]>,
+  k: number = 3,
+) {
+  const recommendations = {};
+  observedTransitions.forEach((signature: string, nextProjects: string[]) => {
+    const nextStates = nextProjects.map((nextProj: string) => ({
+      delta: delta(signature, nextProj, hitTransitionMap, missTransitionMap, values),
+      id: nextProj,
+    }));
+    nextStates.sort((a: any, b: any) => a.delta < b.delta);
+    recommendations[signature] = nextStates.slice(0, k).map((project: any) => project.id);
+  });
+  return recommendations;
+}
+
+/**
+ * This function gets the top k+1 projects with the reward values
+ * reward is calculated as e^(-pledged/estimated)
+ * we give higher rewards to projects with less proportion of pledgers
+ * so they will be recommended more frequently
+ * we get the top k+1 projects so that we can remove the project currently
+ * being viewed from the list if it exists in the k+1 projects
+ */
+function getDefaultRecommendations() {
+
+}
+
 function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]) {
   try {
+    // construct data structures from input data for model building
     const { hitTransitions, totalTransitions, MDPTree } = getTransitions(traffic, 3);
     const {
       hitTransitionMap,
       missTransitionMap,
     } = buildTransitionMaps(hitTransitions, totalTransitions);
 
-    const observedTransitions = getObservedTransitions(totalTransitions);
+    // normalize transition counts to obtain empirical transition probabilities
     MDPTree.forEach((actionSpace: Map<string, Counter>) => {
       actionSpace.forEach((counter: Counter) => counter.normalize());
     });
-
-    console.log(MDPTree);
 
     // initialize values and policy
     const values = new Counter(1);
@@ -277,7 +328,21 @@ function trainProjectRecommendationModel(projects: any, traffic: DataInterface[]
       rewards.set(project_id, exp_decay(pledged / estimated));
     }
     const policy = initializePolicy(MDPTree, rewards);
+
+    // run policy iteration to find optimal values for the states
     policyIteration(MDPTree, values, policy, rewards);
+
+    // generate recommendations for each state signature to be stored in S3
+    const observedTransitions = getObservedTransitions(totalTransitions);
+    const recommendations = getRecommendations(
+      hitTransitionMap,
+      missTransitionMap,
+      observedTransitions,
+      values
+    );
+
+    // generate default (k+1) recommendations based on rewards
+
     return {
       hitTransitionMap,
       missTransitionMap,
