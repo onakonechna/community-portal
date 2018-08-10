@@ -33,11 +33,11 @@ const styles: any = (theme:any) => ({
     },
     display: 'flex',
     'flex-direction': 'column',
-    'margin': 'auto',
+    margin: 'auto',
     'margin-top': '1rem',
   },
   content: {
-    'margin': '1rem',
+    margin: '1rem',
   },
   contributorDiv: {
     display: 'flex',
@@ -140,18 +140,18 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           <CardContent className={classes.content}>
             <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
 
-            <div className={classes.contributorDiv}>
+            {this.props.project.pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
                   <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
-            </div>
+            </div>}
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 }
 
