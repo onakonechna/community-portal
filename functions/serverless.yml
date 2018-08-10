@@ -144,7 +144,7 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
-    postGithubDataRole: ${file(./handlers/user/postGithubData/role.yml)}
+    postGithubDataRole: ${file(./handlers/user/postGithubData/role.yml):postGithubDataRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 
 plugins:

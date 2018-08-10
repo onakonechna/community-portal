@@ -1,0 +1,23 @@
+postGithubDataRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: ${self:provider.stage}-postGithubDataRole
+    AssumeRolePolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: ${self:provider.stage}-postGithubDataPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_INDEX}"
