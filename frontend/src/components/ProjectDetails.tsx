@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
+import RecommendationCard from './RecommendationCard'
+
 import { loadProject } from '../actions';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -10,8 +12,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-
-import LinesEllipsis from 'react-lines-ellipsis';
 
 const styles: any = (theme:any) => ({
   titleText: {
@@ -54,25 +54,6 @@ const styles: any = (theme:any) => ({
     'margin-left': '1rem',
     'margin-top': 'auto',
   },
-  recommendationCard: {
-    'background-color': '#F2F3F3',
-    [theme.breakpoints.down('md')]: {
-      width: '10rem',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '15rem',
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: '25rem',
-    },
-    display: 'flex',
-    'flex-direction': 'column',
-    margin: 'auto',
-    'margin-top': '1rem',
-  },
-  recommendationContent: {
-    margin: '.5rem',
-  },
 });
 
 interface IProject {
@@ -109,6 +90,7 @@ interface ProjectDetailsProps {
   project?: any;
   user?: any;
   classes?: any;
+  history?: any;
 }
 
 interface ProjectDetailsState {
@@ -183,26 +165,10 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           {this.props.project.recommended
             && this.props.project.recommended.map((recommended: any) => (
               <Grid item key={recommended.project_id}>
-                <Card className={classes.recommendationCard}>
-                  <CardContent className={classes.recommendationContent}>
-                    <LinesEllipsis
-                      className={classes.descriptionText}
-                      text={recommended.name}
-                      maxLine="1"
-                      ellipsis="..."
-                      trimRight
-                      basedOn="letters"
-                    />
-                    <LinesEllipsis
-                      className={classes.descriptionText}
-                      text={recommended.description}
-                      maxLine="3"
-                      ellipsis="..."
-                      trimRight
-                      basedOn="letters"
-                    />
-                  </CardContent>
-                </Card>
+                <RecommendationCard
+                  project={recommended}
+                  history={this.props.history}
+                />
               </Grid>
             ))
           }

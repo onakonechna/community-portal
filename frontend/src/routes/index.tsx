@@ -20,7 +20,7 @@ const Routes = () => (
       (props: any) => <ProjectGrid filter="pledgedProjects" {...props} />
     } />
     <Route exact path="/project/:project_id" component={
-      (props: any) => <ProjectDetails project_id={props.match.params.project_id} />
+      (props: any) => <ProjectDetails project_id={props.match.params.project_id} {...props} />
     } />
   </div>
 );
