@@ -7,8 +7,11 @@ import { loadProject } from '../actions';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+
+import LinesEllipsis from 'react-lines-ellipsis';
 
 const styles: any = (theme:any) => ({
   titleText: {
@@ -19,6 +22,7 @@ const styles: any = (theme:any) => ({
   },
   descriptionText: {
     fontSize: '1.25em',
+    'font-family': 'system-ui',
   },
   card: {
     'background-color': '#F2F3F3',
@@ -49,6 +53,25 @@ const styles: any = (theme:any) => ({
     'font-weight': '300',
     'margin-left': '1rem',
     'margin-top': 'auto',
+  },
+  recommendationCard: {
+    'background-color': '#F2F3F3',
+    [theme.breakpoints.down('md')]: {
+      width: '10rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '15rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '25rem',
+    },
+    display: 'flex',
+    'flex-direction': 'column',
+    margin: 'auto',
+    'margin-top': '1rem',
+  },
+  recommendationContent: {
+    margin: '.5rem',
   },
 });
 
@@ -140,7 +163,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           <CardContent className={classes.content}>
             <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
 
-            {this.props.project.pledgers && <div className={classes.contributorDiv}>
+            {pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
                   <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
@@ -150,6 +173,40 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
             </div>}
           </CardContent>
         </Card>
+
+        <Grid
+          container
+          direction="row"
+          spacing={32}
+          justify="center"
+        >
+          {this.props.project.recommended
+            && this.props.project.recommended.map((recommended: any) => (
+              <Grid item key={recommended.project_id}>
+                <Card className={classes.recommendationCard}>
+                  <CardContent className={classes.recommendationContent}>
+                    <LinesEllipsis
+                      className={classes.descriptionText}
+                      text={recommended.name}
+                      maxLine="1"
+                      ellipsis="..."
+                      trimRight
+                      basedOn="letters"
+                    />
+                    <LinesEllipsis
+                      className={classes.descriptionText}
+                      text={recommended.description}
+                      maxLine="3"
+                      ellipsis="..."
+                      trimRight
+                      basedOn="letters"
+                    />
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          }
+        </Grid>
       </div>
     );
   }
