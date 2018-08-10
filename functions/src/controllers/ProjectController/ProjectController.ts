@@ -56,8 +56,13 @@ export default class ProjectController implements ProjectControllerInterface {
 
   returnProjectDetails(data: any) {
     const { project, recommended } = data;
-    return () => {
+    return (results: any) => {
+      console.log(results);
+      const { values } = results;
       if (project) {
+        let recommended: any;
+        if (typeof values !== 'undefined') recommended = values.map((result: any) => result.Item);
+
         return {
           status: 200,
           payload: _.assign(deleteField(project, 'ranked_users'), { recommended }),

@@ -110,7 +110,7 @@ const dataflows = [
     controller: ProjectController,
     method: 'returnProjectDetails',
     target: ProjectResource,
-    methodMap: { returnProjectDetails: 'null' },
+    methodMap: { returnProjectDetails: 'getRecommended' },
   },
 ];
 

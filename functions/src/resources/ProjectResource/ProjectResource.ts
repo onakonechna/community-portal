@@ -180,6 +180,21 @@ export default class ProjectResource implements ProjectResourceInterface {
     return this.adapter.scan(PROJECTS_TABLE, 'project_id, estimated, pledged');
   }
 
+  getRecommended(data: any): Promise<any> {
+    const { recommended } = data;
+    const promises: any = [];
+    console.log(recommended);
+
+    if (Array.isArray(recommended)) {
+      recommended.forEach((project_id: string) => {
+        promises.push(this.adapter.getById(PROJECTS_TABLE, { project_id }));
+      });
+    }
+
+    return new Promise((resolve: any) => Promise.all(promises)
+      .then((values: any[]) => resolve({ values })));
+  }
+
   // special methods
   null(data: any): Promise<any> {
     return new Promise((resolve: any) => resolve({}));
