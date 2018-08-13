@@ -23,6 +23,7 @@
     "@types/lodash": "^4.14.110",
     "@types/node": "^8.10.18",
     "axios": "^0.18.0",
+    "increase-memory-limit": "^1.0.6",
     "jest": "^22.4.3",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
@@ -43,7 +44,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "sls offline start",
+    "start": "sudo increase-memory-limit; sls offline start",
     "deploy": "sls deploy",
     "lint": "tslint --project tsconfig.json"
   },

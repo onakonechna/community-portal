@@ -51,7 +51,7 @@ export default class DatabaseAdapter implements AdapterInterface {
   get(
     tableName: string,
     key: string,
-    value: string|number,
+    value: string | number,
     indexName: string = undefined,
     ascending: boolean = true,
     limit: number = undefined,
@@ -160,6 +160,47 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.base.updateItem(params).promise();
   }
 
+  addNestedObjToSet(
+    tableName: string,
+    identifier: any,
+    setName: string,
+    item: any,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    const Key = convertIdentifier(identifier);
+    // const existenceCondition = getExistenceCondition(identifier);
+    const setCondition = 'not(contains(#SET_NAME, :contribution))';
+    const params = {
+      Key,
+      ExpressionAttributeNames: {
+        '#SET_NAME': setName,
+      },
+      ExpressionAttributeValues: {
+        ':contribution': {
+          L: [
+            {
+              M: {
+                ':time': { S: item.time },
+                ':merged': { BOOL: item.merged },
+                ':project': { S: item.project },
+              },
+            },
+          ],
+        },
+        ':new_list': {
+          L: [] as any,
+        },
+      },
+      ReturnValues: returnValues,
+      TableName: tableName,
+      // tslint:disable-next-line:max-line-length
+      UpdateExpression: 'SET #SET_NAME = list_append(if_not_exists(#SET_NAME, :new_list), :contribution)',
+      ConditionExpression: setCondition,
+    };
+
+    return this.base.updateItem(params).promise();
+  }
+
   addToSet(
     tableName: string,
     identifier: any,
@@ -241,7 +282,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     identifier: any,
     mapName: string,
     key: string,
-    value: string|number,
+    value: string | number,
     returnValues: string = 'ALL_NEW',
   ) {
     const params = {
@@ -267,7 +308,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     identifier: any,
     mapName: string,
     key: string,
-    value: string|number,
+    value: string | number,
     returnValues: string = 'ALL_NEW',
   ) {
     const params = {

@@ -53,7 +53,8 @@ export default class UserResource implements UserResourceInterface {
 
   postGithubData(data: any): Promise<any> {
     const { user_id, contribution } = data;
-    return this.adapter.addToSetIfNotExists(
+    console.log(contribution);
+    return this.adapter.addNestedObjToSet(
       USERS_TABLE,
       { user_id },
       'contribution',

@@ -75,7 +75,7 @@ const pledgeSchema = {
 
 const contributionSchema = {
   properties: {
-    time: { type: 'date' },
+    time: { type: 'string' },
     merged: { type: 'boolean' },
     project: { type: 'string' },
   },
