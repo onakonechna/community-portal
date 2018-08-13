@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 const styles = (theme: Theme) => ({
   invisibleCard: {
     'background-color': '#FFFFFF',
-    'opacity': 0,
+    opacity: 0,
     height: '1rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
@@ -58,6 +58,7 @@ interface GridProps {
   handler?: () => void;
   filter?: string;
   classes?: any;
+  history?: any;
 }
 
 interface IProject {
@@ -100,6 +101,13 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
   }
 
+  checkJoin(id: string) {
+    const { user_id } = this.props.user;
+    const project = this.props.projects.find((p:any) => p['project_id'] === id);
+    if (typeof project.pledgers === 'undefined') return false;
+    return Object.keys(project.pledgers).indexOf(user_id) !== -1;
+  }
+
   updateGrid() {
     this.props.loadProjects();
   }
@@ -131,7 +139,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   render() {
     const { classes } = this.props;
     return (
-      <div style={{ padding: '40px' }}>
+      <div>
       <IntroText />
         <Grid
           container
@@ -144,8 +152,10 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
               <ProjectCard
                 project={project}
                 handler={this.updateGrid}
+                history={this.props.history}
                 liked={this.checkLike(project.project_id)}
                 bookmarked={this.checkBookmark(project.project_id)}
+                joined={this.checkJoin(project.project_id)}
               />
             </Grid>
           ))}

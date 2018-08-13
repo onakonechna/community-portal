@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
 import { Snackbar, SnackbarContent } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import { scheduleMeetingAction } from '../../actions';
+import { scheduleMeetingAction } from './../actions';
 
 interface ScheduleMeetingProps {
   classes?: any;
