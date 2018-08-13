@@ -21,6 +21,7 @@ export default class ProjectController implements ProjectControllerInterface {
     return (result: any) => {
       const {
           id,
+          login,
           name,
           email,
           company,
@@ -36,6 +37,7 @@ export default class ProjectController implements ProjectControllerInterface {
         company,
         avatar_url,
         location,
+        login,
         html_url,
         url,
         user_id: String(id),

@@ -5,6 +5,8 @@ import SignInIcon from '@material-ui/icons/AccountCircle';
 import withStyles from '@material-ui/core/styles/withStyles';
 import UserAvatar from '../UserAvatar';
 import withAuth from '../WithAuth';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const Avatar = withAuth(['user'])(UserAvatar);
 
@@ -39,24 +41,63 @@ const styles = (theme:any) => ({
   },
 });
 
-const loginButton = (props:any) => {
-  const { classes } = props;
-  return (
-    <div>
-      {props.user.role !== 'guest'
-        ?
+class LoginButton extends React.Component<any & any, any> {
+
+  constructor(props: any & any) {
+    super(props);
+
+    this.state = {
+      anchorEl: null,
+    };
+  }
+
+  handleClick = (event:any) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  render() {
+    const props = this.props;
+    const { anchorEl } = this.state;
+    const { classes } = this.props;
+
+    return (
+      <div>
+        {props.user.role !== 'guest'
+          ?
           <div className={classes.authWrapper}>
             <Button className={classes.logoutButton} onClick={props.logoutHandler}>Logout</Button>
             <Typography className={classes.welcomeText}>{`Welcome, ${retrieveFirstName(props.user.name)}`}</Typography>
             <Avatar />
           </div>
-        : <Button id={'login'} className={classes.signInText} onClick={props.handler}>
-            <SignInIcon key={'signin'} className={classes.signInIcon}/>
-            <Typography className={classes.welcomeText}>Sign In</Typography>
-          </Button>
-      }
-    </div>
-  );
-};
+          : (<div>
+            <Button id={'login'} className={classes.signInText} onClick={this.handleClick}>
+              <SignInIcon key={'signin'} className={classes.signInIcon}/>
+              <Typography className={classes.welcomeText}>Sign In</Typography>
+            </Button>
+            <Menu
+              id="login-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClick={this.handleClose}
+            >
+              <MenuItem onClick={(e) => {
+                this.handleClose();
+                this.props.handlerContributorLogin(e);
+              }}>As Contributor</MenuItem>
+              <MenuItem onClick={(e) => {
+                this.handleClose();
+                this.props.handlerPartnerLogin(e);
+              }}>As Partner</MenuItem>
+            </Menu>
+          </div>)
+        }
+      </div>
+    );
+  }
+}
 
-export default withStyles(styles)(loginButton);
+export default withStyles(styles)(LoginButton);

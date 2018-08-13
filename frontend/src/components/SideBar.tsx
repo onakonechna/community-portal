@@ -7,6 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Home from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
+import PartnersSideBarBlock from './partners/layout/SideBar';
 
 const styles = {
   list: {
@@ -51,6 +52,7 @@ const SideBar = (props: any) => {
           <ListItemText primary="Pledged Projects" />
         </ListItem>
         <Divider />
+        <PartnersSideBarBlock/>
         <ListItem
           button
           className={classes.homeIcon}

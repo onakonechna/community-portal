@@ -48,6 +48,42 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.put(params).promise();
   }
 
+  createCollection(query:any) {
+    const params = {
+      RequestItems: query
+    };
+
+    return this.db.batchWrite(params).promise();
+  }
+
+  getCollection(tableName:string, property:string, value:string) {
+    const param = {
+      TableName: tableName,
+      ExpressionAttributeNames: {"#prop": property,},
+      ExpressionAttributeValues: { ":val": value },
+      FilterExpression: "#prop = :val",
+    };
+
+    return this.db.scan(param).promise();
+  }
+
+  getByIds(
+    tableName: string,
+    values: any[],
+    attributeToGet: any = undefined
+  ): Promise<any> {
+    const params = {
+      "RequestItems" : {
+        [tableName] : {
+          "Keys" : values,
+          "AttributesToGet": attributeToGet
+        },
+      }
+    };
+
+    return this.db.batchGet(params).promise();
+  }
+
   get(
     tableName: string,
     key: string,
@@ -164,7 +200,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     tableName: string,
     identifier: any,
     setName: string,
-    item: string,
+    item: any,
     returnValues: string = 'ALL_NEW',
   ) {
     const Key = convertIdentifier(identifier);
@@ -251,6 +287,31 @@ export default class DatabaseAdapter implements AdapterInterface {
       ExpressionAttributeNames: {
         '#MAP_NAME': mapName,
         '#KEY': key,
+      },
+      ExpressionAttributeValues: {
+        ':value': value,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.db.update(params).promise();
+  }
+
+  addToMapColumn(
+    tableName:string,
+    identifier:any,
+    mapName:string,
+    value:any,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    returnValues = 'ALL_NEW';
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      UpdateExpression: 'SET #MAP_NAME = :value',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
       },
       ExpressionAttributeValues: {
         ':value': value,

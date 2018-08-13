@@ -45,6 +45,7 @@ switch(process.env.STAGE) {
 
 module.exports = {
     entry: "./src/index.tsx",
+    mode: 'development',
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname + "/public/dist"),

@@ -1,0 +1,8 @@
+githubUsersIndexer:
+  role: githubUsersIndexerRole
+  handler: handlers/githubUsersIndexer/handler.handler
+  events:
+  - http:
+      path: /githubUsersIndexer/
+      method: get
+      cors: true

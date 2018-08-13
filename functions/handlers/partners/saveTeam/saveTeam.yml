@@ -1,0 +1,8 @@
+saveTeam:
+  role: saveTeamRole
+  handler: handlers/partners/saveTeam/handler.handler
+  events:
+  - http:
+      path: /partners/team/save/
+      method: post
+      cors: true

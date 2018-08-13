@@ -12,7 +12,7 @@ export const frontEnd = __FRONTEND__;
 
 interface GithubAuthButtonProps {
   label?: string;
-  scope: string;
+  scope: any;
   className?: string;
   buttonText?: string;
   children?: any;
@@ -52,7 +52,8 @@ const withLogin = (WrappedCompoent: any) => {
   class GithubAuthButton extends React.Component<GithubAuthButtonProps, GithubAuthButtonState> {
     constructor(props: GithubAuthButtonProps) {
       super(props);
-      this.handleLogin = this.handleLogin.bind(this);
+      this.handleLoginContributor = this.handleLoginContributor.bind(this);
+      this.handleLoginPartner = this.handleLoginPartner.bind(this);
       this.handleLogout = this.handleLogout.bind(this);
       this.handleMessageChange = this.handleMessageChange.bind(this);
       this.handleMessageClose = this.handleMessageClose.bind(this);
@@ -69,8 +70,10 @@ const withLogin = (WrappedCompoent: any) => {
 
     private popup: any;
 
-    authorize(response: string) {
-      return axios.post(`${API}/authorize`, { code: response });
+    authorize(response: string, params?:any) {
+      const parameters = params ? {code: response, ...params} : {code: response};
+
+      return axios.post(`${API}/authorize`, parameters);
     }
 
     processAuthorizeFailure(response: string) {
@@ -93,21 +96,30 @@ const withLogin = (WrappedCompoent: any) => {
       }));
     }
 
-    handleLogin() {
+    handleLogin(
+      scope:string = '',
+      cb = (data: string) => this.onSuccess(data),
+      cbError = (error: Error) => this.onFailure(error)
+    ) {
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
-        scope: '',
+        scope: 'user&admin:org'
       });
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
         `https://github.com/login/oauth/authorize?${search}`,
         { height: 1000, width: 600 },
       );
-      popup.then(
-        (data: string) => this.onSuccess(data),
-        (error: Error) => this.onFailure(error),
-      );
+      popup.then(cb, cbError);
+    }
+
+    handleLoginContributor() {
+      this.handleLogin();
+    }
+
+    handleLoginPartner() {
+      this.handleLogin('user&admin:org', (data:string) => this.onSuccess(data, {partner: true}));
     }
 
     handleLogout() {
@@ -141,11 +153,11 @@ const withLogin = (WrappedCompoent: any) => {
       await localStorage.removeItem('oAuth');
     }
 
-    onSuccess(code: string) {
+    onSuccess(code: string, params?:any) {
       if (!code) {
         return this.onFailure(new Error('\'code\' not found'));
       }
-      this.authorize(code)
+      this.authorize(code, params)
         .then((res: any) => {
           const token = res.data.token;
           this.saveToken(token);
@@ -169,7 +181,10 @@ const withLogin = (WrappedCompoent: any) => {
 
     render() {
       return <div className={this.props.className}>
-        <WrappedCompoent handler={this.handleLogin} logoutHandler={this.handleLogout} {...this.props} />
+        <WrappedCompoent
+          handlerContributorLogin={this.handleLoginContributor}
+          handlerPartnerLogin={this.handleLoginPartner}
+          logoutHandler={this.handleLogout} {...this.props} />
         <Message
           message={this.state.errorMessage}
           open={this.state.messageOpen}

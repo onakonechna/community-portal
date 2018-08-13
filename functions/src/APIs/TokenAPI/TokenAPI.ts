@@ -22,6 +22,19 @@ export default class TokenAPI implements TokenAPIInterface {
     return axios(options);
   }
 
+  getUserEmailsByToken(data:any) {
+    const { access_token } = data;
+    console.log(access_token);
+    const options = {
+      method: 'GET',
+      url: 'https://api.github.com/user/emails',
+      params: { access_token },
+      headers: { 'User-Agent': 'community-portal-app' },
+    };
+
+    return axios(options);
+  }
+
   getUserDataByToken(data: any) {
     const { access_token } = data;
     const options = {

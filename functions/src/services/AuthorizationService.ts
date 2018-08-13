@@ -1,4 +1,9 @@
 const jwt = require('jsonwebtoken');
+import * as _ from 'lodash';
+
+
+export const PARTNER_ADMINS_ORGANIZATION = 'magento-engcom';
+export const PARTNER_ADMINS_TEAM = 'engcom-team';
 
 class AuthorizationService {
   create(data:any) {
@@ -15,6 +20,12 @@ class AuthorizationService {
         }
       });
     });
+  }
+
+  isParnersAdmin(user:any) {
+    return !_.isEmpty(user) &&
+      user.organization.organization === PARTNER_ADMINS_ORGANIZATION &&
+      user.team.name === PARTNER_ADMINS_TEAM;
   }
 }
 

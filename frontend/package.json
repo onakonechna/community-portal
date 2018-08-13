@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "@types/jsonwebtoken": "^7.2.8",
     "axios": "^0.18.0",
     "date-fns": "^2.0.0-alpha.7",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "start": "PORT=3030 react-scripts-ts start",
-    "start:dev": "STAGE=local webpack-dev-server",
+    "start:dev": "STAGE=local GITHUB_CLIENT_ID=668e0b6c450cc783f267 mode=development NODE_ENV=development webpack-dev-server",
     "dev": "nodemon -w ./ -x npm run start -e ts,tsx",
     "deploy": "npm run build && aws s3 sync build/* s3://opensource.engcom.magento.com",
     "build": "react-scripts-ts build",
@@ -108,7 +109,7 @@
     "globals": {
       "API_ENDPOINT": "http://localhost:3000",
       "__FRONTEND__": "'http://localhost:8080'",
-      "GITHUB_CLIENT_ID": "12683233"
+      "GITHUB_CLIENT_ID": "668e0b6c450cc783f267"
     },
     "moduleFileExtensions": [
       "ts",

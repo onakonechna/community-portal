@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,6 +13,9 @@ import WithAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
 import Logo from './Logo';
 import SideBar from './SideBar';
+import { connect } from "react-redux";
+import { LoadUserAction } from "../actions";
+import { decode } from 'jsonwebtoken';
 
 const AddProject = WithAuth(['user', 'owner'], ['write:project'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
@@ -42,23 +46,31 @@ const styles = (theme:any) => ({
 interface HeadBarProps {
   classes: any;
   history?: any;
+  LoadUserAction?: any;
 }
 
 interface HeadBarState {
   sideBarOpen: boolean;
 }
 
+const getUserFromToken = () => {
+  const token = window.localStorage.getItem('oAuth') || '';
+
+  return token ? decode(JSON.parse(token)) : {};
+};
+
 class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   constructor(props: HeadBarProps & HeadBarState) {
     super(props);
-    this.state = {
-      sideBarOpen: false,
-    },
+    this.state = {sideBarOpen: false};
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.toBookMark = this.toBookMark.bind(this);
     this.toHome = this.toHome.bind(this);
     this.toPledged = this.toPledged.bind(this);
     this.toProfile = this.toProfile.bind(this);
+    let user = getUserFromToken();
+    if (!_.isEmpty(user)) {user ? user['partners_admin'] = true : false; props.LoadUserAction(user);}
+
   }
 
   toggleSideBar() {
@@ -112,4 +124,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 }
 
-export default withStyles(styles)(HeadBar);
+
+export default connect<any>(null, {
+  LoadUserAction,
+})(withStyles(styles)(HeadBar));
