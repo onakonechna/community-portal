@@ -38,14 +38,6 @@ function getTopProjects(project_id: string, projects: string[], k: number) {
     .slice(0, k);
 }
 
-function buildSecondLevelMap(nestedList: any) {
-  const result = new Map(nestedList);
-  result.forEach((list: any, key: any, map: Map<any, any>) => {
-    map.set(key, new Map(list));
-  });
-  return result;
-}
-
 export default class ProjectRecommendationController
   implements ProjectRecommendationControllerInterface {
 
