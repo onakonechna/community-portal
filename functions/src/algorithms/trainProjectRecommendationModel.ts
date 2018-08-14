@@ -161,12 +161,13 @@ function valueIteration(
   rewards: Counter,
   gamma: number = .9,
 ) {
+  const prevValues = values.copy();
   MDPTree.forEach((actions: Map<string, Counter>, state: string) => {
     const transitionProb = actions.get(policy.get(state));
 
     // when previously recommended projects are empty, transition prob may be undefined
     if (typeof transitionProb !== 'undefined') {
-      values.set(state, getExpectedValue(transitionProb, values, state, rewards, gamma));
+      values.set(state, getExpectedValue(transitionProb, prevValues, state, rewards, gamma));
     }
   });
 }
