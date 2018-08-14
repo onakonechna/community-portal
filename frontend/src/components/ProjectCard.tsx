@@ -89,7 +89,6 @@ const styles = (theme: any) => ({
   },
   description: {
     'max-width': '24rem',
-    'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
@@ -157,10 +156,10 @@ const styles = (theme: any) => ({
   },
   title: {
     display: 'inline-block',
-    'font-size': '2rem',
+    'font-size': '1.5rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
-      'font-size': '1.5rem',
+      'font-size': '1rem',
     },
   },
   topRow: {
@@ -405,10 +404,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="1"
+                maxLine="2"
                 ellipsis="..."
-                trimRight
-                basedOn="letters"
+                basedOn="words"
               />
               <Bookmark
                 bookmarked={this.state.bookmarked}
@@ -417,14 +415,14 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 project_id={this.props.project.project_id}
               />
             </div>
-            <LinesEllipsis
-              className={classes.description}
-              text={this.props.project.description}
-              maxLine="10"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
-            />
+              <LinesEllipsis
+                className={classes.description}
+                text={this.props.project.description}
+                maxLine="5"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
             <div className={classes.labels}>
               {this.props.project.technologies.slice(0, 5).map(technology => (
                 <Chip className={classes.chip} key={technology} label={technology} />
