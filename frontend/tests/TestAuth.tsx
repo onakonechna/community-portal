@@ -10,11 +10,13 @@ import store from '../src/store';
 
 jest.mock('../src/components/Logo');
 
+const pseudoClasses = {};
+
 describe('Guest Users', () => {
   it('guest user should be able to see the login button', () => {
     const location = { pathname: '/' };
     const context = { store };
-    const wrapper = mount(<HeadBar location={location} />, { context, childContextTypes: { store: jest.fn() } });
+    const wrapper = mount(<HeadBar classes={pseudoClasses} location={location} />, { context, childContextTypes: { store: jest.fn() } });
     const loginButton = wrapper.findWhere((b: any) => b.name() === 'Button' && b.prop('id') === 'login');
     const loginText = loginButton.find('span').first().text();
     expect(loginText).toEqual('Sign In');

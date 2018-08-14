@@ -1,4 +1,6 @@
 import * as React from 'react';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -46,12 +48,16 @@ interface HeadBarProps {
   history?: any;
 }
 
+interface HeadBarStateProps {
+  user: any;
+}
+
 interface HeadBarState {
   sideBarOpen: boolean;
 }
 
-class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
-  constructor(props: HeadBarProps & HeadBarState) {
+class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarState> {
+  constructor(props: HeadBarProps & HeadBarStateProps & HeadBarState) {
     super(props);
     this.state = {
       sideBarOpen: false,
@@ -82,7 +88,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 
   toProfile() {
-    this.props.history.push('./profile');
+    this.props.history.push(`./profile/${this.props.user.user_id}`);
   }
 
   render() {
@@ -127,4 +133,17 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 }
 
-export default withStyles(styles)(HeadBar);
+const mapStateToProps = (state: any) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default compose<{}, HeadBarProps>(
+  withStyles(styles, {
+    name: 'HeadBar',
+  }),
+  connect<HeadBarStateProps, {}, HeadBarProps>(
+    mapStateToProps, {},
+  ),
+)(HeadBar);
