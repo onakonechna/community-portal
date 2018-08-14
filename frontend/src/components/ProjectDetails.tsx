@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import WithAuth from './WithAuth';
 
-import { loadProject } from '../actions';
+import BookmarkButton from './buttons/BookmarkButton';
+
+import { loadProject, bookmarkProjectAction } from '../actions';
 
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
@@ -50,6 +53,10 @@ const styles: any = (theme:any) => ({
     'margin-left': '1rem',
     'margin-top': 'auto',
   },
+  topRow: {
+    display: 'flex',
+    width: '100%',
+  },
 });
 
 interface IProject {
@@ -79,6 +86,8 @@ interface StateProps {
 
 interface DispatchProps {
   loadProject: (project_id: string) => void;
+  // likeProject: any;
+  bookmarkProject: any;
 }
 
 interface ProjectDetailsProps {
@@ -89,12 +98,28 @@ interface ProjectDetailsProps {
 }
 
 interface ProjectDetailsState {
-  projects: IProject[];
+  bookmarked: boolean;
 }
+
+const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 
 export class ProjectDetails extends React.Component<ProjectDetailsProps & DispatchProps, ProjectDetailsState> {
   constructor(props: ProjectDetailsProps & DispatchProps) {
     super(props);
+    this.state = {
+      // editOpen: false,
+      // pledgeOpen: false,
+      // liked: this.props.liked,
+      bookmarked: this.checkBookmark(this.props.project.project_id),
+      // joined: this.props.joined,
+      // messageOpen: false,
+      // errorMessage: '',
+    };
+    this.handleBookmark = this.handleBookmark.bind(this);
+  }
+
+  checkBookmark(id: string) {
+    return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
   }
 
   update(project_id: string) {
@@ -103,6 +128,32 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
 
   componentDidMount() {
     this.update(this.props.project_id);
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    this.setState({
+      // liked: nextProps.liked,
+      bookmarked: nextProps.bookmarked,
+    });
+  }
+
+  toggleBookmark() {
+    this.setState((prevState: ProjectDetailsState) => ({
+      bookmarked: !prevState.bookmarked,
+    }));
+  }
+
+  handleBookmark() {
+    const { project_id } = this.props.project;
+    if (!this.state.bookmarked) {
+      this.props.bookmarkProject(project_id)
+        .then((response: any) => {
+          this.toggleBookmark();
+        })
+        .catch((err: Error) => {
+          // this.onFailure(new Error('Something went wrong while bookmarking this project'));
+        });
+    }
   }
 
   getDate(timestamp: number) {
@@ -138,8 +189,16 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
         </Typography>
         <Card className={classes.card}>
           <CardContent className={classes.content}>
-            <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
+            <div className={classes.topRow}>
+              <Bookmark
+                bookmarked={this.state.bookmarked}
+                className={classes.bookmark}
+                handler={this.handleBookmark}
+                project_id={this.props.project.project_id}
+              />
+            </div>
 
+            <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
             {this.props.project.pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
@@ -165,6 +224,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     loadProject: (project_id: string) => dispatch(loadProject(project_id)),
+    bookmarkProject: (project_id: string) => dispatch(bookmarkProjectAction(project_id)),
   };
 };
 

@@ -99,11 +99,12 @@ export const addProject = (project: {}) => {
   };
 };
 
-export const editProjectBody = (project: {}) => {
+export const editProjectBody = (project: any) => {
   return (dispatch: Dispatch) => {
     return editProject(project)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(project.project_id));
       });
   };
 };
@@ -119,6 +120,7 @@ export const likeProject = (id: string) => {
     return upvoteProject(id)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(id));
         dispatch(getLikedProjectsAction());
       });
   };
@@ -129,6 +131,7 @@ export const bookmarkProjectAction = (id: string) => {
     return bookmarkProject(id)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(id));
         dispatch(getBookmarkedProjectsAction());
       });
   };
@@ -172,9 +175,6 @@ export const loadProject = (project_id: string) => {
     return fetchProject(project_id)
       .then((project: any) => {
         dispatch(projectLoaded(project));
-      })
-      .catch((err: any) => {
-        console.log(err);
       });
   };
 };
