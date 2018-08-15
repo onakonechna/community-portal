@@ -3,4 +3,4 @@ trainProjectRecommendationModel:
   role: trainProjectRecommendationModelRole
   handler: handlers/routine/trainProjectRecommendationModel/handler.handler
   events:
-  - schedule: rate(1 minute)
+  - schedule: rate(1 day)

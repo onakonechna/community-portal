@@ -27,3 +27,9 @@ getProjectDetailsRole:
                 - dynamodb:PutItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECT_TRAFFIC_TABLE}"
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+              Resource:
+                - "arn:aws:s3:::${self:provider.environment.PROJECT_RECOMMENDATION_BUCKET}/*"
