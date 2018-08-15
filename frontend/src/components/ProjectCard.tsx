@@ -28,6 +28,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 
 import LinesEllipsis from 'react-lines-ellipsis';
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 
 const styles = (theme: any) => ({
   avatar: {
@@ -88,6 +90,8 @@ const styles = (theme: any) => ({
     'margin-top': 'auto',
   },
   description: {
+    height: '10rem',
+    overflow: 'hidden',
     'max-width': '24rem',
     'font-size': '1rem',
     'font-family': 'system-ui',
@@ -393,6 +397,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const html = {
+      __html: stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))),
+    };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
@@ -425,14 +432,10 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 project_id={this.props.project.project_id}
               />
             </div>
-              <LinesEllipsis
-                className={classes.description}
-                text={this.props.project.description}
-                maxLine="5"
-                ellipsis="..."
-                trimRight
-                basedOn="letters"
-              />
+            <Typography
+              dangerouslySetInnerHTML={html}
+              className={classes.description}
+            />
             <div className={classes.labels}>
               {this.props.project.technologies.slice(0, 5).map(technology => (
                 <Chip className={classes.chip} key={technology} label={technology} />
