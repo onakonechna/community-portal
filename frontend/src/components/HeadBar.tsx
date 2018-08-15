@@ -93,13 +93,12 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
 
   render() {
     const { classes } = this.props;
-    // console.log(this.props.location.pathname);
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
           {this.props.user.role !== 'guest'
-            ?
-              this.props.location.pathname === '/'
+            // render the button if the user is logged in
+            ? this.props.location.pathname === '/'
               ? <IconButton
                   className={classes.menuButton}
                   onClick={this.toggleSideBar}
@@ -114,7 +113,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
                 >
                   <Home />
                 </IconButton>
-            : null
+            : null //otherwise hide the button
           }
           <span>
             <SideNav
