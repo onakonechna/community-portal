@@ -1,8 +1,11 @@
 import * as React from 'react';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import Home from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -41,15 +44,20 @@ const styles = (theme:any) => ({
 
 interface HeadBarProps {
   classes: any;
+  location?: any;
   history?: any;
+}
+
+interface HeadBarStateProps {
+  user: any;
 }
 
 interface HeadBarState {
   sideBarOpen: boolean;
 }
 
-class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
-  constructor(props: HeadBarProps & HeadBarState) {
+class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarState> {
+  constructor(props: HeadBarProps & HeadBarStateProps & HeadBarState) {
     super(props);
     this.state = {
       sideBarOpen: false,
@@ -72,7 +80,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 
   toHome() {
-    this.props.history.push('.');
+    this.props.history.push('/');
   }
 
   toPledged() {
@@ -80,7 +88,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 
   toProfile() {
-    this.props.history.push('./profile');
+    this.props.history.push(`./profile/${this.props.user.user_id}`);
   }
 
   render() {
@@ -88,9 +96,25 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
-          <IconButton onClick={this.toggleSideBar} aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
+          {this.props.user.role !== 'guest'
+            // render the button if the user is logged in
+            ? this.props.location.pathname === '/'
+              ? <IconButton
+                  className={classes.menuButton}
+                  onClick={this.toggleSideBar}
+                  aria-label="Menu"
+                >
+                  <MenuIcon />
+                </IconButton>
+              : <IconButton
+                  className={classes.menuButton}
+                  onClick={this.toHome}
+                  aria-label="Home"
+                >
+                  <Home />
+                </IconButton>
+            : null //otherwise hide the button
+          }
           <span>
             <SideNav
               open={this.state.sideBarOpen}
@@ -98,7 +122,6 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
               toBookMark={this.toBookMark}
               toPledged={this.toPledged}
               toProfile={this.toProfile}
-              toHome={this.toHome}
             />
           </span>
           <Logo />
@@ -112,4 +135,17 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
   }
 }
 
-export default withStyles(styles)(HeadBar);
+const mapStateToProps = (state: any) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default compose<{}, HeadBarProps>(
+  withStyles(styles, {
+    name: 'HeadBar',
+  }),
+  connect<HeadBarStateProps, {}, HeadBarProps>(
+    mapStateToProps, {},
+  ),
+)(HeadBar);

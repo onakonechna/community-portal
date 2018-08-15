@@ -19,6 +19,11 @@ interface UserControllerInterface {
   getScopes(data: any): (result: any) => any;
 }
 
+function deleteField(object: any, field: string) {
+  delete object[field];
+  return object;
+}
+
 export default class UserController implements UserControllerInterface {
   create(data: any) {
     delete data['user_exists'];
@@ -43,7 +48,7 @@ export default class UserController implements UserControllerInterface {
       if (result.Item) {
         return {
           status: 200,
-          payload: result.Item,
+          payload: deleteField(result.Item, 'access_token'),
         };
       }
       return {

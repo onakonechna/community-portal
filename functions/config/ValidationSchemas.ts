@@ -86,6 +86,14 @@ const projectIdOnlySchema = {
   required: ['project_id'],
 };
 
+const userIdOnlySchema = {
+  properties: {
+    user_id: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['user_id'],
+};
+
 // Put all schemas together
 const ValidationSchemas: any = {
   getGithubTokenSchema,
@@ -95,6 +103,7 @@ const ValidationSchemas: any = {
   pledgeSchema,
   nullSchema,
   projectIdOnlySchema,
+  userIdOnlySchema,
 };
 
 export default ValidationSchemas;

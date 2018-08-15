@@ -7,12 +7,11 @@ import { UserController, UserResource } from './../../../config/Components';
 const dataflows = [
   {
     controller: UserController,
-    method: 'getBookmarkedProjects',
+    method: 'getById',
     target: UserResource,
-    validationMap: { getBookmarkedProjects: 'nullSchema' },
-    authDataDependencies: ['user_id'],
+    validationMap: { getById: 'userIdOnlySchema' },
   },
 ];
 
-const endpoint = new Endpoint('/user/bookmarkedProjects', 'get', new PackageService(dataflows));
+const endpoint = new Endpoint('/user/:user_id', 'get', new PackageService(dataflows));
 export const handler = endpoint.execute();

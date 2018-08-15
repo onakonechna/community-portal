@@ -34,14 +34,18 @@ export default class UserResource implements UserResourceInterface {
     }
 
     delete data['user_exists'];
-    data.pledged_projects = {};
 
     return this.adapter.create(USERS_TABLE, data);
   }
 
   getById(data: any): Promise<any> {
     const { user_id } = data;
-    return this.adapter.getById(USERS_TABLE, { user_id });
+    return this.adapter.getById(
+      USERS_TABLE,
+      { user_id },
+      'user_id, avatar_url, html_url, #name, company, #location, email, #url, scopes',
+      { '#name': 'name', '#location': 'location', '#url': 'url' },
+    );
   }
 
   update(data: any): Promise<any> {
@@ -92,13 +96,12 @@ export default class UserResource implements UserResourceInterface {
   }
 
   pledge(data: any): Promise<any> {
-    const { project_id, user_id, hours } = data;
-    return this.adapter.incrementMapKey(
+    const { project_id, user_id } = data;
+    return this.adapter.addToSetIfNotExists(
       USERS_TABLE,
       { user_id },
       'pledged_projects',
       project_id,
-      hours,
     );
   }
 

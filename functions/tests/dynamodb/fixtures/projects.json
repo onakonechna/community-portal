@@ -1,8 +1,8 @@
 [
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 12,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test1",
         "project_id": "test1",
@@ -10,7 +10,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+        "slack_channel": "https://magento.slack.com/",
         "tags": [
             "test"
         ],
@@ -20,9 +20,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test2",
         "project_id": "test2",
@@ -30,7 +30,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+        "slack_channel": "https://magento.slack.com/",
         "tags": [
             "test"
         ],
@@ -40,9 +40,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test3",
         "project_id": "test3",
@@ -50,7 +50,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -60,9 +60,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test4",
         "project_id": "test4",
@@ -70,7 +70,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -80,9 +80,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test5",
         "project_id": "test5",
@@ -90,7 +90,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -100,9 +100,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test6",
         "project_id": "test6",
@@ -110,7 +110,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -120,9 +120,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test7",
         "project_id": "test7",
@@ -130,7 +130,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -140,9 +140,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test8",
         "project_id": "test8",
@@ -150,7 +150,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -160,9 +160,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test9",
         "project_id": "test9",
@@ -170,7 +170,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -180,9 +180,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test10",
         "project_id": "test10",
@@ -190,7 +190,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -200,9 +200,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test11",
         "project_id": "test11",
@@ -210,7 +210,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -220,9 +220,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test12",
         "project_id": "test12",
@@ -230,7 +230,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -240,9 +240,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test13",
         "project_id": "test13",
@@ -250,7 +250,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -260,9 +260,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test14",
         "project_id": "test14",
@@ -270,7 +270,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -280,9 +280,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test15",
         "project_id": "test15",
@@ -290,7 +290,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -300,9 +300,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test16",
         "project_id": "test16",
@@ -310,7 +310,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -320,9 +320,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test17",
         "project_id": "test17",
@@ -330,7 +330,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -340,9 +340,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test18",
         "project_id": "test18",
@@ -350,7 +350,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -360,9 +360,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test19",
         "project_id": "test19",
@@ -370,7 +370,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -380,9 +380,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test20",
         "project_id": "test20",
@@ -390,7 +390,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -400,9 +400,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test21",
         "project_id": "test21",
@@ -410,7 +410,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -420,9 +420,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test22",
         "project_id": "test22",
@@ -430,7 +430,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -440,9 +440,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test23",
         "project_id": "test23",
@@ -450,7 +450,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -460,9 +460,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test24",
         "project_id": "test24",
@@ -470,7 +470,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+       "slack_channel": "https://magento.slack.com",
         "tags": [
             "test"
         ],
@@ -480,9 +480,9 @@
         ]
     },
     {
-        "description": "This is a test project.",
+        "description": "{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"That is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
         "due": 1528850000,
-        "estimated": 32,
+        "estimated": 8,
         "github_address": "https://github.com/magento-engcom/community-portal/",
         "name": "test25",
         "project_id": "test25",
@@ -490,7 +490,7 @@
         "skills": [
             "JavaScript"
         ],
-        "slack_channel": "test",
+        "slack_channel": "https://magento.slack.com/",
         "tags": [
             "test"
         ],

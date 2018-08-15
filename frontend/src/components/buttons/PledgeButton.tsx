@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const styles = {
+export const styles = {
   pledge: {
     color: '#27A2AA',
     'font-size': '1rem',
@@ -15,7 +15,7 @@ const styles = {
 function pledgeButton(props:any) {
   const { classes } = props;
   return (
-    <Button className={classes.pledge} onClick={props.handler}>Pledge</Button>
+    <Button className={classes.pledge} onClick={props.handler}>Join</Button>
   );
 }
 

@@ -76,11 +76,13 @@ export default class DatabaseAdapter implements AdapterInterface {
     tableName: string,
     identifier: any,
     projectionExpression: string = undefined,
+    expressionAttributeNames: any = undefined,
   ): Promise<any> {
     const params = {
       TableName: tableName,
       Key: identifier,
       ProjectionExpression: projectionExpression,
+      ExpressionAttributeNames: expressionAttributeNames,
     };
     return this.db.get(params).promise();
   }
