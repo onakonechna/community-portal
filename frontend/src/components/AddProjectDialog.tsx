@@ -27,6 +27,8 @@ import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
 
+import RichEditor from './RichEditor';
+
 const styles = (theme: Theme) => ({
   actions: {
 
@@ -120,6 +122,7 @@ interface DialogState {
   size: string;
   name: string;
   description: string;
+  richDescription: any;
   due: Date;
   goal: number;
   github: string;
@@ -143,6 +146,7 @@ const state = {
   loading: false,
   name: '',
   description: '',
+  richDescription: {} as any,
   due: new Date(),
   goal: 0,
   github: '',
@@ -158,6 +162,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -186,6 +191,12 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         technologiesString: newItem,
       });
     };
+  }
+
+  handleDescriptionChange(description:string) {
+    this.setState({
+      description,
+    });
   }
 
   handleGoalChange() {
@@ -342,16 +353,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 fullWidth
               />
               <Typography className={classes.label}>Description</Typography>
-              <TextField
-                id="description"
-                InputProps={{ className:classes.input }}
-                multiline
-                rows="4"
-                value={this.state.description}
-                onChange={this.handleChange('description')}
-                margin="normal"
-                fullWidth
-              />
+              <RichEditor update={(output:string) => this.handleDescriptionChange(output)}/>
               <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
               {this.state.technologies.map(technology => (
                 <Chip

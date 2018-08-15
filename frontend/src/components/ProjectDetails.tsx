@@ -28,6 +28,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
+
 const styles: any = (theme:any) => ({
   bookmark: {
     'margin-left': 'auto',
@@ -59,18 +62,6 @@ const styles: any = (theme:any) => ({
     fontWeight: '500',
     margin: 'auto',
     'overflow-wrap': 'break-word',
-  },
-  descriptionText: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1em',
-    },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1.1em',
-    },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.25em',
-    },
-    marginBottom: '1rem',
   },
   grid: {
     [theme.breakpoints.down('sm')]: {
@@ -168,6 +159,10 @@ const styles: any = (theme:any) => ({
     color: '#27A2AA',
     position: 'relative' as 'relative',
     right: '0.5rem',
+  },
+  description: {
+    'font-size': '1rem',
+    'font-family': 'system-ui',
   },
 });
 
@@ -380,6 +375,11 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     const { classes } = this.props;
     const { pledgers } = this.props.project;
     const openedFor = this.calculateOpenTime(this.props.project.created);
+    const content = this.props.project.description ? stateToHTML(convertFromRaw(JSON.parse(this.props.project.description)))
+      : '<b>loading</b>';
+    const html = {
+      __html: content,
+    };
     return (
       <div>
         <EditProjectDialog
@@ -412,7 +412,10 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           </div>
           <Card className={classes.card}>
             <CardContent className={classes.content}>
-              <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
+              <Typography
+                className={classes.description}
+                dangerouslySetInnerHTML={html}
+              />
               <div className={classes.row}>
                 <div className={classes.sidebar}>
                   <div className={classes.technologies}>

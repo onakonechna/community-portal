@@ -28,6 +28,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 
 import LinesEllipsis from 'react-lines-ellipsis';
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 
 const styles = (theme: any) => ({
   avatar: {
@@ -88,8 +90,9 @@ const styles = (theme: any) => ({
     'margin-top': 'auto',
   },
   description: {
+    height: '10rem',
+    overflow: 'hidden',
     'max-width': '24rem',
-    'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
@@ -157,10 +160,10 @@ const styles = (theme: any) => ({
   },
   title: {
     display: 'inline-block',
-    'font-size': '2rem',
+    'font-size': '1.5rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
-      'font-size': '1.5rem',
+      'font-size': '1rem',
     },
   },
   topRow: {
@@ -384,6 +387,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const html = {
+      __html: stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))),
+    };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
@@ -405,10 +411,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="1"
+                maxLine="2"
                 ellipsis="..."
-                trimRight
-                basedOn="letters"
+                basedOn="words"
               />
               <Bookmark
                 bookmarked={this.state.bookmarked}
@@ -417,13 +422,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 project_id={this.props.project.project_id}
               />
             </div>
-            <LinesEllipsis
+            <Typography
+              dangerouslySetInnerHTML={html}
               className={classes.description}
-              text={this.props.project.description}
-              maxLine="10"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
             />
             <div className={classes.labels}>
               {this.props.project.technologies.slice(0, 5).map(technology => (
