@@ -10,6 +10,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
+
 const styles: any = (theme:any) => ({
   titleText: {
     fontWeight: '500',
@@ -49,6 +52,10 @@ const styles: any = (theme:any) => ({
     'font-weight': '300',
     'margin-left': '1rem',
     'margin-top': 'auto',
+  },
+  description: {
+    'font-size': '1rem',
+    'font-family': 'system-ui',
   },
 });
 
@@ -131,6 +138,11 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const content = this.props.project.description ? stateToHTML(convertFromRaw(JSON.parse(this.props.project.description)))
+      : '<b>loading</b>';
+    const html = {
+      __html: content,
+    };
     return (
       <div>
         <Typography className={classes.titleText}>
@@ -138,8 +150,10 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
         </Typography>
         <Card className={classes.card}>
           <CardContent className={classes.content}>
-            <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
-
+          <Typography
+            className={classes.description}
+            dangerouslySetInnerHTML={html}
+          />
             {this.props.project.pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
