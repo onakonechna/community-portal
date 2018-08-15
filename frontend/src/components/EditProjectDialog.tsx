@@ -101,7 +101,6 @@ const styles = (theme: Theme) => ({
     'font-weight': '300',
     'font-size': '1.75rem',
     'font-family': 'system-ui',
-    width: '40rem',
   },
 });
 
