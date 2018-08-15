@@ -306,6 +306,16 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.props.history.push(`./project/${project_id}`);
   }
 
+  goProfile(user_id:string, e: any) {
+    e.stopPropagation();
+    this.props.history.push(`./profile/${user_id}`);
+  }
+
+  triggerBookmark(e:any) {
+    e.stopPropagation();
+    this.handleBookmark();
+  }
+
   toggleStatus(field: string) {
     this.setState((prevState: CardState) => ({
       ...prevState,
@@ -411,7 +421,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <Bookmark
                 bookmarked={this.state.bookmarked}
                 className={classes.bookmark}
-                handler={this.handleBookmark}
+                handler={(e:any) => this.triggerBookmark(e)}
                 project_id={this.props.project.project_id}
               />
             </div>
@@ -460,7 +470,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).slice(0, 5).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
+                  <Avatar onClick={(e) => { this.goProfile(pledger, e); }} key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
