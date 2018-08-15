@@ -3,4 +3,4 @@ rankBySkill:
   role: rankBySkillRole
   handler: handlers/routine/rankBySkill/handler.handler
   events:
-  - schedule: rate(1 minute)
+  - schedule: rate(1 day)
