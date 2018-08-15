@@ -193,10 +193,9 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     };
   }
 
-  handleDescriptionChange(description:string, richDescription: any) {
+  handleDescriptionChange(description:string) {
     this.setState({
       description,
-      richDescription,
     });
   }
 
@@ -344,7 +343,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               </Button>
             </DialogTitle>
             <DialogContent>
-              <RichEditor update={(output:string, richOutput:any) => this.handleDescriptionChange(output, richOutput)}/>
+              <RichEditor update={(output:string) => this.handleDescriptionChange(output)}/>
               <Typography className={classes.label}>Project Name*</Typography>
               <TextField
                 autoFocus

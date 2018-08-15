@@ -39,6 +39,7 @@
     "build:debug": "webpack --json > stats.json"
   },
   "devDependencies": {
+    "@types/draft-js": "^0.10.24",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/fetch-mock": "^6.0.3",

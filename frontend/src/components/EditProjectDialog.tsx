@@ -176,10 +176,9 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
   }
 
-  handleDescriptionChange(description:string, richDescription: any) {
+  handleDescriptionChange(description:string) {
     this.setState({
       description,
-      richDescription,
     });
   }
 
@@ -323,17 +322,10 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               fullWidth
               />
             <Typography className={classes.label}>Description</Typography>
-            <RichEditor update={(output:string, richOutput:any) => this.handleDescriptionChange(output, richOutput)}/>
-            {/* <TextField
-              id="description"
-              InputProps={{ className:classes.input }}
-              multiline
-              rows="4"
-              value={this.state.description}
-              onChange={this.handleChange('description')}
-              margin="normal"
-              fullWidth
-            /> */}
+            <RichEditor
+              update={(output:string) => this.handleDescriptionChange(output)}
+              content={this.props.project.description}
+            />
             <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
             {this.state.technologies.map(technology => (
               <Chip

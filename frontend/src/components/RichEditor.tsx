@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
+import { convertToRaw, Editor, EditorState, RichUtils, convertFromRaw } from 'draft-js';
 
 interface RichEditorProps {
-  update: (output: string, richOutput: any) => void;
+  update: (output: string) => void;
+  content?: any;
 }
 
 interface RichEditorState {
@@ -21,11 +21,20 @@ class RichEditor extends React.Component<RichEditorProps, RichEditorState> {
     this.onItalicClick = this.onItalicClick.bind(this);
   }
 
+  componentDidMount() {
+    const { content } = this.props;
+    if (content) {
+      const editor = EditorState.createWithContent(convertFromRaw(JSON.parse(content)));
+      this.setState({
+        editorState: editor,
+      });
+    }
+  }
+
   onChange(editorState:any) {
     const contentState = editorState.getCurrentContent();
-    const output = stateToHTML(contentState);
     this.setState({ editorState });
-    this.props.update(output, contentState);
+    this.props.update(JSON.stringify(convertToRaw(contentState)));
   }
 
   handleKeyCommand(command:any, editorState:any) {
