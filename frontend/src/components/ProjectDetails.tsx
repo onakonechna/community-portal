@@ -94,6 +94,10 @@ const styles: any = (theme:any) => ({
     'background-color': '#F2F3F3',
     width: '100%',
   },
+  chip: {
+    margin: '0 1rem 0 0',
+    borderRadius: '5px',
+  },
   content: {
     margin: '1rem',
   },
@@ -133,6 +137,9 @@ const styles: any = (theme:any) => ({
     'font-size': '1rem',
   },
   progressDiv: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
     'margin-left': 'auto',
     position: 'relative' as 'relative',
   },
