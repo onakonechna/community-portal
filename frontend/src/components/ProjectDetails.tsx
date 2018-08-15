@@ -17,10 +17,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
+
 import { withStyles } from '@material-ui/core/styles';
 
 import Slack from '-!svg-react-loader!./../static/images/slack.svg';
@@ -67,6 +70,7 @@ const styles: any = (theme:any) => ({
     [theme.breakpoints.up('lg')]: {
       fontSize: '1.25em',
     },
+    marginBottom: '1rem',
   },
   grid: {
     [theme.breakpoints.down('sm')]: {
@@ -96,7 +100,7 @@ const styles: any = (theme:any) => ({
   contributorDiv: {
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: '2rem',
+    marginTop: '1rem',
   },
   contributorText: {
     'font-size': '1rem',
@@ -104,19 +108,11 @@ const styles: any = (theme:any) => ({
     'margin-left': '1rem',
     'margin-top': 'auto',
   },
-  topRow: {
-    display: 'flex',
-    width: '100%',
-  },
   github: {
     'margin-left': 'auto',
   },
   hourText: {
     'font-size': '1rem',
-  },
-  labels: {
-    position: 'absolute' as 'absolute',
-    top: '15rem',
   },
   progress: {
     color: '#48BF61',
@@ -138,20 +134,18 @@ const styles: any = (theme:any) => ({
   },
   progressDiv: {
     'margin-left': 'auto',
-    position: 'absolute' as 'absolute',
-    left: '20rem',
-    [theme.breakpoints.down('md')]: {
-      left: '12rem',
-    },
+    position: 'relative' as 'relative',
   },
   row: {
     display: 'flex',
-    position: 'absolute' as 'absolute',
-    top: '18.5rem',
+    width: '100%',
   },
   sidebar: {
     display: 'flex',
     'flex-direction': 'column',
+  },
+  technologies: {
+    marginBottom: '1rem',
   },
   slack: {
     width: '3rem',
@@ -159,7 +153,8 @@ const styles: any = (theme:any) => ({
     fill: '##27A2AA',
   },
   smallText: {
-    'margin-bottom': '0.25rem',
+    fontSize: '0.9rem',
+    marginBottom: '0.25rem',
   },
   upvotes: {
     'font-size': '1rem',
@@ -238,6 +233,27 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     this.togglePledge = this.togglePledge.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
+  }
+
+  calculateOpenTime(timestamp: number) {
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0);
+    const midnightStamp = +midnight;
+    const dateDifference = Math.floor(((midnightStamp - timestamp) / 1000) / (3600 * 24));
+    switch (dateDifference) {
+      case -1:
+        return 'Opened today';
+      case 0:
+        return 'Opened yesterday';
+      default:
+        return `Opened ${dateDifference + 1} days ago`;
+    }
+  }
+
+  getPercentage(project: any) {
+    const numOfPledgers = Object.keys(project.pledgers).length;
+    const { estimated } = this.props.project;
+    return (numOfPledgers / estimated) * 100;
   }
 
   checkLike(id: string) {
@@ -356,6 +372,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
         <EditProjectDialog
@@ -375,7 +392,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           justify="center"
           className={classes.grid}
         >
-          <div className={classes.topRow}>
+          <div className={classes.row}>
             <Typography className={classes.titleText}>
               {this.props.project.name}
             </Typography>
@@ -391,6 +408,11 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
               <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
               <div className={classes.row}>
                 <div className={classes.sidebar}>
+                  <div className={classes.technologies}>
+                    {this.props.project.technologies.slice(0, 5).map((technology: any) => (
+                      <Chip className={classes.chip} key={technology} label={technology} />
+                    ))}
+                  </div>
                   <Typography className={classes.smallText}>
                     {openedFor}
                   </Typography>
