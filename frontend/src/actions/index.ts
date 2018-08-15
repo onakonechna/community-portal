@@ -163,10 +163,13 @@ export const getBookmarkedProjectsAction: (any) = () => {
   };
 };
 
-export const loadLikedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_LIKED_PROJECTS,
+export const pledgeProjectAction = (body: any) => {
+  return (dispatch: Dispatch) => {
+    return pledgeProject(body)
+      .then(() => {
+        dispatch(loadProjects());
+        dispatch(loadProject(body.project_id));
+      });
   };
 };
 
@@ -179,13 +182,6 @@ export const loadProject: (any) = (project_id: string) => {
   };
 };
 
-export const loadBookmarkedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
-  };
-};
-
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
@@ -195,12 +191,17 @@ export const loadProjects: (any) = () => {
   };
 };
 
-export const pledgeProjectAction = (body: any) => {
-  return (dispatch: Dispatch) => {
-    return pledgeProject(body)
-      .then(() => {
-        dispatch(loadProjects());
-      });
+export const loadLikedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_LIKED_PROJECTS,
+  };
+};
+
+export const loadBookmarkedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
   };
 };
 

@@ -2,42 +2,93 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import WithAuth from './WithAuth';
+import EditProjectDialog from './EditProjectDialog';
+import PledgeDialog from './PledgeDialog';
 
 import BookmarkButton from './buttons/BookmarkButton';
+import EditButton from './buttons/EditButton';
+import LikeProjectButton from './buttons/LikeProjectButton';
+import PledgeButton from './buttons/PledgeButton';
+import Message from './Message';
 
-import { loadProject, bookmarkProjectAction } from '../actions';
+import { loadProject, likeProject, bookmarkProjectAction } from '../actions';
 
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+import Slack from '-!svg-react-loader!./../static/images/slack.svg';
+
 const styles: any = (theme:any) => ({
-  titleText: {
-    fontWeight: '500',
-    fontSize: '2em',
-    textAlign: 'center',
-    marginTop: '1em',
-  },
-  descriptionText: {
-    fontSize: '1.25em',
-  },
-  card: {
-    'background-color': '#F2F3F3',
+  bookmark: {
+    'margin-left': 'auto',
     [theme.breakpoints.down('md')]: {
-      width: '20rem',
+      position: 'relative' as 'relative',
+    },
+  },
+  bottomButtons: {
+    position: 'relative' as 'relative',
+    bottom: '0.1rem',
+  },
+  titleText: {
+    [theme.breakpoints.down('sm')]: {
+      width: '85%',
+      fontSize: '1.2em',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '90%',
+      fontSize: '1.5em',
     },
     [theme.breakpoints.up('md')]: {
-      width: '25rem',
+      width: '92%',
+      fontSize: '1.8em',
     },
     [theme.breakpoints.up('lg')]: {
-      width: '45rem',
+      width: '94%',
+      fontSize: '2em',
+    },
+    fontWeight: '500',
+    margin: 'auto',
+    'overflow-wrap': 'break-word',
+  },
+  descriptionText: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1em',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: '1.1em',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '1.25em',
+    },
+  },
+  grid: {
+    [theme.breakpoints.down('sm')]: {
+      width: '20rem',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '30rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '40rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '55rem',
     },
     display: 'flex',
     'flex-direction': 'column',
     margin: 'auto',
     'margin-top': '1rem',
+  },
+  card: {
+    'background-color': '#F2F3F3',
+    width: '100%',
   },
   content: {
     margin: '1rem',
@@ -56,6 +107,65 @@ const styles: any = (theme:any) => ({
   topRow: {
     display: 'flex',
     width: '100%',
+  },
+  github: {
+    'margin-left': 'auto',
+  },
+  hourText: {
+    'font-size': '1rem',
+  },
+  labels: {
+    position: 'absolute' as 'absolute',
+    top: '15rem',
+  },
+  progress: {
+    color: '#48BF61',
+    'z-index': '1',
+    position: 'absolute' as 'absolute',
+  },
+  progressText: {
+    position: 'absolute' as 'absolute',
+    margin: 'auto',
+    width: '80%',
+    left: '0',
+    right: '0',
+    top: '0',
+    bottom: '0',
+    height: '40%',
+    'text-align': 'center',
+    'font-weight': '400',
+    'font-size': '1rem',
+  },
+  progressDiv: {
+    'margin-left': 'auto',
+    position: 'absolute' as 'absolute',
+    left: '20rem',
+    [theme.breakpoints.down('md')]: {
+      left: '12rem',
+    },
+  },
+  row: {
+    display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '18.5rem',
+  },
+  sidebar: {
+    display: 'flex',
+    'flex-direction': 'column',
+  },
+  slack: {
+    width: '3rem',
+    height: '3rem',
+    fill: '##27A2AA',
+  },
+  smallText: {
+    'margin-bottom': '0.25rem',
+  },
+  upvotes: {
+    'font-size': '1rem',
+    color: '#27A2AA',
+    position: 'relative' as 'relative',
+    right: '0.5rem',
   },
 });
 
@@ -86,7 +196,7 @@ interface StateProps {
 
 interface DispatchProps {
   loadProject: (project_id: string) => void;
-  // likeProject: any;
+  likeProject: any;
   bookmarkProject: any;
 }
 
@@ -98,28 +208,51 @@ interface ProjectDetailsProps {
 }
 
 interface ProjectDetailsState {
+  editOpen: boolean;
+  pledgeOpen: boolean;
+  liked: boolean;
   bookmarked: boolean;
+  messageOpen: boolean;
+  errorMessage: string;
 }
 
+const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
+const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
+const Like = WithAuth(['user'])(LikeProjectButton);
 
 export class ProjectDetails extends React.Component<ProjectDetailsProps & DispatchProps, ProjectDetailsState> {
   constructor(props: ProjectDetailsProps & DispatchProps) {
     super(props);
     this.state = {
-      // editOpen: false,
-      // pledgeOpen: false,
-      // liked: this.props.liked,
+      editOpen: false,
+      pledgeOpen: false,
+      liked: this.checkLike(this.props.project.project_id),
       bookmarked: this.checkBookmark(this.props.project.project_id),
-      // joined: this.props.joined,
-      // messageOpen: false,
-      // errorMessage: '',
+      messageOpen: false,
+      errorMessage: '',
     };
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
+    this.togglePledge = this.togglePledge.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageClose = this.handleMessageClose.bind(this);
+  }
+
+  checkLike(id: string) {
+    return this.props.user.likedProjects.indexOf(id) !== -1;
   }
 
   checkBookmark(id: string) {
     return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+  }
+
+  checkJoin() {
+    const { user_id } = this.props.user;
+    const { pledgers } = this.props.project;
+    if (typeof pledgers === 'undefined') return false;
+    return Object.keys(pledgers).indexOf(user_id) !== -1;
   }
 
   update(project_id: string) {
@@ -130,17 +263,41 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     this.update(this.props.project_id);
   }
 
-  componentWillReceiveProps(nextProps: any) {
-    this.setState({
-      // liked: nextProps.liked,
-      bookmarked: nextProps.bookmarked,
-    });
+  toggleEdit() {
+    this.setState((prevState: ProjectDetailsState) => ({
+      editOpen: !prevState.editOpen,
+    }));
+  }
+
+  togglePledge() {
+    this.setState((prevState: ProjectDetailsState) => ({
+      pledgeOpen: !prevState.pledgeOpen,
+    }));
+  }
+
+  toggleLike() {
+    this.setState((prevState: ProjectDetailsState) => ({
+      liked: !prevState.liked,
+    }));
   }
 
   toggleBookmark() {
     this.setState((prevState: ProjectDetailsState) => ({
       bookmarked: !prevState.bookmarked,
     }));
+  }
+
+  handleLike() {
+    const { project_id } = this.props.project;
+    if (!this.state.liked) {
+      this.props.likeProject(project_id)
+        .then((response: any) => {
+          this.toggleLike();
+        })
+        .catch((err: Error) => {
+          this.onFailure(new Error('Something went wrong while liking this project'));
+        });
+    }
   }
 
   handleBookmark() {
@@ -151,9 +308,26 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
           this.toggleBookmark();
         })
         .catch((err: Error) => {
-          // this.onFailure(new Error('Something went wrong while bookmarking this project'));
+          this.onFailure(new Error('Something went wrong while bookmarking this project'));
         });
     }
+  }
+
+  handleMessageChange(message: string) {
+    this.setState({
+      errorMessage: message,
+      messageOpen: true,
+    });
+  }
+
+  handleMessageClose() {
+    this.setState({
+      messageOpen: false,
+    });
+  }
+
+  onFailure(error: Error) {
+    this.handleMessageChange(error.message);
   }
 
   getDate(timestamp: number) {
@@ -184,31 +358,104 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     const { pledgers } = this.props.project;
     return (
       <div>
-        <Typography className={classes.titleText}>
-          {this.props.project.name}
-        </Typography>
-        <Card className={classes.card}>
-          <CardContent className={classes.content}>
-            <div className={classes.topRow}>
-              <Bookmark
-                bookmarked={this.state.bookmarked}
-                className={classes.bookmark}
-                handler={this.handleBookmark}
-                project_id={this.props.project.project_id}
-              />
-            </div>
-
-            <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
-            {this.props.project.pledgers && <div className={classes.contributorDiv}>
-              {Object.keys(pledgers).length > 0
-                ? Object.keys(pledgers).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
-                ))
-                : null}
-              <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
-            </div>}
-          </CardContent>
-        </Card>
+        <EditProjectDialog
+          open={this.state.editOpen}
+          toggleEdit={this.toggleEdit}
+          project={this.props.project}
+        />
+        <PledgeDialog
+          open={this.state.pledgeOpen}
+          project={this.props.project}
+          toggle={this.togglePledge}
+          join={() => {}}
+          joined={this.checkJoin()}
+        />
+        <Grid
+          container
+          justify="center"
+          className={classes.grid}
+        >
+          <div className={classes.topRow}>
+            <Typography className={classes.titleText}>
+              {this.props.project.name}
+            </Typography>
+            <Bookmark
+              bookmarked={this.checkBookmark(this.props.project.project_id)}
+              className={classes.bookmark}
+              handler={this.handleBookmark}
+              project_id={this.props.project.project_id}
+            />
+          </div>
+          <Card className={classes.card}>
+            <CardContent className={classes.content}>
+              <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
+              <div className={classes.row}>
+                <div className={classes.sidebar}>
+                  <Typography className={classes.smallText}>
+                    {openedFor}
+                  </Typography>
+                  <Typography className={classes.smallText}>
+                    Size: {this.props.project.size}
+                  </Typography>
+                </div>
+                <div className={classes.progressDiv}>
+                  <CircularProgress
+                    className={classes.progress}
+                    variant="static"
+                    size={100}
+                    value={this.getPercentage(this.props.project)}
+                  />
+                  <CircularProgress
+                    variant="static"
+                    style={{ color: '#E0E0E0' }}
+                    size={100}
+                    value={100}
+                  />
+                  <Typography className={classes.progressText}>
+                    {`${Object.keys(this.props.project.pledgers).length}/`}
+                    <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
+                    <Typography className={classes.hourText}>{`joined`}</Typography>
+                  </Typography>
+                </div>
+              </div>
+              <div className={classes.contributorDiv}>
+                {this.props.project.pledgers && <div className={classes.contributorDiv}>
+                  {Object.keys(pledgers).length > 0
+                    ? Object.keys(pledgers).map(pledger => (
+                      <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
+                    ))
+                    : null}
+                  <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
+                </div>}
+              </div>
+            </CardContent>
+            <CardActions className={classes.cardAction}>
+              <Pledge handler={this.togglePledge} label="Join" />
+              <a className={classes.github} href={this.props.project.github_address} target="_blank">
+                <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
+                  <SvgIcon>
+                    <path d="M12.007 0C6.12 0 1.1 4.27.157 10.08c-.944 5.813 2.468 11.45 8.054 13.312.19.064.397.033.555-.084.16-.117.25-.304.244-.5v-2.042c-3.33.735-4.037-1.56-4.037-1.56-.22-.726-.694-1.35-1.334-1.756-1.096-.75.074-.735.074-.735.773.103 1.454.557 1.846 1.23.694 1.21 2.23 1.638 3.45.96.056-.61.327-1.178.766-1.605-2.67-.3-5.462-1.335-5.462-6.002-.02-1.193.42-2.35 1.23-3.226-.327-1.015-.27-2.116.166-3.09 0 0 1.006-.33 3.3 1.23 1.966-.538 4.04-.538 6.003 0 2.295-1.5 3.3-1.23 3.3-1.23.445 1.006.49 2.144.12 3.18.81.877 1.25 2.033 1.23 3.226 0 4.607-2.805 5.627-5.476 5.927.578.583.88 1.386.825 2.206v3.29c-.005.2.092.393.26.507.164.115.377.14.565.063 5.568-1.88 8.956-7.514 8.007-13.313C22.892 4.267 17.884.007 12.008 0z" />
+                  </SvgIcon>
+                </IconButton>
+              </a>
+              <a href={this.props.project.slack_channel} target="_blank">
+                <IconButton aria-label="slack" className={classes.bottomButtons}>
+                  <SvgIcon className={classes.slack}>
+                    <Slack />
+                  </SvgIcon>
+                </IconButton>
+              </a>
+              <Edit handler={this.toggleEdit} />
+              <Like liked={this.checkLike(this.props.project.project_id)} handler={this.handleLike} project_id={this.props.project.project_id} />
+              <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Message
+          message={this.state.errorMessage}
+          open={this.state.messageOpen}
+          handleClose={this.handleMessageClose}
+        />
       </div>
     );
   }
@@ -224,6 +471,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     loadProject: (project_id: string) => dispatch(loadProject(project_id)),
+    likeProject: (project_id: string) => dispatch(likeProject(project_id)),
     bookmarkProject: (project_id: string) => dispatch(bookmarkProjectAction(project_id)),
   };
 };
