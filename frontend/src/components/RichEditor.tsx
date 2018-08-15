@@ -2,7 +2,6 @@ import * as React from 'react';
 import { convertToRaw, Editor, EditorState, RichUtils, convertFromRaw } from 'draft-js';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import 'draft-js/dist/Draft.css';
 
 interface RichEditorProps {
   update: (output: string) => void;
@@ -20,6 +19,7 @@ const styles = {
   },
   editor: {
     borderBottom: '1px solid #D4D4D4',
+    'font-family': 'system-ui',
   },
   editorGrid: {
     margin: '1rem auto',
