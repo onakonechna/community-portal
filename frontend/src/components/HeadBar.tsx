@@ -113,7 +113,14 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
                 >
                   <Home />
                 </IconButton>
-            : null //otherwise hide the button
+            //otherwise hide the button
+            : <IconButton
+                  className={classes.menuButton}
+                  onClick={this.toHome}
+                  aria-label="Home"
+                >
+                  <Home />
+              </IconButton> 
           }
           <span>
             <SideNav
