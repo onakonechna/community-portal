@@ -318,9 +318,6 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   render() {
     const { classes } = this.props;
     const { loading, success } = this.state;
-    const html = {
-      __html: this.state.description,
-    };
     return (
       <div className={classes.addButton}>
         <AddProjectButton onClick={this.props.handler || this.handleClickOpen} />
@@ -343,7 +340,6 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               </Button>
             </DialogTitle>
             <DialogContent>
-              <RichEditor update={(output:string) => this.handleDescriptionChange(output)}/>
               <Typography className={classes.label}>Project Name*</Typography>
               <TextField
                 autoFocus
@@ -357,17 +353,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 fullWidth
               />
               <Typography className={classes.label}>Description</Typography>
-              <Typography dangerouslySetInnerHTML={html}></Typography>
-              {/* <TextField
-                id="description"
-                InputProps={{ className:classes.input }}
-                multiline
-                rows="4"
-                value={renderHTML(this.state.description)}
-                onChange={this.handleChange('description')}
-                margin="normal"
-                fullWidth
-              /> */}
+              <RichEditor update={(output:string) => this.handleDescriptionChange(output)}/>
               <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
               {this.state.technologies.map(technology => (
                 <Chip

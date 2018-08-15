@@ -1,14 +1,30 @@
 import * as React from 'react';
 import { convertToRaw, Editor, EditorState, RichUtils, convertFromRaw } from 'draft-js';
+import { withStyles } from '@material-ui/core/styles';
+import compose from 'recompose/compose';
+import 'draft-js/dist/Draft.css';
 
 interface RichEditorProps {
   update: (output: string) => void;
   content?: any;
+  classes?: any;
 }
 
 interface RichEditorState {
   editorState: any;
 }
+
+const styles = {
+  buttons: {
+    'margin-bottom': '0.5rem',
+  },
+  editor: {
+    borderBottom: '1px solid #D4D4D4',
+  },
+  editorGrid: {
+    margin: '1rem auto',
+  },
+};
 
 class RichEditor extends React.Component<RichEditorProps, RichEditorState> {
   constructor(props:RichEditorProps) {
@@ -59,19 +75,28 @@ class RichEditor extends React.Component<RichEditorProps, RichEditorState> {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-        <button onClick={this.onBoldClick}>Bold</button>
-        <button onClick={this.onUnderlineClick}>Underline</button>
-        <button onClick={this.onItalicClick}>Italic</button>
-        <Editor
-            editorState={this.state.editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-        />
+      <div className={classes.editorGrid}>
+        <div className={classes.buttons}>
+          <button onClick={this.onBoldClick}><b>B</b></button>
+          <button onClick={this.onUnderlineClick}><u>U</u></button>
+          <button onClick={this.onItalicClick}><i>I</i></button>
+        </div>
+        <div style={styles.editor}>
+          <Editor
+              editorState={this.state.editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+          />
+        </div>
       </div>
     );
   }
 }
 
-export default RichEditor;
+export default compose<{}, RichEditorProps>(
+  withStyles(styles, {
+    name: 'RichEditor',
+  }),
+)(RichEditor);
