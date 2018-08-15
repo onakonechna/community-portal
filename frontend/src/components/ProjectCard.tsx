@@ -384,6 +384,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const html = {
+      __html: this.props.project.description,
+    };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
@@ -417,14 +420,15 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 project_id={this.props.project.project_id}
               />
             </div>
-            <LinesEllipsis
+            <Typography dangerouslySetInnerHTML={html}></Typography>
+            {/* <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
               maxLine="10"
               ellipsis="..."
               trimRight
               basedOn="letters"
-            />
+            /> */}
             <div className={classes.labels}>
               {this.props.project.technologies.slice(0, 5).map(technology => (
                 <Chip className={classes.chip} key={technology} label={technology} />

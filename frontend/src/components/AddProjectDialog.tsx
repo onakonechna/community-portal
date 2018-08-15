@@ -27,6 +27,8 @@ import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
 
+import RichEditor from './RichEditor';
+
 const styles = (theme: Theme) => ({
   actions: {
 
@@ -120,6 +122,7 @@ interface DialogState {
   size: string;
   name: string;
   description: string;
+  richDescription: any;
   due: Date;
   goal: number;
   github: string;
@@ -143,6 +146,7 @@ const state = {
   loading: false,
   name: '',
   description: '',
+  richDescription: {} as any,
   due: new Date(),
   goal: 0,
   github: '',
@@ -158,6 +162,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -186,6 +191,13 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         technologiesString: newItem,
       });
     };
+  }
+
+  handleDescriptionChange(description:string, richDescription: any) {
+    this.setState({
+      description,
+      richDescription,
+    });
   }
 
   handleGoalChange() {
@@ -307,6 +319,9 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   render() {
     const { classes } = this.props;
     const { loading, success } = this.state;
+    const html = {
+      __html: this.state.description,
+    };
     return (
       <div className={classes.addButton}>
         <AddProjectButton onClick={this.props.handler || this.handleClickOpen} />
@@ -329,6 +344,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
               </Button>
             </DialogTitle>
             <DialogContent>
+              <RichEditor update={(output:string, richOutput:any) => this.handleDescriptionChange(output, richOutput)}/>
               <Typography className={classes.label}>Project Name*</Typography>
               <TextField
                 autoFocus
@@ -342,16 +358,17 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 fullWidth
               />
               <Typography className={classes.label}>Description</Typography>
-              <TextField
+              <Typography dangerouslySetInnerHTML={html}></Typography>
+              {/* <TextField
                 id="description"
                 InputProps={{ className:classes.input }}
                 multiline
                 rows="4"
-                value={this.state.description}
+                value={renderHTML(this.state.description)}
                 onChange={this.handleChange('description')}
                 margin="normal"
                 fullWidth
-              />
+              /> */}
               <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
               {this.state.technologies.map(technology => (
                 <Chip

@@ -131,6 +131,9 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const html = {
+      __html: this.props.project.description,
+    };
     return (
       <div>
         <Typography className={classes.titleText}>
@@ -138,8 +141,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
         </Typography>
         <Card className={classes.card}>
           <CardContent className={classes.content}>
-            <Typography className={classes.descriptionText}>{this.props.project.description}</Typography>
-
+          <Typography dangerouslySetInnerHTML={html}></Typography>
             {this.props.project.pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (
