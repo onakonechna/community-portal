@@ -99,11 +99,12 @@ export const addProject = (project: {}) => {
   };
 };
 
-export const editProjectBody = (project: {}) => {
+export const editProjectBody = (project: any) => {
   return (dispatch: Dispatch) => {
     return editProject(project)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(project.project_id));
       });
   };
 };
@@ -119,6 +120,7 @@ export const likeProject = (id: string) => {
     return upvoteProject(id)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(id));
         dispatch(getLikedProjectsAction());
       });
   };
@@ -129,6 +131,7 @@ export const bookmarkProjectAction = (id: string) => {
     return bookmarkProject(id)
       .then(() => {
         dispatch(loadProjects());
+        dispatch(loadProject(id));
         dispatch(getBookmarkedProjectsAction());
       });
   };
@@ -160,29 +163,22 @@ export const getBookmarkedProjectsAction: (any) = () => {
   };
 };
 
-export const loadLikedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_LIKED_PROJECTS,
-  };
-};
-
-export const loadProject = (project_id: string) => {
+export const pledgeProjectAction = (body: any) => {
   return (dispatch: Dispatch) => {
-    return fetchProject(project_id)
-      .then((project: any) => {
-        dispatch(projectLoaded(project));
-      })
-      .catch((err: any) => {
-        console.log(err);
+    return pledgeProject(body)
+      .then(() => {
+        dispatch(loadProjects());
+        dispatch(loadProject(body.project_id));
       });
   };
 };
 
-export const loadBookmarkedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
+export const loadProject: (any) = (project_id: string) => {
+  return (dispatch: Dispatch) => {
+    return fetchProject(project_id)
+      .then((project: any) => {
+        dispatch(projectLoaded(project));
+      });
   };
 };
 
@@ -195,12 +191,17 @@ export const loadProjects: (any) = () => {
   };
 };
 
-export const pledgeProjectAction = (body: any) => {
-  return (dispatch: Dispatch) => {
-    return pledgeProject(body)
-      .then(() => {
-        dispatch(loadProjects());
-      });
+export const loadLikedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_LIKED_PROJECTS,
+  };
+};
+
+export const loadBookmarkedProjectsAction = (projects: any) => {
+  return {
+    projects,
+    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
   };
 };
 
