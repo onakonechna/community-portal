@@ -50,6 +50,10 @@ const styles: any = (theme:any) => ({
     'margin-left': '1rem',
     'margin-top': 'auto',
   },
+  description: {
+    'font-size': '1rem',
+    'font-family': 'system-ui',
+  },
 });
 
 interface IProject {
@@ -141,7 +145,10 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
         </Typography>
         <Card className={classes.card}>
           <CardContent className={classes.content}>
-          <Typography dangerouslySetInnerHTML={html}></Typography>
+          <Typography
+            className={classes.description}
+            dangerouslySetInnerHTML={html}
+          />
             {this.props.project.pledgers && <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).map(pledger => (

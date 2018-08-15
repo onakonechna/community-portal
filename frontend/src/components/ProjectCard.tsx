@@ -88,8 +88,9 @@ const styles = (theme: any) => ({
     'margin-top': 'auto',
   },
   description: {
+    height: '10rem',
+    overflow: 'hidden',
     'max-width': '24rem',
-    'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
@@ -420,7 +421,10 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 project_id={this.props.project.project_id}
               />
             </div>
-            <Typography dangerouslySetInnerHTML={html}></Typography>
+            <Typography
+              dangerouslySetInnerHTML={html}
+              className={classes.description}
+            />
             {/* <LinesEllipsis
               className={classes.description}
               text={this.props.project.description}
