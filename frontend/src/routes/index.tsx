@@ -12,7 +12,8 @@ const Routes = () => (
     <Route path="/" component={HeadBar} />
     <Route exact path="/" component={ProjectGrid} />
     <Route exact path="/auth" component={Auth} />
-    <Route exact path="/profile" component={Profile}/>
+    {/* <Route exact path="/profile" component={Profile}/> */}
+    <Route exact path="/profile/:user_id" component={Profile} />
     <Route exact path="/bookmarked" render={
       (props: any) => <ProjectGrid filter="bookmarkedProjects" {...props} />
     } />

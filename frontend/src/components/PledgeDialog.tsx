@@ -19,7 +19,6 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   pledgeText: {
     'font-size': '0.9rem',
-    'text-align': 'justify',
   },
 };
 

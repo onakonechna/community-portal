@@ -160,10 +160,10 @@ const styles = (theme: any) => ({
   },
   title: {
     display: 'inline-block',
-    'font-size': '2rem',
+    'font-size': '1.5rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
-      'font-size': '1.5rem',
+      'font-size': '1rem',
     },
   },
   topRow: {
@@ -411,10 +411,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="1"
+                maxLine="2"
                 ellipsis="..."
-                trimRight
-                basedOn="letters"
+                basedOn="words"
               />
               <Bookmark
                 bookmarked={this.state.bookmarked}
