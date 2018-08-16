@@ -67,6 +67,7 @@ class GithubAuthModal {
               return;
             }
           } catch (error) {
+            console.log(error);
             return;
           }
 
