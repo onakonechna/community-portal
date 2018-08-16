@@ -4,7 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 import LinesEllipsis from 'react-lines-ellipsis';
 
 const styles = (theme: any) => ({
@@ -31,7 +34,7 @@ const styles = (theme: any) => ({
   content: {
     margin: '.5rem',
   },
-  descriptionText: {
+  description: {
     fontSize: '1.25em',
     'font-family': 'system-ui',
   },
@@ -91,24 +94,23 @@ export class RecommendationCard extends React.Component<RecommendationCardProps,
 
   render() {
     const { classes } = this.props;
+    const html = {
+      __html: stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))),
+    };
     return (
       <Card className={classes.card}>
         <CardContent className={classes.content} onClick={this.goDetail}>
           <LinesEllipsis
-            className={classes.descriptionText}
+            className={classes.description}
             text={this.props.project.name}
             maxLine="1"
             ellipsis="..."
             trimRight
             basedOn="letters"
           />
-          <LinesEllipsis
-            className={classes.descriptionText}
-            text={this.props.project.description}
-            maxLine="3"
-            ellipsis="..."
-            trimRight
-            basedOn="letters"
+          <Typography
+            dangerouslySetInnerHTML={html}
+            className={classes.description}
           />
         </CardContent>
       </Card>
