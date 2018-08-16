@@ -98,7 +98,7 @@ jobs:
 
       - run:
           name: Increase Memory Limit and Start Local DynamoDB
-          command: sudo increase-memory-limit && node_modules/.bin/sls offline start --stage=dev -r us-east-1
+          command: sudo node_modules/.bin/increase-memory-limit && node_modules/.bin/sls offline start --stage=dev -r us-east-1
           background: true
 
       - run: sleep 60
