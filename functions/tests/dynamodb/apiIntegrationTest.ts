@@ -72,7 +72,7 @@ function putProject(project, token=tokens.xiya){
 
 const editData = {
   project_id: 'test1',
-  description: 'Magento Payment API is a W3C standard candidate so most of the modern browsers support it. PR API allows improving user workflow during the purchase process, providing a more consistent user experience and enabling merchants to easily leverage different payment methods. To get more details, please, read Introducing the Payment Request API.',
+  description: '{\"blocks\":[{\"key\":\"dgdu9\",\"text\":\"This is a test project!\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":5,\"style\":\"BOLD\"},{\"offset\":10,\"length\":13,\"style\":\"ITALIC\"},{\"offset\":15,\"length\":8,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}',
 };
 
 function editProject(data, token=tokens.xiya){
