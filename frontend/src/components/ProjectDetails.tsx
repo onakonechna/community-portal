@@ -165,6 +165,12 @@ const styles: any = (theme:any) => ({
     'font-size': '1rem',
     'font-family': 'system-ui',
   },
+  sectionHeader: {
+    marginTop: '2rem',
+    'font-size': '1.5rem',
+    'font-family': 'system-ui',
+    'text-align': 'center',
+  },
 });
 
 interface IProject {
@@ -485,6 +491,9 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
             </CardActions>
           </Card>
         </Grid>
+        <Typography className={classes.sectionHeader}>
+          Recommended Projects
+        </Typography>
         <Grid
           container
           direction="row"
