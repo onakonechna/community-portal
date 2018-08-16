@@ -255,7 +255,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
   getPercentage(project: any) {
     const numOfPledgers = Object.keys(project.pledgers).length;
     const { estimated } = this.props.project;
-    return (numOfPledgers / estimated) * 100;
+    return Math.min(100, (numOfPledgers / estimated) * 100);
   }
 
   checkLike(id: string) {
