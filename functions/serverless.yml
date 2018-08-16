@@ -23,6 +23,7 @@ custom:
       - authorization
       - getProjectCards
       - getProjectDetails
+      - getUserInfo
   domainNames:
     dev:
       name: dev.api.opensource.engcom.magento.com
@@ -115,6 +116,7 @@ functions:
   - ${file(./handlers/user/pledge/pledge.yml)}
   - ${file(./handlers/routine/rankBySkill/rankBySkill.yml)}
   - ${file(./handlers/routine/trainProjectRecommendationModel/trainProjectRecommendationModel.yml)}
+  - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
 
 resources:
   Resources:
@@ -153,6 +155,7 @@ resources:
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     rankBySkillRole: ${file(./handlers/routine/rankBySkill/role.yml):rankBySkillRole}
     trainProjectRecommendationModelRole: ${file(./handlers/routine/trainProjectRecommendationModel/role.yml):trainProjectRecommendationModelRole}
+    getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
     ProjectRecommendationBucket: ${file(./buckets.json):ProjectRecommendationBucket}
 

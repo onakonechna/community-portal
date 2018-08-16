@@ -28,6 +28,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 
 import LinesEllipsis from 'react-lines-ellipsis';
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 
 const styles = (theme: any) => ({
   avatar: {
@@ -88,8 +90,9 @@ const styles = (theme: any) => ({
     'margin-top': 'auto',
   },
   description: {
+    height: '10rem',
+    overflow: 'hidden',
     'max-width': '24rem',
-    'text-align': 'justify',
     'font-size': '1rem',
     'font-family': 'system-ui',
     position: 'absolute' as 'absolute',
@@ -157,10 +160,10 @@ const styles = (theme: any) => ({
   },
   title: {
     display: 'inline-block',
-    'font-size': '2rem',
+    'font-size': '1.5rem',
     'font-family': 'system-ui',
     [theme.breakpoints.down('md')]: {
-      'font-size': '1.5rem',
+      'font-size': '1rem',
     },
   },
   topRow: {
@@ -307,6 +310,16 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     this.props.history.push(`./project/${project_id}`);
   }
 
+  goProfile(user_id:string, e: any) {
+    e.stopPropagation();
+    this.props.history.push(`./profile/${user_id}`);
+  }
+
+  triggerBookmark(e:any) {
+    e.stopPropagation();
+    this.handleBookmark();
+  }
+
   toggleStatus(field: string) {
     this.setState((prevState: CardState) => ({
       ...prevState,
@@ -384,6 +397,9 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   render() {
     const { classes } = this.props;
     const { pledgers } = this.props.project;
+    const html = {
+      __html: stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))),
+    };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
       <div>
@@ -405,25 +421,20 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               <LinesEllipsis
                 className={classes.title}
                 text={this.props.project.name}
-                maxLine="1"
+                maxLine="2"
                 ellipsis="..."
-                trimRight
-                basedOn="letters"
+                basedOn="words"
               />
               <Bookmark
                 bookmarked={this.state.bookmarked}
                 className={classes.bookmark}
-                handler={this.handleBookmark}
+                handler={(e:any) => this.triggerBookmark(e)}
                 project_id={this.props.project.project_id}
               />
             </div>
-            <LinesEllipsis
+            <Typography
+              dangerouslySetInnerHTML={html}
               className={classes.description}
-              text={this.props.project.description}
-              maxLine="10"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
             />
             <div className={classes.labels}>
               {this.props.project.technologies.slice(0, 5).map(technology => (
@@ -462,7 +473,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
             <div className={classes.contributorDiv}>
               {Object.keys(pledgers).length > 0
                 ? Object.keys(pledgers).slice(0, 5).map(pledger => (
-                  <Avatar key={pledger} src={pledgers[pledger].avatar_url} />
+                  <Avatar onClick={(e) => { this.goProfile(pledger, e); }} key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
               <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>

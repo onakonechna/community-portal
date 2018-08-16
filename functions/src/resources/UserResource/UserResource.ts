@@ -40,7 +40,12 @@ export default class UserResource implements UserResourceInterface {
 
   getById(data: any): Promise<any> {
     const { user_id } = data;
-    return this.adapter.getById(USERS_TABLE, { user_id });
+    return this.adapter.getById(
+      USERS_TABLE,
+      { user_id },
+      'user_id, avatar_url, html_url, #name, company, #location, email, #url, scopes',
+      { '#name': 'name', '#location': 'location', '#url': 'url' },
+    );
   }
 
   update(data: any): Promise<any> {

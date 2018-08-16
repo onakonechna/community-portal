@@ -12,16 +12,18 @@ import store from '../src/store';
 import { ProjectGrid } from '../src/components/ProjectGrid';
 const samples = require('../src/data/sampleProjects.json');
 
+const pseudoClasses = {};
+
 describe('HeadBar Test Suite', () => {
   it('should render without throwing an error', () => {
-    const hasButton = shallow(<HeadBar />).contains(<span/>);
+    const hasButton = shallow(<HeadBar classes={pseudoClasses}/>).contains(<span/>);
     expect(hasButton).toBeFalsy();
   });
 
   it('should render the navigation bar', () => {
     const context = { store };
     const location = { pathname: '/' };
-    const wrapper = mount(<HeadBar location={location} />, { context, childContextTypes: { store: jest.fn() } });
+    const wrapper = mount(<HeadBar classes={pseudoClasses} location={location} />, { context, childContextTypes: { store: jest.fn() } });
     const paper = wrapper.find('Paper');
     expect(paper.props().elevation).toBe(4);
   });
