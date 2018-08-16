@@ -71,7 +71,7 @@ function putProject(project, token=tokens.xiya){
 }
 
 const editData = {
-  project_id: '8f1b18ab-907f-4c59-8778-f56154fd6c27',
+  project_id: 'test1',
   description: 'Magento Payment API is a W3C standard candidate so most of the modern browsers support it. PR API allows improving user workflow during the purchase process, providing a more consistent user experience and enabling merchants to easily leverage different payment methods. To get more details, please, read Introducing the Payment Request API.',
 };
 
@@ -212,7 +212,7 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
   it('should upvote project', () => {
     expect.assertions(1);
 
-    return likeProject('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return likeProject('test1')
       .then((response) => {
         expect(response.data.message).toBe('Project upvoted successfully');
       });
@@ -223,41 +223,41 @@ describe('likeProject, updateProjectStatus and getProjectCards endpoints', () =>
 
     return getProjectCards()
       .then((response) => {
-        expect(response.data[0].project_id).toBe('8f1b18ab-907f-4c59-8778-f56154fd6c27');
+        expect(response.data[0].project_id).toBe('test1');
       });
   });
 
-  it('should change the status of 8f1b18ab-907f-4c59-8778-f56154fd6c27 to closed', () => {
+  it('should change the status of test1 to closed', () => {
     expect.assertions(1);
 
-    return updateProjectStatus('8f1b18ab-907f-4c59-8778-f56154fd6c27', 'closed')
+    return updateProjectStatus('test1', 'closed')
       .then((response) => {
         expect(response.data.message).toBe('Project status updated successfully');
       });
   });
 
-  it('should not display 8f1b18ab-907f-4c59-8778-f56154fd6c27 in the project cards', () => {
+  it('should not display test1 in the project cards', () => {
     expect.assertions(1);
 
     return getProjectCards()
       .then((response) => {
-        expect(response.data[0].project_id).not.toBe('8f1b18ab-907f-4c59-8778-f56154fd6c27');
+        expect(response.data[0].project_id).not.toBe('test1');
       });
   });
 
-  it('should not change the project status of 8f1b18ab-907f-4c59-8778-f56154fd6c27 to open if the user has no write:project scope', () => {
+  it('should not change the project status of test1 to open if the user has no write:project scope', () => {
     expect.assertions(1);
 
-    return updateProjectStatus('8f1b18ab-907f-4c59-8778-f56154fd6c27', 'open', tokens.mae)
+    return updateProjectStatus('test1', 'open', tokens.mae)
       .catch((error) => {
         expect(error.response.data.error).toBe('User does not have the required scope (write:project) to update project status');
       });
   });
 
-  it('should change the status of 8f1b18ab-907f-4c59-8778-f56154fd6c27 to open', () => {
+  it('should change the status of test1 to open', () => {
     expect.assertions(1);
 
-    return updateProjectStatus('8f1b18ab-907f-4c59-8778-f56154fd6c27', 'open')
+    return updateProjectStatus('test1', 'open')
       .then((response) => {
         expect(response.data.message).toBe('Project status updated successfully');
       });
@@ -291,7 +291,7 @@ describe('getProjectDetails endpoint', () => {
   it('should get project details', () => {
     expect.assertions(3);
 
-    return getProjectDetails('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return getProjectDetails('test1')
       .then((response) => {
         expect(response.data.status).toBe('open');
         expect(response.data.description).toBe('Magento Payment API is a W3C standard candidate so most of the modern browsers support it. PR API allows improving user workflow during the purchase process, providing a more consistent user experience and enabling merchants to easily leverage different payment methods. To get more details, please, read Introducing the Payment Request API.');
@@ -305,7 +305,7 @@ describe('getLikedProjects endpoint', () => {
 
     return getLikedProjects()
       .then((response) => {
-        expect(_.includes(response.data.upvoted_projects, '8f1b18ab-907f-4c59-8778-f56154fd6c27')).toBeTruthy();
+        expect(_.includes(response.data.upvoted_projects, 'test1')).toBeTruthy();
       });
   });
 });
@@ -314,7 +314,7 @@ describe('unlikeProject endpoint', () => {
   it('should downvote the project', () => {
     expect.assertions(1);
 
-    return unlikeProject('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return unlikeProject('test1')
       .then((response) => {
         expect(response.data.message).toBe('Project downvoted successfully');
       });
@@ -323,7 +323,7 @@ describe('unlikeProject endpoint', () => {
   it('should see the project upvotes decreased', () => {
     expect.assertions(1);
 
-    return getProjectDetails('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return getProjectDetails('test1')
       .then((response) => {
         expect(response.data.upvotes).toBe(0);
       });
@@ -334,7 +334,7 @@ describe('pledge endpoint', () => {
   it('should get successful response from the pledge endpoint', () => {
     expect.assertions(1);
 
-    return pledge('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return pledge('test1')
       .then((response) => {
         expect(response.data.message).toBe('Pledged successfully');
       });
@@ -343,7 +343,7 @@ describe('pledge endpoint', () => {
   it('should update pledging-related data in projects data', () => {
     expect.assertions(4);
 
-    return getProjectDetails('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+    return getProjectDetails('test1')
       .then((response) => {
         const { pledged, pledgers, pledged_history, subscribers } = response.data;
         expect(pledged).toBe(1);
@@ -362,7 +362,7 @@ describe('pledge endpoint', () => {
     it('should bookmark the project', () => {
       expect.assertions(1);
 
-      return bookmarkProject('8f1b18ab-907f-4c59-8778-f56154fd6c27')
+      return bookmarkProject('test1')
         .then((response) => {
           expect(response.data.message).toBe('Project bookmarked successfully');
         });
@@ -373,7 +373,7 @@ describe('pledge endpoint', () => {
 
       return getBookmarkedProjects()
         .then((response) => {
-          expect(_.includes(response.data.bookmarked_projects, '8f1b18ab-907f-4c59-8778-f56154fd6c27')).toBeTruthy();
+          expect(_.includes(response.data.bookmarked_projects, 'test1')).toBeTruthy();
         });
     });
   });

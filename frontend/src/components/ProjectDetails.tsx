@@ -61,18 +61,8 @@ const styles: any = (theme:any) => ({
       fontSize: '2em',
     },
     fontWeight: '500',
-<<<<<<< HEAD
-    fontSize: '2em',
-    textAlign: 'center',
-    marginTop: '1em',
-  },
-  descriptionText: {
-    fontSize: '1.25em',
-    'font-family': 'system-ui',
-=======
     margin: 'auto',
     'overflow-wrap': 'break-word',
->>>>>>> sprint-dev
   },
   grid: {
     [theme.breakpoints.down('sm')]: {
