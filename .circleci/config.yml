@@ -97,8 +97,8 @@ jobs:
           command: node_modules/.bin/sls dynamodb install
 
       - run:
-        name: Increase Memory Limit
-        command: sudo node_modules/.bin/increase-memory-limit
+          name: Increase Memory Limit
+          command: sudo node_modules/.bin/increase-memory-limit
 
       - run:
           name: Start Local DynamoDB
