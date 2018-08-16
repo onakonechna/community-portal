@@ -297,6 +297,7 @@ describe('getProjectDetails endpoint', () => {
         expect(response.data.description).toBe('Magento Payment API is a W3C standard candidate so most of the modern browsers support it. PR API allows improving user workflow during the purchase process, providing a more consistent user experience and enabling merchants to easily leverage different payment methods. To get more details, please, read Introducing the Payment Request API.');
         expect(response.data.upvotes).toBe(1);
       });
+  });
 });
 
 describe('getLikedProjects endpoint', () => {
