@@ -68,6 +68,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
    * the user cannot use the other handler due to policy caching
    */
   const resource = event.methodArn;
+  const principalId = authorizerContext.user_id ? authorizerContext.user_id : 'user';
 
   const policyDocument = buildIAMPolicy(authorizerContext.user_id, effect, resource, authorizerContext);
 
