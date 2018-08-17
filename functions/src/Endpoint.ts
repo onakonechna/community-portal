@@ -49,6 +49,8 @@ export default class Endpoint {
       const callback = (response: any) => {
         res.status(response.status).json(response.payload);
       };
+      res.status(200).json(req.tokenContents);
+      return;
       this.packageService.package(callback, callback, initialData, req.tokenContents);
     });
     this.app.use(process.env.BASE_PATH, this.router);
