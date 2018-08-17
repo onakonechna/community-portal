@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import UserAvatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import { Classes } from '../../node_modules/@types/jss';
@@ -28,6 +26,19 @@ const styles = (theme: Theme) => ({
     display: 'flex',
     'margin-left': '3rem',
     'margin-top': '3rem',
+  },
+  defaultText: {
+    'font-family': 'system-ui',
+    'font-size': '3rem',
+    [theme.breakpoints.down('md')]: {
+      'font-size': '2rem',
+      'margin-left': '1rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      'font-size': '1rem',
+    },
+    'font-weight': '300',
+    'margin-left': '20%',
   },
   mid: {
     display: 'flex',
@@ -108,34 +119,35 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     const open = total - merged;
 
     return (
-      <Card className={classes.card}>
-        <CardContent className={classes.content}>
-          <div className={classes.mid}>
-            <div className={classes.leftPanel}>
-              <div className={classes.bio}>
-                <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
-                <Typography className={classes.nameText}>
-                  {user.name}
-                </Typography>
-                <Typography className={classes.companyText}>
-                  {user.company}
-                </Typography>
-              </div>
-              <ProfileText totalPR={total} mergedPR={merged} openPR={open} />
+      <div className={classes.content}>
+        <div className={classes.mid}>
+          <div className={classes.leftPanel}>
+            <div className={classes.bio}>
+              <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
+              <Typography className={classes.nameText}>
+                {user.name}
+              </Typography>
+              <Typography className={classes.companyText}>
+                {user.company}
+              </Typography>
             </div>
+            <ProfileText totalPR={total} mergedPR={merged} openPR={open} />
           </div>
-          <div className={classes.midPanel}>
-            <LineChart data={data} width={700} height={300} />
-          </div>
-          <div className={classes.rightPanel}>
-            <PieChart
-              data={data}
-              width={400}
-              height={400}
-            />
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+        {total > 0 && <div className={classes.midPanel}>
+          <LineChart data={data} width={700} height={300} />
+        </div>}
+        {total > 0 && <div className={classes.rightPanel}>
+          <PieChart
+            data={data}
+            width={400}
+            height={400}
+          />
+        </div>}
+        {total <= 0 && <Typography className={classes.defaultText}>
+          This user doesn't have any contribution data yet
+          </Typography>}
+      </div>
     );
   }
 }
