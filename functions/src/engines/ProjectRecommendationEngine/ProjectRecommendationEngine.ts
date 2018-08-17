@@ -69,7 +69,7 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
     return Promise.all(promises);
   }
 
-  // special methods
+  // special method
   null(data: any): Promise<any> {
     return makePromise({});
   }
