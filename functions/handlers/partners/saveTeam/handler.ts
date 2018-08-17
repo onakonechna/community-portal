@@ -7,7 +7,9 @@ import UserResource from "../../../src/resources/UserResource/UserResource";
 import GithubUsersResource from "../../../src/resources/GithubUsersResource/GithubUsersResource";
 import GithubPartnerTeamsResource from "../../../src/resources/GithubPartnerTeamsResource/GithubPartnerTeamsResource";
 import GithubService from "../../../src/services/GithubService";
+import PartnerTeamController from '../../../src/controllers/PartnerTeamController/PartnerTeamController';
 
+const partnerTeamController = new PartnerTeamController();
 const endpoint = new Endpoint('/partners/team/save', 'post');
 const dbConnection = new DatabaseConnection();
 const partnersResource = new PartnersResource(dbConnection);
@@ -50,9 +52,10 @@ const prepareUsers = (users:any, partnerTeamId:string, partnerTeamName:string) =
     data.usersList[user.login] = {
       user_id: user.user_id,
       user_login: user.login,
-      team_id: partnerTeamName,
+      team_id: data.githubTeamName,
+      github_team_name: partnerTeamName,
       github_team_id: partnerTeamId,
-      status: 'pending'
+      status: 'unverified'
     };
   });
 
@@ -70,7 +73,8 @@ const prepareUsersDataBeforeSave = (users:any, partnerTeamMembers:any, partnerTe
       data.usersList[user.login] = {
         user_id: user.user_id,
         user_login: user.login,
-        team_id: partnerTeamName,
+        team_id: data.githubTeamName,
+        github_team_name: partnerTeamName,
         github_team_id: partnerTeamId,
         status: 'active'
       };
@@ -79,7 +83,8 @@ const prepareUsersDataBeforeSave = (users:any, partnerTeamMembers:any, partnerTe
       data.usersList[user.login] = {
         user_id: user.user_id,
         user_login: user.login,
-        team_id: partnerTeamName,
+        team_id: data.githubTeamName,
+        github_team_name: partnerTeamName,
         github_team_id: partnerTeamId,
         status: 'pending'
       };
@@ -108,6 +113,19 @@ const saveTeam = (data:any, preparedUsers:any) => {
   return Promise.all(savePromises);
 };
 
+const getErrorAllowedDomainsResponse = () => ({
+  payload: {
+    error: true,
+    message: 'Allowed domains are not provided'
+  }
+});
+const getErrorGithubTeamNameResponse = () => ({
+  payload: {
+    error: true,
+    message: 'Team name is not provided'
+  }
+});
+
 endpoint.configure((req: Request, res: Response) => {
   const unixTimestamp = new Date().getTime();
   let data = req.body;
@@ -116,135 +134,81 @@ endpoint.configure((req: Request, res: Response) => {
   data.updated = unixTimestamp;
   data = removeEmptyValues(data);
 
-  if (!data.allowedDomains.length) {
-    res.json({
-      status: 200,
-      payload: {
-        error: true,
-        message: 'Allowed domains are not provided'
-      }
-    })
-  }
+  if (!data.allowedDomains.length) {return res.status(200).json(getErrorAllowedDomainsResponse())}
+  if (!data.githubTeamName) {return res.status(200).json(getErrorGithubTeamNameResponse())}
 
-  if (!data.githubTeamName) {
-    res.json({
-      status: 200,
-      payload: {
-        error: true,
-        message: 'Team name is not provided'
-      }
-    })
-  }
+  githubService.getUsersByLogin([...data.owners, ...data.members].map((user:any) => user.login))
+    .then(
+      (users:any) => {
+        if (data.isNewTeam) {
+          githubService.createPartnerTeam(data.githubTeamName).then(
+            (createdTeam:any) => {
+              let preparedUsers:any[] = [];
+              let owners:any[] = [];
+              let members:any[] = [];
 
-  getUsersByLogin([...data.owners, ...data.members].map((user:any) => user.login)).then((users:any) => {
-    const validateUsersEmailResult = validateUsersEmail(users, data.allowedDomains);
-    const validateTwoFactorAuthenticationResult = validateTwoFactorAuthentication(users);
+              createdTeam = createdTeam.data;
+              createdTeam.id = createdTeam.id.toString();
 
-    if (!validateUsersEmailResult.valid) {
-      return res.status(200).json({
-        payload: {
-          message: `The next users emails have invalid domain: ${generateMessageString(validateUsersEmailResult.list)}`
-        }
-      });
-    }
-
-    if (!validateTwoFactorAuthenticationResult.valid) {
-      return res.status(200).json({
-        payload: {
-          message: `Two factor authorization is required. The next users have disabled two factor authorization: ${generateMessageString(validateTwoFactorAuthenticationResult.list)}`
-        },
-      });
-    }
-
-    if (data.isNewTeam) {
-      githubService.createPartnerTeam(data.githubTeamName).then(
-        (createdTeam:any) => {
-          createdTeam = createdTeam.data;
-          createdTeam.id = createdTeam.id.toString();
-
-          const preparedUsers = prepareUsers(users, createdTeam.id, data.githubTeamName);
-
-          githubService.inviteUsersToTeam(preparedUsers.usersToSendInvitation, createdTeam.id).then((invitationsResult:any) => {
-            if (invitationsResult.error) {
-              return res.status(200).json({
-                payload: {
-                  error: true,
-                  message: `Cant send invite to team to next users: ${generateMessageString(invitationsResult.list)}`
-                }
-              })
-            }
-
-            saveTeam(data, preparedUsers).then((data:any) =>
-              res.status(200).json({ payload: {id: data.id}}));
-          }, () => res.status(200).json({
-            payload: {
-              error: true,
-              message: `Cant send invite to team`
-            }
-          }));
-        },
-        () => res.status(200).json({
-          payload: {
-            error: true,
-            message: `Cannot create team ${data.githubTeamName} on Github`
-          }
-        })
-      )
-    } else {
-      githubPartnerTeamsResource.getByName(data.githubTeamName).then((result:any) => {
-        const partnerTeam = result.Items[0];
-        const githubUsersMap = _.keyBy({}, (item:any) => item.id);
-
-        if (!partnerTeam) {
-          return res.status(200).json({
-            payload: {
-              error: true,
-              message: `Can't find team with name ${data.githubTeamName}. Please check that team is created.`
-            }
-          })
-        }
-
-        githubService.getTeamMembers(partnerTeam.id).then((result:any) => {
-          const githubPartnerTeamMembers = result.data;
-          const githubPartnerTeamMembersMap = _.keyBy(githubPartnerTeamMembers, (item:any) => item.id);
-          const preparedUsers = prepareUsersDataBeforeSave(users, githubPartnerTeamMembers, partnerTeam.id, data.githubTeamName);
-
-          if (preparedUsers.usersToSendInvitation.length) {
-            githubService.inviteUsersToTeam(preparedUsers.usersToSendInvitation, partnerTeam.id).then((invitationsResult:any) => {
-              if (invitationsResult.error) {
-                return res.status(200).json({
-                  payload: {
-                    error: true,
-                    message: `Cant send invite to team to next users: ${generateMessageString(invitationsResult.list)}`
-                  }
-                })
+              preparedUsers = partnerTeamController.prepareUsersToSave(users, data.id, createdTeam.name, createdTeam.id);
+              owners = partnerTeamController.getMapByProp(data.owners.map((owner:any) => owner.login), preparedUsers);
+              members = partnerTeamController.getMapByProp(data.members.map((member:any) => member.login), preparedUsers);
+              partnersResource.save(data, members, owners).then(
+                () => res.status(200).json({ payload: {id: data.id}}),
+                () => res.status(200).json({error: true, payload: {message: 'Cannot save team'}})
+              );
+            },
+            () => res.status(200).json({
+              payload: {
+                error: true,
+                message: `Cannot create team ${data.githubTeamName} on Github`
               }
-
-              saveTeam(data, preparedUsers).then((data:any) =>
-                res.status(200).json({ payload: {id: data.id}}));
             })
-          } else {
-            saveTeam(data, preparedUsers).then((data:any) =>
-              res.status(200).json({ payload: {id: data.id}}));
-          }
-        });
+          )
+        } else {
+          githubPartnerTeamsResource.getByName(data.githubTeamName)
+            .then(
+              (result:any) => {
+                const partnerTeam = result.Items[0];
+
+                if (!partnerTeam) {
+                  return res.status(200).json({
+                    payload: {
+                      error: true,
+                      message: `Can't find team with name ${data.githubTeamName}. Please check that team is created.`
+                    }
+                  })
+                }
+
+                githubService.getTeamMembers(partnerTeam.id)
+                  .then(
+                    (result:any) => {
+                      const githubPartnerTeamMembersMap = _.keyBy(result.data, (item:any) => item.id);
+                      let preparedUsers = partnerTeamController.prepareUsersToSave(users, data.id, partnerTeam.name, partnerTeam.id);
+                      let owners:any[] = [];
+                      let members:any[] = [];
+
+                      preparedUsers = preparedUsers.map((user:any) =>
+                        githubPartnerTeamMembersMap[user.id] ? {...user, status: 'active'} : user);
+                      owners = partnerTeamController.getMapByProp(data.owners.map((owner:any) => owner.login), preparedUsers);
+                      members = partnerTeamController.getMapByProp(data.members.map((member:any) => member.login), preparedUsers);
+                      partnersResource.save(data, members, owners).then(
+                        (data:any) => res.status(200).json({ payload: {id: data.id}}),
+                        () => res.status(200).json({error: true, payload: {message: 'Cannot save team'}})
+                      );
+                    },
+                    () => res.status(200)
+                      .json({error: true, payload: {message: 'Cannot get partner team users'}})
+                  )
+
+              },
+              () => res.status(200)
+                .json({error:true, payload:{message: `Cannot find ${data.githubTeamName} team`}})
+            )
+        }
       },
-        () => res.json({
-          status: 200,
-          payload: {
-            error: true,
-            message: `Cannot find partner team with name ${data.githubTeamName}`
-          }
-        })
-      );
-    }
-  }, () => res.json({
-    status: 200,
-    payload: {
-      error: true,
-      message: `The users are not authorized`
-    }
-  }));
+      () => res.status(200).json({error:true, payload:{message: 'Cant find users on Github'}})
+    );
 });
 
 const handler = endpoint.execute();

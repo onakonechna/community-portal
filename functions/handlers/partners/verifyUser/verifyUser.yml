@@ -1,0 +1,12 @@
+verifyUser:
+  role: verifyUserRole
+  handler: handlers/partners/verifyUser/handler.handler
+  events:
+  - http:
+      path: /partners/user/verify/{id}
+      method: get
+      cors: true,
+      request:
+        parameters:
+          paths:
+            id: true

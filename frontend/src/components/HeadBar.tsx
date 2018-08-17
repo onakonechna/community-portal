@@ -69,7 +69,7 @@ class HeadBar extends React.Component<HeadBarProps, HeadBarState> {
     this.toPledged = this.toPledged.bind(this);
     this.toProfile = this.toProfile.bind(this);
     let user = getUserFromToken();
-    if (!_.isEmpty(user)) {user ? user['partners_admin'] = true : false; props.LoadUserAction(user);}
+    if (!_.isEmpty(user)) {props.LoadUserAction(user);}
 
   }
 

@@ -53,8 +53,29 @@ export default class PartnersTeamResource implements PartnersTeamResourceInterfa
   }
 
   getTeamsbyMemberId(id:string): Promise<any> {
-    return this.adapter.getCollection(PARTNER_TEAM_OWNERS_TABLE, 'user_id', id)
+    return this.adapter.getCollection(PARTNER_TEAM_MEMBERS_TABLE, 'user_id', id)
       .then((data:any) => data.Items);
+  }
+
+  getTeamOwners(id:string): Promise<any> {
+    return this.adapter.getCollection(PARTNER_TEAM_OWNERS_TABLE, 'team_id', id)
+      .then((data:any) => data.Items);
+  }
+
+  getTeamMembers(id:string): Promise<any> {
+    return this.adapter.getCollection(PARTNER_TEAM_MEMBERS_TABLE, 'team_id', id)
+      .then((data:any) => data.Items);
+  }
+
+  setPartnerTeamUserStatus(id:string, status: string, type:string): Promise<any> {
+    const table = type === 'partner_team_owner' ?  PARTNER_TEAM_OWNERS_TABLE : PARTNER_TEAM_MEMBERS_TABLE;
+
+    return this.adapter.addToMapColumn(
+      table,
+      { row_id: id },
+      'status',
+      status
+    )
   }
 
   getTeams(): Promise<any> {

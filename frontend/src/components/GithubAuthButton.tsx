@@ -1,9 +1,12 @@
 import * as React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux";
 
 import GithubAuthModal, { toQuery } from './GithubAuthModal';
 import Message from './Message';
 import { API } from './../api/Config';
+import {LoadUserAction} from "../actions";
+import {decode} from "jsonwebtoken";
 
 declare const __FRONTEND__: string;
 declare const GITHUB_CLIENT_ID: string;
@@ -23,6 +26,7 @@ interface GithubAuthButtonProps {
   getLikedProjects?: any;
   getBookmarkedProjects?: any;
   loadUser?: any;
+  LoadUserAction?:any
 }
 
 interface GithubAuthButtonState {
@@ -146,6 +150,7 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     async saveToken(token: string) {
+      this.props.LoadUserAction(decode(token));
       await localStorage.setItem('oAuth', JSON.stringify(token));
     }
 
@@ -193,7 +198,9 @@ const withLogin = (WrappedCompoent: any) => {
       </div>;
     }
   }
-  return GithubAuthButton;
+  return connect<any>(null, {
+    LoadUserAction,
+  })(GithubAuthButton);
 };
 
 export default withLogin;

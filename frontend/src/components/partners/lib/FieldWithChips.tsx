@@ -41,6 +41,7 @@ const FieldWithChips = (props:any) => {
           className={props.classes.field}
           id={props.name}
           label={props.fieldLabel}
+          disabled={props.disabled}
           value={props.value}
           onChange={props.handleFieldChange}
           margin="normal"
@@ -48,6 +49,7 @@ const FieldWithChips = (props:any) => {
         <Button
           className={props.classes.button}
           variant="contained"
+          disabled={props.disabled}
           color="primary"
           size="medium"
           onClick={props.handleButtonClick}>

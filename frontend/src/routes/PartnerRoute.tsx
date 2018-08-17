@@ -13,8 +13,8 @@ const PartnerRoute = ({ role, types, redirectTo, component: Component, ...rest }
 );
 
 function mapStateToProps(state:any) {
-  const isMember = _.isEmpty(state.user['partner_team_member']);
-  const isOwner = _.isEmpty(state.user['partner_team_owner']);
+  const isMember = !_.isEmpty(state.user['partner_team_member']);
+  const isOwner = !_.isEmpty(state.user['partner_team_owner']);
   const isAdmin = !!state.user['partners_admin'];
 
   return {

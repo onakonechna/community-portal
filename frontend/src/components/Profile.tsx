@@ -6,10 +6,11 @@ import UserAvatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
+//import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
-import Edit from '@material-ui/icons/Edit';
+import ParnersProfile from './partners/pages/Profile';
+//import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
 const styles = (theme:Theme) => ({
@@ -19,7 +20,6 @@ const styles = (theme:Theme) => ({
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '25rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
@@ -102,14 +102,15 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
           <Typography className={classes.companyText}>
             {user.company}
           </Typography>
+          <ParnersProfile/>
         </CardContent>
         <CardActions>
-          <IconButton>
+          {/*<IconButton>
             <Edit
               className={classes.editButton}
               onClick={this.toggleEditUser}
             />
-          </IconButton>
+          </IconButton>*/}
         </CardActions>
       </Card>
     );

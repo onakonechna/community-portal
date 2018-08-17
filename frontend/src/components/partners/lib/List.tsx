@@ -4,14 +4,17 @@ import { withStyles } from '@material-ui/core/styles';
 const  styles = (theme:any) => ({
   list: {
     'display': 'flex',
+    'width': '90%',
+    'box-sizing': 'border-box',
+    'margin': '0 auto',
     'flex-wrap': 'wrap',
-    'justify-content': 'space-between',
-    'box-sizing': 'border-box'
+    'justify-content': 'space-around'
+
   },
   listItem: {
-    'flex': '1 0 37%',
-    'max-width': '33%',
-    'min-width': '200px',
+    'padding': '20px',
+    'min-width': '320px',
+    'max-width': '320px',
     'text-align': 'center',
     'box-sizing': 'border-box'
   }

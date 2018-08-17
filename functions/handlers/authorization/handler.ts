@@ -5,6 +5,7 @@ import {PartnersResource} from "../../config/Components";
 import {Request, Response} from "../../config/Types";
 import * as querystring from 'querystring';
 import AuthorizationService from '../../src/services/AuthorizationService';
+import GithubService from '../../src/services/GithubService';
 import * as _ from 'lodash';
 import GithubUsersResource from "../../src/resources/GithubUsersResource/GithubUsersResource";
 
@@ -17,6 +18,7 @@ const tokenController = new TokenController();
 const userController = new UserController();
 const tokenApi = new TokenAPI();
 const authroizationService = new AuthorizationService();
+const githubService = new GithubService();
 
 const removeEmptyValues = (data:any) => _.pickBy(data, val => val !== '');
 const createJWT = (userData:any) => authroizationService.create({
@@ -29,6 +31,7 @@ const createJWT = (userData:any) => authroizationService.create({
     company: userData.company,
     email: userData.email,
     two_factor_authentication: userData.two_factor_authentication,
+    partners_admin: userData.partners_admin,
     partner_team_owner: userData.partner_team_owner,
     partner_team_member: userData.partner_team_member
   });
@@ -106,6 +109,7 @@ endpoint.configure((req: Request, res: Response) => {
 
         userData.user_id = userData.id.toString();
         userData.emails = userEmails;
+        userData.access_token = access_token;
         userData['partner_team_member'] = {};
         userData['partner_team_owner'] = {};
         userData['partners_admin'] = false;
@@ -118,27 +122,91 @@ endpoint.configure((req: Request, res: Response) => {
             userData = {
               ...userExist,
               ...userData,
-              two_factor_authentication: userExist.two_factor_authentication
+              'partner_team_member': userExist['partner_team_member'],
+              'partner_team_owner': userExist['partner_team_owner']
             }
           }
 
           delete userData.id;
 
           if (data.partner) {
-            if (!userData.two_factor_authentication) {
-              res.json(getError2FAResponseObject())
-            }
+            const promises:any[] = [
+              githubUsersResource.getById(userData.user_id),
+              partnersResource.getTeamsbyOwnerId(userData.user_id),
+              partnersResource.getTeamsbyMemberId(userData.user_id)
+            ];
 
-            githubUsersResource.getById(userData.user_id).then((githubUserData:any) => {
-              githubUserData = githubUserData.Item;
-              userData['partners_admin'] = authroizationService.isParnersAdmin(githubUserData);
-              usersResource.create(userData).then(
-                () => res.json(getSuccessSaveResponseObject(userData, createJWT(userData))),
-                () => res.json(getErrorSaveResponseObject())
-              );
-            },
-              () => res.json(getErrorGithubUserDataResponseObject())
-            )
+            Promise.all(promises).then((promisesResult:any[]) => {
+              const githubUserData = promisesResult[0];
+              const userDataByTitle:any = {
+                'partner_team_owner': promisesResult[1][0],
+                'partner_team_member': promisesResult[2][0]
+              };
+
+              let userTitle:string;
+
+              userData['partners_admin'] =
+                !_.isEmpty(githubUserData) ? authroizationService.isParnersAdmin(githubUserData.Item) : false;
+
+              if (userDataByTitle['partner_team_member']) {
+                userTitle = 'partner_team_member';
+              } else if (userDataByTitle['partner_team_owner']) {
+                userTitle = 'partner_team_owner';
+              }
+
+              if (userTitle) {
+                userData[userTitle] = {
+                  team_id: userDataByTitle[userTitle].team_id,
+                  github_team_id: userDataByTitle[userTitle].github_team_id,
+                  github_team_name: userDataByTitle[userTitle].github_team_name,
+                  status: userDataByTitle[userTitle].status
+                };
+
+                partnersResource.getTeam(userDataByTitle[userTitle].team_id).then((partnerTeamsPromisesResult:any) => {
+                  const teamAllowedDomains = partnerTeamsPromisesResult.Item.allowedDomains;
+
+                  userData[userTitle].emailVerified = !!_.find(userData.emails, (data:any) =>
+                    _.find(teamAllowedDomains, (domain:string) => data.email.match(`@${domain}`)) && data.verified);
+
+                  if (
+                    userData[userTitle].emailVerified &&
+                    userData[userTitle].status === 'unverified' &&
+                    userData.two_factor_authentication
+                  ) {
+                    const promises = [
+                      githubService.inviteUserToTeam(userData.login, userData[userTitle]['github_team_id']),
+                      partnersResource.setPartnerTeamUserStatus(userDataByTitle[userTitle]['row_id'], 'pending', userTitle)
+                    ];
+
+                    Promise.all(promises).then(
+                      () => {
+                        userData[userTitle].status = 'pending';
+                        usersResource.create(userData).then(
+                          () => res.json(getSuccessSaveResponseObject(userData, createJWT(userData))),
+                          () => res.json(getErrorSaveResponseObject())
+                        );
+                      },
+                      () => res.status(200).json({
+                        payload: {
+                          error: true,
+                          message: 'Cannot send invite to user'
+                        }
+                      })
+                    )
+                  } else {
+                    usersResource.create(userData).then(
+                      () => res.json(getSuccessSaveResponseObject(userData, createJWT(userData))),
+                      () => res.json(getErrorSaveResponseObject())
+                    );
+                  }
+                });
+              } else {
+                usersResource.create(userData).then(
+                  () => res.json(getSuccessSaveResponseObject(userData, createJWT(userData))),
+                  () => res.json(getErrorSaveResponseObject())
+                );
+              }
+            });
           } else {
             usersResource.create(userData).then(
               () => res.json(getSuccessSaveResponseObject(userData, createJWT(userData))),

@@ -79,7 +79,6 @@ export default class UserResource implements UserResourceInterface {
   }
 
   getByLogin(login: string): Promise<any> {
-    console.log('USERS_TABLE, USERS_INDEX, login', USERS_TABLE, USERS_INDEX, login);
     return this.adapter.get(USERS_TABLE, 'login', login, USERS_INDEX)
   }
 
@@ -98,6 +97,24 @@ export default class UserResource implements UserResourceInterface {
       'upvoted_projects',
       project_id,
     );
+  }
+
+  addUserTwoFactorAuthentication(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'two_factor_authentication',
+      data.two_factor_authentication
+    )
+  }
+
+  addUserEmailVerified(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'emailVerified',
+      data.emailVerified
+    )
   }
 
   addUserAsPartnerTeamMember(data:any): Promise<any> {

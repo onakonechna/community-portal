@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import FieldWithChips from '../lib/FieldWithChips';
 import {saveTeam} from '../../../actions/partners';
 import { connect } from "react-redux";
+import { addMessage, deleteMessage } from "../../../actions/messages";
 
 const styles = (theme: any) => ({
   'container': {
@@ -103,7 +104,18 @@ class CreatePartnersTeamPage extends React.Component<any, any> {
 
     this.props.saveTeam(data)
       .then((data:any) => {
-          this.props.history.push('/partners-management');
+          if (!data.payload.error) {
+            this.props.history.push('/partners-management');
+            this.props.addMessage({
+              type: 'success',
+              massage: 'Team was successfully created'
+            })
+          } else {
+            this.props.addMessage({
+              type: 'error',
+              massage: data.payload.message
+            })
+          }
       });
   };
 
@@ -210,4 +222,6 @@ class CreatePartnersTeamPage extends React.Component<any, any> {
 
 export default connect<any>(null, {
   saveTeam,
+  addMessage,
+  deleteMessage
 })(withStyles(styles)(CreatePartnersTeamPage));

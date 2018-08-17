@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "@types/classnames": "^2.2.6",
     "@types/jsonwebtoken": "^7.2.8",
     "axios": "^0.18.0",
     "date-fns": "^2.0.0-alpha.7",

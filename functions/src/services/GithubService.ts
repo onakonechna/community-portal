@@ -22,6 +22,30 @@ class GithubService {
     return axios(options);
   }
 
+  getUserByLogin(login:string) {
+    const options = {
+      method: 'GET',
+      url: `https://api.github.com/users/${login}`,
+      headers: {
+        'User-Agent': 'community-portal-app'
+      }
+    };
+
+    return axios(options);
+  }
+
+  getUsersByLogin(logins:string[]) {
+    let promises:any[] = [];
+
+    logins.forEach((login:string) => {
+      promises.push(this.getUserByLogin(login));
+    });
+
+    return Promise.all(promises).then((result:any) => {
+      return result.map((item:any) => item.data)
+    })
+  }
+
   getPartnerTeams() {
     const options = {
       method: 'GET',

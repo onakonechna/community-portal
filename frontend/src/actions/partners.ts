@@ -7,7 +7,11 @@ import {
   DELETE_TEAM_START,
   DELETE_TEAM_END,
   SAVE_TEAM_START,
-  SAVE_TEAM_END
+  SAVE_TEAM_END,
+  VERIFY_PARTNER_USER_START,
+  VERIFY_PARTNER_USER_END,
+  EDIT_TEAM_START,
+  EDIT_TEAM_END
 } from '../types/partners';
 
 const domain = 'http://localhost:3000';
@@ -28,6 +32,23 @@ export const getPartnerTeamsList = () => (dispatch: any) => {
     });
 };
 
+export const verifyPartnerUser = (userId:string) => (dispatch: any) => {
+  dispatch({
+    type: VERIFY_PARTNER_USER_START,
+    user_id: userId
+  });
+
+  return axios.get(`${domain}/partners/user/verify/${userId}`)
+    .then((res: AxiosResponse) => {
+      dispatch({
+        type: VERIFY_PARTNER_USER_END,
+        data: res.data,
+      });
+
+      return res.data;
+    });
+};
+
 export const getPartnerTeam = (id:string) => (dispatch: any) => {
   dispatch({
     type: GET_PARTNER_TEAM_START,
@@ -37,10 +58,10 @@ export const getPartnerTeam = (id:string) => (dispatch: any) => {
     .then((res: AxiosResponse) => {
       dispatch({
         type: GET_PARTNER_TEAM_END,
-        team: res.data.payload.team,
+        data: res.data,
       });
 
-      return res.data.payload.team;
+      return res.data;
     });
 };
 
@@ -74,7 +95,24 @@ export const saveTeam = (data:any) => (dispatch: any) => {
         type: SAVE_TEAM_END,
       });
 
-      console.log(res);
+      return res.data;
+    });
+};
+
+
+export const editTeam = (data:any) => (dispatch: any) => {
+  dispatch({
+    data,
+    type: EDIT_TEAM_START
+  });
+
+  return axios.post(`${domain}/partners/team/edit`, data)
+    .then((res: AxiosResponse) => {
+      dispatch({
+        data,
+        type: EDIT_TEAM_END,
+      });
+
       return res.data;
     });
 };

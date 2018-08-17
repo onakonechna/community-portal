@@ -9,37 +9,72 @@ const dbConnection = new DatabaseConnection();
 const usersResource = new UserResource(dbConnection);
 const partnersResource = new PartnersResource(dbConnection);
 
-const getIds = (collection:any) => collection.map((item:any) => item.id);
-const prepareResponse = (promise:any, type:string) => promise.then((data:any) => ({...data, type}));
+const generateUsersMap = (users:any) => {
+  const map:any = {};
+
+  users.forEach((user:any) => {
+    map[user.user_id] = user;
+  });
+
+  return map;
+};
 
 endpoint.configure((req: Request, res: Response) => {
   const team_id = req.params.id;
 
-  partnersResource.getTeam(team_id).then((data:any) => {
-    let team = data.Item;
-    let ownersId = getIds(team.owners);
-    let membersId = getIds(team.members);
-    let promises:any = [];
+  Promise.all([
+    partnersResource.getTeam(team_id),
+    partnersResource.getTeamOwners(team_id),
+    partnersResource.getTeamMembers(team_id)
+  ]).then((teamDataPromisesResult:any) => {
+    const team = teamDataPromisesResult[0].Item;
+    const teamOwners = teamDataPromisesResult[1];
+    const teamMembers = teamDataPromisesResult[2];
+    const teamUsers = [...teamOwners, ...teamMembers];
+    const usersDataPromises:any[] = [];
 
-    if (ownersId.length) {promises.push(prepareResponse(usersResource.getUsersById(ownersId), 'owners'))}
-    if (membersId.length) {promises.push(prepareResponse(usersResource.getUsersById(membersId), 'members'))}
+    if (teamUsers.length) {
+      usersResource.getUsersById(teamUsers.map((owner:any) => owner.user_id))
+        .then((usersResponse:any) => {
+          const usersMap = generateUsersMap(usersResponse.data);
 
-    Promise.all(promises).then((result:any) => {
-      result.forEach((item:any) => {
-        if (item.type === 'owners') {
-          team.owners = item.data;
-        } else if (item.type === 'members') {
-          team.members = item.data;
-        }
-      });
+          team.owners = teamOwners.map((owner:any) => usersMap[owner.user_id] || {
+            user_id: owner.user_id,
+            login: owner.user_login,
+            emails: [{email: 'N/A'}],
+            partner_team_owner: {
+              status: owner.status,
+              team_id: owner.team_id,
+              github_team_id: owner.github_team_id,
+              github_team_name: owner.github_team_name
+            }
+          });
+          team.members = teamMembers.map((member:any) => usersMap[member.user_id] || {
+            user_id: member.user_id,
+            login: member.user_login,
+            emails: [{email: 'N/A'}],
+            partner_team_member: {
+              status: member.status,
+              team_id: member.team_id,
+              github_team_id: member.github_team_id,
+              github_team_name: member.github_team_name
+            }
+          });
 
-      return res.json({
-        status: 200,
+          res.status(200).json({
+            payload: {
+              data: team
+            }
+          })
+
+        }, () => res.status(200).json({payload:{error: true, message: 'Cannot get users'}}))
+    } else {
+      res.status(200).json({
         payload: {
-          team
+          data: team
         }
-      });
-    });
+      })
+    }
   });
 });
 

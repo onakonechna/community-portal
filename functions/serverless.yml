@@ -112,6 +112,8 @@ functions:
   - ${file(./handlers/partners/saveTeam/saveTeam.yml)}
   - ${file(./handlers/partners/getTeams/getTeams.yml)}
   - ${file(./handlers/partners/getTeam/getTeam.yml)}
+  - ${file(./handlers/partners/verifyUser/verifyUser.yml)}
+  - ${file(./handlers/partners/editTeam/editTeam.yml)}
   - ${file(./handlers/githubUsersIndexer/githubUsersIndexer.yml)}
   - ${file(./handlers/githubPartnerTeamsIndexer/githubPartnerTeamsIndexer.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
@@ -158,6 +160,8 @@ resources:
     saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}
     getTeamsRole: ${file(./handlers/partners/getTeams/role.yml):getTeamsRole}
     getTeamRole: ${file(./handlers/partners/getTeam/role.yml):getTeamRole}
+    verifyUserRole: ${file(./handlers/partners/verifyUser/role.yml):verifyUserRole}
+    editTeamRole: ${file(./handlers/partners/editTeam/role.yml):editTeamRole}
     githubUsersIndexerRole: ${file(./handlers/githubUsersIndexer/role.yml):githubUsersIndexerRole}
     githubPartnerTeamsIndexerRole: ${file(./handlers/githubPartnerTeamsIndexer/role.yml):githubPartnerTeamsIndexerRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}

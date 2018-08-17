@@ -306,6 +306,9 @@ export default class DatabaseAdapter implements AdapterInterface {
     returnValues: string = 'ALL_NEW',
   ) {
     returnValues = 'ALL_NEW';
+
+    console.log('PARAMS', tableName, identifier, mapName, value);
+
     const params = {
       TableName: tableName,
       Key: identifier,
