@@ -19,4 +19,15 @@ trainProjectRecommendationModelRole:
               Action:
                 - dynamodb:Scan
               Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
+            - Effect: Allow
+              Action:
+                - dynamodb:Scan
+              Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECT_TRAFFIC_TABLE}"
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource:
+                - "arn:aws:s3:::${self:provider.environment.PROJECT_RECOMMENDATION_BUCKET}/*"
