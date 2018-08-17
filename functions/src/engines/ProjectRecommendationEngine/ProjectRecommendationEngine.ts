@@ -36,7 +36,7 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
 
     return new Promise((resolve: any, reject: any) => {
       return reject('Debugging');
-    }
+    });
 
     return new Promise((resolve: any) => {
       this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, getSignature(state))
