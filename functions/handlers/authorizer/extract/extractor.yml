@@ -1,0 +1,3 @@
+extractor:
+    name: ${self:provider.stage}-extractor
+    handler: handlers/authorizer/extract/handler.handler

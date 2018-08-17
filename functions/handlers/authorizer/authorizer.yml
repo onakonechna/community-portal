@@ -1,3 +1,0 @@
-authorizer:
-    name: ${self:provider.stage}-authorizer
-    handler: handlers/authorizer/handler.handler

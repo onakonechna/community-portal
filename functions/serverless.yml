@@ -101,7 +101,8 @@ package:
 service: community-portal
 
 functions:
-  - ${file(./handlers/authorizer/authorizer.yml)}
+  - ${file(./handlers/authorizer/enforce/authorizer.yml)}
+  - ${file(./handlers/authorizer/extract/extractor.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}

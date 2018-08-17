@@ -7,6 +7,12 @@ getProjectDetails:
       path: /project/{project_id}
       method: get
       cors: true
+      authorizer:
+        name: extractor
+        resultTtlInSeconds: 0
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token
       request:
         parameters:
           paths:
