@@ -99,6 +99,7 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
       .append('text')
       .text('Pull Requests by Project')
       .style('font-family', 'system-ui')
+      .style('font-weight', '600')
       .attr('transform', `translate(-${this.state.margin.right}, -${this.props.height / 2 - this.state.margin.top})`);
 
     const arc = svg.selectAll('arc')
@@ -133,7 +134,8 @@ class PieChart extends React.Component<PieChartProps, PieChartState> {
       .append('g')
       .attr('class', 'legend')
       .attr('transform', ((d:any, i: number) => {
-        return `translate(0, ${this.props.height / 2 + i * 30})`;
+        return `translate(${this.props.width / 2}, ${- this.props.height * .2 + i * 30})`;
+        // return `translate(0, ${this.props.height / 2 + i * 30})`;
       }));
 
     legend

@@ -224,7 +224,8 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
       .text('Contribution Timeline')
       .style('position', 'relative')
       .style('bottom', '30px')
-      .style('font-family', 'system-ui');
+      .style('font-family', 'system-ui')
+      .style('font-weight', '600');
 
     svg.append('g')
       .append('path')

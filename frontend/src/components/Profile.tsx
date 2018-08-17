@@ -4,12 +4,9 @@ import compose from 'recompose/compose';
 
 import UserAvatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
-import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 
 import LineChart from './visualizations/LineChart';
@@ -26,20 +23,6 @@ const styles = (theme: Theme) => ({
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '40rem',
-    [theme.breakpoints.down('md')]: {
-      width: '20rem',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '25rem',
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: '70rem',
-    },
-    display: 'flex',
-    'flex-direction': 'column',
-    'margin-top': '5%',
-    'margin-left': '20%',
   },
   content: {
     display: 'flex',
@@ -54,6 +37,7 @@ const styles = (theme: Theme) => ({
     'margin-top': '1rem',
     'font-size': '2rem',
     'font-family': 'system-ui',
+    'font-weight': '600',
   },
   companyText: {
     'font-size': '1.5rem',
@@ -62,8 +46,16 @@ const styles = (theme: Theme) => ({
     'margin-left': '1rem',
     display: 'none',
   },
-  topLeft: {
+  leftPanel: {
     display: 'flex',
+    'flex-direction': 'column',
+  },
+  midPanel: {
+    'margin-left': '10rem',
+  },
+  rightPanel: {
+    'margin-left': 'auto',
+    'margin-right': '15rem',
   },
 });
 
@@ -119,7 +111,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
       <Card className={classes.card}>
         <CardContent className={classes.content}>
           <div className={classes.mid}>
-            <div className={classes.topLeft}>
+            <div className={classes.leftPanel}>
               <div className={classes.bio}>
                 <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
                 <Typography className={classes.nameText}>
@@ -129,24 +121,20 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
                   {user.company}
                 </Typography>
               </div>
-              <LineChart data={data} width={450} height={300} />
+              <ProfileText totalPR={total} mergedPR={merged} openPR={open} />
             </div>
-            <ProfileText totalPR={total} mergedPR={merged} openPR={open} />
           </div>
-          <PieChart
-            data={data}
-            width={400}
-            height={400}
-          />
-        </CardContent>
-        <CardActions>
-          <IconButton>
-            <Edit
-              className={classes.editButton}
-              onClick={this.toggleEditUser}
+          <div className={classes.midPanel}>
+            <LineChart data={data} width={700} height={300} />
+          </div>
+          <div className={classes.rightPanel}>
+            <PieChart
+              data={data}
+              width={400}
+              height={400}
             />
-          </IconButton>
-        </CardActions>
+          </div>
+        </CardContent>
       </Card>
     );
   }
