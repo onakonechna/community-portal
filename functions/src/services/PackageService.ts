@@ -321,8 +321,6 @@ export default class PackageService {
   ) {
     this.initialData = initialData;
     this.tokenContents = tokenContents;
-    onFailure({ status: 200, payload: tokenContents });
-    return;
     const dataflowsPromise = new Promise(this.executeDataflows);
     dataflowsPromise.then(this.respond(onSuccess)).catch(this.respond(onFailure));
   }
