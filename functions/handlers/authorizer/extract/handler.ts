@@ -1,5 +1,5 @@
 import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
-import { Callback } from './../../config/Types';
+import { Callback } from './../../../config/Types';
 
 const jwt = require('jsonwebtoken');
 
@@ -70,7 +70,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
   const resource = event.methodArn;
   const principalId = authorizerContext.user_id ? authorizerContext.user_id : 'user';
 
-  const policyDocument = buildIAMPolicy(authorizerContext.user_id, effect, resource, authorizerContext);
+  const policyDocument = buildIAMPolicy(principalId, effect, resource, authorizerContext);
 
   callback(null, policyDocument);
 };
