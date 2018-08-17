@@ -19,25 +19,25 @@ switch(process.env.STAGE) {
         apiHost = JSON.stringify('https://api.opensource.engcom.magento.com');
         frontendHost = JSON.stringify('https://opensource.engcom.magento.com');
         githubClientId = JSON.stringify(process.env.STAGING_GITHUB_CLIENT_ID);
-        break;  
+        break;
     case "dev":
-        apiHost = process.env.ENDPOINT_URL ? 
-            JSON.stringify(process.env.ENDPOINT_URL) : 
+        apiHost = process.env.ENDPOINT_URL ?
+            JSON.stringify(process.env.ENDPOINT_URL) :
             JSON.stringify('https://dev.api.opensource.engcom.magento.com');
         frontendHost = "'https://dev.opensource.engcom.magento.com'";
         githubClientId = JSON.stringify(process.env.DEV_GITHUB_CLIENT_ID);
-        break;    
+        break;
     case "local":
         apiHost = JSON.stringify('http://localhost:3000')
         frontendHost = JSON.stringify('http://localhost:8080');
         githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)
         break;
     case "custom":
-        apiHost = process.env.ENDPOINT_URL ? 
-            JSON.stringify(process.env.ENDPOINT_URL) : 
+        apiHost = process.env.ENDPOINT_URL ?
+            JSON.stringify(process.env.ENDPOINT_URL) :
             JSON.stringify('http://localhost');
-        frontendHost = process.env.FRONTEND 
-            ? JSON.stringify(process.env.FRONTEND) 
+        frontendHost = process.env.FRONTEND
+            ? JSON.stringify(process.env.FRONTEND)
             : JSON.stringify('http://localhost:8080');
             githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)    
         break;
@@ -67,7 +67,7 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    // Enabled debugging with React Dev Tool 
+    // Enabled debugging with React Dev Tool
     // devtool: "eval",
 
     resolve: {

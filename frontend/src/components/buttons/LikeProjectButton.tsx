@@ -19,6 +19,10 @@ interface LikeProjectProps {
 }
 
 const styles = (theme: Theme) => ({
+  Button: {
+    position: 'relative' as 'relative',
+    bottom: '0.1rem',
+  },
   likedButton: {
     color: '#FF2B00',
   },
@@ -32,6 +36,7 @@ const LikeProjectButton = (props: LikeProjectProps) => {
   return (
     <IconButton
       aria-label="like"
+      className={classes.Button}
       onClick={props.handler}>
       <Favorite
         className={liked ? classes.likedButton : classes.unlikedButton}

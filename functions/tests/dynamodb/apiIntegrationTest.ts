@@ -325,7 +325,7 @@ describe('pledge endpoint', () => {
   it('should get successful response from the pledge endpoint', () => {
     expect.assertions(1);
 
-    return pledge('test21', 25)
+    return pledge('test21')
       .then((response) => {
         expect(response.data.message).toBe('Pledged successfully');
       });
@@ -337,9 +337,9 @@ describe('pledge endpoint', () => {
     return getProjectDetails('test21')
       .then((response) => {
         const { pledged, pledgers, pledged_history, subscribers } = response.data;
-        expect(pledged).toBe(25);
+        expect(pledged).toBe(1);
         expect(authUserId in pledgers).toBeTruthy();
-        expect(_.includes(pledged_history, 25)).toBeTruthy();
+        expect(_.includes(pledged_history, authUserId)).toBeTruthy();
         expect(_.includes(subscribers.values, authUserId)).toBeTruthy();
       });
   });

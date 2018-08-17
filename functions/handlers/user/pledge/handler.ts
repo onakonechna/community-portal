@@ -12,22 +12,22 @@ import {
 const dataflows = [
   {
     controller: ProjectController,
-    method: 'checkPledgedHours',
+    method: 'checkPledged',
     target: ProjectResource,
-    methodMap: { checkPledgedHours: 'getById' },
-    validationMap: { checkPledgedHours: 'pledgeSchema' },
+    methodMap: { checkPledged: 'getById' },
+    validationMap: { checkPledged: 'projectIdOnlySchema' },
     authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,
-    method: 'addPledgedHours',
+    method: 'addPledged',
     target: ProjectResource,
   },
   {
     controller: ProjectController,
     method: 'addPledgedHistory',
     target: ProjectResource,
-    dataDependencies: ['project_id', 'hours'],
+    dataDependencies: ['project_id', 'user_id'],
   },
   // we want to get the avatar url
   {
@@ -61,12 +61,9 @@ const dataflows = [
     controller: UserController,
     method: 'pledge',
     target: UserResource,
-    dataDependencies: ['user_id', 'project_id', 'hours'],
+    dataDependencies: ['user_id', 'project_id'],
   },
 ];
 
-const endpoint = new Endpoint('/user/pledge', 'post');
-endpoint.configure((req: Request, res: Response) => {
-  new PackageService(dataflows).package(req, res);
-});
+const endpoint = new Endpoint('/user/pledge', 'post', new PackageService(dataflows));
 export const handler = endpoint.execute();

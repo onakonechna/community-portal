@@ -6,14 +6,17 @@ import UserAvatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-//import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import ParnersProfile from './partners/pages/Profile';
-//import Edit from '@material-ui/icons/Edit';
+import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
+import { Dispatch } from '../../node_modules/redux';
 
-const styles = (theme:Theme) => ({
+import fetchUser from '../api/FetchUser';
+
+const styles = (theme: Theme) => ({
   avatar: {
     height: '10rem',
     width: '10rem',
@@ -47,16 +50,20 @@ const styles = (theme:Theme) => ({
     'font-size': '1.5rem',
   },
   editButton: {
+    display: 'none',
     'margin-left': '1rem',
   },
 });
 
 interface ProfileProps {
   classes: Classes;
+  match: any;
 }
 
 interface ProfileState {
   editUserOpen: boolean;
+  displayedUser: any;
+  message: string;
 }
 
 interface ProfileMapProps {
@@ -80,8 +87,21 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     super(props);
     this.state = {
       editUserOpen: false,
+      displayedUser: null,
+      message: '',
     };
     this.toggleEditUser = this.toggleEditUser.bind(this);
+  }
+
+  componentDidMount() {
+    const currentUser = this.props.match.params.user_id;
+    fetchUser(currentUser)
+      .then((displayedUser: any) => {
+        this.setState({ displayedUser });
+      })
+      .catch((err: Error) => {
+        this.setState({ message: 'User not Found' });
+      });
   }
 
   toggleEditUser() {
@@ -91,26 +111,36 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   }
 
   render() {
-    const { user, classes } = this.props;
+    const { classes } = this.props;
+    const { displayedUser } = this.state;
+    const cardContent = displayedUser
+      ?
+        <span>
+          <UserAvatar className={classes.avatar} src={displayedUser.avatar_url} />
+          <Typography className={classes.nameText}>
+            {displayedUser.name}
+          </Typography>
+          <Typography className={classes.companyText}>
+            {displayedUser.company}
+          </Typography>
+          <ParnersProfile/>
+        </span>
+      : <Typography style={{ fontSize: '3rem', textAlign: 'center' }}>
+          {this.state.message}
+        </Typography>;
+
     return (
       <Card className={classes.card}>
         <CardContent className={classes.content}>
-          <UserAvatar className={classes.avatar} src={this.props.user.avatar_url} />
-          <Typography className={classes.nameText}>
-            {user.name}
-          </Typography>
-          <Typography className={classes.companyText}>
-            {user.company}
-          </Typography>
-          <ParnersProfile/>
+          {cardContent}
         </CardContent>
         <CardActions>
-          {/*<IconButton>
+          <IconButton>
             <Edit
               className={classes.editButton}
               onClick={this.toggleEditUser}
             />
-          </IconButton>*/}
+          </IconButton>
         </CardActions>
       </Card>
     );
@@ -124,7 +154,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
 
 };
 

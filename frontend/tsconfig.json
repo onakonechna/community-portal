@@ -14,6 +14,7 @@
       "lodash/*": [
         "node_modules/@types/lodash-es/*"
       ],
+      "react": ["node_modules/@types/react"],
     },
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
