@@ -71,6 +71,7 @@ export default class ProjectResource implements ProjectResourceInterface {
 
   getById(data: any): Promise<any> {
     const { project_id } = data;
+    throw 'Debugging..';
     return this.adapter.getById(PROJECTS_TABLE, { project_id });
   }
 
