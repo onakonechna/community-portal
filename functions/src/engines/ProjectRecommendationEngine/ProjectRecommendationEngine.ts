@@ -34,10 +34,6 @@ export default class ProjectRecommendationEngine implements ProjectRecommendatio
     last_visited.slice().reverse().forEach((prev_state: any) => state.push(prev_state.project_id));
     state.push(project_id);
 
-    return new Promise((resolve: any, reject: any) => {
-      return reject('Debugging');
-    });
-
     return new Promise((resolve: any) => {
       this.adapter.get(PROJECT_RECOMMENDATION_BUCKET, getSignature(state))
         .then((result: any) => resolve(result))
