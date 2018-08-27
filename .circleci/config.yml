@@ -112,10 +112,6 @@ jobs:
           command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
-          name: Run backend tests
-          command: npm test
-
-      - run:
           name: Deploy application
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
