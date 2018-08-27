@@ -7,3 +7,9 @@ projectStars:
       path: /project-stars-indexer/
       method: get
       cors: true
+      authorizer:
+        name: authorizer
+          resultTtlInSeconds: 300
+          identitySource: method.request.header.Authorization
+          identityValidationExpression: .*
+          type: token
