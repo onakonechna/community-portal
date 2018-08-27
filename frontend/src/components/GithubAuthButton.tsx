@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-
+import { decode } from 'jsonwebtoken';
 import GithubAuthModal, { toQuery } from './GithubAuthModal';
 import Message from './Message';
 import { API } from './../api/Config';
@@ -97,7 +97,7 @@ const withLogin = (WrappedCompoent: any) => {
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
-        scope: '',
+        scope: 'public_repo',
       });
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
@@ -120,23 +120,6 @@ const withLogin = (WrappedCompoent: any) => {
       .catch((err: Error) => this.onFailure(err));
     }
 
-    decodeToken(token: string) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace('-', '+').replace('_', '/');
-      const decoded = JSON.parse(window.atob(base64));
-      return {
-        user_id: decoded.user_id,
-        name: decoded.name,
-        company: decoded.company,
-        avatar_url: decoded.avatar_url,
-        scopes: decoded.scopes,
-      };
-    }
-
-    async saveToken(token: string) {
-      await localStorage.setItem('oAuth', JSON.stringify(token));
-    }
-
     async clearToken() {
       await localStorage.removeItem('oAuth');
     }
@@ -147,14 +130,12 @@ const withLogin = (WrappedCompoent: any) => {
       }
       this.authorize(code)
         .then((res: any) => {
-          const token = res.data.token;
-          this.saveToken(token);
-          const user = this.decodeToken(token);
+          localStorage.setItem('oAuth', JSON.stringify(res.data.token));
+
           Promise.all([
-            this.props.loadUser(user),
+            this.props.loadUser(decode(res.data.token)),
             this.props.updateUserRole(this.props.user.user_id, 'user'),
             this.props.updateUserScopes(this.props.user.user_id, this.props.user.scopes),
-            this.props.getLikedProjects(),
             this.props.getBookmarkedProjects(),
           ])
           .catch((err: Error) => this.onFailure(err));

@@ -1,17 +1,17 @@
 custom:
   jwt:
-    secret: ${env:JWT_SECRET}
+    secret:
     expiration_time: 20d
   github:
     dev:
-      github_client_id: ${env:DEV_GITHUB_CLIENT_ID}
-      github_client_secret: ${env:DEV_GITHUB_CLIENT_SECRET}
+      github_client_id:
+      github_client_secret:
     staging:
-      github_client_id: ${env:STAGING_GITHUB_CLIENT_ID}
-      github_client_secret: ${env:STAGING_GITHUB_CLIENT_SECRET}
+      github_client_id:
+      github_client_secret:
     production:
-      github_client_id: ${env:GITHUB_CLIENT_ID}
-      github_client_secret: ${env:GITHUB_CLIENT_SECRET}
+      github_client_id:
+      github_client_secret:
     client_id: ${self:custom.github.${opt:stage, 'dev'}.github_client_id} # github auth app client_id
     client_secret: ${self:custom.github.${opt:stage, 'dev'}.github_client_secret} # github auth app client_secret
   dynamodb:
@@ -51,8 +51,15 @@ provider:
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
+    PROJECTS_TO_INDEX_STARS_TABLE: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}
+    PROJECTS_TO_INDEX_STARS_PROJECT-NAME-INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
+    PROJECTS_STARS_TABLE: ${file(./schema.json):ProjectStars.Properties.TableName}
+    PROJECTS_STARS_USER_ID_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-user-id-index
+    PROJECTS_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-project-name-index
+    PROJECTS_STARS_USER_NAME_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-user-name-index
     PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
     PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
+    PROJECTS_GITHUB_ID_INDEX: ${file(./schema.json):Projects.Properties.TableName}-github-id-index
     USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
     USERS_INDEX: ${file(./schema.json):Users.Properties.TableName}-index
     TAGS_TABLE: ${file(./schema.json):Tags.Properties.TableName}
@@ -97,6 +104,7 @@ service: community-portal
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
+  - ${file(./handlers/indexer/projectStars/projectStars.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
@@ -104,7 +112,6 @@ functions:
   - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/likeProject/likeProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
-  - ${file(./handlers/user/unlikeProject/unlikeProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/pledge/pledge.yml)}
@@ -133,6 +140,9 @@ resources:
     PullRequestsTable: ${file(./schema.json):PullRequests}
     EpicsTable: ${file(./schema.json):Epics}
     IssuesTable: ${file(./schema.json):Issues}
+    ProjectsToIndexStarsTable: ${file(./schema.json):ProjectsToIndexStars}
+    ProjectStarsTable: ${file(./schema.json):ProjectStars}
+    projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
     getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
     getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
@@ -140,7 +150,6 @@ resources:
     updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
     bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
-    unlikeProjectRole: ${file(./handlers/user/unlikeProject/role.yml):unlikeProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}

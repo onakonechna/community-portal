@@ -1,7 +1,7 @@
-unlikeProjectRole:
+projectStarsRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: ${self:provider.stage}-unlikeProjectRole
+    RoleName: ${self:provider.stage}-projectStarsRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,19 +11,17 @@ unlikeProjectRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: ${self:provider.stage}-unlikeProjectPolicy
+      - PolicyName: ${self:provider.stage}-projectStarsPolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:UpdateItem
+                - dynamodb:PutItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
             - Effect: Allow
               Action:
-                - dynamodb:UpdateItem
+                - dynamodb:GetItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_INDEX}"

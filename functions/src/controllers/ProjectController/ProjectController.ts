@@ -4,12 +4,8 @@ interface ProjectControllerInterface {
   getById(data: any): (result: any) => any;
   edit(data: any): (result: any) => any;
   updateDisplay(data: any): (result: any) => any;
-  upvote(data: any): (result: any) => any;
-  downvote(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   updateStatus(data: any): (result: any) => any;
-  addUpvoter(data: any): (result: any) => any;
-  removeUpvoter(data: any): (result: any) => any;
   addPledged(data: any): (result: any) => any;
   addPledgedHistory(data: any): (result: any) => any;
   addPledger(data: any): (result: any) => any;
@@ -75,6 +71,17 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
+  getProjectUpvotes(data:any) {
+    return (result:any) => {
+      return {
+        status: 200,
+        payload: {
+          data
+        },
+      }
+    }
+  }
+
   updateDisplay(data: any) {
     const { project_id } = data;
     return (result: any) => {
@@ -83,32 +90,6 @@ export default class ProjectController implements ProjectControllerInterface {
         payload: {
           project_id,
           message: 'Project status updated successfully',
-        },
-      };
-    };
-  }
-
-  upvote(data: any) {
-    const { project_id } = data;
-    return (result: any) => {
-      return {
-        status: 200,
-        payload: {
-          project_id,
-          message: 'Project upvoted successfully',
-        },
-      };
-    };
-  }
-
-  downvote(data: any) {
-    const { project_id } = data;
-    return (result: any) => {
-      return {
-        status: 200,
-        payload: {
-          project_id,
-          message: 'Project downvoted successfully',
         },
       };
     };
@@ -137,14 +118,6 @@ export default class ProjectController implements ProjectControllerInterface {
         display: String(status === 'open'),
       };
     };
-  }
-
-  addUpvoter(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  removeUpvoter(data: any) {
-    return (result: any) => { return {}; };
   }
 
   addPledged(data: any) {

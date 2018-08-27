@@ -1,7 +1,10 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { likeProject, bookmarkProjectAction } from '../actions';
+import { addStarredProject, removeStarredProject } from '../actions/user';
+import { updateProjectStars } from '../actions/project';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
@@ -109,6 +112,7 @@ const styles = (theme: any) => ({
     'margin-left': 'auto',
   },
   hourText: {
+    'display': 'block',
     'font-size': '1rem',
   },
   labels: {
@@ -179,8 +183,10 @@ const styles = (theme: any) => ({
 });
 
 interface CardProps {
+  isProjectStarred: boolean
   project: {
     project_id: string,
+    github_project_id: string,
     name?: string,
     description: string,
     status: string,
@@ -220,6 +226,9 @@ interface CardProps {
 interface DispatchProps {
   likeProject: any;
   bookmarkProject: any;
+  addStarredProject: any;
+  removeStarredProject: any;
+  updateProjectStars: any;
 }
 
 interface CardState {
@@ -339,12 +348,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }));
   }
 
-  toggleLike() {
-    this.setState((prevState: CardState) => ({
-      liked: !prevState.liked,
-    }));
-  }
-
   toggleBookmark() {
     this.setState((prevState: CardState) => ({
       bookmarked: !prevState.bookmarked,
@@ -352,16 +355,27 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 
   handleLike() {
-    const { project_id } = this.props.project;
-    if (!this.state.liked) {
-      this.props.likeProject(project_id)
-        .then((response: any) => {
-          this.toggleLike();
-        })
-        .catch((err: Error) => {
-          this.onFailure(new Error('Something went wrong while liking this project'));
-        });
-    }
+    const { github_project_id } = this.props.project;
+
+    this.props.likeProject(github_project_id)
+      .then((response: any) => {
+        let upvotes = this.props.project.upvotes;
+
+        if (this.props.isProjectStarred) {
+          --upvotes;
+          this.props.removeStarredProject(this.props.project.github_project_id);
+        } else {
+          ++upvotes;
+          this.props.addStarredProject({
+            project_id: this.props.project.github_project_id
+          });
+        }
+
+        this.props.updateProjectStars(this.props.project.github_project_id, upvotes);
+      })
+      .catch((err: Error) => {
+        this.onFailure(new Error('Something went wrong while liking this project'));
+      });
   }
 
   handleBookmark() {
@@ -466,7 +480,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                 <Typography className={classes.progressText}>
                   {`${Object.keys(this.props.project.pledgers).length}/`}
                   <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                  <Typography className={classes.hourText}>{`joined`}</Typography>
+                  <span className={classes.hourText}>{`joined`}</span>
                 </Typography>
               </div>
             </div>
@@ -476,7 +490,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
                   <Avatar onClick={(e) => { this.goProfile(pledger, e); }} key={pledger} src={pledgers[pledger].avatar_url} />
                 ))
                 : null}
-              <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
+                <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
             </div>
           </CardContent>
           <CardActions className={classes.cardAction}>
@@ -496,7 +510,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Like liked={this.state.liked} handler={this.handleLike} project_id={this.props.project.project_id} />
+            <Like liked={this.props.isProjectStarred} handler={this.handleLike} project_id={this.props.project.project_id} />
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
@@ -510,16 +524,20 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    likeProject: (id: string) => dispatch(likeProject(id)),
-    bookmarkProject: (id: string) => dispatch(bookmarkProjectAction(id)),
-  };
-};
+const mapStateToProps = (state:any, props:any) => ({
+  isProjectStarred: !!_.find(
+    state.user['upvoted_projects'],
+    (project:any) => project.project_id === props.project.github_project_id)
+});
 
-export default compose<{}, CardProps>(
+export default compose<{}, any>(
   withStyles(styles, {
     name: 'ProjectCard',
   }),
-  connect<{}, DispatchProps, CardProps>(null, mapDispatchToProps),
+  connect<{}, {}, any>(mapStateToProps, {
+    addStarredProject,
+    updateProjectStars,
+    removeStarredProject,
+    likeProject,
+    bookmarkProject: bookmarkProjectAction}),
 )(ProjectCard);

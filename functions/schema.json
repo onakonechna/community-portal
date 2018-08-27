@@ -12,6 +12,10 @@
           "AttributeType": "S"
         },
         {
+          "AttributeName": "github_project_id",
+          "AttributeType": "S"
+        },
+        {
           "AttributeName": "upvotes",
           "AttributeType": "N"
         }
@@ -42,6 +46,22 @@
             "ReadCapacityUnits": 2,
             "WriteCapacityUnits": 2
           }
+        },
+        {
+          "IndexName": "${file(./schema.json):Projects.Properties.TableName}-github-id-index",
+          "KeySchema": [
+            {
+              "AttributeName": "github_project_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
         }
       ],
       "ProvisionedThroughput": {
@@ -49,6 +69,134 @@
         "WriteCapacityUnits": 2
       },
       "TableName": "projects-${self:provider.stage}"
+    }
+  },
+  "ProjectStars": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "user_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "project_name",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "user_name",
+          "AttributeType": "S"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "project_id",
+          "KeyType": "HASH"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "${file(./schema.json):ProjectStars.Properties.TableName}-user-id-index",
+          "KeySchema": [
+            {
+              "AttributeName": "user_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        },
+        {
+          "IndexName": "${file(./schema.json):ProjectStars.Properties.TableName}-project-name-index",
+          "KeySchema": [
+            {
+              "AttributeName": "project_name",
+              "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        },
+        {
+          "IndexName": "${file(./schema.json):ProjectStars.Properties.TableName}-user-name-index",
+          "KeySchema": [
+            {
+              "AttributeName": "user_name",
+              "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "projects-stars-${self:provider.stage}"
+    }
+  },
+  "ProjectsToIndexStars": {
+    "Type": "AWS::DynamoDB::Table",
+    "Properties": {
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "project_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "project_name",
+          "AttributeType": "S"
+        }
+      ],
+      "KeySchema": [
+        {
+          "AttributeName": "project_id",
+          "KeyType": "HASH"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index",
+          "KeySchema": [
+            {
+              "AttributeName": "project_name",
+              "KeyType": "HASH"
+            }
+          ],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 2,
+            "WriteCapacityUnits": 2
+          }
+        }
+      ],
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      },
+      "TableName": "projects-to-index-stars-${self:provider.stage}"
     }
   },
   "Users": {

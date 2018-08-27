@@ -48,6 +48,26 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.put(params).promise();
   }
 
+  addItems(query:any) {
+    const params = {
+      RequestItems: query
+    };
+
+    return this.db.batchWrite(params).promise();
+  }
+
+  getAll(
+    tableName: string,
+    limit: number = undefined,
+  ): Promise<any> {
+    const params = {
+      TableName: tableName,
+      Limit: limit
+    };
+
+    return this.db.scan(params).promise()
+  }
+
   get(
     tableName: string,
     key: string,
@@ -213,6 +233,32 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.base.updateItem(params).promise();
   }
 
+  addToMapColumn(
+    tableName:string,
+    identifier:any,
+    mapName:string,
+    value:any,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    returnValues = 'ALL_NEW';
+
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      UpdateExpression: 'SET #MAP_NAME = :value',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
+      },
+      ExpressionAttributeValues: {
+        ':value': value,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.db.update(params).promise();
+  }
+
   removeFromSet(
     tableName: string,
     identifier: any,
@@ -269,7 +315,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     identifier: any,
     mapName: string,
     key: string,
-    value: string|number,
+    value: any,
     returnValues: string = 'ALL_NEW',
   ) {
     const params = {
@@ -290,7 +336,30 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.update(params).promise();
   }
 
-  delete(tableName: string, identifier: any, returnValues: string = 'ALL_OLD'): Promise<any> {
+  removeFromMap(
+    tableName:string,
+    identifier:any,
+    mapName:string,
+    key:string,
+    returnValues: string = 'ALL_NEW',
+  ) {
+    const params = {
+      TableName: tableName,
+      Key: identifier,
+      UpdateExpression: 'REMOVE #MAP_NAME.#KEY',
+      ExpressionAttributeNames: {
+        '#MAP_NAME': mapName,
+        '#KEY': key,
+      },
+      ReturnValues: returnValues,
+      ConditionExpression: getExistenceCondition(identifier),
+    };
+
+    return this.db.update(params).promise();
+  }
+
+
+    delete(tableName: string, identifier: any, returnValues: string = 'ALL_OLD'): Promise<any> {
     const params = {
       TableName: tableName,
       Key: identifier,

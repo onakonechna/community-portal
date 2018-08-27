@@ -1,4 +1,3 @@
-
 import _filter from 'lodash/filter';
 import includes from 'lodash/includes';
 import * as React from 'react';
@@ -10,6 +9,7 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
 import { loadProjects } from './../actions';
+import { loadStarredProjects } from './../actions/user';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -50,11 +50,13 @@ interface GridStateProps {
 
 interface DispatchProps {
   loadProjects: () => void;
+  loadStarredProjects: () => any;
 }
 
 interface GridProps {
   project?: {};
   user?: any;
+  authorized: any;
   handler?: () => void;
   filter?: string;
   classes?: any;
@@ -87,6 +89,17 @@ interface GridState {
 }
 
 export class ProjectGrid extends React.Component<GridProps & GridStateProps & DispatchProps, GridState> {
+  componentWillMount() {
+    if (this.props.authorized) {
+      this.props.loadStarredProjects();
+    }
+  }
+
+  componentWillReceiveProps(props:any) {
+    if (!this.props.authorized && props.authorized) {
+      this.props.loadStarredProjects();
+    }
+  }
 
   constructor(props: GridProps & GridStateProps & DispatchProps) {
     super(props);
@@ -153,7 +166,6 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
                 project={project}
                 handler={this.updateGrid}
                 history={this.props.history}
-                liked={this.checkLike(project.project_id)}
                 bookmarked={this.checkBookmark(project.project_id)}
                 joined={this.checkJoin(project.project_id)}
               />
@@ -171,20 +183,13 @@ const mapStateToProps = (state: any) => {
   return {
     projects: state.project,
     user: state.user,
+    authorized: state.user.user_id
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    loadProjects: () => dispatch(loadProjects()),
-  };
-};
-
-export default compose<GridStateProps, GridProps>(
+export default compose<GridStateProps, any>(
   withStyles(styles, {
     name: 'ProjectGrid',
   }),
-  connect<GridStateProps, DispatchProps, GridProps>(
-    mapStateToProps, mapDispatchToProps,
-  ),
+  connect<GridStateProps, DispatchProps, any>(mapStateToProps, {loadStarredProjects, loadProjects}),
 )(ProjectGrid);

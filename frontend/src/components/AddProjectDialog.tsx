@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
 import Message from './Message';
+import { loadStarredProjects } from '../actions/user'
 
 import { withStyles, Theme } from '@material-ui/core/styles';
 
@@ -104,6 +105,7 @@ const styles = (theme: Theme) => ({
 
 interface DispatchProps {
   addProject: any;
+  loadStarredProjects: any;
 }
 
 interface DialogProps {
@@ -261,6 +263,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
       const data = this.prepareData();
       this.props.addProject(data)
         .then((response: any) => {
+          this.props.loadStarredProjects();
           this.setLoadingState(true, false);
           this.setState(state);
         })
@@ -465,15 +468,9 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    addProject: (project: any) => dispatch(addProject(project)),
-  };
-};
-
 export default compose<{}, DialogProps>(
   withStyles(styles, {
     name: 'AddProjectDialog',
   }),
-  connect<{}, DispatchProps, DialogProps>(null, mapDispatchToProps),
+  connect<{}, DispatchProps, DialogProps>(null, {loadStarredProjects, addProject}),
 )(AddProjectDialog);
