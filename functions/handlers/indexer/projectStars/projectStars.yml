@@ -9,7 +9,7 @@ projectStars:
       cors: true
       authorizer:
         name: authorizer
-          resultTtlInSeconds: 300
-          identitySource: method.request.header.Authorization
-          identityValidationExpression: .*
-          type: token
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token
