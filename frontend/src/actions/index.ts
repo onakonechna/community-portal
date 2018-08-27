@@ -118,11 +118,6 @@ export const editProjectStatusAction = (id: string, status: string) => {
 export const likeProject = (id: string) => {
   return (dispatch: Dispatch) => {
     return upvoteProject(id)
-      .then(() => {
-        //dispatch(loadProjects());
-        //dispatch(loadProject(id));
-        //dispatch(getLikedProjectsAction());
-      });
   };
 };
 
@@ -143,7 +138,6 @@ export const getLikedProjectsAction: (any) = () => {
   return (dispatch: Dispatch) => {
     return getLikedProjects()
       .then((res:any) => {
-        console.log(res);
         let projects;
         if (res['upvoted_projects']) {
           projects = res['upvoted_projects'] || [];
