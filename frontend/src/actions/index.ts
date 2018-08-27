@@ -121,8 +121,6 @@ export const likeProject = (id: string) => {
   };
 };
 
-
-
 export const bookmarkProjectAction = (id: string) => {
   return (dispatch: Dispatch) => {
     return bookmarkProject(id)
