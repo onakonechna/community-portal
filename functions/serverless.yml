@@ -52,7 +52,7 @@ provider:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
     PROJECTS_TO_INDEX_STARS_TABLE: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}
-    PROJECTS_TO_INDEX_STARS_PROJECT-NAME-INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
+    PROJECTS_TO_INDEX_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
     PROJECTS_STARS_TABLE: ${file(./schema.json):ProjectStars.Properties.TableName}
     PROJECTS_STARS_USER_ID_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-user-id-index
     PROJECTS_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-project-name-index
