@@ -47,7 +47,7 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
               aws s3 sync public/. s3://production.opensource.magento.com --acl public-read --delete
-            elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
+            elif [ "${CIRCLE_BRANCH}" == "dev" ]; then
               STAGE=dev npm run build:webpack
               aws s3 sync public/. s3://dev.opensource.engcom.magento.com --acl public-read --delete  
             else
