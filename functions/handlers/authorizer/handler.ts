@@ -47,7 +47,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const { user_id } = decoded;
 
     const effect = 'Allow';
-    const authorizerContext = { user_id };
+    const authorizerContext = { ...decoded };
 
     // Return an IAM policy document for the current endpoint
     let resource: string;
