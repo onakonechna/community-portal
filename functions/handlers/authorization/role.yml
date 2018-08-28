@@ -9,7 +9,12 @@ authorizationRole:
           Principal:
             Service:
               - lambda.amazonaws.com
-          Action: sts:AssumeRole
+          Action:
+            - cloudwatch:*
+            - sts:AssumeRole
+            - logs:*
+          Resource:
+            - '*'
     Policies:
       - PolicyName: ${self:provider.stage}-authorizationPolicy
         PolicyDocument:
