@@ -17,13 +17,20 @@ likeProjectRole:
           Statement:
             - Effect: Allow
               Action:
+                - dynamodb:Query
+                - dynamodb:GetItem
+                - dynamodb:DeleteItem
                 - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_STARS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_GITHUB_ID_INDEX}"
             - Effect: Allow
               Action:
+                - dynamodb:Query
+                - dynamodb:GetItem
+                - dynamodb:DeleteItem
                 - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
