@@ -14,13 +14,18 @@ const likeProjectEndpoint = new Endpoint('/user/likeProject', 'post');
 likeProjectEndpoint.configure((req: Request, res: Response) => {
   Promise.all([
     userResource.getById({user_id: req.tokenContents['user_id']}),
+    userResource.getUpvotedProjects(req.tokenContents['user_id']),
     projectResource.getProjectByGithubId({github_project_id: req.body.github_project_id})
   ])
-    .then((result:any) => ({
-      user: new User(result[0].Item),
-      project: new Project(result[1])
-    }))
-    .then(({user, project}) =>
+    .then((result:any) => {
+      const user = new User(result[0].Item);
+      const project = new Project(result[2]);
+
+      user.set('upvoted_projects', result[1].item);
+
+      return {user, project}
+    })
+    .then(({user, project}) => res.json({type: user.isProjectUpvoted(project.get('github_project_id'))}) &&
       new Promise((resolve:any, reject:any) => resolve(user.isProjectUpvoted(project.get('github_project_id')) ?
         Promise.all([
           projectResource.updateUpvoteCount(project.get('project_id'), (project.get('upvotes') -1 )),
@@ -52,7 +57,7 @@ likeProjectEndpoint.configure((req: Request, res: Response) => {
     github_project_id: project.get('github_project_id'),
     user_id: user.get('user_id')
   }}))
-  .catch((error) => console.log('ERROR', error) || res.status(200).json({payload:{error: true}}))
+  .catch((error) => console.log('ERROR', error) || res.status(200).json({payload:{error: error}}))
 });
 
 export const handler = likeProjectEndpoint.execute();

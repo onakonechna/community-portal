@@ -65,19 +65,17 @@ export default class UserResource implements UserResourceInterface {
   upvoteProject(githubProjectId:string, projectName:string, userId:string, accessToken:string): Promise<any> {
     const promises:any[] = [
       this.api.upvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
-      this.addUpvotedProject(githubProjectId, projectName, userId)
     ];
 
-    return Promise.all(promises).then((result:any) => ({data: result[1]['user_id']}));
+    return Promise.all(promises).then((result:any) => console.log('RESSSULT', result) || ({data: result[0]}));
   }
 
   downvoteProject(githubProjectId:string, projectName:string, userId:string, accessToken:string): Promise<any> {
     const promises:any[] = [
       this.api.downvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
-      this.removeUpvotedProject(githubProjectId, projectName, userId)
     ];
 
-    return Promise.all(promises).then((result:any) => ({data: result[1]['user_id']}));
+    return Promise.all(promises).then((result:any) => console.log('RESSSULTDELETE', result) ||({data: result[0]}));
   }
 
   addUpvotedProject(github_project_id:string, projectName:string, user_id:string): Promise<any> {
