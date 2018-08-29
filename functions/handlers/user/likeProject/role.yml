@@ -21,6 +21,7 @@ likeProjectRole:
                 - dynamodb:GetItem
                 - dynamodb:DeleteItem
                 - dynamodb:UpdateItem
+                - dynamodb:PutItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_STARS_TABLE}"
@@ -31,6 +32,7 @@ likeProjectRole:
                 - dynamodb:Query
                 - dynamodb:GetItem
                 - dynamodb:DeleteItem
+                - dynamodb:PutItem
                 - dynamodb:UpdateItem
               Resource:
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
