@@ -9,7 +9,7 @@ const buildIAMPolicy = function (principalId: string,
                                  context: any) {
   const policy = {
     principalId,
-    context,
+    context: context,
     policyDocument: {
       Version: '2012-10-17',
       Statement: [
@@ -47,7 +47,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     const { user_id } = decoded;
 
     const effect = 'Allow';
-    const authorizerContext = { user_id };
+    const authorizerContext = { user: JSON.stringify(decoded)};
 
     // Return an IAM policy document for the current endpoint
     let resource: string;

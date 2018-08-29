@@ -19,6 +19,7 @@ createProjectRole:
               Action:
                 - dynamodb:PutItem
               Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TO_INDEX_STARS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
             - Effect: Allow
               Action:
