@@ -3,7 +3,6 @@ import DatabaseConnection from './../DatabaseConnection';
 import DatabaseAdapter from './../DatabaseAdapter';
 import GithubService from "../../services/GithubService";
 import {
-  PROJECTS_ORGANIZATION,
   PROJECTS_STARS_TABLE,
   PROJECTS_STARS_USER_ID_INDEX
 } from '../ProjectResource/ProjectResource';
@@ -62,17 +61,17 @@ export default class UserResource implements UserResourceInterface {
     return this.adapter.update(USERS_TABLE, { user_id }, data);
   }
 
-  upvoteProject(githubProjectId:string, projectName:string, userId:string, accessToken:string): Promise<any> {
+  upvoteProject(organization:string, projectName:string, accessToken:string): Promise<any> {
     const promises:any[] = [
-      this.api.upvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
+      this.api.upvoteRepository(organization, projectName, accessToken),
     ];
 
     return Promise.all(promises).then((result:any) => ({data: result[0]}));
   }
 
-  downvoteProject(githubProjectId:string, projectName:string, userId:string, accessToken:string): Promise<any> {
+  downvoteProject(organization:string, projectName:string, accessToken:string): Promise<any> {
     const promises:any[] = [
-      this.api.downvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
+      this.api.downvoteRepository(organization, projectName, accessToken),
     ];
 
     return Promise.all(promises).then((result:any) => ({data: result[0]}));

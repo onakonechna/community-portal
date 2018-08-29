@@ -54,6 +54,14 @@ export default class Project {
       splitGithubAddress[splitGithubAddress.length - 2];
   }
 
+  public getGithubOrganizationName() {
+    const splitGithubAddress = this.github_address.split('/');
+
+    return splitGithubAddress[splitGithubAddress.length - 1] ?
+      splitGithubAddress[splitGithubAddress.length - 2] :
+      splitGithubAddress[splitGithubAddress.length - 3]
+  }
+
   public get(property:string) {
     return this[property];
   }

@@ -30,9 +30,8 @@ likeProjectEndpoint.configure((req: Request, res: Response) => {
           projectResource.updateUpvoteCount(project.get('project_id'), (project.get('upvotes') -1 )),
           projectResource.downvoteProject(project.get('github_project_id')),
           userResource.downvoteProject(
-            project.get('github_project_id'),
+            project.getGithubOrganizationName(),
             project.getGithubRepositoryName(),
-            user.get('user_id'),
             user.get('access_token')
           )
         ]) :
@@ -45,9 +44,8 @@ likeProjectEndpoint.configure((req: Request, res: Response) => {
             user.get('name')
           ),
           userResource.upvoteProject(
-            project.get('github_project_id'),
+            project.getGithubOrganizationName(),
             project.getGithubRepositoryName(),
-            user.get('user_id'),
             user.get('access_token')
           )
         ]))).then(() => ({user, project}))

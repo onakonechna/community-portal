@@ -20,12 +20,12 @@ projectCreateEndpoint.configure((req: Request, res: Response) => {
     });
   }
 
-  projectResource.getGithubProjectUpvotes(project.getGithubRepositoryName())
+  projectResource.getGithubProjectUpvotes(project.getGithubOrganizationName(), project.getGithubRepositoryName())
     .then((result:any) => {
       project.set('upvotes', result.data);
       return project;
     })
-    .then((project:any) => projectResource.getGithubProjectId(project.getGithubRepositoryName())
+    .then((project:any) => projectResource.getGithubProjectId(project.getGithubOrganizationName(), project.getGithubRepositoryName())
       .then((result:{data:string}) => {
         project.set('github_project_id', result.data);
         return project;

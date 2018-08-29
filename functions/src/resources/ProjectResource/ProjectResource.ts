@@ -9,13 +9,12 @@ export const PROJECTS_GITHUB_ID_INDEX = process.env.PROJECTS_GITHUB_ID_INDEX;
 export const PROJECTS_TO_INDEX_STARS_TABLE = process.env.PROJECTS_TO_INDEX_STARS_TABLE;
 export const PROJECTS_STARS_TABLE = process.env.PROJECTS_STARS_TABLE;
 export const PROJECTS_STARS_USER_ID_INDEX = process.env.PROJECTS_STARS_USER_ID_INDEX;
-export const PROJECTS_ORGANIZATION = 'magento-engcom';
 
 interface ProjectResourceInterface {
   create(data: any): Promise<any>;
   getCards(data: any): Promise<any>;
   getById(data: any): Promise<any>;
-  getGithubProjectUpvotes(data:any): Promise<any>;
+  getGithubProjectUpvotes(organization:string, name:string): Promise<any>;
   edit(data: any): Promise<any>;
   updateStatus(data: any): Promise<any>;
   updateDisplay(data: any): Promise<any>;
@@ -67,17 +66,17 @@ export default class ProjectResource implements ProjectResourceInterface {
     ).then((result:any) => result.Items[0])
   }
 
-  getGithubProjectUpvotes(name:any): Promise<any> {
-    if (this.githubProjectsInformation[name]) {
+  getGithubProjectUpvotes(organization:string, name:string): Promise<any> {
+    if (this.githubProjectsInformation[`${organization}:${name}`]) {
       return new Promise((resolve:any) => {
         resolve({
-          data: this.githubProjectsInformation[name]['stargazers_count']
+          data: this.githubProjectsInformation[`${organization}:${name}`]['stargazers_count']
         });
       });
     } else {
-      return this.api.getRepository(PROJECTS_ORGANIZATION, name)
+      return this.api.getRepository(organization, name)
         .then((result:any) => {
-          this.githubProjectsInformation[name] = result.data;
+          this.githubProjectsInformation[`${organization}:${name}`] = result.data;
 
           return {
             data: result.data['stargazers_count']
@@ -101,17 +100,17 @@ export default class ProjectResource implements ProjectResourceInterface {
     })
   }
 
-  getGithubProjectId(name:any): Promise<any> {
-    if (this.githubProjectsInformation[name]) {
+  getGithubProjectId(organization:string, name:any): Promise<any> {
+    if (this.githubProjectsInformation[`${organization}:${name}`]) {
       return new Promise((resolve:any) => {
         resolve({
-          data: this.githubProjectsInformation[name]['id'].toString()
+          data: this.githubProjectsInformation[`${organization}:${name}`]['id'].toString()
         });
       });
     } else {
-      return this.api.getRepository(PROJECTS_ORGANIZATION, name)
+      return this.api.getRepository(organization, name)
         .then((result:any) => {
-          this.githubProjectsInformation[name] = result.data;
+          this.githubProjectsInformation[`${organization}:${name}`] = result.data;
 
           return {
             data: result.data['id'].toString()
