@@ -52,7 +52,7 @@ export default class User {
   }
 
   public isProjectUpvoted(id:string) {
-    return !!this.upvoted_projects[id];
+    return !!_.find(this.upvoted_projects, ['project_id', id]);
   }
 
   public isScopeValid = (scopes:any[], scope:string) => scopes && _.includes(scopes, scope);

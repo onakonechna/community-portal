@@ -21,12 +21,11 @@ likeProjectEndpoint.configure((req: Request, res: Response) => {
       const user = new User(result[0].Item);
       const project = new Project(result[2]);
 
-      user.set('upvoted_projects', result[1].item);
+      user.set('upvoted_projects', result[1].Items);
 
       return {user, project}
     })
-    .then(({user, project}) => res.json({type: user.isProjectUpvoted(project.get('github_project_id'))}) &&
-      new Promise((resolve:any, reject:any) => resolve(user.isProjectUpvoted(project.get('github_project_id')) ?
+    .then(({user, project}) => new Promise((resolve:any, reject:any) => resolve(user.isProjectUpvoted(project.get('github_project_id')) ?
         Promise.all([
           projectResource.updateUpvoteCount(project.get('project_id'), (project.get('upvotes') -1 )),
           projectResource.downvoteProject(project.get('github_project_id')),
