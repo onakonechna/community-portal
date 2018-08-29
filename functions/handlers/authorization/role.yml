@@ -17,7 +17,6 @@ authorizationRole:
           Statement:
             - Effect: Allow
               Action:
-                - logs:*
                 - dynamodb:GetItem
                 - dynamodb:PutItem
                 - dynamodb:UpdateItem

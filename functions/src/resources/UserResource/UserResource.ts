@@ -67,7 +67,7 @@ export default class UserResource implements UserResourceInterface {
       this.api.upvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
     ];
 
-    return Promise.all(promises).then((result:any) => console.log('RESSSULT', result) || ({data: result[0]}));
+    return Promise.all(promises).then((result:any) => ({data: result[0]}));
   }
 
   downvoteProject(githubProjectId:string, projectName:string, userId:string, accessToken:string): Promise<any> {
@@ -75,7 +75,7 @@ export default class UserResource implements UserResourceInterface {
       this.api.downvoteRepository(PROJECTS_ORGANIZATION, projectName, accessToken),
     ];
 
-    return Promise.all(promises).then((result:any) => console.log('RESSSULTDELETE', result) ||({data: result[0]}));
+    return Promise.all(promises).then((result:any) => ({data: result[0]}));
   }
 
   addUpvotedProject(github_project_id:string, projectName:string, user_id:string): Promise<any> {

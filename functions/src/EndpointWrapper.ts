@@ -44,11 +44,10 @@ export default class Endpoint {
 
   execute() {
     const handler = serverless(this.app, {
-      request(request: any, event: any, context: any) {
+      request(request: Request, event: any, context: any) {
         const getDataFromContext = (data:any) => ({..._.omit(data, 'user'), ...JSON.parse(data.user)});
 
         if (event.requestContext.authorizer !== undefined) {
-          request.qwerty = event.requestContext.authorizer;
           if (event.requestContext.authorizer.claims !== undefined) {
             request.tokenContents = event.requestContext.authorizer.claims;
           } else {
