@@ -106,6 +106,7 @@ const styles: any = (theme:any) => ({
     'margin-left': 'auto',
   },
   hourText: {
+    'display': 'block',
     'font-size': '1rem',
   },
   progress: {
@@ -418,7 +419,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
                   <Typography className={classes.progressText}>
                     {`${Object.keys(this.props.project.pledgers).length}/`}
                     <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                    <Typography className={classes.hourText}>{`joined`}</Typography>
+                    <span className={classes.hourText}>{`joined`}</span>
                   </Typography>
                 </div>
               </div>
