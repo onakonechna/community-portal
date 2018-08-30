@@ -1,17 +1,14 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { likeProject, bookmarkProjectAction } from '../actions';
-import { addStarredProject, removeStarredProject } from '../actions/user';
-import { updateProjectStars } from '../actions/project';
+import { bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
 
 import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
-import LikeProjectButton from './buttons/LikeProjectButton';
+
 import PledgeButton from './buttons/PledgeButton';
 import Message from './Message';
 
@@ -33,6 +30,8 @@ import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+
+import StartsProjectButton from './projects/Stars';
 
 const styles = (theme: any) => ({
   avatar: {
@@ -183,7 +182,6 @@ const styles = (theme: any) => ({
 });
 
 interface CardProps {
-  isProjectStarred: boolean
   project: {
     project_id: string,
     github_project_id: string,
@@ -218,13 +216,11 @@ interface CardProps {
   toggleEdit?: () => void;
   classes?: any;
   history?: any;
-  liked: boolean;
   bookmarked: boolean;
   joined: boolean;
 }
 
 interface DispatchProps {
-  likeProject: any;
   bookmarkProject: any;
   addStarredProject: any;
   removeStarredProject: any;
@@ -234,7 +230,6 @@ interface DispatchProps {
 interface CardState {
   editOpen: boolean;
   pledgeOpen: boolean;
-  liked: boolean;
   bookmarked: boolean;
   joined: boolean;
   messageOpen: boolean;
@@ -244,16 +239,15 @@ interface CardState {
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
-const Like = WithAuth(['user'])(LikeProjectButton);
+const Stars = WithAuth(['user'])(StartsProjectButton);
 
-export class ProjectCard extends React.Component<CardProps & DispatchProps, CardState>{
+export class ProjectCard extends React.Component<any, CardState>{
 
   constructor(props: CardProps & DispatchProps) {
     super(props);
     this.state = {
       editOpen: false,
       pledgeOpen: false,
-      liked: this.props.liked,
       bookmarked: this.props.bookmarked,
       joined: this.props.joined,
       messageOpen: false,
@@ -261,7 +255,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     };
     this.confirmJoin = this.confirmJoin.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
@@ -272,7 +265,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
 
   componentWillReceiveProps(nextProps: any) {
     this.setState({
-      liked: nextProps.liked,
       bookmarked: nextProps.bookmarked,
     });
   }
@@ -354,40 +346,12 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
     }));
   }
 
-  handleLike() {
-    const { github_project_id } = this.props.project;
-
-    this.props.likeProject(github_project_id)
-      .then((response: any) => {
-        let upvotes = this.props.project.upvotes;
-
-        if (this.props.isProjectStarred) {
-          --upvotes;
-          this.props.removeStarredProject(this.props.project.github_project_id);
-        } else {
-          ++upvotes;
-          this.props.addStarredProject({
-            project_id: this.props.project.github_project_id
-          });
-        }
-
-        this.props.updateProjectStars(this.props.project.github_project_id, upvotes);
-      })
-      .catch((err: Error) => {
-        this.onFailure(new Error('Something went wrong while liking this project'));
-      });
-  }
-
   handleBookmark() {
     const { project_id } = this.props.project;
     if (!this.state.bookmarked) {
       this.props.bookmarkProject(project_id)
-        .then((response: any) => {
-          this.toggleBookmark();
-        })
-        .catch((err: Error) => {
-          this.onFailure(new Error('Something went wrong while bookmarking this project'));
-        });
+        .then(() => this.toggleBookmark())
+        .catch(() => this.onFailure(new Error('Something went wrong while bookmarking this project')));
     }
   }
 
@@ -451,7 +415,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               className={classes.description}
             />
             <div className={classes.labels}>
-              {this.props.project.technologies.slice(0, 5).map(technology => (
+              {this.props.project.technologies.slice(0, 5).map((technology:any) => (
                 <Chip className={classes.chip} key={technology} label={technology} />
               ))}
             </div>
@@ -510,7 +474,7 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
               </IconButton>
             </a>
             <Edit handler={this.toggleEdit} />
-            <Like liked={this.props.isProjectStarred} handler={this.handleLike} project_id={this.props.project.project_id} />
+            <Stars project={this.props.project}/>
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>
@@ -524,20 +488,6 @@ export class ProjectCard extends React.Component<CardProps & DispatchProps, Card
   }
 }
 
-const mapStateToProps = (state:any, props:any) => ({
-  isProjectStarred: !!_.find(
-    state.user['upvoted_projects'],
-    (project:any) => project.project_id === props.project.github_project_id)
-});
-
 export default compose<{}, any>(
-  withStyles(styles, {
-    name: 'ProjectCard',
-  }),
-  connect<{}, {}, any>(mapStateToProps, {
-    addStarredProject,
-    updateProjectStars,
-    removeStarredProject,
-    likeProject,
-    bookmarkProject: bookmarkProjectAction}),
-)(ProjectCard);
+  withStyles(styles, {name: 'ProjectCard'}),
+  connect<{}, {}, any>(null, {bookmarkProject: bookmarkProjectAction}))(ProjectCard);

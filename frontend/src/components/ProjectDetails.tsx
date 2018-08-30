@@ -4,14 +4,13 @@ import compose from 'recompose/compose';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 import PledgeDialog from './PledgeDialog';
-
+import StartsProjectButton from './projects/Stars';
 import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
-import LikeProjectButton from './buttons/LikeProjectButton';
 import PledgeButton from './buttons/PledgeButton';
 import Message from './Message';
 
-import { loadProject, likeProject, bookmarkProjectAction } from '../actions';
+import { loadProject, bookmarkProjectAction } from '../actions';
 
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
@@ -193,7 +192,6 @@ interface StateProps {
 
 interface DispatchProps {
   loadProject: (project_id: string) => void;
-  likeProject: any;
   bookmarkProject: any;
 }
 
@@ -207,7 +205,6 @@ interface ProjectDetailsProps {
 interface ProjectDetailsState {
   editOpen: boolean;
   pledgeOpen: boolean;
-  liked: boolean;
   bookmarked: boolean;
   messageOpen: boolean;
   errorMessage: string;
@@ -216,21 +213,19 @@ interface ProjectDetailsState {
 const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
-const Like = WithAuth(['user'])(LikeProjectButton);
+const Stars = WithAuth(['user'])(StartsProjectButton);
 
-export class ProjectDetails extends React.Component<ProjectDetailsProps & DispatchProps, ProjectDetailsState> {
+export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   constructor(props: ProjectDetailsProps & DispatchProps) {
     super(props);
     this.state = {
       editOpen: false,
       pledgeOpen: false,
-      liked: this.checkLike(this.props.project.project_id),
       bookmarked: this.checkBookmark(this.props.project.project_id),
       messageOpen: false,
       errorMessage: '',
     };
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleLike = this.handleLike.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
     this.togglePledge = this.togglePledge.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -256,10 +251,6 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     const numOfPledgers = Object.keys(project.pledgers).length;
     const { estimated } = this.props.project;
     return (numOfPledgers / estimated) * 100;
-  }
-
-  checkLike(id: string) {
-    return this.props.user.likedProjects.indexOf(id) !== -1;
   }
 
   checkBookmark(id: string) {
@@ -293,29 +284,10 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
     }));
   }
 
-  toggleLike() {
-    this.setState((prevState: ProjectDetailsState) => ({
-      liked: !prevState.liked,
-    }));
-  }
-
   toggleBookmark() {
     this.setState((prevState: ProjectDetailsState) => ({
       bookmarked: !prevState.bookmarked,
     }));
-  }
-
-  handleLike() {
-    const { project_id } = this.props.project;
-    if (!this.state.liked) {
-      this.props.likeProject(project_id)
-        .then((response: any) => {
-          this.toggleLike();
-        })
-        .catch((err: Error) => {
-          this.onFailure(new Error('Something went wrong while liking this project'));
-        });
-    }
   }
 
   handleBookmark() {
@@ -478,7 +450,7 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
                 </IconButton>
               </a>
               <Edit handler={this.toggleEdit} />
-              <Like liked={this.checkLike(this.props.project.project_id)} handler={this.handleLike} project_id={this.props.project.project_id} />
+              <Stars project={this.props.project}/>
               <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
             </CardActions>
           </Card>
@@ -493,9 +465,9 @@ export class ProjectDetails extends React.Component<ProjectDetailsProps & Dispat
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: any, props: any) => {
   return {
-    project: state.oneproject,
+    project: state.project.find((project:any)=> project.project_id === props.project_id),
     user: state.user,
   };
 };
@@ -503,14 +475,11 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     loadProject: (project_id: string) => dispatch(loadProject(project_id)),
-    likeProject: (project_id: string) => dispatch(likeProject(project_id)),
     bookmarkProject: (project_id: string) => dispatch(bookmarkProjectAction(project_id)),
   };
 };
 
 export default compose<{}, ProjectDetailsProps>(
-  withStyles(styles, {
-    name: 'ProjectDetails',
-  }),
+  withStyles(styles, {name: 'ProjectDetails',}),
   connect<StateProps, DispatchProps, ProjectDetailsProps>(mapStateToProps, mapDispatchToProps),
 )(ProjectDetails);

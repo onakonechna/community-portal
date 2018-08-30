@@ -6,32 +6,9 @@ import { Dispatch } from 'redux';
 import GithubAuthButton, { User } from './GithubAuthButton';
 import { LoadUserAction,
          UpdateUserRoleAction,
-         getLikedProjectsAction,
          getBookmarkedProjectsAction,
          UpdateUserScopesAction,
 } from '../actions';
-
-interface WithAuthProps {
-  className?: any;
-  user?: any;
-  handler?: any;
-  liked?: boolean;
-  bookmarked?: boolean;
-  upvotes?: number;
-  project_id?: string;
-  label?: string;
-  scope?: string;
-  toggleLike?: any;
-  likeProject?: any;
-  toggleBookmark?: any;
-  bookmarkProject?: any;
-  open?: boolean;
-  toggleSideBar?: any;
-  toPledged?: any;
-  toProfile?: any;
-  toBookMark?: any;
-  toHome?: any;
-}
 
 interface WithAuthStateProps {
   user?: any;
@@ -41,14 +18,13 @@ interface WithAuthDispatchProps {
   loadUser?: any;
   updateUserRole?: any;
   updateUserScopes?: any;
-  getLikedProjects?: any;
   getBookmarkedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
   const Login = GithubAuthButton(WrappedComponent);
-  class WithAuth extends React.Component<WithAuthProps & WithAuthStateProps & WithAuthDispatchProps, {}> {
-    constructor(props: WithAuthProps) {
+  class WithAuth extends React.Component<any, {}> {
+    constructor(props: any) {
       super(props);
     }
     render() {
@@ -77,7 +53,6 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
           loadUser={this.props.loadUser}
           updateUserRole={this.props.updateUserRole}
           updateUserScopes={this.props.updateUserScopes}
-          getLikedProjects={this.props.getLikedProjects}
           getBookmarkedProjects={this.props.getBookmarkedProjects}
         />;
       }
@@ -85,15 +60,12 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
       return <WrappedComponent {...this.props} />;
     }
   }
-  const mapStateToProps = (state: any) => {
-    return {
-      user: state.user,
-    };
-  };
+  const mapStateToProps = (state: any) => ({
+    user: state.user
+  });
 
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-      getLikedProjects: () => dispatch(getLikedProjectsAction()),
       getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
@@ -101,7 +73,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
     };
   };
 
-  return connect<WithAuthStateProps, WithAuthDispatchProps, WithAuthProps>(mapStateToProps, mapDispatchToProps)(WithAuth);
+  return connect<WithAuthStateProps, WithAuthDispatchProps, any>(mapStateToProps, mapDispatchToProps)(WithAuth);
 };
 
 export default Authorization;
