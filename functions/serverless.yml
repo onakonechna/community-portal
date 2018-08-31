@@ -74,6 +74,7 @@ provider:
     PROJECTS_GITHUB_ID_INDEX: ${file(./schema.json):Projects.Properties.TableName}-github-id-index
     USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
     USERS_INDEX: ${file(./schema.json):Users.Properties.TableName}-index
+    USERS_LOGIN_INDEX: ${file(./schema.json):Users.Properties.TableName}-login-index
     TAGS_TABLE: ${file(./schema.json):Tags.Properties.TableName}
     SKILLS_TABLE: ${file(./schema.json):Skills.Properties.TableName}
     PULL_REQUESTS_TABLE: ${file(./schema.json):PullRequests.Properties.TableName}

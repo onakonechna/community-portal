@@ -1,4 +1,6 @@
 import * as _ from 'lodash';
+export const PARTNER_ADMINS_ORGANIZATION = 'magento-engcom';
+export const PARTNER_ADMINS_TEAM = 'engcom-team';
 
 export default class User {
   private user_id:string;

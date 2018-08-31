@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import DatabaseConnection from '../../../src/resources/DatabaseConnection';
-import Endpoint from './../../../src/Endpoint';
+import Endpoint from './../../../src/EndpointWrapper';
 import { PartnersResource,} from './../../../config/Components';
 import {Request, Response} from "../../../config/Types";
 import UserResource from "../../../src/resources/UserResource/UserResource";
@@ -141,7 +141,7 @@ endpoint.configure((req: Request, res: Response) => {
     .then(
       (users:any) => {
         if (data.isNewTeam) {
-          githubService.createPartnerTeam(data.githubTeamName).then(
+          githubService.createTeam(data.githubTeamName).then(
             (createdTeam:any) => {
               let preparedUsers:any[] = [];
               let owners:any[] = [];

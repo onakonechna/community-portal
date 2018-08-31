@@ -3,13 +3,13 @@ import axios from 'axios';
 const token = process.env.GITHUB_USER_TOKEN;
 
 class GithubService {
-  createPartnerTeam(name:string) {
+  createTeam(name:string, parent_team_id?:string) {
     const options = {
       method: 'POST',
       url: 'https://api.github.com/orgs/magento/teams',
       data: {
         "name": name,
-        "parent_team_id": 2545914
+        "parent_team_id": parent_team_id || 2545914
       },
       headers: {
         'User-Agent': 'community-portal-app',
@@ -21,7 +21,21 @@ class GithubService {
     return axios(options);
   }
 
-  getTeamsByOrganizationName(name:string) {
+  getTeams(parent_team_id?:string) {
+    const options = {
+      method: 'GET',
+      url: `https://api.github.com/teams/${parent_team_id || 2545914}/teams`,
+      headers: {
+        'User-Agent': 'community-portal-app',
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.hellcat-preview+json'
+      }
+    };
+
+    return axios(options);
+  }
+
+  getTeamsInOrganizationByName(name:string) {
     const options = {
       method: 'GET',
       url: `https://api.github.com/orgs/${name}/teams`,
@@ -84,20 +98,6 @@ class GithubService {
     })
   }
 
-  getPartnerTeams() {
-    const options = {
-      method: 'GET',
-      url: 'https://api.github.com/teams/2545914/teams',
-      headers: {
-        'User-Agent': 'community-portal-app',
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.hellcat-preview+json'
-      }
-    };
-
-    return axios(options);
-  }
-
   getUserStarred(userToken:string) {
     const options = {
       method: 'GET',
@@ -148,8 +148,6 @@ class GithubService {
 
     return axios(options);
   }
-
-
 
   inviteUsersToTeam(users:any[], teamId:string) {
     let promises:any[] = [];

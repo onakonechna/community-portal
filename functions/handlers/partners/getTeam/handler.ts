@@ -1,4 +1,4 @@
-import Endpoint from './../../../src/Endpoint';
+import Endpoint from './../../../src/EndpointWrapper';
 import {PartnersResource} from './../../../config/Components';
 import {Request, Response} from "../../../config/Types";
 import DatabaseConnection from "../../../src/resources/DatabaseConnection";

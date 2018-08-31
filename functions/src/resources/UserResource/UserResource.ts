@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import DatabaseConnection from './../DatabaseConnection';
 import DatabaseAdapter from './../DatabaseAdapter';
 import GithubService from "../../services/GithubService";
@@ -9,6 +8,7 @@ import {
 
 export const USERS_TABLE = process.env.USERS_TABLE;
 export const USERS_INDEX = process.env.USERS_INDEX;
+export const USERS_LOGIN_INDEX = process.env.USERS_LOGIN_INDEX;
 
 interface UserResourceInterface {
   create(data: any): Promise<any>;
@@ -66,6 +66,10 @@ export default class UserResource implements UserResourceInterface {
       });
   }
 
+  getByLogin(login: string): Promise<any> {
+    return this.adapter.get(USERS_TABLE, 'login', login, USERS_LOGIN_INDEX)
+  }
+
   getUsersByLogin(usersLogin: any): Promise<any> {
     const promises = usersLogin.map((data:any) => this.getByLogin(data));
     const reflect = (p:any) => p.then(
@@ -86,10 +90,6 @@ export default class UserResource implements UserResourceInterface {
         resolve(data);
       })
     });
-  }
-
-  getByLogin(login: string): Promise<any> {
-    return this.adapter.get(USERS_TABLE, 'login', login, USERS_INDEX)
   }
 
   update(data: any): Promise<any> {

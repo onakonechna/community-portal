@@ -2,7 +2,7 @@ import GithubService from '../../src/services/GithubService';
 import GithubUsersResource from '../../src/resources/GithubUsersResource/GithubUsersResource'
 import config from './config';
 import DatabaseConnection from "../../src/resources/DatabaseConnection";
-import Endpoint from "../../src/Endpoint";
+import Endpoint from "../../src/EndpointWrapper";
 
 const endpoint = new Endpoint('/githubUsersIndexer', 'get');
 const githubService = new GithubService();
@@ -12,7 +12,7 @@ const handle = function (req:any, res:any) {
   let promises:any[] = [];
 
   config.forEach((item:any) => {
-    promises.push(githubService.getTeamsByOrganizationName(item.organization)
+    promises.push(githubService.getTeamsInOrganizationByName(item.organization)
       .then((res:any) => ({data: res.data, organization: item})));
   });
 

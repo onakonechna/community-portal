@@ -35,7 +35,10 @@ export interface User {
   name?: string;
   company?: string;
   avatar_url?: string;
-  likedProjects?: string[];
+  login?: string,
+  email?: string,
+  location?: string,
+  upvoted_projects?: any,
   bookmarkedProjects?: string[];
 }
 
@@ -44,7 +47,10 @@ const defaultUser: User = {
   name: '',
   company: '',
   avatar_url: '',
-  likedProjects: [],
+  login: '',
+  email: '',
+  location: '',
+  upvoted_projects: [],
   bookmarkedProjects: [],
 };
 

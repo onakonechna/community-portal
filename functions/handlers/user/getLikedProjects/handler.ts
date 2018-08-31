@@ -3,7 +3,6 @@ import { Request, Response } from "../../../config/Types";
 import DatabaseConnection from "../../../src/resources/DatabaseConnection";
 import UserResource from "../../../src/resources/UserResource/UserResource";
 
-
 const dbConnection = new DatabaseConnection();
 const userResource = new UserResource(dbConnection);
 const getStarredProjects = new Endpoint('/user/likedProjects', 'get');
