@@ -3,13 +3,6 @@ projectStars:
   role: projectStarsRole
   handler: handlers/indexer/projectStars/handler.handler
   events:
-  - http:
-      path: /project-stars-indexer/
-      method: get
-      cors: true
-      authorizer:
-        name: authorizer
-        resultTtlInSeconds: 300
-        identitySource: method.request.header.Authorization
-        identityValidationExpression: .*
-        type: token
+  - schedule:
+    rate: cron(*/1 * * * ? *)
+    enabled: true
