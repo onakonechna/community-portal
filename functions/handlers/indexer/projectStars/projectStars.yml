@@ -3,6 +3,4 @@ projectStars:
   role: projectStarsRole
   handler: handlers/indexer/projectStars/handler.handler
   events:
-  - schedule:
-    rate: cron(*/1 * * * ? *)
-    enabled: true
+  - schedule: rate(1 minute)
