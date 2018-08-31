@@ -1,0 +1,8 @@
+getTeams:
+  role: getTeamsRole
+  handler: handlers/partners/getTeams/handler.handler
+  events:
+  - http:
+      path: /partners/teams/
+      method: get
+      cors: true

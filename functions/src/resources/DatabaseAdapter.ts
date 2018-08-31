@@ -68,6 +68,34 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.scan(params).promise()
   }
 
+  getCollection(tableName:string, property:string, value:string) {
+    const param = {
+      TableName: tableName,
+      ExpressionAttributeNames: {"#prop": property,},
+      ExpressionAttributeValues: { ":val": value },
+      FilterExpression: "#prop = :val",
+    };
+
+    return this.db.scan(param).promise();
+  }
+
+  getByIds(
+    tableName: string,
+    values: any[],
+    attributeToGet: any = undefined
+  ): Promise<any> {
+    const params = {
+      "RequestItems" : {
+        [tableName] : {
+          "Keys" : values,
+          "AttributesToGet": attributeToGet
+        },
+      }
+    };
+
+    return this.db.batchGet(params).promise();
+  }
+
   get(
     tableName: string,
     key: string,
@@ -186,7 +214,7 @@ export default class DatabaseAdapter implements AdapterInterface {
     tableName: string,
     identifier: any,
     setName: string,
-    item: string,
+    item: any,
     returnValues: string = 'ALL_NEW',
   ) {
     const Key = convertIdentifier(identifier);

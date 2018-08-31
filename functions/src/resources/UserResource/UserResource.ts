@@ -54,6 +54,44 @@ export default class UserResource implements UserResourceInterface {
     );
   }
 
+  getUsersById(ids: string[], fields:string[] = undefined): Promise<any> {
+    return this.adapter.getByIds(USERS_TABLE, ids.map((id:string) => ({'user_id': id})), fields)
+      .then((data:any) => {
+        let users = data.Responses ? data.Responses.users : [];
+
+        users.forEach((item:any) => delete item['access_token']);
+        return {
+          data: users
+        }
+      });
+  }
+
+  getUsersByLogin(usersLogin: any): Promise<any> {
+    const promises = usersLogin.map((data:any) => this.getByLogin(data));
+    const reflect = (p:any) => p.then(
+      (data:any) => ({data, status: "success" }),
+      (err:any) => ({err, status: "error" }));
+
+    return new Promise((resolve:any, reject:any) => {
+      Promise.all(promises.map(reflect)).then(function(result:any){
+        let data:any[] = [];
+
+        result.forEach((item:any) => {
+          if (item.status === 'error') {
+            reject(item.data)
+          }
+          data.push(item.data.Items[0])
+        });
+
+        resolve(data);
+      })
+    });
+  }
+
+  getByLogin(login: string): Promise<any> {
+    return this.adapter.get(USERS_TABLE, 'login', login, USERS_INDEX)
+  }
+
   update(data: any): Promise<any> {
     const { user_id } = data;
     delete data['user_id'];
@@ -86,6 +124,48 @@ export default class UserResource implements UserResourceInterface {
       {
         name: projectName,
         github_project_id
+      }
+    )
+  }
+
+  addUserTwoFactorAuthentication(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'two_factor_authentication',
+      data.two_factor_authentication
+    )
+  }
+
+  addUserEmailVerified(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'emailVerified',
+      data.emailVerified
+    )
+  }
+
+  addUserAsPartnerTeamMember(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'partner_team_member',
+      {
+        status: data.status,
+        team_id: data.team_id
+      }
+    )
+  }
+
+  addUserAsPartnerTeamOwner(data:any): Promise<any> {
+    return this.adapter.addToMapColumn(
+      USERS_TABLE,
+      { user_id: data.user_id },
+      'partner_team_owner',
+      {
+        status: data.status,
+        team_id: data.team_id
       }
     )
   }

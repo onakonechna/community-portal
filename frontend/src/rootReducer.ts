@@ -2,8 +2,12 @@ import { combineReducers } from 'redux';
 
 import project from './reducers/project';
 import user from './reducers/user';
+import partners from './reducers/partners';
+import messages from './reducers/messages';
 
 export default combineReducers({
   user,
-  project
+  project,
+  partners,
+  messages,
 });

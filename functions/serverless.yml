@@ -3,6 +3,7 @@ custom:
     secret: ${env:JWT_SECRET}
     expiration_time: 20d
   github:
+    user_token: ''
     dev:
       github_client_id: ${env:DEV_GITHUB_CLIENT_ID}
       github_client_secret: ${env:DEV_GITHUB_CLIENT_SECRET}
@@ -51,6 +52,17 @@ provider:
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
+    PARTNER_TEAMS_TABLE: partner-teams
+    PARTNER_TEAMS_INDEX: partner-teams-index
+    PARTNER_TEAM_MEMBERS_TABLE: partner-team-members
+    PARTNER_TEAM_MEMBERS_INDEX: partner-team-members-index
+    PARTNER_TEAM_OWNERS_TABLE: partner-team-owners
+    PARTNER_TEAM_OWNERS_INDEX: partner-team-owners-index
+    GITHUB_PARTNER_TEAMS_TABLE: github-partner-teams
+    GITHUB_PARTNER_TEAMS_INDEX: github-partner-teams-index
+    GITHUB_USERS_TABLE: github-users
+    GITHUB_USERS_INDEX: github-users-index
+    TEAMS_TO_USERS_INDEX: teams-to-users-index
     PROJECTS_TO_INDEX_STARS_TABLE: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}
     PROJECTS_TO_INDEX_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
     PROJECTS_STARS_TABLE: ${file(./schema.json):ProjectStars.Properties.TableName}
@@ -75,6 +87,7 @@ provider:
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
+    GITHUB_USER_TOKEN: ${self:custom.github.user_token}
   iamRoleStatements:
       - Effect: Allow
         Action:
@@ -105,6 +118,13 @@ functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
   - ${file(./handlers/indexer/projectStars/projectStars.yml)}
+  - ${file(./handlers/partners/saveTeam/saveTeam.yml)}
+  - ${file(./handlers/partners/getTeams/getTeams.yml)}
+  - ${file(./handlers/partners/getTeam/getTeam.yml)}
+  - ${file(./handlers/partners/verifyUser/verifyUser.yml)}
+  - ${file(./handlers/partners/editTeam/editTeam.yml)}
+  - ${file(./handlers/githubUsersIndexer/githubUsersIndexer.yml)}
+  - ${file(./handlers/githubPartnerTeamsIndexer/githubPartnerTeamsIndexer.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
@@ -134,6 +154,12 @@ resources:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
     ProjectsTable: ${file(./schema.json):Projects}
+    TeamsToUsersIndexTable: ${file(./schema.json):TeamsToUsersIndex}
+    GithubPartnerTeamsTable: ${file(./schema.json):GithubPartnerTeams}
+    GithubUsersTable: ${file(./schema.json):GithubUsers}
+    PartnerTeamsTable: ${file(./schema.json):PartnerTeams}
+    PartnerTeamMembers: ${file(./schema.json):PartnerTeamMembers}
+    PartnerTeamOwners: ${file(./schema.json):PartnerTeamOwners}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
     SkillsTable: ${file(./schema.json):Skills}
@@ -143,6 +169,13 @@ resources:
     ProjectsToIndexStarsTable: ${file(./schema.json):ProjectsToIndexStars}
     ProjectStarsTable: ${file(./schema.json):ProjectStars}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
+    saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}
+    getTeamsRole: ${file(./handlers/partners/getTeams/role.yml):getTeamsRole}
+    getTeamRole: ${file(./handlers/partners/getTeam/role.yml):getTeamRole}
+    verifyUserRole: ${file(./handlers/partners/verifyUser/role.yml):verifyUserRole}
+    editTeamRole: ${file(./handlers/partners/editTeam/role.yml):editTeamRole}
+    githubUsersIndexerRole: ${file(./handlers/githubUsersIndexer/role.yml):githubUsersIndexerRole}
+    githubPartnerTeamsIndexerRole: ${file(./handlers/githubPartnerTeamsIndexer/role.yml):githubPartnerTeamsIndexerRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
     getProjectCardsRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectCardsRole}
     getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}

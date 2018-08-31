@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
+import PartnersSideBarBlock from './partners/layout/SideBar';
 
 const styles = {
   list: {
@@ -48,6 +49,8 @@ const SideBar = (props: any) => {
         >
           <ListItemText primary="Joined Projects" />
         </ListItem>
+        <Divider/>
+        <PartnersSideBarBlock/>
       </List>
     </div>
   );

@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
+import ParnersProfile from './partners/pages/Profile';
 import Edit from '@material-ui/icons/Edit';
 import { Classes } from '../../node_modules/@types/jss';
 import { Dispatch } from '../../node_modules/redux';
@@ -22,7 +23,6 @@ const styles = (theme: Theme) => ({
   },
   card: {
     'background-color': '#F2F3F3',
-    height: '25rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
     },
@@ -123,6 +123,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
           <Typography className={classes.companyText}>
             {displayedUser.company}
           </Typography>
+          <ParnersProfile/>
         </span>
       : <Typography style={{ fontSize: '3rem', textAlign: 'center' }}>
           {this.state.message}

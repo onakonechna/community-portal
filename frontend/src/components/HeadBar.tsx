@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -15,6 +16,8 @@ import WithAuth from './WithAuth';
 import withLogin from './GithubAuthButton';
 import Logo from './Logo';
 import SideBar from './SideBar';
+import { LoadUserAction } from "../actions";
+import { decode } from 'jsonwebtoken';
 
 const AddProject = WithAuth(['user', 'owner'], ['write:project'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
@@ -46,6 +49,7 @@ interface HeadBarProps {
   classes: any;
   location?: any;
   history?: any;
+  LoadUserAction?: any;
 }
 
 interface HeadBarStateProps {
@@ -56,17 +60,24 @@ interface HeadBarState {
   sideBarOpen: boolean;
 }
 
+const getUserFromToken = () => {
+  const token = window.localStorage.getItem('oAuth') || '';
+
+  return token ? decode(JSON.parse(token)) : {};
+};
+
 class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarState> {
   constructor(props: HeadBarProps & HeadBarStateProps & HeadBarState) {
     super(props);
-    this.state = {
-      sideBarOpen: false,
-    },
+    this.state = {sideBarOpen: false};
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.toBookMark = this.toBookMark.bind(this);
     this.toHome = this.toHome.bind(this);
     this.toPledged = this.toPledged.bind(this);
     this.toProfile = this.toProfile.bind(this);
+    let user = getUserFromToken();
+    if (!_.isEmpty(user)) {props.LoadUserAction(user);}
+
   }
 
   toggleSideBar() {
@@ -120,7 +131,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
                   aria-label="Home"
                 >
                   <Home />
-              </IconButton> 
+              </IconButton>
           }
           <span>
             <SideNav
@@ -153,6 +164,6 @@ export default compose<{}, HeadBarProps>(
     name: 'HeadBar',
   }),
   connect<HeadBarStateProps, {}, HeadBarProps>(
-    mapStateToProps, {},
+    mapStateToProps, { LoadUserAction },
   ),
 )(HeadBar);
