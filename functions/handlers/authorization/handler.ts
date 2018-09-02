@@ -10,6 +10,7 @@ import ProjectResource from '../../src/resources/ProjectResource/ProjectResource
 import { TokenAPI } from '../../config/Components';
 import DatabaseConnection from "../../src/resources/DatabaseConnection";
 import AuthorizationService from '../../src/services/AuthorizationService';
+import {message} from "aws-sdk/clients/sns";
 
 const authorizationEndpoint = new Endpoint('/authorize', 'post');
 const tokenApi = new TokenAPI();
@@ -82,7 +83,8 @@ authorizationEndpoint.configure((req: Request, res: Response) => {
       scopes: user.get('scopes'),
       message: 'User saved',
       token: authorizationService.create(user.getPublicData())
-    }));
+    }))
+    .catch((err:any) => console.log(err) || res.json({err: true, message: 'Authorization failed'}))
 });
 
 export const handler = authorizationEndpoint.execute();

@@ -86,6 +86,19 @@ class GithubService {
     return axios(options);
   }
 
+  getStarredUsers(org:string, repos:string, page:number) {
+    const url = `https://api.github.com/repos/${org}/${repos}/stargazers`;
+    const options = {
+      method: 'GET',
+      url: page ? url + `?page=${page}` : url,
+      headers: {
+        'User-Agent': 'community-portal-app',
+      }
+    };
+
+    return axios(options);
+  }
+
   getUsersByLogin(logins:string[]) {
     let promises:any[] = [];
 

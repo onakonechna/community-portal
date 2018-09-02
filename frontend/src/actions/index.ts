@@ -181,7 +181,7 @@ export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
     return fetchProjects()
       .then((projects: any) => {
-        dispatch(projectsLoaded(projects));
+        dispatch(projectsLoaded(projects.data));
       });
   };
 };

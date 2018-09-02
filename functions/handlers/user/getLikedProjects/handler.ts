@@ -8,8 +8,11 @@ const userResource = new UserResource(dbConnection);
 const getStarredProjects = new Endpoint('/user/likedProjects', 'get');
 
 getStarredProjects.configure((req: Request, res: Response) => {
-  userResource.getUpvotedProjects(req.tokenContents.user_id)
-    .then((result:any) => res.status(200).json({data: result.Items}));
+  userResource.getById({user_id: req.tokenContents.user_id})
+    .then((result:any) => result.Item)
+    .then((userData:any) => userResource.getGithubUpvotedProjects(userData['access_token']))
+    .then((projects:any) => res.status(200).json({
+      data: projects.data.map((project:any) => ({project_id: project.id = project.id.toString()}))
+    }));
 });
-
 export const handler = getStarredProjects.execute();

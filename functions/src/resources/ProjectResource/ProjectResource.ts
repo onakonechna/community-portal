@@ -12,7 +12,7 @@ export const PROJECTS_STARS_USER_ID_INDEX = process.env.PROJECTS_STARS_USER_ID_I
 
 interface ProjectResourceInterface {
   create(data: any): Promise<any>;
-  getCards(data: any): Promise<any>;
+  getProjects(data: any): Promise<any>;
   getById(data: any): Promise<any>;
   getGithubProjectUpvotes(organization:string, name:string): Promise<any>;
   edit(data: any): Promise<any>;
@@ -40,8 +40,8 @@ export default class ProjectResource implements ProjectResourceInterface {
     return this.adapter.create(PROJECTS_TABLE, data);
   }
 
-  setProjectToIndexStars(project_name:string, project_id:string): Promise<any> {
-    return this.adapter.create(PROJECTS_TO_INDEX_STARS_TABLE, {project_name, project_id});
+  setProjectToIndexStars(project_name:string, project_id:string, project_organization:string): Promise<any> {
+    return this.adapter.create(PROJECTS_TO_INDEX_STARS_TABLE, {project_name, project_id, project_organization});
   }
 
   setStarredProjects(collection:any[]): Promise<any> {
@@ -54,6 +54,10 @@ export default class ProjectResource implements ProjectResourceInterface {
 
   getProjectToIndexStars(): Promise<any> {
     return this.adapter.getAll(PROJECTS_TO_INDEX_STARS_TABLE);
+  }
+
+  getStarredUsers(org:string, repos:string, page:number):Promise<any> {
+    return this.api.getStarredUsers(org, repos, page)
   }
 
   getProjectByGithubId(data: {github_project_id:string}): Promise<any> {
@@ -119,7 +123,7 @@ export default class ProjectResource implements ProjectResourceInterface {
     }
   }
 
-  getCards(data: any): Promise<any> {
+  getProjects(): Promise<any> {
     return this.adapter.get(
       PROJECTS_TABLE,
       'display',

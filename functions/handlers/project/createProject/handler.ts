@@ -32,7 +32,11 @@ projectCreateEndpoint.configure((req: Request, res: Response) => {
        })
     )
     .then((project:any) => new Promise((resolve:any) => Promise.all([
-        projectResource.setProjectToIndexStars(project.getGithubRepositoryName(), project.get('github_project_id')),
+        projectResource.setProjectToIndexStars(
+          project.getGithubRepositoryName(),
+          project.get('github_project_id'),
+          project.getGithubOrganizationName()
+        ),
         projectResource.create(project.getData())
       ]).then((result:any) => resolve(project))
     ))
