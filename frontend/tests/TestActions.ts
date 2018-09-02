@@ -1,4 +1,3 @@
-/*
 import * as actions from '../src/actions';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -10,7 +9,7 @@ const mockStore = configureMockStore(middlewares);
 declare const API_ENDPOINT: string;
 const API = API_ENDPOINT;
 
-describe('test actions', () => {
+xdescribe('test actions', () => {
   const projectList = [
     {
       name: 'World Cup Project',
@@ -79,4 +78,3 @@ describe('test actions', () => {
       });
   });
 });
-*/
