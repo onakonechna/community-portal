@@ -376,7 +376,9 @@ export class ProjectCard extends React.Component<any, CardState>{
     const { classes } = this.props;
     const { pledgers } = this.props.project;
     const html = {
-      __html: stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))),
+      __html: this.props.project.description ?
+        stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))) :
+        null
     };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (
