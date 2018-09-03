@@ -71,22 +71,15 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   getGithubProjectUpvotes(organization:string, name:string): Promise<any> {
-    if (this.githubProjectsInformation[`${organization}:${name}`]) {
-      return new Promise((resolve:any) => {
-        resolve({
-          data: this.githubProjectsInformation[`${organization}:${name}`]['stargazers_count']
-        });
-      });
-    } else {
-      return this.api.getRepository(organization, name)
-        .then((result:any) => {
-          this.githubProjectsInformation[`${organization}:${name}`] = result.data;
+    return this.api.getRepository(organization, name)
+      .then((result:any) => {
+        this.githubProjectsInformation[`${organization}:${name}`] = result.data;
 
-          return {
-            data: result.data['stargazers_count']
-          };
-        });
-    }
+        return {
+          data: result.data['stargazers_count']
+        };
+      }
+    );
   }
 
   upvoteProject(github_project_id:string, project_name:string, user_id:string, user_name:string) {
