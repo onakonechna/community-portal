@@ -63,7 +63,9 @@ export default class Endpoint {
           if (event.requestContext.authorizer.claims !== undefined) {
             request.tokenContents = event.requestContext.authorizer.claims;
           } else {
-            request.tokenContents = getDataFromContext(event.requestContext.authorizer);
+            request.tokenContents = event.requestContext.authorizer.user ?
+              getDataFromContext(event.requestContext.authorizer) :
+              event.requestContext.authorizer;
           }
         }
       },
