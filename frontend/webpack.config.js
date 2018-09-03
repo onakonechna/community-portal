@@ -46,6 +46,7 @@ switch(process.env.STAGE) {
 
 module.exports = {
     entry: "./src/index.tsx",
+    mode: 'development',
     output: {
         filename: "[name].bundle.[chunkhash].js",
         path: path.resolve(__dirname + "/public/dist"),
