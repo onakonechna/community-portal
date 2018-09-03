@@ -3,7 +3,7 @@ custom:
     secret: ${env:JWT_SECRET}
     expiration_time: 20d
   github:
-    user_token: ''
+    user_token: ${env:GITHUB_USER_TOKEN}
     dev:
       github_client_id: ${env:DEV_GITHUB_CLIENT_ID}
       github_client_secret: ${env:DEV_GITHUB_CLIENT_SECRET}
