@@ -104,13 +104,14 @@ const withLogin = (WrappedCompoent: any) => {
 
     handleLogin() {
       const isAdmin = window.localStorage.getItem('partners-admin');
-      const scope = isAdmin ? 'user&admin:org&public_repo' : 'user:email&public_repo';
+      const scope = isAdmin ? 'user,admin:org,public_repo' : 'user:email,public_repo';
 
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
         scope,
       });
+
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',
         `https://github.com/login/oauth/authorize?${search}`,

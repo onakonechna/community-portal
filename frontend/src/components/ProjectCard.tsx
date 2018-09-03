@@ -417,7 +417,7 @@ export class ProjectCard extends React.Component<any, CardState>{
               className={classes.description}
             />
             <div className={classes.labels}>
-              {this.props.project.technologies.slice(0, 5).map((technology:any) => (
+              {this.props.project.technologies && this.props.project.technologies.slice(0, 5).map((technology:any) => (
                 <Chip className={classes.chip} key={technology} label={technology} />
               ))}
             </div>
