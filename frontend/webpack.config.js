@@ -1,12 +1,13 @@
 const path = require("path");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 let public = '';
-let githubClientId = ''
+let githubClientId = '';
 
 switch(process.env.STAGE) {
     case "production":
@@ -46,7 +47,7 @@ switch(process.env.STAGE) {
 module.exports = {
     entry: "./src/index.tsx",
     output: {
-        filename: "bundle.js",
+        filename: "[name].bundle.[chunkhash].js",
         path: path.resolve(__dirname + "/public/dist"),
         publicPath: "/dist/"
     },
@@ -58,6 +59,10 @@ module.exports = {
             GITHUB_CLIENT_ID: githubClientId,
             PUBLIC_URL: JSON.stringify(public)
           }),
+        new HtmlWebpackPlugin({
+            filename: '../index.html',
+            template: 'src/assets/index.template.html',
+        }),
     ],
 
     devServer: {
