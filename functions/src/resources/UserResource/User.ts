@@ -1,6 +1,4 @@
 import * as _ from 'lodash';
-export const PARTNER_ADMINS_ORGANIZATION = 'magento-engcom';
-export const PARTNER_ADMINS_TEAM = 'engcom-team';
 
 export default class User {
   private user_id:string;
@@ -15,6 +13,11 @@ export default class User {
   private url:string;
   private login:string;
   private upvoted_projects:any;
+  private emails:any[];
+  private partner_team_member:any;
+  private partner_team_owner:any;
+  private partners_admin:boolean;
+  private two_factor_authentication:boolean;
 
   constructor(data:any) {
     this.user_id = data.user_id;
@@ -29,14 +32,19 @@ export default class User {
     this.url = data.url;
     this.login = data.login;
     this.upvoted_projects = data.upvoted_projects || [];
+    this.emails = data.emails || [];
+    this.partner_team_member = data.partner_team_member || {};
+    this.partner_team_owner = data.partner_team_owner || {};
+    this.partners_admin = data.partners_admin || false;
+    this.two_factor_authentication = data.two_factor_authentication || false;
   }
 
   public get(property:string) {
-    return this[property];
+    return _.get(this, property);
   }
 
   public set(property:string, value:any) {
-    this[property] = value;
+    _.set(this, property, value);
   }
 
   public updateData(data:any) {
@@ -51,6 +59,11 @@ export default class User {
     this.email = data.email || this.email;
     this.url = data.url || this.url;
     this.upvoted_projects = data.upvoted_projects || this.upvoted_projects;
+    this.emails = data.emails || this.emails;
+    this.partner_team_member = data.partner_team_member || this.partner_team_member;
+    this.partner_team_owner = data.partner_team_owner || this.partner_team_owner;
+    this.partners_admin = data.partners_admin || this.partners_admin;
+    this.two_factor_authentication = data.two_factor_authentication || this.two_factor_authentication;
   }
 
   public isProjectUpvoted(id:string) {
@@ -72,7 +85,12 @@ export default class User {
       email: this.email,
       url: this.url,
       login: this.login,
-      upvoted_projects: this.upvoted_projects
+      upvoted_projects: this.upvoted_projects,
+      emails: this.emails,
+      partner_team_member: this.partner_team_member,
+      partner_team_owner: this.partner_team_owner,
+      partners_admin: this.partners_admin,
+      two_factor_authentication: this.two_factor_authentication
     });
   }
 
@@ -88,7 +106,11 @@ export default class User {
       email: this.email,
       url: this.url,
       login: this.login,
-      upvoted_projects: this.upvoted_projects
+      upvoted_projects: this.upvoted_projects,
+      partner_team_member: this.partner_team_member,
+      partner_team_owner: this.partner_team_owner,
+      partners_admin: this.partners_admin,
+      two_factor_authentication: this.two_factor_authentication
     })
   }
 

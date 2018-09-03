@@ -76,7 +76,10 @@ const withLogin = (WrappedCompoent: any) => {
     private popup: any;
 
     authorize(response: string) {
-      return axios.post(`${API}/authorize`, { code: response });
+      const isAdmin = window.localStorage.getItem('partners-admin');
+      const params = isAdmin ? {code: response, 'partners-admin': isAdmin} : {code: response};
+
+      return axios.post(`${API}/authorize`, params);
     }
 
     processAuthorizeFailure(response: string) {
@@ -100,10 +103,13 @@ const withLogin = (WrappedCompoent: any) => {
     }
 
     handleLogin() {
+      const isAdmin = window.localStorage.getItem('partners-admin');
+      const scope = isAdmin ? 'user&admin:org&public_repo' : 'user:email&public_repo';
+
       const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
-        scope: 'public_repo',
+        scope,
       });
       const popup = this.popup = GithubAuthModal.open(
         'github-oauth-authorize',

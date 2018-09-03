@@ -57,7 +57,7 @@ export default class UserResource implements UserResourceInterface {
   getUsersById(ids: string[], fields:string[] = undefined): Promise<any> {
     return this.adapter.getByIds(USERS_TABLE, ids.map((id:string) => ({'user_id': id})), fields)
       .then((data:any) => {
-        let users = data.Responses ? data.Responses.users : [];
+        let users = data.Responses ? data.Responses[USERS_TABLE] : [];
 
         users.forEach((item:any) => delete item['access_token']);
         return {

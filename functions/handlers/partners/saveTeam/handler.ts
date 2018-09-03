@@ -4,7 +4,6 @@ import Endpoint from './../../../src/EndpointWrapper';
 import { PartnersResource,} from './../../../config/Components';
 import {Request, Response} from "../../../config/Types";
 import UserResource from "../../../src/resources/UserResource/UserResource";
-import GithubUsersResource from "../../../src/resources/GithubUsersResource/GithubUsersResource";
 import GithubPartnerTeamsResource from "../../../src/resources/GithubPartnerTeamsResource/GithubPartnerTeamsResource";
 import GithubService from "../../../src/services/GithubService";
 import PartnerTeamController from '../../../src/controllers/PartnerTeamController/PartnerTeamController';
@@ -14,7 +13,6 @@ const endpoint = new Endpoint('/partners/team/save', 'post');
 const dbConnection = new DatabaseConnection();
 const partnersResource = new PartnersResource(dbConnection);
 const usersResource = new UserResource(dbConnection);
-const githubUsersResource = new GithubUsersResource(dbConnection);
 const githubPartnerTeamsResource = new GithubPartnerTeamsResource(dbConnection);
 const githubService = new GithubService();
 
@@ -158,10 +156,10 @@ endpoint.configure((req: Request, res: Response) => {
                 () => res.status(200).json({error: true, payload: {message: 'Cannot save team'}})
               );
             },
-            () => res.status(200).json({
+            (err:any) => console.log(err.response.data) || res.status(200).json({
               payload: {
                 error: true,
-                message: `Cannot create team ${data.githubTeamName} on Github`
+                message: `Cannot create team ${data.githubTeamName} on Github. ${_.get(err, 'response.data.errors[0].message')}`
               }
             })
           )

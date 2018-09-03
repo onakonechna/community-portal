@@ -17,5 +17,9 @@ getTeamsRole:
             - Effect: Allow
               Action:
                 - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:GetItem
               Resource:
+                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAMS_TABLE}"
                 - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAMS_TABLE}/index/${self:provider.environment.PARTNER_TEAMS_INDEX}"
+

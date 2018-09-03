@@ -4,8 +4,6 @@ import Endpoint from './../../../src/EndpointWrapper';
 import { PartnersResource,} from './../../../config/Components';
 import {Request, Response} from "../../../config/Types";
 import UserResource from "../../../src/resources/UserResource/UserResource";
-import GithubUsersResource from "../../../src/resources/GithubUsersResource/GithubUsersResource";
-import GithubPartnerTeamsResource from "../../../src/resources/GithubPartnerTeamsResource/GithubPartnerTeamsResource";
 import GithubService from "../../../src/services/GithubService";
 import PartnerTeamController from '../../../src/controllers/PartnerTeamController/PartnerTeamController';
 
@@ -14,8 +12,6 @@ const endpoint = new Endpoint('/partners/team/edit', 'post');
 const dbConnection = new DatabaseConnection();
 const partnersResource = new PartnersResource(dbConnection);
 const usersResource = new UserResource(dbConnection);
-const githubUsersResource = new GithubUsersResource(dbConnection);
-const githubPartnerTeamsResource = new GithubPartnerTeamsResource(dbConnection);
 const githubService = new GithubService();
 
 const removeEmptyValues = (data:any) => _.pickBy(data, val => val !== '');
@@ -25,8 +21,6 @@ endpoint.configure((req: Request, res: Response) => {
   let data = req.body;
 
   data.updated = unixTimestamp;
-
-  console.log('DATA', data);
 
   Promise.all([
     partnersResource.getTeam(data.id),
@@ -56,10 +50,6 @@ endpoint.configure((req: Request, res: Response) => {
     delete previosTeamData.owners;
     delete previosTeamData.members;
 
-
-    console.log('previousTeamMembersMap', previousTeamMembersMap);
-    console.log('members', members);
-
     if (_.isEmpty(previosTeamData)) {return res.status(200).json({payload:{error: true, message: 'Team in not exist'}})}
 
     data = removeEmptyValues({
@@ -78,13 +68,9 @@ endpoint.configure((req: Request, res: Response) => {
 
                   preparedUsers = partnerTeamController.prepareUsersToSave(users, data.id, createdTeam.name, createdTeam.id);
 
-                 console.log('preparedUsers', members);
-
 
                   ownersTeam = partnerTeamController.getMapByProp(owners.map((owner:any) => owner.login), preparedUsers);
                   membersTeam = partnerTeamController.getMapByProp(members.map((member:any) => member.login), preparedUsers);
-
-                  console.log('members2', members);
 
                   partnersResource.save(data, membersTeam, ownersTeam).then(
                     () => res.status(200).json({ payload: {id: data.id}}),

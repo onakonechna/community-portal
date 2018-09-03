@@ -99,7 +99,7 @@ class Profile extends React.Component<any, any> {
     } else if (status === 'pending') {
       return <span className={this.props.classes.waitingColor}>Waiting accepting of invitation</span>
     } else if (status === 'active') {
-      return <span className={this.props.classes.acceptColor}>'Active'</span>
+      return <span className={this.props.classes.acceptColor}>Active</span>
     }
 
     return '';

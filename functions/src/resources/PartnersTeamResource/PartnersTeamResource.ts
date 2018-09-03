@@ -37,7 +37,7 @@ export default class PartnersTeamResource implements PartnersTeamResourceInterfa
     }
 
     if (!_.isEmpty(collections)) {
-      promises.push(this.adapter.createCollection(collections))
+      promises.push(this.adapter.addItems(collections))
     }
 
     return Promise.all(promises);

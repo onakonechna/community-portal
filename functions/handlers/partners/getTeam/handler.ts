@@ -67,7 +67,7 @@ endpoint.configure((req: Request, res: Response) => {
             }
           })
 
-        }, () => res.status(200).json({payload:{error: true, message: 'Cannot get users'}}))
+        }, (error:any) => console.log(error) || res.status(200).json({payload:{error: true, message: 'Cannot get users'}}))
     } else {
       res.status(200).json({
         payload: {

@@ -24,7 +24,7 @@ export default class TokenAPI implements TokenAPIInterface {
 
   getUserEmailsByToken(data:any) {
     const { access_token } = data;
-    console.log(access_token);
+
     const options = {
       method: 'GET',
       url: 'https://api.github.com/user/emails',
