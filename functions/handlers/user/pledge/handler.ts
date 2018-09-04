@@ -12,16 +12,10 @@ import {
 const dataflows = [
   {
     controller: ProjectController,
-    method: 'checkPledged',
-    target: ProjectResource,
-    methodMap: { checkPledged: 'getById' },
-    validationMap: { checkPledged: 'projectIdOnlySchema' },
-    authDataDependencies: ['user_id'],
-  },
-  {
-    controller: ProjectController,
     method: 'addPledged',
+    validationMap: { addPledged: 'projectIdOnlySchema' },
     target: ProjectResource,
+    authDataDependencies: ['user_id'],
   },
   {
     controller: ProjectController,

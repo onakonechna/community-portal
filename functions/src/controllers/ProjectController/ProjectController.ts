@@ -153,7 +153,6 @@ export default class ProjectController implements ProjectControllerInterface {
   // check if pledged would exceed total
   checkPledged(data: any) {
     return (result: any) => {
-      const flag = { will_exceed: false };
       if (result.Item) {
         const { pledged, estimated } = result.Item;
         if (pledged + 1 > estimated) {
