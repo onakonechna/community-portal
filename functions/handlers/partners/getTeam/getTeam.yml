@@ -1,4 +1,5 @@
 getTeam:
+  name: ${self:provider.stage}-getTeam
   role: getTeamRole
   handler: handlers/partners/getTeam/handler.handler
   events:

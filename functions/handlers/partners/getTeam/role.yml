@@ -1,6 +1,7 @@
 getTeamRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-getTeamRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

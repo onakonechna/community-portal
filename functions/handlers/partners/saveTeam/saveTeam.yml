@@ -1,4 +1,5 @@
 saveTeam:
+  name: ${self:provider.stage}-saveTeam
   role: saveTeamRole
   handler: handlers/partners/saveTeam/handler.handler
   events:

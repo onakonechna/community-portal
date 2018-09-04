@@ -1,4 +1,5 @@
 githubPartnerTeamsIndexer:
+  name: ${self:provider.stage}-githubPartnerTeamsIndexer
   role: githubPartnerTeamsIndexerRole
   handler: handlers/githubPartnerTeamsIndexer/handler.handler
   events:

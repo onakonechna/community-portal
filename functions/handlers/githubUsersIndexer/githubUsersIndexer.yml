@@ -1,4 +1,5 @@
 githubUsersIndexer:
+  name: ${self:provider.stage}-githubUsersIndexer
   role: githubUsersIndexerRole
   handler: handlers/githubUsersIndexer/handler.handler
   events:

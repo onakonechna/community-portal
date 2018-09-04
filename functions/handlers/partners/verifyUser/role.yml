@@ -1,6 +1,7 @@
 verifyUserRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: ${self:provider.stage}-verifyUserRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

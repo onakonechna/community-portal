@@ -1,4 +1,5 @@
 verifyUser:
+  name: ${self:provider.stage}-verifyUser
   role: verifyUserRole
   handler: handlers/partners/verifyUser/handler.handler
   events:

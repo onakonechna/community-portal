@@ -1,4 +1,5 @@
 editTeam:
+  name: ${self:provider.stage}-editTeam
   role: editTeamRole
   handler: handlers/partners/editTeam/handler.handler
   events:
