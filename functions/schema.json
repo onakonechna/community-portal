@@ -92,7 +92,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "partner-teams-index",
+          "IndexName": "${file(./schema.json):PartnerTeams.Properties.TableName}-index",
           "KeySchema": [
             {
               "AttributeName": "active",
@@ -112,7 +112,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "partner-teams"
+      "TableName": "partner-teams-${self:provider.stage}"
     }
   },
   "ProjectStars": {
@@ -264,7 +264,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "partner-team-members-index",
+          "IndexName": "${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index",
           "KeySchema": [
             {
               "AttributeName": "user_id",
@@ -284,7 +284,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "partner-team-members"
+      "TableName": "partner-team-members-${self:provider.stage}"
     }
   },
   "PartnerTeamOwners": {
@@ -308,7 +308,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "partner-team-owners-index",
+          "IndexName": "${file(./schema.json):PartnerTeamOwners.Properties.TableName}-index",
           "KeySchema": [
             {
               "AttributeName": "user_id",
@@ -328,7 +328,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "partner-team-owners"
+      "TableName": "partner-team-owners-${self:provider.stage}"
     }
   },
   "GithubPartnerTeams": {
@@ -352,7 +352,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "github-partner-teams-index",
+          "IndexName": "${file(./schema.json):GithubPartnerTeams.Properties.TableName}-index",
           "KeySchema": [
             {
               "AttributeName": "name",
@@ -372,7 +372,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "github-partner-teams"
+      "TableName": "github-partner-teams-${self:provider.stage}"
     }
   },
   "TeamsToUsersIndex": {
@@ -394,7 +394,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "teams-to-users-index"
+      "TableName": "teams-to-users-index-${self:provider.stage}"
     }
   },
   "GithubUsers": {
@@ -418,7 +418,7 @@
       ],
       "GlobalSecondaryIndexes": [
         {
-          "IndexName": "github-users-index",
+          "IndexName": "${file(./schema.json):GithubUsers.Properties.TableName}-index",
           "KeySchema": [
             {
               "AttributeName": "login",
@@ -438,7 +438,7 @@
         "ReadCapacityUnits": 2,
         "WriteCapacityUnits": 2
       },
-      "TableName": "github-users"
+      "TableName": "github-users-${self:provider.stage}"
     }
   },
   "Users": {
