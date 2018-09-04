@@ -53,7 +53,7 @@ provider:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
     PARTNER_TEAMS_TABLE: ${file(./schema.json):PartnerTeams.Properties.TableName}
-    PARTNER_TEAMS_INDEX: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index
+    PARTNER_TEAMS_INDEX: ${file(./schema.json):PartnerTeams.Properties.TableName}-index
     PARTNER_TEAM_MEMBERS_TABLE: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}
     PARTNER_TEAM_MEMBERS_INDEX: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index
     PARTNER_TEAM_OWNERS_TABLE: ${file(./schema.json):PartnerTeamOwners.Properties.TableName}
