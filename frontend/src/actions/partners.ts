@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { API as domain } from '../api/Config';
 import {
   GET_PARTNER_TEAMS_LIST_START,
   GET_PARTNER_TEAMS_LIST_END,
@@ -13,8 +14,6 @@ import {
   EDIT_TEAM_START,
   EDIT_TEAM_END
 } from '../types/partners';
-
-const domain = 'http://localhost:3000';
 
 export const getPartnerTeamsList = () => (dispatch: any) => {
   dispatch({
