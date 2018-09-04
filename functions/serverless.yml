@@ -52,17 +52,17 @@ provider:
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
-    PARTNER_TEAMS_TABLE: partner-teams
-    PARTNER_TEAMS_INDEX: partner-teams-index
-    PARTNER_TEAM_MEMBERS_TABLE: partner-team-members
-    PARTNER_TEAM_MEMBERS_INDEX: partner-team-members-index
-    PARTNER_TEAM_OWNERS_TABLE: partner-team-owners
-    PARTNER_TEAM_OWNERS_INDEX: partner-team-owners-index
-    GITHUB_PARTNER_TEAMS_TABLE: github-partner-teams
-    GITHUB_PARTNER_TEAMS_INDEX: github-partner-teams-index
-    GITHUB_USERS_TABLE: github-users
-    GITHUB_USERS_INDEX: github-users-index
-    TEAMS_TO_USERS_INDEX: teams-to-users-index
+    PARTNER_TEAMS_TABLE: ${file(./schema.json):PartnerTeams.Properties.TableName}
+    PARTNER_TEAMS_INDEX: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index
+    PARTNER_TEAM_MEMBERS_TABLE: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}
+    PARTNER_TEAM_MEMBERS_INDEX: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index
+    PARTNER_TEAM_OWNERS_TABLE: ${file(./schema.json):PartnerTeamOwners.Properties.TableName}
+    PARTNER_TEAM_OWNERS_INDEX: ${file(./schema.json):PartnerTeamOwners.Properties.TableName}-index
+    GITHUB_PARTNER_TEAMS_TABLE: ${file(./schema.json):GithubPartnerTeams.Properties.TableName}
+    GITHUB_PARTNER_TEAMS_INDEX: ${file(./schema.json):GithubPartnerTeams.Properties.TableName}-index
+    GITHUB_USERS_TABLE: ${file(./schema.json):GithubUsers.Properties.TableName}
+    GITHUB_USERS_INDEX: ${file(./schema.json):GithubUsers.Properties.TableName}-index
+    TEAMS_TO_USERS_INDEX: ${file(./schema.json):TeamsToUsersIndex.Properties.TableName}
     PROJECTS_TO_INDEX_STARS_TABLE: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}
     PROJECTS_TO_INDEX_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
     PROJECTS_STARS_TABLE: ${file(./schema.json):ProjectStars.Properties.TableName}
