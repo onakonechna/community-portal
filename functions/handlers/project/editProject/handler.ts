@@ -1,30 +1,28 @@
-import { Request, Response } from './../../../config/Types';
+import Endpoint from './../../../src/EndpointWrapper';
+import { Request, Response } from "../../../config/Types";
+import DatabaseConnection from "../../../src/resources/DatabaseConnection";
+import ProjectResource from "../../../src/resources/ProjectResource/ProjectResource";
+import User from "../../../src/resources/UserResource/User";
 
-import PackageService from './../../../src/services/PackageService';
-import Endpoint from './../../../src/Endpoint';
-import {
-  ProjectController,
-  ProjectResource,
-  UserController,
-  UserResource,
-} from './../../../config/Components';
+const dbConnection = new DatabaseConnection();
+const projectResource = new ProjectResource(dbConnection);
+const projectEditEndpoint = new Endpoint('/project', 'put');
 
-const dataflows = [
-  {
-    controller: UserController,
-    method: 'getScopes',
-    target: UserResource,
-    methodMap: { getScopes: 'getById' },
-    validationMap: { getScopes: 'editProjectSchema' },
-    authDataDependencies: ['user_id'],
-    storageSpecs: ['scopes'],
-  },
-  {
-    controller: ProjectController,
-    method: 'edit',
-    target: ProjectResource,
-  },
-];
+projectEditEndpoint.configure((req: Request, res: Response) => {
+  const user = new User(req.tokenContents);
 
-const endpoint = new Endpoint('/project', 'put', new PackageService(dataflows));
-export const handler = endpoint.execute();
+  if (!user.isScopeValid(user.get('scopes'), 'write:project')) {
+    return res.status(401).json({payload: {
+        error: true,
+        message: 'User does not have the required scope to create project'}
+    });
+  }
+
+  projectResource.edit(req.body)
+    .then((result:any) => res.status(200).json({data: result.Attributes.project_id}))
+    .catch((err:any) =>
+      console.log(err) ||
+      res.status(200).json({error:true, message: 'Cannot edit project'}));
+});
+
+export const handler = projectEditEndpoint.execute();

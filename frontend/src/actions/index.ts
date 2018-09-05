@@ -3,7 +3,7 @@ import bookmarkProject from '../api/BookmarkProject';
 import fetchProjects from '../api/FetchProjects';
 import getBookmarkedProjects from '../api/GetBookmarkedProjects';
 import getLikedProjects from '../api/GetLikedProjects';
-import { editProject, editProjectStatus } from  '../api/EditProject';
+import { editProject } from  '../api/EditProject';
 import pledgeProject from '../api/PledgeProject';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
@@ -109,11 +109,6 @@ export const editProjectBody = (project: any) => {
   };
 };
 
-export const editProjectStatusAction = (id: string, status: string) => {
-  return (dispatch: Dispatch) => {
-    return editProjectStatus(id, status);
-  };
-};
 
 export const likeProject = (id: string) => {
   return (dispatch: Dispatch) => {

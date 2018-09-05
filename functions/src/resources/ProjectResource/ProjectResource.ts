@@ -136,10 +136,6 @@ export default class ProjectResource implements ProjectResourceInterface {
     delete data['project_id'];
     delete data['scopes'];
 
-    if (typeof scopes === 'undefined' || !_.includes(scopes, 'write:project')) {
-      throw 'User does not have the required scope (write:project) to edit project';
-    }
-
     return this.adapter.update(PROJECTS_TABLE, { project_id }, data);
   }
 
