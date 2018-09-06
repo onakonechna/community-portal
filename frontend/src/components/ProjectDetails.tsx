@@ -175,7 +175,6 @@ interface ProjectDetailsState {
   errorMessage: string;
 }
 
-const Join = WithAuth(['owner', 'user'])(JoinProjectButton);
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 const Stars = WithAuth(['user'])(StartsProjectButton);
@@ -326,7 +325,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <ContributorsList project={this.props.project} contributorsListClass={this.props.classes.contributorDiv}/>
             </CardContent>
             <CardActions className={classes.cardAction}>
-              <Join project={this.props.project} />
+              <JoinProjectButton project={this.props.project} />
               <GithubButton url={this.props.project.github_address}/>
               <SlackButton url={this.props.project.slack_channel} />
               <Edit handler={this.toggleEdit} />

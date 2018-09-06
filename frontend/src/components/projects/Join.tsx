@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import compose from "recompose/compose";
-import * as _ from "lodash";
 import * as React from "react";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,7 +15,6 @@ const styles = {
     'font-size': '0.9rem',
   },
 };
-
 
 class Join extends React.Component<any, any> {
   constructor(props: any) {
@@ -85,7 +83,7 @@ class Join extends React.Component<any, any> {
 const mapStateToProps = (state:any, props:any) => ({
   user: state.user,
   isJoined: !!props.project.contributors[state.user.user_id],
-  isAuthorized: !_.isEmpty(state.user)
+  isAuthorized: !!state.user.user_id
 });
 
 export default compose<{}, any>(
