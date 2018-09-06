@@ -26,8 +26,8 @@ const Routes = () => (
     <Route exact path="/bookmarked" render={
       (props: any) => <ProjectGrid filter="bookmarkedProjects" {...props} />
     } />
-    <Route exact path="/pledged" render={
-      (props: any) => <ProjectGrid filter="pledgedProjects" {...props} />
+    <Route exact path="/user/projects" render={
+      (props: any) => <ProjectGrid filter="userProjects" {...props} />
     } />
     <Route exact path="/project/:project_id" component={
       (props: any) => <ProjectDetails project_id={props.match.params.project_id} />

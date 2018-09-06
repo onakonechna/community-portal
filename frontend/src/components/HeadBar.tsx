@@ -71,13 +71,8 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
     super(props);
     this.state = {sideBarOpen: false};
     this.toggleSideBar = this.toggleSideBar.bind(this);
-    this.toBookMark = this.toBookMark.bind(this);
-    this.toHome = this.toHome.bind(this);
-    this.toPledged = this.toPledged.bind(this);
-    this.toProfile = this.toProfile.bind(this);
     let user = getUserFromToken();
     if (!_.isEmpty(user)) {props.LoadUserAction(user);}
-
   }
 
   toggleSideBar() {
@@ -86,21 +81,10 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
     }));
   }
 
-  toBookMark() {
-    this.props.history.push('./bookmarked');
-  }
-
-  toHome() {
-    this.props.history.push('/');
-  }
-
-  toPledged() {
-    this.props.history.push('./pledged');
-  }
-
-  toProfile() {
-    this.props.history.push(`./profile/${this.props.user.user_id}`);
-  }
+  toBookMark= () => this.props.history.push('./bookmarked');
+  toHome = () => this.props.history.push('/');
+  toProjects = ()  => this.props.history.push('./user/projects');
+  toProfile = () => this.props.history.push(`./profile/${this.props.user.user_id}`);
 
   render() {
     const { classes } = this.props;
@@ -138,7 +122,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
               open={this.state.sideBarOpen}
               toggleSideBar={this.toggleSideBar}
               toBookMark={this.toBookMark}
-              toPledged={this.toPledged}
+              toProjects={this.toProjects}
               toProfile={this.toProfile}
             />
           </span>

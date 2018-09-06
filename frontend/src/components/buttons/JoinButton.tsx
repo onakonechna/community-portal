@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 
 export const styles = {
-  pledge: {
+  join: {
     color: '#27A2AA',
     'font-size': '1rem',
     'font-weight': '600',
@@ -12,11 +11,8 @@ export const styles = {
   },
 };
 
-function pledgeButton(props:any) {
-  const { classes } = props;
-  return (
-    <Button className={classes.pledge} onClick={props.handler}>Join</Button>
-  );
-}
+const joinButton = (props:any) => (
+  <Button className={props.classes.join} onClick={props.handler}>{props.label}</Button>
+);
 
-export default withStyles(styles)(pledgeButton);
+export default withStyles(styles)(joinButton);

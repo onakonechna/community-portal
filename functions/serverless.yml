@@ -130,12 +130,13 @@ functions:
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/editProject/editProject.yml)}
+  - ${file(./handlers/project/joinProject/joinProject.yml)}
+  - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
   - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/likeProject/likeProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
-  - ${file(./handlers/user/pledge/pledge.yml)}
   - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
 
 resources:
@@ -169,6 +170,8 @@ resources:
     IssuesTable: ${file(./schema.json):Issues}
     ProjectsToIndexStarsTable: ${file(./schema.json):ProjectsToIndexStars}
     ProjectStarsTable: ${file(./schema.json):ProjectStars}
+    joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
+    unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
     saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}
     getTeamsRole: ${file(./handlers/partners/getTeams/role.yml):getTeamsRole}
@@ -186,7 +189,6 @@ resources:
     bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
-    pledgeRole: ${file(./handlers/user/pledge/role.yml):pledgeRole}
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 

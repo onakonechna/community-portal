@@ -7,21 +7,19 @@ export default class Project {
   private display:string;
   private completed_history:any;
   private estimated:number;
-  private pledged:number;
   private description:string;
   private completed:number;
-  private pledged_history:any;
   private technologies:any[];
   private github_address:string;
   private size:string;
   private due:number;
   private project_id:string;
-  private pledgers:any;
   private name:string;
   private updated:number;
   private status:string;
   private created:number;
   private github_project_id:string;
+  private contributors:any;
 
   constructor(data:any) {
     this.owner = data.owner;
@@ -30,21 +28,19 @@ export default class Project {
     this.display = data.display || 'true';
     this.completed_history = data.completed_history || {};
     this.estimated = data.estimated;
-    this.pledged = data.pledged || 0;
     this.description = data.description || '';
     this.completed = data.completed || 0;
-    this.pledged_history = data.pledged_history || {};
     this.technologies = data.technologies;
     this.github_address = data.github_address;
     this.size = data.size;
     this.due = data.due;
     this.project_id = data.project_id;
-    this.pledgers = data.pledgers || {};
     this.name = data.name;
     this.github_project_id = data.github_project_id;
     this.updated =  data.updated || new Date().getTime();
     this.created =  data.created || new Date().getTime();
     this.status = data.status || 'open';
+    this.contributors = data.contributors || {};
   }
 
   public getGithubRepositoryName() {
@@ -78,21 +74,19 @@ export default class Project {
       slack_channel: this.slack_channel,
       completed_history: this.completed_history,
       estimated: this.estimated,
-      pledged: this.pledged,
       status: this.status,
       description: this.description,
       completed: this.completed,
-      pledged_history: this.pledged_history,
       technologies: this.technologies,
       github_address: this.github_address,
       size: this.size,
       due: this.due,
       project_id: this.project_id,
-      pledgers: this.pledgers,
       name: this.name,
       updated: this.updated,
       created: this.created,
-      github_project_id: this.github_project_id
+      github_project_id: this.github_project_id,
+      contributors: this.contributors
     });
   }
 

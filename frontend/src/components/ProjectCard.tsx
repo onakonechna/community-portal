@@ -4,38 +4,36 @@ import compose from 'recompose/compose';
 import { bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
-import PledgeDialog from './PledgeDialog';
 
 import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
-
-import PledgeButton from './buttons/PledgeButton';
 import Message from './Message';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography';
 
 import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Slack from '-!svg-react-loader!./../static/images/slack.svg';
 
 import LinesEllipsis from 'react-lines-ellipsis';
 import { convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
 import StartsProjectButton from './projects/Stars';
+import JoinProjectButton from './projects/Join';
+import ContributorsList from './projects/ContributorsList';
+import Progress from './projects/Progress';
+import GithubButton from './buttons/GithubButton';
+import SlackButton from './buttons/SlackButton';
 
 const styles = (theme: any) => ({
-  avatar: {
-    margin: 10,
+  contributorDiv: {
+    display: 'flex',
+    position: 'absolute' as 'absolute',
+    top: '24rem',
   },
   bookmark: {
     'margin-left': 'auto',
@@ -43,10 +41,6 @@ const styles = (theme: any) => ({
       position: 'relative' as 'relative',
       bottom: '0.5rem',
     },
-  },
-  bottomButtons: {
-    position: 'relative' as 'relative',
-    bottom: '0.1rem',
   },
   card: {
     'background-color': '#F2F3F3',
@@ -68,6 +62,14 @@ const styles = (theme: any) => ({
       opacity: 0.8,
     },
   },
+  progressDiv: {
+    'margin-left': 'auto',
+    position: 'absolute' as 'absolute',
+    left: '20rem',
+    [theme.breakpoints.down('md')]: {
+      left: '12rem',
+    },
+  },
   cardAction: {
     height: '12%',
   },
@@ -79,17 +81,6 @@ const styles = (theme: any) => ({
   chip: {
     margin: '1rem 1rem 1rem 0',
     borderRadius: '5px',
-  },
-  contributorDiv: {
-    display: 'flex',
-    position: 'absolute' as 'absolute',
-    top: '24rem',
-  },
-  contributorText: {
-    'font-size': '1rem',
-    'font-weight': '300',
-    'margin-left': '1rem',
-    'margin-top': 'auto',
   },
   description: {
     height: '10rem',
@@ -104,45 +95,9 @@ const styles = (theme: any) => ({
       right: '1rem',
     },
   },
-  estimatedText: {
-    'font-weight': '200',
-  },
-  github: {
-    'margin-left': 'auto',
-  },
-  hourText: {
-    'display': 'block',
-    'font-size': '1rem',
-  },
   labels: {
     position: 'absolute' as 'absolute',
     top: '15rem',
-  },
-  progress: {
-    color: '#48BF61',
-    'z-index': '1',
-    position: 'absolute' as 'absolute',
-  },
-  progressText: {
-    position: 'absolute' as 'absolute',
-    margin: 'auto',
-    width: '80%',
-    left: '0',
-    right: '0',
-    top: '0',
-    bottom: '0',
-    height: '40%',
-    'text-align': 'center',
-    'font-weight': '400',
-    'font-size': '1rem',
-  },
-  progressDiv: {
-    'margin-left': 'auto',
-    position: 'absolute' as 'absolute',
-    left: '20rem',
-    [theme.breakpoints.down('md')]: {
-      left: '12rem',
-    },
   },
   row: {
     display: 'flex',
@@ -152,11 +107,6 @@ const styles = (theme: any) => ({
   sidebar: {
     display: 'flex',
     'flex-direction': 'column',
-  },
-  slack: {
-    width: '3rem',
-    height: '3rem',
-    fill: '##27A2AA',
   },
   smallText: {
     'margin-bottom': '0.25rem',
@@ -189,35 +139,23 @@ interface CardProps {
     description: string,
     status: string,
     estimated: number,
-    pledged?: number,
     upvotes: number,
     owner: string,
     size?: string,
     tags: [string],
     technologies: [string],
-    pledgers: [{
-      type: string,
-      values: any[],
-      wrappedName: string,
-    }],
-    contributors?: [{
-      name?: string,
-      contributed?: number,
-    }]
     completed?: number,
     due_date?: string,
     hours_goal?: number,
     github_address: string,
     slack_channel?: string,
     created: number,
-    pledge: any;
   };
   handler?: () => void;
   toggleEdit?: () => void;
   classes?: any;
   history?: any;
   bookmarked: boolean;
-  joined: boolean;
 }
 
 interface DispatchProps {
@@ -229,14 +167,12 @@ interface DispatchProps {
 
 interface CardState {
   editOpen: boolean;
-  pledgeOpen: boolean;
   bookmarked: boolean;
-  joined: boolean;
   messageOpen: boolean;
   errorMessage: string;
 }
 
-const Pledge = WithAuth(['owner', 'user'])(PledgeButton);
+const Join = WithAuth(['owner', 'user'])(JoinProjectButton);
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 const Stars = WithAuth(['user'])(StartsProjectButton);
@@ -247,16 +183,13 @@ export class ProjectCard extends React.Component<any, CardState>{
     super(props);
     this.state = {
       editOpen: false,
-      pledgeOpen: false,
       bookmarked: this.props.bookmarked,
-      joined: this.props.joined,
       messageOpen: false,
       errorMessage: '',
     };
-    this.confirmJoin = this.confirmJoin.bind(this);
+
     this.toggleEdit = this.toggleEdit.bind(this);
     this.handleBookmark = this.handleBookmark.bind(this);
-    this.togglePledge = this.togglePledge.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
@@ -284,36 +217,9 @@ export class ProjectCard extends React.Component<any, CardState>{
     }
   }
 
-  confirmJoin() {
-    this.setState({ joined: true });
-  }
-
-  countContributors(project: any) {
-    const numOfPledgers = Object.keys(project.pledgers).length;
-    switch (numOfPledgers) {
-      case 0:
-        return 'Nobody joined yet';
-      case 1:
-        return '1 Contributor';
-      default:
-        return `${numOfPledgers} Contributors`;
-    }
-  }
-
-  getPercentage(project: any) {
-    const numOfPledgers = Object.keys(project.pledgers).length;
-    const { estimated } = this.props.project;
-    return Math.min(100, (numOfPledgers / estimated) * 100);
-  }
-
   goDetail() {
     const { project_id } = this.props.project;
     this.props.history.push(`./project/${project_id}`);
-  }
-
-  goProfile(user_id:string, e: any) {
-    e.stopPropagation();
-    this.props.history.push(`./profile/${user_id}`);
   }
 
   triggerBookmark(e:any) {
@@ -331,12 +237,6 @@ export class ProjectCard extends React.Component<any, CardState>{
   toggleEdit() {
     this.setState((prevState: CardState) => ({
       editOpen: !prevState.editOpen,
-    }));
-  }
-
-  togglePledge() {
-    this.setState((prevState: CardState) => ({
-      pledgeOpen: !prevState.pledgeOpen,
     }));
   }
 
@@ -363,9 +263,7 @@ export class ProjectCard extends React.Component<any, CardState>{
   }
 
   handleMessageClose() {
-    this.setState({
-      messageOpen: false,
-    });
+    this.setState({messageOpen: false});
   }
 
   onFailure(error: Error) {
@@ -374,7 +272,6 @@ export class ProjectCard extends React.Component<any, CardState>{
 
   render() {
     const { classes } = this.props;
-    const { pledgers } = this.props.project;
     const html = {
       __html: this.props.project.description ?
         stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))) :
@@ -387,13 +284,6 @@ export class ProjectCard extends React.Component<any, CardState>{
           open={this.state.editOpen}
           toggleEdit={this.toggleEdit}
           project={this.props.project}
-        />
-        <PledgeDialog
-          open={this.state.pledgeOpen}
-          project={this.props.project}
-          toggle={this.togglePledge}
-          join={this.confirmJoin}
-          joined={this.props.joined}
         />
         <Card className={classes.card}>
           <CardContent className={classes.cardContent} onClick={this.goDetail}>
@@ -430,51 +320,14 @@ export class ProjectCard extends React.Component<any, CardState>{
                   Size: {this.props.project.size}
                 </Typography>
               </div>
-              <div className={classes.progressDiv}>
-                <CircularProgress
-                  className={classes.progress}
-                  variant="static"
-                  size={100}
-                  value={this.getPercentage(this.props.project)}
-                />
-                <CircularProgress
-                  variant="static"
-                  style={{ color: '#E0E0E0' }}
-                  size={100}
-                  value={100}
-                />
-                <Typography className={classes.progressText}>
-                  {`${Object.keys(this.props.project.pledgers).length}/`}
-                  <label className={classes.estimatedText}>{`${this.props.project.estimated}`}</label>
-                  <span className={classes.hourText}>{`joined`}</span>
-                </Typography>
-              </div>
+              <Progress project={this.props.project} progressClass={this.props.classes.progressDiv} />
             </div>
-            <div className={classes.contributorDiv}>
-              {Object.keys(pledgers).length > 0
-                ? Object.keys(pledgers).slice(0, 5).map(pledger => (
-                  <Avatar onClick={(e) => { this.goProfile(pledger, e); }} key={pledger} src={pledgers[pledger].avatar_url} />
-                ))
-                : null}
-                <Typography className={classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
-            </div>
+            <ContributorsList project={this.props.project} contributorsListClass={this.props.classes.contributorDiv}/>
           </CardContent>
           <CardActions className={classes.cardAction}>
-            <Pledge handler={this.togglePledge} label="Join" />
-            <a className={classes.github} href={this.props.project.github_address} target="_blank">
-              <IconButton style={{ color: '#27A2AA' }} aria-label="Git">
-                <SvgIcon>
-                  <path d="M12.007 0C6.12 0 1.1 4.27.157 10.08c-.944 5.813 2.468 11.45 8.054 13.312.19.064.397.033.555-.084.16-.117.25-.304.244-.5v-2.042c-3.33.735-4.037-1.56-4.037-1.56-.22-.726-.694-1.35-1.334-1.756-1.096-.75.074-.735.074-.735.773.103 1.454.557 1.846 1.23.694 1.21 2.23 1.638 3.45.96.056-.61.327-1.178.766-1.605-2.67-.3-5.462-1.335-5.462-6.002-.02-1.193.42-2.35 1.23-3.226-.327-1.015-.27-2.116.166-3.09 0 0 1.006-.33 3.3 1.23 1.966-.538 4.04-.538 6.003 0 2.295-1.5 3.3-1.23 3.3-1.23.445 1.006.49 2.144.12 3.18.81.877 1.25 2.033 1.23 3.226 0 4.607-2.805 5.627-5.476 5.927.578.583.88 1.386.825 2.206v3.29c-.005.2.092.393.26.507.164.115.377.14.565.063 5.568-1.88 8.956-7.514 8.007-13.313C22.892 4.267 17.884.007 12.008 0z" />
-                </SvgIcon>
-              </IconButton>
-            </a>
-            <a href={this.props.project.slack_channel} target="_blank">
-              <IconButton aria-label="slack" className={classes.bottomButtons}>
-                <SvgIcon className={classes.slack}>
-                  <Slack />
-                </SvgIcon>
-              </IconButton>
-            </a>
+            <Join project={this.props.project} />
+            <GithubButton url={this.props.project.github_address}/>
+            <SlackButton url={this.props.project.slack_channel} />
             <Edit handler={this.toggleEdit} />
             <Stars project={this.props.project}/>
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>

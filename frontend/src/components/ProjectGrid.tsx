@@ -70,18 +70,12 @@ interface IProject {
   description: string;
   technologies: [string];
   estimated: number;
-  pledged?: number;
   due_date?: string;
   hours_goal?: number;
   github: string;
   slack?: string;
   size?: string;
-  pledgers: Pledger[];
   created_date: string;
-}
-
-interface Pledger {
-  avatar_url?: string;
 }
 
 interface GridState {
@@ -114,22 +108,15 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
   }
 
-  checkJoin(id: string) {
-    const { user_id } = this.props.user;
-    const project = this.props.projects.find((p:any) => p['project_id'] === id);
-    if (typeof project.pledgers === 'undefined') return false;
-    return Object.keys(project.pledgers).indexOf(user_id) !== -1;
-  }
-
   updateGrid() {
     this.props.loadProjects();
   }
 
   filter() {
     if (typeof this.props.filter !== 'undefined') {
-      if (this.props.filter === 'pledgedProjects') {
+      if (this.props.filter === 'userProjects') {
         return _filter(this.props.projects, (project: any) => {
-          return includes(Object.keys(project.pledgers), this.props.user.user_id);
+          return includes(Object.keys(project.contributors), this.props.user.user_id);
         });
       }
 
@@ -167,7 +154,6 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
                 handler={this.updateGrid}
                 history={this.props.history}
                 bookmarked={this.checkBookmark(project.project_id)}
-                joined={this.checkJoin(project.project_id)}
               />
             </Grid>
           ))}

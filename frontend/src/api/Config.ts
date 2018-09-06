@@ -41,6 +41,18 @@ export const putHeaders = (data:any) => {
   };
 };
 
+export const deleteHeaders = (data:any) => {
+  return {
+    data,
+    method: 'delete',
+    headers: {
+      Authorization: getToken(),
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+};
+
 export const request = (url: string, headers: any) => {
   return axios(url, headers).then((res: any) => {
     return res.data;

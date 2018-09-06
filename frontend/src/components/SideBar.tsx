@@ -45,7 +45,7 @@ const SideBar = (props: any) => {
         <ListItem
           button
           className={classes.listItem}
-          onClick={props.toPledged}
+          onClick={props.toProjects}
         >
           <ListItemText primary="Joined Projects" />
         </ListItem>

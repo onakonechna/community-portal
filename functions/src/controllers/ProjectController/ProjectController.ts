@@ -6,12 +6,7 @@ interface ProjectControllerInterface {
   updateDisplay(data: any): (result: any) => any;
   delete(data: any): (result: any) => any;
   updateStatus(data: any): (result: any) => any;
-  addPledged(data: any): (result: any) => any;
-  addPledgedHistory(data: any): (result: any) => any;
-  addPledger(data: any): (result: any) => any;
-  addSubscriber(data: any): (result: any) => any;
   checkOwner(data: any): (result: any) => any;
-  checkPledged(data: any): (result: any) => any;
 }
 
 export default class ProjectController implements ProjectControllerInterface {
@@ -120,24 +115,6 @@ export default class ProjectController implements ProjectControllerInterface {
     };
   }
 
-  addPledged(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  addPledgedHistory(data: any) {
-    return (result: any) => { return {}; };
-  }
-
-  addPledger(data: any) {
-    return (result: any) => {
-      return {};
-    };
-  }
-
-  addSubscriber(data: any) {
-    return (result: any) => { return {}; };
-  }
-
   // check if user is owner of project
   checkOwner(data: any) {
     const { user_id } = data;
@@ -149,20 +126,4 @@ export default class ProjectController implements ProjectControllerInterface {
       return flag;
     };
   }
-
-  // check if pledged would exceed total
-  checkPledged(data: any) {
-    return (result: any) => {
-      if (result.Item) {
-        const { pledged, estimated } = result.Item;
-        if (pledged + 1 > estimated) {
-          throw 'Total number of pledgers exceed estimated number of pledgers required';
-        }
-      } else {
-        throw 'Project not found';
-      }
-      return {};
-    };
-  }
-
 }

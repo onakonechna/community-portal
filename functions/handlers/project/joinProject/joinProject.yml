@@ -1,11 +1,10 @@
-pledge:
-  name: ${self:provider.stage}-pledge
-  role: pledgeRole
-  handler: handlers/user/pledge/handler.handler
-  timeout: 10
+joinProject:
+  name: ${self:provider.stage}-joinProject
+  role: joinProjectRole
+  handler: handlers/project/joinProject/handler.handler
   events:
   - http:
-      path: /user/pledge
+      path: /project/join
       method: post
       cors: true
       authorizer:

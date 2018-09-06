@@ -4,7 +4,6 @@ import fetchProjects from '../api/FetchProjects';
 import getBookmarkedProjects from '../api/GetBookmarkedProjects';
 import getLikedProjects from '../api/GetLikedProjects';
 import { editProject } from  '../api/EditProject';
-import pledgeProject from '../api/PledgeProject';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
 
@@ -149,16 +148,6 @@ export const getBookmarkedProjectsAction: (any) = () => {
           projects = res['bookmarked_projects'] || [];
           dispatch(loadBookmarkedProjectsAction(projects));
         }
-      });
-  };
-};
-
-export const pledgeProjectAction = (body: any) => {
-  return (dispatch: Dispatch) => {
-    return pledgeProject(body)
-      .then(() => {
-        dispatch(loadProjects());
-        dispatch(loadProject(body.project_id));
       });
   };
 };

@@ -218,6 +218,30 @@ export default class UserResource implements UserResourceInterface {
     );
   }
 
+  addProject(data:any): Promise<any> {
+    const project_id = data.project_id;
+    const user_id = data.user_id;
+
+    return this.adapter.addToSet(
+      USERS_TABLE,
+      { user_id },
+      'projects',
+      project_id,
+    );
+  }
+
+  removeProject(data:any): Promise<any> {
+    const project_id = data.project_id;
+    const user_id = data.user_id;
+
+    return this.adapter.removeFromSet(
+      USERS_TABLE,
+      { user_id },
+      'projects',
+      project_id,
+    );
+  }
+
   subscribe(data: any): Promise<any> {
     const { user_id, project_id } = data;
     return this.adapter.addToSet(USERS_TABLE, { user_id }, 'subscribed_projects', project_id);

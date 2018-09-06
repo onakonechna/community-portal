@@ -142,7 +142,8 @@ class GithubService {
       method: 'GET',
       url: `https://api.github.com/repos/${org}/${repos}`,
       headers: {
-        'User-Agent': 'community-portal-app'
+        'User-Agent': 'community-portal-app',
+        'Authorization': `token ${token}`
       }
     };
 

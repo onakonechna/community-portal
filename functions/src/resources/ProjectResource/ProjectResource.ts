@@ -9,6 +9,8 @@ export const PROJECTS_GITHUB_ID_INDEX = process.env.PROJECTS_GITHUB_ID_INDEX;
 export const PROJECTS_TO_INDEX_STARS_TABLE = process.env.PROJECTS_TO_INDEX_STARS_TABLE;
 export const PROJECTS_STARS_TABLE = process.env.PROJECTS_STARS_TABLE;
 export const PROJECTS_STARS_USER_ID_INDEX = process.env.PROJECTS_STARS_USER_ID_INDEX;
+export const PROJECTS_CONTRIBUTORS_TABLE = process.env.PROJECTS_CONTRIBUTORS_TABLE;
+export const PROJECTS_CONTRIBUTORS_USER_ID_INDEX = process.env.PROJECTS_CONTRIBUTORS_USER_ID_INDEX;
 
 interface ProjectResourceInterface {
   create(data: any): Promise<any>;
@@ -18,10 +20,6 @@ interface ProjectResourceInterface {
   edit(data: any): Promise<any>;
   updateStatus(data: any): Promise<any>;
   updateDisplay(data: any): Promise<any>;
-  addPledger(data: any): Promise<any>;
-  addSubscriber(data: any): Promise<any>;
-  addPledged(data: any): Promise<any>;
-  addPledgedHistory(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -97,6 +95,22 @@ export default class ProjectResource implements ProjectResourceInterface {
     })
   }
 
+  joinProject(github_project_id:string, project_name:string, user_id:string, user_name:string, user_avatar_url:string) {
+    return this.adapter.create(PROJECTS_CONTRIBUTORS_TABLE, {
+      project_id: github_project_id,
+      project_name,
+      user_id,
+      user_name,
+      user_avatar_url
+    })
+  }
+
+  unjoinProject(github_project_id:string) {
+    return this.adapter.delete(PROJECTS_CONTRIBUTORS_TABLE, {
+      project_id: github_project_id
+    })
+  }
+
   getGithubProjectId(organization:string, name:any): Promise<any> {
     if (this.githubProjectsInformation[`${organization}:${name}`]) {
       return new Promise((resolve:any) => {
@@ -159,37 +173,25 @@ export default class ProjectResource implements ProjectResourceInterface {
     return this.adapter.update(PROJECTS_TABLE, {project_id}, {'upvotes': votes})
   }
 
-  addPledger(data: any): Promise<any> {
+  addContributor(data: any): Promise<any> {
     const { project_id, user_id, avatar_url } = data;
-    const pledger_details = { avatar_url };
+
     return this.adapter.addToMap(
       PROJECTS_TABLE,
       { project_id },
-      'pledgers',
+      'contributors',
       user_id,
-      pledger_details,
+      { avatar_url },
     );
   }
 
-  addSubscriber(data: any): Promise<any> {
+  removeContributor(data:any): Promise<any> {
     const { project_id, user_id } = data;
-    return this.adapter.addToSet(PROJECTS_TABLE, { project_id }, 'subscribers', user_id);
-  }
 
-  addPledged(data: any): Promise<any> {
-    const { project_id } = data;
-    return this.adapter.add(PROJECTS_TABLE, { project_id }, 'pledged', 1);
-  }
-
-  addPledgedHistory(data: any): Promise<any> {
-    const { project_id, user_id } = data;
-    const unixTimestamp = new Date().getTime();
-
-    return this.adapter.addToMap(
+    return this.adapter.removeFromMap(
       PROJECTS_TABLE,
       { project_id },
-      'pledged_history',
-      unixTimestamp,
+      'contributors',
       user_id,
     );
   }

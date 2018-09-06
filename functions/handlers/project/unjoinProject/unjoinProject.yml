@@ -1,0 +1,15 @@
+unjoinProject:
+  name: ${self:provider.stage}-unjoinProject
+  role: unjoinProjectRole
+  handler: handlers/project/unjoinProject/handler.handler
+  events:
+  - http:
+      path: /project/join
+      method: delete
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token
