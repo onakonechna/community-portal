@@ -64,7 +64,7 @@ class Join extends React.Component<any, any> {
                   By joining this project, you'll commit to making active
                   contributions to this project and working with project owners
                   and fellow developers through online meetings and chats. If you're
-                   willing to make this commitment, please click the 'Count Me In'
+                   willing to make this commitment, please click the 'Join'
                     button. We look forward to working with you!
                 </Typography>
                 <h3>{this.props.project.goal}</h3>
