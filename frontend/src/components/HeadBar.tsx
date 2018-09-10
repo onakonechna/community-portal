@@ -91,7 +91,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
-          {this.props.user.role !== 'guest'
+          {this.props.user.user_id
             // render the button if the user is logged in
             ? this.props.location.pathname === '/'
               ? <IconButton

@@ -28,6 +28,7 @@ import ContributorsList from './projects/ContributorsList';
 import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
+import AuthorizedUserRole from './roles/AuthorizedUserRole';
 
 const styles = (theme: any) => ({
   contributorDiv: {
@@ -174,7 +175,6 @@ interface CardState {
 
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
-const Stars = WithAuth(['user'])(StartsProjectButton);
 
 export class ProjectCard extends React.Component<any, CardState>{
 
@@ -328,7 +328,9 @@ export class ProjectCard extends React.Component<any, CardState>{
             <GithubButton url={this.props.project.github_address}/>
             <SlackButton url={this.props.project.slack_channel} />
             <Edit handler={this.toggleEdit} />
-            <Stars project={this.props.project}/>
+            <AuthorizedUserRole requestLogin>
+              <StartsProjectButton project={this.props.project}/>
+            </AuthorizedUserRole>
             <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
           </CardActions>
         </Card>

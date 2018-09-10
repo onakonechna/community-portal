@@ -7,7 +7,8 @@ import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import Message from './Message';
 
-import { loadProject, bookmarkProjectAction } from '../actions';
+import { bookmarkProjectAction } from '../actions';
+import { loadProject } from '../actions/project';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -177,14 +178,22 @@ interface ProjectDetailsState {
 
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
-const Stars = WithAuth(['user'])(StartsProjectButton);
 
 export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
+  static defaultProps = {
+    project: {
+      contributors: {},
+      estimated: 0,
+      created: 0,
+      technologies: [],
+    }
+  };
+
   constructor(props: ProjectDetailsProps & DispatchProps) {
     super(props);
     this.state = {
       editOpen: false,
-      bookmarked: this.checkBookmark(this.props.project.project_id),
+      bookmarked: this.checkBookmark(this.props.project_id),
       messageOpen: false,
       errorMessage: '',
     };
@@ -210,7 +219,11 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   }
 
   checkBookmark(id: string) {
-    return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+    if (this.props.user.bookmarkedProjects) {
+      return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+    }
+
+    return false;
   }
 
   componentDidMount() {
@@ -218,7 +231,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
       this.props.loadStarredProjects();
     }
 
-    this.props.loadProject(this.props.project.project_id);
+    this.props.loadProject(this.props.project_id);
   }
 
   componentWillReceiveProps(props:any) {
@@ -309,7 +322,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <div className={classes.row}>
                 <div className={classes.sidebar}>
                   <div className={classes.technologies}>
-                    {this.props.project.technologies.slice(0, 5).map((technology: any) => (
+                    {this.props.project.technologies && this.props.project.technologies.slice(0, 5).map((technology: any) => (
                       <Chip className={classes.chip} key={technology} label={technology} />
                     ))}
                   </div>
@@ -329,7 +342,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <GithubButton url={this.props.project.github_address}/>
               <SlackButton url={this.props.project.slack_channel} />
               <Edit handler={this.toggleEdit} />
-              <Stars project={this.props.project}/>
+              <StartsProjectButton project={this.props.project}/>
               <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
             </CardActions>
           </Card>

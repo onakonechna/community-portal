@@ -43,7 +43,7 @@ const loginButton = (props:any) => {
   const { classes } = props;
   return (
     <div>
-      {props.user.role !== 'guest'
+      {props.user.user_id
         ?
           <div className={classes.authWrapper}>
             <Button className={classes.logoutButton} onClick={props.logoutHandler}>Logout</Button>

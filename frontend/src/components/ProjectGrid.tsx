@@ -105,7 +105,11 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   }
 
   checkBookmark(id: string) {
-    return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+    if (this.props.user.bookmarkedProjects) {
+      return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
+    }
+
+    return false;
   }
 
   updateGrid() {

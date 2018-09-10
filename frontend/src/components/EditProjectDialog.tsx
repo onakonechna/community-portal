@@ -141,7 +141,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.state = {
       success: false,
       loading: false,
-      technologies: project.technologies,
+      technologies: project.technologies || [],
       technologiesString: '',
       size: project.size,
       name: project.name,

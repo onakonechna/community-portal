@@ -18,6 +18,7 @@ export default class User {
   private partner_team_owner:any;
   private partners_admin:boolean;
   private two_factor_authentication:boolean;
+  private bookmarked_projects:any;
 
   constructor(data:any) {
     this.user_id = data.user_id;
@@ -27,10 +28,11 @@ export default class User {
     this.name = data.name;
     this.company = data.company;
     this.location = data.location;
-    this.scopes = data.scopes || {};
+    this.scopes = data.scopes || [];
     this.email = data.email;
     this.url = data.url;
     this.login = data.login;
+    this.bookmarked_projects = {};
     this.upvoted_projects = data.upvoted_projects || [];
     this.emails = data.emails || [];
     this.partner_team_member = data.partner_team_member || {};
@@ -90,7 +92,8 @@ export default class User {
       partner_team_member: this.partner_team_member,
       partner_team_owner: this.partner_team_owner,
       partners_admin: this.partners_admin,
-      two_factor_authentication: this.two_factor_authentication
+      two_factor_authentication: this.two_factor_authentication,
+      bookmarked_projects: this.bookmarked_projects,
     });
   }
 
@@ -110,7 +113,8 @@ export default class User {
       partner_team_member: this.partner_team_member,
       partner_team_owner: this.partner_team_owner,
       partners_admin: this.partners_admin,
-      two_factor_authentication: this.two_factor_authentication
+      two_factor_authentication: this.two_factor_authentication,
+      bookmarked_projects: this.bookmarked_projects,
     })
   }
 

@@ -1,11 +1,10 @@
-import fetchProject from '../api/FetchProject';
 import bookmarkProject from '../api/BookmarkProject';
 import fetchProjects from '../api/FetchProjects';
 import getBookmarkedProjects from '../api/GetBookmarkedProjects';
-import getLikedProjects from '../api/GetLikedProjects';
 import { editProject } from  '../api/EditProject';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
+import {loadProject} from './project';
 
 import { Dispatch } from 'redux';
 import { v4 as uuid } from 'uuid';
@@ -49,21 +48,10 @@ export interface EditProjectAction {
   project: any;
 }
 
-export interface ProjectLoadedAction {
-  type: TypeKeys.PROJECT_LOADED;
-  project: any;
-}
-
 export interface ProjectsLoadedAction {
   type: TypeKeys.PROJECTS_LOADED;
   projects: any;
 }
-
-export interface UpdateUserRoleAction {
-  type: TypeKeys.UPDATE_USER_ROLE;
-  role: string;
-}
-
 export interface UpdateUserScopeAction {
   type: TypeKeys.UPDATE_USER_SCOPES;
   scopes: string[];
@@ -79,9 +67,7 @@ export type ActionTypes =
  | LoadBookmarkedProjects
  | LoadUserAction
  | EditProjectAction
- | ProjectLoadedAction
  | ProjectsLoadedAction
- | UpdateUserRoleAction
  | UpdateUserScopeAction
  | OtherAction;
 
@@ -103,7 +89,7 @@ export const editProjectBody = (project: any) => {
     return editProject(project)
       .then(() => {
         dispatch(loadProjects());
-        dispatch(loadProject(project.project_id));
+        loadProject(project.project_id)
       });
   };
 };
@@ -120,21 +106,8 @@ export const bookmarkProjectAction = (id: string) => {
     return bookmarkProject(id)
       .then(() => {
         dispatch(loadProjects());
-        dispatch(loadProject(id));
         dispatch(getBookmarkedProjectsAction());
-      });
-  };
-};
-
-export const getLikedProjectsAction: (any) = () => {
-  return (dispatch: Dispatch) => {
-    return getLikedProjects()
-      .then((res:any) => {
-        let projects;
-        if (res['upvoted_projects']) {
-          projects = res['upvoted_projects'] || [];
-          dispatch(loadLikedProjectsAction(projects));
-        }
+        loadProject(id)
       });
   };
 };
@@ -152,14 +125,6 @@ export const getBookmarkedProjectsAction: (any) = () => {
   };
 };
 
-export const loadProject: (any) = (project_id: string) => {
-  return (dispatch: Dispatch) => {
-    return fetchProject(project_id)
-      .then((project: any) => {
-        dispatch(projectLoaded(project));
-      });
-  };
-};
 
 export const loadProjects: (any) = () => {
   return (dispatch: Dispatch) => {
@@ -189,7 +154,7 @@ export const projectLoaded = (project: {}) => {
     project,
     type: TypeKeys.PROJECT_LOADED,
   };
-}
+};
 
 export const projectsLoaded = (projects: {}) => {
   return {
@@ -202,13 +167,6 @@ export const LoadUserAction = (user: {}) => {
   return {
     user,
     type: TypeKeys.LOAD_USER,
-  };
-};
-
-export const UpdateUserRoleAction = (user_id: string, role: string) => {
-  return {
-    role,
-    type: TypeKeys.UPDATE_USER_ROLE,
   };
 };
 

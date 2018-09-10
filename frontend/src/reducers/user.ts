@@ -1,9 +1,12 @@
 import { TypeKeys } from '../actions';
 import * as _ from 'lodash';
+import { decode } from 'jsonwebtoken';
 import {
   ADD_STARRED_PROJECT,
   REMOVE_STARRED_PROJECT,
-  LOAD_STARRED_PROJECTS_END
+  LOAD_STARRED_PROJECTS_END,
+  LOGIN_END,
+  LOGOUT
 } from '../../types/user';
 
 const defaultUser = {
@@ -33,6 +36,16 @@ export default function user(state = defaultUser, action:any) {
       return Object.assign({}, state, {
         likedProjects: action.projects,
       });
+    case LOGOUT:
+      window.localStorage.removeItem('oAuth');
+
+      return {};
+    case LOGIN_END:
+      window.localStorage.setItem('oAuth', JSON.stringify(action.token));
+
+      return {
+        ...decode(action.token) as any
+      };
     case LOAD_STARRED_PROJECTS_END:
       return {
         ...state,

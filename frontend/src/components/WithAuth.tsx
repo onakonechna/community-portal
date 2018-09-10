@@ -4,11 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import GithubAuthButton, { User } from './GithubAuthButton';
-import { LoadUserAction,
-         UpdateUserRoleAction,
-         getBookmarkedProjectsAction,
-         UpdateUserScopesAction,
-} from '../actions';
+import { LoadUserAction, getBookmarkedProjectsAction, UpdateUserScopesAction,} from '../actions';
 
 interface WithAuthStateProps {
   user?: any;
@@ -16,7 +12,6 @@ interface WithAuthStateProps {
 
 interface WithAuthDispatchProps {
   loadUser?: any;
-  updateUserRole?: any;
   updateUserScopes?: any;
   getBookmarkedProjects?: any;
 }
@@ -24,11 +19,9 @@ interface WithAuthDispatchProps {
 const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
   const Login = GithubAuthButton(WrappedComponent);
   class WithAuth extends React.Component<any, {}> {
-    constructor(props: any) {
-      super(props);
-    }
     render() {
-      const { role, scopes } = this.props.user;
+      const { scopes } = this.props.user;
+      const isAuthorized = !!this.props.user.user_id;
 
       // do not render if user has no required scopes
       if (
@@ -45,13 +38,11 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
         }
       }
 
-      if (!allowedRoles.includes(role)) {
+      if (!allowedRoles.includes(['guest']) && !isAuthorized) {
         return <Login
-          scope=""
           className={this.props.className}
           user={this.props.user}
           loadUser={this.props.loadUser}
-          updateUserRole={this.props.updateUserRole}
           updateUserScopes={this.props.updateUserScopes}
           getBookmarkedProjects={this.props.getBookmarkedProjects}
         />;
@@ -60,6 +51,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
       return <WrappedComponent {...this.props} />;
     }
   }
+
   const mapStateToProps = (state: any) => ({
     user: state.user
   });
@@ -68,7 +60,6 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
     return {
       getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
-      updateUserRole: (id: string, role: string) => dispatch(UpdateUserRoleAction(id, role)),
       updateUserScopes: (id: string, scopes: string[]) => dispatch(UpdateUserScopesAction(id, scopes)),
     };
   };

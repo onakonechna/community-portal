@@ -2,6 +2,7 @@ import * as React from 'react';
 import Favorite from '@material-ui/icons/Star';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, Theme } from '@material-ui/core/styles';
+import classnames from "classnames";
 
 interface StarringProjectProps {
   starred: boolean;
@@ -19,17 +20,21 @@ const styles = (theme: Theme) => ({
   },
   unstarredButton: {
     color: '#27A2AA',
-  },
+  }
 });
 
 const StarringProjectButton = (props: StarringProjectProps) => {
   const { classes, starred } = props;
+
   return (
     <IconButton
       aria-label="star"
       className={classes.Button}
       onClick={props.handler}>
-      <Favorite className={starred ? classes.starredButton : classes.unstarredButton}/>
+      <Favorite className={classnames({
+        [classes.starredButton]: starred,
+        [classes.unstarredButton]: !starred
+      })}/>
     </IconButton>
   );
 };
