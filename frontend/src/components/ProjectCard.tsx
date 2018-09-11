@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { bookmarkProjectAction } from '../actions';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
 
-import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import Message from './Message';
 
@@ -24,6 +22,7 @@ import { stateToHTML } from 'draft-js-export-html';
 
 import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
+import BookmarkButton from './projects/Bookmark';
 import ContributorsList from './projects/ContributorsList';
 import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
@@ -156,11 +155,9 @@ interface CardProps {
   toggleEdit?: () => void;
   classes?: any;
   history?: any;
-  bookmarked: boolean;
 }
 
 interface DispatchProps {
-  bookmarkProject: any;
   addStarredProject: any;
   removeStarredProject: any;
   updateProjectStars: any;
@@ -168,13 +165,11 @@ interface DispatchProps {
 
 interface CardState {
   editOpen: boolean;
-  bookmarked: boolean;
   messageOpen: boolean;
   errorMessage: string;
 }
 
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
-const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 
 export class ProjectCard extends React.Component<any, CardState>{
 
@@ -182,24 +177,17 @@ export class ProjectCard extends React.Component<any, CardState>{
     super(props);
     this.state = {
       editOpen: false,
-      bookmarked: this.props.bookmarked,
       messageOpen: false,
       errorMessage: '',
     };
 
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleBookmark = this.handleBookmark.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
     this.goDetail = this.goDetail.bind(this);
   }
 
-  componentWillReceiveProps(nextProps: any) {
-    this.setState({
-      bookmarked: nextProps.bookmarked,
-    });
-  }
 
   calculateOpenTime(timestamp: number) {
     const midnight = new Date();
@@ -221,11 +209,6 @@ export class ProjectCard extends React.Component<any, CardState>{
     this.props.history.push(`./project/${project_id}`);
   }
 
-  triggerBookmark(e:any) {
-    e.stopPropagation();
-    this.handleBookmark();
-  }
-
   toggleStatus(field: string) {
     this.setState((prevState: CardState) => ({
       ...prevState,
@@ -239,20 +222,6 @@ export class ProjectCard extends React.Component<any, CardState>{
     }));
   }
 
-  toggleBookmark() {
-    this.setState((prevState: CardState) => ({
-      bookmarked: !prevState.bookmarked,
-    }));
-  }
-
-  handleBookmark() {
-    const { project_id } = this.props.project;
-    if (!this.state.bookmarked) {
-      this.props.bookmarkProject(project_id)
-        .then(() => this.toggleBookmark())
-        .catch(() => this.onFailure(new Error('Something went wrong while bookmarking this project')));
-    }
-  }
 
   handleMessageChange(message: string) {
     this.setState({
@@ -294,12 +263,9 @@ export class ProjectCard extends React.Component<any, CardState>{
                 ellipsis="..."
                 basedOn="words"
               />
-              <Bookmark
-                bookmarked={this.state.bookmarked}
-                className={classes.bookmark}
-                handler={(e:any) => this.triggerBookmark(e)}
-                project_id={this.props.project.project_id}
-              />
+              <AuthorizedUserRole requestLogin>
+                <BookmarkButton project={this.props.project} bookmarkClass={classes.bookmark}/>
+              </AuthorizedUserRole>
             </div>
             <Typography
               dangerouslySetInnerHTML={html}
@@ -346,4 +312,4 @@ export class ProjectCard extends React.Component<any, CardState>{
 
 export default compose<{}, any>(
   withStyles(styles, {name: 'ProjectCard'}),
-  connect<{}, {}, any>(null, {bookmarkProject: bookmarkProjectAction}))(ProjectCard);
+  connect<{}, {}, any>(null, {}))(ProjectCard);

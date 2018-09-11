@@ -100,18 +100,6 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     this.updateGrid = this.updateGrid.bind(this);
   }
 
-  checkLike(id: string) {
-    return this.props.user.likedProjects.indexOf(id) !== -1;
-  }
-
-  checkBookmark(id: string) {
-    if (this.props.user.bookmarkedProjects) {
-      return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
-    }
-
-    return false;
-  }
-
   updateGrid() {
     this.props.loadProjects();
   }
@@ -121,6 +109,12 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
       if (this.props.filter === 'userProjects') {
         return _filter(this.props.projects, (project: any) => {
           return includes(Object.keys(project.contributors), this.props.user.user_id);
+        });
+      }
+
+      if (this.props.filter === 'bookmarkedProjects') {
+        return _filter(this.props.projects, (project: any) => {
+          return includes(Object.keys(project.bookmarked), this.props.user.user_id);
         });
       }
 
@@ -157,7 +151,6 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
                 project={project}
                 handler={this.updateGrid}
                 history={this.props.history}
-                bookmarked={this.checkBookmark(project.project_id)}
               />
             </Grid>
           ))}

@@ -4,6 +4,10 @@ import {
   LOAD_PROJECT_START,
   LOAD_PROJECT_END,
   UPDATE_PROJECT_STARS,
+  BOOKMARK_PROJECT_START,
+  BOOKMARK_PROJECT_END,
+  UNBOOKMARK_PROJECT_START,
+  UNBOOKMARK_PROJECT_END,
   UNJOIN_TO_PROJECT_CONTRIBUTORS_START,
   UNJOIN_TO_PROJECT_CONTRIBUTORS_END,
   JOIN_TO_PROJECT_CONTRIBUTORS_START,
@@ -48,6 +52,36 @@ export const unjoinProject = (project:any, user:any) => (dispatch:Dispatch) => {
         user
       })
     })
+};
+
+export const bookmarkProject = (project:any, user:any) => (dispatch:Dispatch) => {
+  dispatch({
+    type: BOOKMARK_PROJECT_START,
+    project,
+    user
+  });
+
+  return request(`${API}/user/bookmarkProject`, postHeaders({ project_id: project.project_id }))
+    .then((res:any) => dispatch({
+      type: BOOKMARK_PROJECT_END,
+      project,
+      user
+    }))
+};
+
+export const unbookmarkProject = (project:any, user:any) => (dispatch:Dispatch) => {
+  dispatch({
+    type: UNBOOKMARK_PROJECT_START,
+    project,
+    user
+  });
+
+  return request(`${API}/user/bookmarkProject`, deleteHeaders({ project_id: project.project_id }))
+    .then((res:any) => dispatch({
+      type: UNBOOKMARK_PROJECT_END,
+      project,
+      user
+    }))
 };
 
 export const joinProject = (project:any, user:any) => (dispatch:Dispatch) => {

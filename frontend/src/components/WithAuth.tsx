@@ -4,7 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import GithubAuthButton, { User } from './GithubAuthButton';
-import { LoadUserAction, getBookmarkedProjectsAction, UpdateUserScopesAction,} from '../actions';
+import { LoadUserAction, UpdateUserScopesAction,} from '../actions';
 
 interface WithAuthStateProps {
   user?: any;
@@ -13,7 +13,6 @@ interface WithAuthStateProps {
 interface WithAuthDispatchProps {
   loadUser?: any;
   updateUserScopes?: any;
-  getBookmarkedProjects?: any;
 }
 
 const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedComponent:any) => {
@@ -44,7 +43,6 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
           user={this.props.user}
           loadUser={this.props.loadUser}
           updateUserScopes={this.props.updateUserScopes}
-          getBookmarkedProjects={this.props.getBookmarkedProjects}
         />;
       }
 
@@ -58,7 +56,6 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
 
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-      getBookmarkedProjects: () => dispatch(getBookmarkedProjectsAction()),
       loadUser: (user: User) => dispatch(LoadUserAction(user)),
       updateUserScopes: (id: string, scopes: string[]) => dispatch(UpdateUserScopesAction(id, scopes)),
     };

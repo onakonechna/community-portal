@@ -7,14 +7,9 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 
 interface BookmarkProjectProps {
   bookmarked: boolean;
-  project_id: string;
-  user?: any;
-  role?: string;
-  toggleBookmark: () => void;
-  bookmarkProject?: any;
   handler?: any;
   classes?: any;
-  className: string;
+  className?: string;
 }
 
 const styles = (theme:Theme) => ({

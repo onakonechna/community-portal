@@ -20,6 +20,7 @@ export default class Project {
   private created:number;
   private github_project_id:string;
   private contributors:any;
+  private bookmarked:any;
 
   constructor(data:any) {
     this.owner = data.owner;
@@ -34,6 +35,7 @@ export default class Project {
     this.github_address = data.github_address;
     this.size = data.size;
     this.due = data.due;
+    this.bookmarked = data.bookmarked || {};
     this.project_id = data.project_id;
     this.name = data.name;
     this.github_project_id = data.github_project_id;
@@ -86,7 +88,8 @@ export default class Project {
       updated: this.updated,
       created: this.created,
       github_project_id: this.github_project_id,
-      contributors: this.contributors
+      contributors: this.contributors,
+      bookmarked: this.bookmarked
     });
   }
 

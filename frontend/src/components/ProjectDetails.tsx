@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import WithAuth from './WithAuth';
 import EditProjectDialog from './EditProjectDialog';
-import BookmarkButton from './buttons/BookmarkButton';
 import EditButton from './buttons/EditButton';
 import Message from './Message';
-
-import { bookmarkProjectAction } from '../actions';
-import { loadProject } from '../actions/project';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -24,11 +20,14 @@ import { stateToHTML } from 'draft-js-export-html';
 import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
 import ContributorsList from './projects/ContributorsList';
+import BookmarkButton from './projects/Bookmark';
 import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
+import AuthorizedUserRole from './roles/AuthorizedUserRole';
 
 import { loadStarredProjects } from './../actions/user';
+import { loadProject } from '../actions/project';
 
 const styles: any = (theme:any) => ({
   bookmark: {
@@ -158,7 +157,6 @@ interface StateProps {
 
 interface DispatchProps {
   loadProject: (project_id: string) => void;
-  bookmarkProject: any;
   loadStarredProjects: any;
 }
 
@@ -171,18 +169,17 @@ interface ProjectDetailsProps {
 
 interface ProjectDetailsState {
   editOpen: boolean;
-  bookmarked: boolean;
   messageOpen: boolean;
   errorMessage: string;
 }
 
 const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
-const Bookmark = WithAuth(['owner', 'user'])(BookmarkButton);
 
 export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   static defaultProps = {
     project: {
       contributors: {},
+      bookmarked: {},
       estimated: 0,
       created: 0,
       technologies: [],
@@ -193,12 +190,10 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
     super(props);
     this.state = {
       editOpen: false,
-      bookmarked: this.checkBookmark(this.props.project_id),
       messageOpen: false,
       errorMessage: '',
     };
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleBookmark = this.handleBookmark.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
@@ -216,14 +211,6 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
       default:
         return `Opened ${dateDifference + 1} days ago`;
     }
-  }
-
-  checkBookmark(id: string) {
-    if (this.props.user.bookmarkedProjects) {
-      return this.props.user.bookmarkedProjects.indexOf(id) !== -1;
-    }
-
-    return false;
   }
 
   componentDidMount() {
@@ -244,25 +231,6 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
     this.setState((prevState: ProjectDetailsState) => ({
       editOpen: !prevState.editOpen,
     }));
-  }
-
-  toggleBookmark() {
-    this.setState((prevState: ProjectDetailsState) => ({
-      bookmarked: !prevState.bookmarked,
-    }));
-  }
-
-  handleBookmark() {
-    const { project_id } = this.props.project;
-    if (!this.state.bookmarked) {
-      this.props.bookmarkProject(project_id)
-        .then((response: any) => {
-          this.toggleBookmark();
-        })
-        .catch((err: Error) => {
-          this.onFailure(new Error('Something went wrong while bookmarking this project'));
-        });
-    }
   }
 
   handleMessageChange(message: string) {
@@ -306,12 +274,9 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
             <Typography className={classes.titleText}>
               {this.props.project.name}
             </Typography>
-            <Bookmark
-              bookmarked={this.checkBookmark(this.props.project.project_id)}
-              className={classes.bookmark}
-              handler={this.handleBookmark}
-              project_id={this.props.project.project_id}
-            />
+            <AuthorizedUserRole requestLogin>
+              <BookmarkButton project={this.props.project} bookmarkClass={classes.bookmark}/>
+            </AuthorizedUserRole>
           </div>
           <Card className={classes.card}>
             <CardContent className={classes.content}>
@@ -342,7 +307,9 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <GithubButton url={this.props.project.github_address}/>
               <SlackButton url={this.props.project.slack_channel} />
               <Edit handler={this.toggleEdit} />
-              <StartsProjectButton project={this.props.project}/>
+              <AuthorizedUserRole requestLogin>
+                <StartsProjectButton project={this.props.project}/>
+              </AuthorizedUserRole>
               <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
             </CardActions>
           </Card>
@@ -369,7 +336,6 @@ export default compose<{}, ProjectDetailsProps>(
   withStyles(styles, {name: 'ProjectDetails',}),
   connect<StateProps, DispatchProps, ProjectDetailsProps>(mapStateToProps, {
     loadStarredProjects,
-    loadProject,
-    bookmarkProject: bookmarkProjectAction
+    loadProject
   }),
 )(ProjectDetails);

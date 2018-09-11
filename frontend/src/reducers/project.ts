@@ -4,7 +4,9 @@ import {
   UPDATE_PROJECT_STARS,
   LOAD_PROJECT_END,
   JOIN_TO_PROJECT_CONTRIBUTORS_END,
-  UNJOIN_TO_PROJECT_CONTRIBUTORS_END
+  UNJOIN_TO_PROJECT_CONTRIBUTORS_END,
+  BOOKMARK_PROJECT_END,
+  UNBOOKMARK_PROJECT_END
 } from '../../types/project';
 
 const withoutProject = (state:any[], action:any) =>
@@ -19,6 +21,20 @@ export default function project(state = [], action:any) {
         ...withoutProject(state, action),
         action.project
       ];
+    case BOOKMARK_PROJECT_END:
+      return [
+        ...withoutProject(state, action),
+        {...action.project, bookmarked: {
+            ...action.project.bookmarked,
+            [action.user.user_id]: {user_id: action.user.user_id}}
+        }
+      ];
+    case UNBOOKMARK_PROJECT_END:
+      return [
+        ...withoutProject(state, action),
+        {...action.project, bookmarked: _.omit(action.project.bookmarked, [action.user.user_id])}
+      ];
+
     case JOIN_TO_PROJECT_CONTRIBUTORS_END:
       return [
         ...withoutProject(state, action),
@@ -31,9 +47,7 @@ export default function project(state = [], action:any) {
     case UNJOIN_TO_PROJECT_CONTRIBUTORS_END:
       return [
         ...withoutProject(state, action),
-        {...action.project, contributors: [
-          ..._.filter(action.project.contributors, _.matchesProperty('user_id', action.user.user_id))]
-        }
+        {...action.project, contributors: _.omit(action.project.contributors, [action.user.user_id])}
       ];
 
     case UPDATE_PROJECT_STARS:

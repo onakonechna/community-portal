@@ -8,12 +8,12 @@ import User from "../../../src/resources/UserResource/User";
 const dbConnection = new DatabaseConnection();
 const userResource = new UserResource(dbConnection);
 const projectResource = new ProjectResource(dbConnection);
-const bookmarkProjectEndpoint = new Endpoint('/user/bookmarkProject', 'post');
+const bookmarkProjectEndpoint = new Endpoint('/user/bookmarkProject', 'delete');
 
 bookmarkProjectEndpoint.configure((req: Request, res: Response) => {
   const user = new User(req.tokenContents);
 
-  projectResource.bookmarkProject({project_id: req.body.project_id, user_id: user.get('user_id')})
+  projectResource.unbookmarkProject({project_id: req.body.project_id, user_id: user.get('user_id')})
     .then((result:any) => res.status(200).json({user_id: user.get('user_id')}))
     .catch((err:any) =>
       console.log(err) ||

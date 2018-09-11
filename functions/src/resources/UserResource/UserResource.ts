@@ -16,11 +16,7 @@ interface UserResourceInterface {
   update(data: any): Promise<any>;
   addUpvotedProject(github_project_id:string, projectName:string, user_id:string): Promise<any>;
   removeUpvotedProject(github_project_id:string, projectName:string, user_id:string): Promise<any>;
-  addBookmarkedProject(data: any): Promise<any>;
   getUpvotedProjects(data: any): Promise<any>;
-  getBookmarkedProjects(data: any): Promise<any>;
-  pledge(data: any): Promise<any>;
-  subscribe(data: any): Promise<any>;
   delete(data: any): Promise<any>;
 }
 
@@ -170,16 +166,6 @@ export default class UserResource implements UserResourceInterface {
     )
   }
 
-  addBookmarkedProject(data: any): Promise<any> {
-    const { user_id, project_id } = data;
-    return this.adapter.addToSetIfNotExists(
-      USERS_TABLE,
-      { user_id },
-      'bookmarked_projects',
-      project_id,
-    );
-  }
-
   removeUpvotedProject(github_project_id:string, projectName:string, user_id:string): Promise<any> {
     return this.adapter.removeFromMap(
       USERS_TABLE,
@@ -200,21 +186,6 @@ export default class UserResource implements UserResourceInterface {
       user_id,
       PROJECTS_STARS_USER_ID_INDEX,
       false
-    );
-  }
-
-  getBookmarkedProjects(data: any): Promise<any> {
-    const { user_id } = data;
-    return this.adapter.getById(USERS_TABLE, { user_id });
-  }
-
-  pledge(data: any): Promise<any> {
-    const { project_id, user_id } = data;
-    return this.adapter.addToSetIfNotExists(
-      USERS_TABLE,
-      { user_id },
-      'pledged_projects',
-      project_id,
     );
   }
 
@@ -240,11 +211,6 @@ export default class UserResource implements UserResourceInterface {
       'projects',
       project_id,
     );
-  }
-
-  subscribe(data: any): Promise<any> {
-    const { user_id, project_id } = data;
-    return this.adapter.addToSet(USERS_TABLE, { user_id }, 'subscribed_projects', project_id);
   }
 
   delete(data: any): Promise<any> {

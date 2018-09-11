@@ -13,7 +13,6 @@ interface GithubAuthButtonProps {
   user?: any;
   updateUserScopes?: any;
   getLikedProjects?: any;
-  getBookmarkedProjects?: any;
   loadUser?: any;
 }
 
@@ -31,7 +30,7 @@ export interface User {
   email?: string,
   location?: string,
   upvoted_projects?: any,
-  bookmarkedProjects?: string[];
+  bookmarkedProjects?: any;
 }
 
 const withLogin = (WrappedCompoent: any) => {

@@ -95,6 +95,29 @@ export default class ProjectResource implements ProjectResourceInterface {
     })
   }
 
+  bookmarkProject(data: any): Promise<any> {
+    const { user_id, project_id } = data;
+
+    return this.adapter.addToMap(
+      PROJECTS_TABLE,
+      { project_id },
+      'bookmarked',
+      user_id,
+      {user_id}
+    );
+  }
+
+  unbookmarkProject(data:any): Promise<any> {
+    const { user_id, project_id } = data;
+
+    return this.adapter.removeFromMap(
+      PROJECTS_TABLE,
+      { project_id },
+      'bookmarked',
+      user_id
+    );
+  }
+
   joinProject(github_project_id:string, project_name:string, user_id:string, user_name:string, user_avatar_url:string) {
     return this.adapter.create(PROJECTS_CONTRIBUTORS_TABLE, {
       project_id: github_project_id,

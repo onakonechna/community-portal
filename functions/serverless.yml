@@ -135,8 +135,8 @@ functions:
   - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
   - ${file(./handlers/user/likeProject/likeProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
+  - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
-  - ${file(./handlers/user/getBookmarkedProjects/getBookmarkedProjects.yml)}
   - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
 
 resources:
@@ -187,8 +187,8 @@ resources:
     updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
     likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
     bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
+    unbookmarkProjectRole: ${file(./handlers/user/unbookmarkProject/role.yml):unbookmarkProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
-    getBookmarkedProjectsRole: ${file(./handlers/user/getBookmarkedProjects/role.yml):getBookmarkedProjectsRole}
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
 

@@ -1,12 +1,12 @@
-getBookmarkedProjects:
-  name: ${self:provider.stage}-getBookmarkedProjects
-  role: getBookmarkedProjectsRole
-  handler: handlers/user/getBookmarkedProjects/handler.handler
+unbookmarkProject:
+  name: ${self:provider.stage}-unbookmarkProject
+  role: unbookmarkProjectRole
+  handler: handlers/user/unbookmarkProject/handler.handler
   timeout: 10
   events:
   - http:
-      path: /user/bookmarkedProjects
-      method: get
+      path: /user/bookmarkProject
+      method: delete
       cors: true
       authorizer:
         name: authorizer

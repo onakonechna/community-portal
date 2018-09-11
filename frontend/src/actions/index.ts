@@ -1,10 +1,8 @@
-import bookmarkProject from '../api/BookmarkProject';
-import fetchProjects from '../api/FetchProjects';
-import getBookmarkedProjects from '../api/GetBookmarkedProjects';
 import { editProject } from  '../api/EditProject';
 import upvoteProject from '../api/UpvoteProject';
 import saveProject from '../api/SaveProject';
 import {loadProject} from './project';
+import fetchProjects from '../api/FetchProjects';
 
 import { Dispatch } from 'redux';
 import { v4 as uuid } from 'uuid';
@@ -13,10 +11,8 @@ export enum TypeKeys {
  ADD_PROJECT = 'ADD_PROJECT',
  LOAD_USER = 'LOAD_USER',
  EDIT_PROJECT = 'EDIT_PROJECT',
- LOAD_PROJECT = 'LOAD_PROJECT',
  LOAD_LIKED_PROJECTS = 'LOAD_LIKED_PROJECTS',
  LOAD_BOOKMARKED_PROJECTS = 'LOAD_BOOKMARKED_PROJECTS',
- PROJECT_LOADED = 'PROJECT_LOADED',
  PROJECTS_LOADED = 'PROJECTS_LOADED',
  UPDATE_USER_ROLE = 'UPDATE_USER_ROLE',
  UPDATE_USER_SCOPES = 'UPDATE_USER_SCOPES',
@@ -26,16 +22,6 @@ export enum TypeKeys {
 export interface LoadUserAction {
   type: TypeKeys.LOAD_USER;
   user: any;
-}
-
-export interface LoadLikedProjects {
-  type: TypeKeys.LOAD_LIKED_PROJECTS;
-  projects: any;
-}
-
-export interface LoadBookmarkedProjects {
-  type: TypeKeys.LOAD_BOOKMARKED_PROJECTS;
-  projects: any;
 }
 
 export interface AddProjectAction {
@@ -63,8 +49,6 @@ export interface OtherAction {
 
 export type ActionTypes =
  | AddProjectAction
- | LoadLikedProjects
- | LoadBookmarkedProjects
  | LoadUserAction
  | EditProjectAction
  | ProjectsLoadedAction
@@ -84,6 +68,23 @@ export const addProject = (project: {}) => {
   };
 };
 
+export const loadProjects: (any) = () => {
+  return (dispatch: Dispatch) => {
+    return fetchProjects()
+      .then((projects: any) => {
+        dispatch(projectsLoaded(projects.data));
+      });
+  };
+};
+
+export const projectsLoaded = (projects: {}) => {
+  return {
+    projects,
+    type: TypeKeys.PROJECTS_LOADED,
+  };
+};
+
+
 export const editProjectBody = (project: any) => {
   return (dispatch: Dispatch) => {
     return editProject(project)
@@ -98,68 +99,6 @@ export const editProjectBody = (project: any) => {
 export const likeProject = (id: string) => {
   return (dispatch: Dispatch) => {
     return upvoteProject(id)
-  };
-};
-
-export const bookmarkProjectAction = (id: string) => {
-  return (dispatch: Dispatch) => {
-    return bookmarkProject(id)
-      .then(() => {
-        dispatch(loadProjects());
-        dispatch(getBookmarkedProjectsAction());
-        loadProject(id)
-      });
-  };
-};
-
-export const getBookmarkedProjectsAction: (any) = () => {
-  return (dispatch: Dispatch) => {
-    return getBookmarkedProjects()
-      .then((res:any) => {
-        let projects;
-        if (res['bookmarked_projects']) {
-          projects = res['bookmarked_projects'] || [];
-          dispatch(loadBookmarkedProjectsAction(projects));
-        }
-      });
-  };
-};
-
-
-export const loadProjects: (any) = () => {
-  return (dispatch: Dispatch) => {
-    return fetchProjects()
-      .then((projects: any) => {
-        dispatch(projectsLoaded(projects.data));
-      });
-  };
-};
-
-export const loadLikedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_LIKED_PROJECTS,
-  };
-};
-
-export const loadBookmarkedProjectsAction = (projects: any) => {
-  return {
-    projects,
-    type: TypeKeys.LOAD_BOOKMARKED_PROJECTS,
-  };
-};
-
-export const projectLoaded = (project: {}) => {
-  return {
-    project,
-    type: TypeKeys.PROJECT_LOADED,
-  };
-};
-
-export const projectsLoaded = (projects: {}) => {
-  return {
-    projects,
-    type: TypeKeys.PROJECTS_LOADED,
   };
 };
 
