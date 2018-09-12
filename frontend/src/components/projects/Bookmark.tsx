@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import { withStyles } from '@material-ui/core/styles';
 import { bookmarkProject, unbookmarkProject } from '../../actions/project';
 import BookmarkButton from '../buttons/BookmarkButton';
+import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 
 const styles = {
   joinText: {
@@ -25,7 +26,16 @@ class Bookmark extends React.Component<any, any> {
   handler = (e:any) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.isBookmarked ? this.handleUnbookmarkProject() : this.handleBookmarkProject();
+
+    if (this.props.isBookmarked) {
+      this.props.loadingProcessStart('unbookmark_project', true);
+      this.handleUnbookmarkProject()
+        .then(() => this.props.loadingProcessEnd('unbookmark_project'))
+    } else {
+      this.props.loadingProcessStart('bookmark_project', true);
+      this.handleBookmarkProject()
+        .then(() => this.props.loadingProcessEnd('bookmark_project'))
+    }
   };
 
   handleBookmarkProject = () => this.props.bookmarkProject(this.props.project, this.props.user);
@@ -49,5 +59,10 @@ const mapStateToProps = (state:any, props:any) => ({
 
 export default compose<{}, any>(
   withStyles(styles, {name: 'BookmarkProject'}),
-  connect<{}, any, any>(mapStateToProps, {bookmarkProject, unbookmarkProject}),
+  connect<{}, any, any>(mapStateToProps, {
+    bookmarkProject,
+    unbookmarkProject,
+    loadingProcessStart,
+    loadingProcessEnd
+  }),
 )(Bookmark);

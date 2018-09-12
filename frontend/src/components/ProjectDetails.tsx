@@ -27,6 +27,7 @@ import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
 
 import { loadStarredProjects } from './../actions/user';
+import { loadingProcessStart, loadingProcessEnd } from './../actions/loading';
 import { loadProject } from '../actions/project';
 
 const styles: any = (theme:any) => ({
@@ -158,6 +159,8 @@ interface StateProps {
 interface DispatchProps {
   loadProject: (project_id: string) => void;
   loadStarredProjects: any;
+  loadingProcessStart: any;
+  loadingProcessEnd: any;
 }
 
 interface ProjectDetailsProps {
@@ -215,15 +218,21 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
 
   componentDidMount() {
     if (this.props.authorized) {
-      this.props.loadStarredProjects();
+      this.props.loadingProcessStart('load_starred_projects', true);
+      this.props.loadStarredProjects()
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
     }
 
-    this.props.loadProject(this.props.project_id);
+    this.props.loadingProcessStart('load_project', true);
+    this.props.loadProject(this.props.project_id)
+      .then(() => this.props.loadingProcessEnd('load_project'));
   }
 
   componentWillReceiveProps(props:any) {
     if (!this.props.authorized && props.authorized) {
-      this.props.loadStarredProjects();
+      this.props.loadingProcessStart('load_starred_projects', true);
+      this.props.loadStarredProjects()
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
     }
   }
 
@@ -336,6 +345,8 @@ export default compose<{}, ProjectDetailsProps>(
   withStyles(styles, {name: 'ProjectDetails',}),
   connect<StateProps, DispatchProps, ProjectDetailsProps>(mapStateToProps, {
     loadStarredProjects,
-    loadProject
+    loadProject,
+    loadingProcessStart,
+    loadingProcessEnd
   }),
 )(ProjectDetails);

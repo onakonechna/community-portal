@@ -6,12 +6,16 @@ import { addStarredProject, removeStarredProject } from '../../actions/user';
 import { likeProject } from '../../actions';
 import { updateProjectStars } from '../../actions/project';
 import StarringProjectButton from '../buttons/StarringProjectButton';
+import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
+
 
 class Stars extends React.Component<any, any> {
   handler = () => {
+    this.props.loadingProcessStart('stars_project', true);
     this.props.likeProject(this.props.project.github_project_id)
       .then(() => {
         let upvotes = this.props.project.upvotes;
+        this.props.loadingProcessEnd('stars_project');
 
         if (this.props.isProjectStarred) {
           --upvotes;
@@ -47,5 +51,7 @@ export default connect(mapStateToProps, {
   addStarredProject,
   removeStarredProject,
   likeProject,
-  updateProjectStars
+  updateProjectStars,
+  loadingProcessStart,
+  loadingProcessEnd
 })(Stars)

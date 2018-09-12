@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { unjoinProject, joinProject } from '../../actions/project';
+import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 import JoinButton from '../buttons/JoinButton';
 
 const styles = {
@@ -28,16 +29,22 @@ class Join extends React.Component<any, any> {
   }
 
   handleUnjoinProject = () => {
+    this.props.loadingProcessStart('unjoin_project', true);
     this.props.unjoinProject(this.props.project, this.props.user)
-      .then(this.handleCloseDialog)
+      .then(() => {
+        this.props.loadingProcessEnd('unjoin_project');
+      })
   };
 
   handleJoinProject = () => {
+    this.props.loadingProcessStart('join_project', true);
     this.props.joinProject(this.props.project, this.props.user)
-      .then(this.handleCloseDialog)
+      .then(() => {
+        this.props.loadingProcessEnd('join_project');
+      })
   };
 
-  handleOpenDialog = () => this.setState({open: true});
+  handleJoinUnjoinProject = () => !this.props.isJoined ? this.handleJoinProject() : this.handleUnjoinProject();
 
   handleCloseDialog = () => this.setState({open: false});
 
@@ -75,7 +82,7 @@ class Join extends React.Component<any, any> {
             </span>
           }
         </Dialog>
-        <JoinButton handler={this.handleOpenDialog} label={this.props.isJoined ? 'Leave' : 'Join' } />
+        <JoinButton handler={this.handleJoinUnjoinProject} label={this.props.isJoined ? 'Leave' : 'Join' } />
       </div>
     ) : null
   }
@@ -89,5 +96,10 @@ const mapStateToProps = (state:any, props:any) => ({
 
 export default compose<{}, any>(
   withStyles(styles, {name: 'JoinProject'}),
-  connect<{}, any, any>(mapStateToProps, {unjoinProject, joinProject}),
+  connect<{}, any, any>(mapStateToProps, {
+    unjoinProject,
+    joinProject,
+    loadingProcessStart,
+    loadingProcessEnd
+  }),
 )(Join);

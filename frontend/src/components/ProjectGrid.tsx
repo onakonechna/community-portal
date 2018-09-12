@@ -10,6 +10,7 @@ import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
 import { loadProjects } from './../actions';
 import { loadStarredProjects } from './../actions/user';
+import { loadingProcessStart, loadingProcessEnd } from './../actions/loading';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -49,7 +50,9 @@ interface GridStateProps {
 }
 
 interface DispatchProps {
-  loadProjects: () => void;
+  loadProjects: any;
+  loadingProcessStart: any;
+  loadingProcessEnd: any;
   loadStarredProjects: () => any;
 }
 
@@ -85,13 +88,17 @@ interface GridState {
 export class ProjectGrid extends React.Component<GridProps & GridStateProps & DispatchProps, GridState> {
   componentWillMount() {
     if (this.props.authorized) {
-      this.props.loadStarredProjects();
+      this.props.loadingProcessStart('load_starred_projects', true);
+      this.props.loadStarredProjects()
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
     }
   }
 
   componentWillReceiveProps(props:any) {
     if (!this.props.authorized && props.authorized) {
-      this.props.loadStarredProjects();
+      this.props.loadingProcessStart('load_starred_projects', true);
+      this.props.loadStarredProjects()
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
     }
   }
 
@@ -101,7 +108,9 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   }
 
   updateGrid() {
-    this.props.loadProjects();
+    this.props.loadingProcessStart('load_projects', true);
+    this.props.loadProjects()
+      .then(() => this.props.loadingProcessEnd('load_projects'));
   }
 
   filter() {
@@ -174,5 +183,10 @@ export default compose<GridStateProps, any>(
   withStyles(styles, {
     name: 'ProjectGrid',
   }),
-  connect<GridStateProps, DispatchProps, any>(mapStateToProps, {loadStarredProjects, loadProjects}),
+  connect<GridStateProps, DispatchProps, any>(mapStateToProps, {
+    loadStarredProjects,
+    loadingProcessStart,
+    loadingProcessEnd,
+    loadProjects
+  }),
 )(ProjectGrid);

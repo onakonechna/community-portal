@@ -18,6 +18,7 @@ import Logo from './Logo';
 import SideBar from './SideBar';
 import { LoadUserAction } from "../actions";
 import { decode } from 'jsonwebtoken';
+import LoadingLine from './LoadingLine';
 
 const AddProject = WithAuth(['user', 'owner'], ['write:project'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
@@ -132,6 +133,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
               <Login />
             </div>
         </Toolbar>
+        <LoadingLine/>
       </AppBar>
     );
   }
