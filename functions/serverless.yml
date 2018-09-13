@@ -155,6 +155,7 @@ resources:
         ResponseTemplates:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
+    ProjectsTable: ${file(./schema.json):Projects}
     TeamsToUsersIndexTable: ${file(./schema.json):TeamsToUsersIndex}
     GithubPartnerTeamsTable: ${file(./schema.json):GithubPartnerTeams}
     GithubUsersTable: ${file(./schema.json):GithubUsers}
@@ -164,6 +165,11 @@ resources:
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
     SkillsTable: ${file(./schema.json):Skills}
+    PullRequestsTable: ${file(./schema.json):PullRequests}
+    EpicsTable: ${file(./schema.json):Epics}
+    IssuesTable: ${file(./schema.json):Issues}
+    ProjectsToIndexStarsTable: ${file(./schema.json):ProjectsToIndexStars}
+    ProjectStarsTable: ${file(./schema.json):ProjectStars}
     joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
     unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
