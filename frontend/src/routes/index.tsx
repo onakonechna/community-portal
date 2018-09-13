@@ -10,6 +10,7 @@ import CreatePartnersTeamPage from '../components/partners/pages/CreatePartnersT
 import PartnersManagementPage from '../components/partners/pages/PartnersManagementPage';
 import PartnerRoute from './PartnerRoute';
 import ProjectDetails from '../components/ProjectDetails';
+import CalendarPage from '../components/calendar/CalendarPage';
 
 const Routes = () => (
   <div>
@@ -20,6 +21,7 @@ const Routes = () => (
     <PartnerRoute exact path="/partners-management" component={PartnersManagementPage} role="partner-admin"/>
 
     <Route exact path="/" component={ProjectGrid} />
+    <Route exact path="/community-calendar" component={CalendarPage} />
     <Route exact path="/auth" component={Auth} />
     <Route exact path="/profile/:user_id" component={Profile} />
     <Route exact path="/bookmarked" render={(props: any) => <ProjectGrid filter="bookmarkedProjects" {...props} />}/>

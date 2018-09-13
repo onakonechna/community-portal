@@ -85,6 +85,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
   toBookMark= () => this.props.history.push('./bookmarked');
   toHome = () => this.props.history.push('/');
   toProjects = ()  => this.props.history.push('./user/projects');
+  toCalendar = () => this.props.history.push('/community-calendar');
   toProfile = () => this.props.history.push(`./profile/${this.props.user.user_id}`);
 
   render() {
@@ -124,6 +125,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
               toggleSideBar={this.toggleSideBar}
               toBookMark={this.toBookMark}
               toProjects={this.toProjects}
+              toCalendar={this.toCalendar}
               toProfile={this.toProfile}
             />
           </span>

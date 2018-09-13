@@ -6,10 +6,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { withRouter } from 'react-router-dom';
+import Assignment from '@material-ui/icons/Assignment';
+import NoteAdd from '@material-ui/icons/NoteAdd';
+import Pageview from '@material-ui/icons/Pageview';
+import DeveloperBoard from '@material-ui/icons/DeveloperBoard';
 
 const styles = {
   center: {
-    "text-align": "center"
+    "text-align": "left"
   },
 };
 
@@ -25,10 +29,12 @@ class SideBar extends React.Component<any, any> {
       return (
         <div>
           <ListItem button className={props.classes.center} onClick={this.toPartnerTeams}>
+            <Assignment/>
             <ListItemText primary="Partner Teams" />
           </ListItem>
           <Divider />
           <ListItem button className={props.classes.center} onClick={this.toCreatePartnerTeam}>
+            <NoteAdd/>
             <ListItemText primary="Create Partner Team" />
           </ListItem>
           <Divider />
@@ -43,6 +49,7 @@ class SideBar extends React.Component<any, any> {
       return (
         <div>
           <ListItem button className={props.classes.center} onClick={this.toViewPartnerTeam}>
+            <Pageview/>
             <ListItemText primary="View Partner Team" />
           </ListItem>
           <Divider />
@@ -57,6 +64,7 @@ class SideBar extends React.Component<any, any> {
       return (
         <div>
           <ListItem button className={props.classes.center} onClick={this.toEditPartnerTeam}>
+            <DeveloperBoard/>
             <ListItemText primary="Edit Partner Team" />
           </ListItem>
           <Divider />
