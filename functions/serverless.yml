@@ -155,13 +155,6 @@ resources:
         ResponseTemplates:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
-    ProjectsTable: ${file(./schema.json):Projects}
-    TeamsToUsersIndexTable: ${file(./schema.json):TeamsToUsersIndex}
-    GithubPartnerTeamsTable: ${file(./schema.json):GithubPartnerTeams}
-    GithubUsersTable: ${file(./schema.json):GithubUsers}
-    PartnerTeamsTable: ${file(./schema.json):PartnerTeams}
-    PartnerTeamMembers: ${file(./schema.json):PartnerTeamMembers}
-    PartnerTeamOwners: ${file(./schema.json):PartnerTeamOwners}
     UsersTable: ${file(./schema.json):Users}
     TagsTable: ${file(./schema.json):Tags}
     SkillsTable: ${file(./schema.json):Skills}
