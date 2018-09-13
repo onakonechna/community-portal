@@ -118,7 +118,7 @@ jobs:
               node_modules/.bin/sls create_domain --stage staging
               node_modules/.bin/sls deploy --stage staging
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-              node_modules/.bin/sls create_domain --stage prod
+              node_modules/.bin/sls create_domain --stage production
               node_modules/.bin/sls deploy --stage prod
             elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
               node_modules/.bin/sls create_domain --stage dev
