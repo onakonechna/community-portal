@@ -37,6 +37,9 @@ const styles: any = (theme:any) => ({
       position: 'relative' as 'relative',
     },
   },
+  cardAction: {
+    'border-top': '1px solid #b9bdbd'
+  },
   titleText: {
     [theme.breakpoints.down('sm')]: {
       width: '85%',
@@ -77,15 +80,19 @@ const styles: any = (theme:any) => ({
     'margin-top': '1rem',
   },
   card: {
-    'background-color': '#F2F3F3',
-    width: '100%',
+    'background-color': '#fff',
+    'border-top': '1px solid #b9bdbd',
+    'margin-top': '20px',
+    'width': '100%',
+    'border-radius': '0',
+    'box-shadow': 'none'
   },
   chip: {
     margin: '0 1rem 0 0',
     borderRadius: '5px',
   },
   content: {
-    margin: '1rem',
+    margin: '0 1rem 1rem',
   },
   contributorDiv: {
     display: 'flex',
