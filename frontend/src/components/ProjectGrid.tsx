@@ -154,14 +154,17 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
           spacing={32}
           justify="center"
         >
-          {this.props.projects && this.filter().map((project: any) => (
-            <Grid item key={project.project_id}>
-              <ProjectCard
-                project={project}
-                handler={this.updateGrid}
-                history={this.props.history}
-              />
-            </Grid>
+          {this.props.projects &&
+            this.filter()
+              .sort((prev:any, next:any) => prev.created < next.created)
+              .map((project: any) => (
+                <Grid item key={project.project_id}>
+                  <ProjectCard
+                    project={project}
+                    handler={this.updateGrid}
+                    history={this.props.history}
+                  />
+                </Grid>
           ))}
           {classes && <Grid item className={classes.hiddenGridSmall}><div className={classes.invisibleCard} /></Grid>}
           {classes && <Grid item className={classes.hiddenGridLarge}><div className={classes.invisibleCard} /></Grid>}
