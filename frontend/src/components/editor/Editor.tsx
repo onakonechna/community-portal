@@ -50,6 +50,7 @@ export class Editor extends React.Component<any, any> {
         editorState={this.state.editorState}
         editorClassName={this.props.classes.editor}
         onEditorStateChange={this.handleEditorStateChange}
+        stripPastedStyles
       />
     );
   }
