@@ -95,6 +95,7 @@ module.exports = {
             },
             {
                 test:/\.css$/,
+                exclude: /Draft\.css$/,
                 use:['style-loader','css-loader']
             },
             {
