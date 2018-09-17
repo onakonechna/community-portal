@@ -8,6 +8,7 @@ export default class Project {
   private completed_history:any;
   private estimated:number;
   private description:string;
+  private short_description:string;
   private completed:number;
   private technologies:any[];
   private github_address:string;
@@ -30,6 +31,7 @@ export default class Project {
     this.completed_history = data.completed_history || {};
     this.estimated = data.estimated;
     this.description = data.description || '';
+    this.short_description = data.short_description || '';
     this.completed = data.completed || 0;
     this.technologies = data.technologies;
     this.github_address = data.github_address;
@@ -78,6 +80,7 @@ export default class Project {
       estimated: this.estimated,
       status: this.status,
       description: this.description,
+      short_description: this.short_description,
       completed: this.completed,
       technologies: this.technologies,
       github_address: this.github_address,

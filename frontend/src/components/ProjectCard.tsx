@@ -13,12 +13,9 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-
 import Chip from '@material-ui/core/Chip';
-
 import LinesEllipsis from 'react-lines-ellipsis';
-import { convertFromRaw } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
+import * as draftjsTohtml from "draftjs-to-html";
 
 import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
@@ -137,6 +134,7 @@ interface CardProps {
     github_project_id: string,
     name?: string,
     description: string,
+    short_description: string,
     status: string,
     estimated: number,
     upvotes: number,
@@ -238,12 +236,13 @@ export class ProjectCard extends React.Component<any, CardState>{
     this.handleMessageChange(error.message);
   }
 
+  getHtml = () => this.props.project.short_description?
+    draftjsTohtml(JSON.parse(this.props.project.short_description)) : '<b>Loading</b>';
+
   render() {
     const { classes } = this.props;
     const html = {
-      __html: this.props.project.description ?
-        stateToHTML(convertFromRaw(JSON.parse(this.props.project.description))) :
-        null
+      __html: this.getHtml()
     };
     const openedFor = this.calculateOpenTime(this.props.project.created);
     return (

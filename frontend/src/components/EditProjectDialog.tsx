@@ -2,39 +2,27 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 import Message from './Message';
-
+import Editor from './editor/Editor';
 import { editProjectBody } from '../actions';
-
 import { withStyles, Theme } from '@material-ui/core/styles';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '@material-ui/core/Chip';
-
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-
 import Close from '@material-ui/icons/Close';
-
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
 
-import RichEditor from './RichEditor';
-
 const styles = (theme: Theme) => ({
-  actions: {
-
-  },
   addButton: {
     'margin-left': 'auto',
   },
@@ -125,11 +113,12 @@ interface EditDialogState {
   size: string;
   name: string;
   description: string;
+  short_description: string;
   due: Date;
   goal: number;
   github: string;
   slack: string;
-  [key: string]: boolean | Date | string | number | string[];
+  [key: string]: boolean | Date | string | number | string[] | any;
   errorMessage: string;
   messageOpen: boolean;
 }
@@ -146,7 +135,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       size: project.size,
       name: project.name,
       description: project.description,
-      richDescription: project.richDescription,
+      short_description: project.short_description,
       due: new Date(project.due),
       goal: project.estimated,
       github: project.github_address,
@@ -159,7 +148,6 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.handleDelete = this.handleDelete.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -173,12 +161,6 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
         [field]: newItem,
       });
     };
-  }
-
-  handleDescriptionChange(description:string) {
-    this.setState({
-      description,
-    });
   }
 
   handleTechChange() {
@@ -219,7 +201,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     if (event.key === 'Enter') {
       const technologies = this.state.technologies;
       if (technologies.indexOf(newItem) !== -1) return;
-      this.setState((prevState: EditDialogState) => ({
+      this.setState((prevState: any) => ({
         technologies: [
           ...prevState.technologies,
           newItem,
@@ -239,6 +221,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
       project_id,
       name: this.state.name,
       description: this.state.description,
+      short_description: this.state.short_description,
       size: this.state.size,
       due: this.state.due.getTime(),
       technologies: this.state.technologies,
@@ -248,12 +231,12 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     };
     this.props.editProject(body)
       .then((res: any) => {
-        this.setState((prevState: EditDialogState) => ({
+        this.setState((prevState: any) => ({
           success: true,
           loading: false,
         }), () => {
           this.props.toggleEdit();
-          this.setState((prevState: EditDialogState) => ({
+          this.setState((prevState: any) => ({
             success: false,
           }));
         });
@@ -283,6 +266,14 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
   onFailure(error: Error) {
     this.handleMessageChange(error.message);
   }
+
+  updateShortDescription = (short_description: string) => {
+    this.setState({short_description});
+  };
+
+  updateDescription = (description: string) => {
+    this.setState({description});
+  };
 
   render() {
     const { classes, open } = this.props;
@@ -320,13 +311,14 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               onChange={this.handleChange('name')}
               fullWidth
               />
+            <Typography className={classes.label}>Short description</Typography>
+            <Editor content={this.props.project.short_description}
+                    onContentChange={this.updateShortDescription}/>
             <Typography className={classes.label}>Description</Typography>
-            <RichEditor
-              update={(output:string) => this.handleDescriptionChange(output)}
-              content={this.props.project.description}
-            />
+            <Editor content={this.props.project.description}
+                    onContentChange={this.updateDescription}/>
             <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
-            {this.state.technologies.map(technology => (
+            {this.state.technologies.map((technology:any) => (
               <Chip
                 className={classes.chip}
                 onDelete={this.handleDelete(technology)}
@@ -440,9 +432,9 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default compose<{}, EditDialogProps>(
+export default compose<{}, any>(
   withStyles(styles, {
     name: 'EditProjectDialog',
   }),
-  connect<{}, DispatchProps, EditDialogProps>(null, mapDispatchToProps),
+  connect<{}, any, any>(null, mapDispatchToProps),
 )(EditProjectDialog);

@@ -54,8 +54,11 @@ class Progress extends React.Component<any, any> {
           value={100}
         />
         <Typography className={this.props.classes.progressText}>
-          {`${Object.keys(this.props.project.contributors).length}/`}
-          <label className={this.props.classes.estimatedText}>{`${this.props.project.estimated}`}</label>
+          {`${Object.keys(this.props.project.contributors).length}`}
+          { this.props.project.estimated &&
+            this.props.project.estimated > 0 ?
+            <label className={this.props.classes.estimatedText}>{`/${this.props.project.estimated}`}</label> : null
+          }
           <span className={this.props.classes.hourText}>{`joined`}</span>
         </Typography>
       </div>

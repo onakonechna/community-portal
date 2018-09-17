@@ -12,11 +12,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
 import { withStyles } from '@material-ui/core/styles';
-import { convertFromRaw } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
-
 import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
 import ContributorsList from './projects/ContributorsList';
@@ -25,9 +21,10 @@ import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
+import * as draftjsTohtml from "draftjs-to-html";
 
-import { loadStarredProjects } from './../actions/user';
-import { loadingProcessStart, loadingProcessEnd } from './../actions/loading';
+import { loadStarredProjects } from '../actions/user';
+import { loadingProcessStart, loadingProcessEnd } from '../actions/loading';
 import { loadProject } from '../actions/project';
 
 const styles: any = (theme:any) => ({
@@ -266,21 +263,27 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
     this.handleMessageChange(error.message);
   }
 
+  getHtml = () => this.props.project.description ?
+    draftjsTohtml(JSON.parse(this.props.project.description)) : '<b>Loading</b>';
+
   render() {
     const { classes } = this.props;
     const openedFor = this.calculateOpenTime(this.props.project.created);
-    const content = this.props.project.description ? stateToHTML(convertFromRaw(JSON.parse(this.props.project.description)))
-      : '<b>loading</b>';
+
     const html = {
-      __html: content,
+      __html: this.getHtml(),
     };
+
     return (
       <div>
-        <EditProjectDialog
-          open={this.state.editOpen}
-          toggleEdit={this.toggleEdit}
-          project={this.props.project}
-        />
+        {
+          this.props.project.project_id &&
+          <EditProjectDialog
+            open={this.state.editOpen}
+            toggleEdit={this.toggleEdit}
+            project={this.props.project}
+          />
+        }
         <Grid
           container
           justify="center"

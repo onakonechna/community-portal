@@ -1,34 +1,27 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
 import Message from './Message';
 import { loadStarredProjects } from '../actions/user'
-
 import { withStyles, Theme } from '@material-ui/core/styles';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Close from '@material-ui/icons/Close';
-
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
-
-import RichEditor from './RichEditor';
+import Editor from './editor/Editor';
 
 const styles = (theme: Theme) => ({
   actions: {
@@ -99,7 +92,6 @@ const styles = (theme: Theme) => ({
     'font-weight': '300',
     'font-size': '1.75rem',
     'font-family': 'system-ui',
-    width: '40rem',
   },
 });
 
@@ -123,8 +115,8 @@ interface DialogState {
   technologiesString: string;
   size: string;
   name: string;
+  short_description: string;
   description: string;
-  richDescription: any;
   due: Date;
   goal: number;
   github: string;
@@ -148,7 +140,7 @@ const state = {
   loading: false,
   name: '',
   description: '',
-  richDescription: {} as any,
+  short_description: '',
   due: new Date(),
   goal: 0,
   github: '',
@@ -164,7 +156,6 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleGoalChange = this.handleGoalChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleTechChange = this.handleTechChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -193,12 +184,6 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
         technologiesString: newItem,
       });
     };
-  }
-
-  handleDescriptionChange(description:string) {
-    this.setState({
-      description,
-    });
   }
 
   handleGoalChange() {
@@ -283,6 +268,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     const data = {
       name: this.state.name,
       description: this.state.description,
+      short_description: this.state.short_description,
       size: this.state.size,
       due: this.state.due.getTime(),
       technologies: this.handleTechSubmission(tech),
@@ -317,6 +303,14 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   onFailure(error: Error) {
     this.handleMessageChange(error.message);
   }
+
+  updateShortDescription = (short_description: string) => {
+    this.setState({short_description});
+  };
+
+  updateDescription = (description: string) => {
+    this.setState({description});
+  };
 
   render() {
     const { classes } = this.props;
@@ -355,8 +349,12 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 onChange={this.handleChange('name')}
                 fullWidth
               />
+              <Typography className={classes.label}>Short description</Typography>
+              <Editor content=""
+                      onContentChange={this.updateShortDescription}/>
               <Typography className={classes.label}>Description</Typography>
-              <RichEditor update={(output:string) => this.handleDescriptionChange(output)}/>
+              <Editor content=""
+                      onContentChange={this.updateDescription}/>
               <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
               {this.state.technologies.map(technology => (
                 <Chip
