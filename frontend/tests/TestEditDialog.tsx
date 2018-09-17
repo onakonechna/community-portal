@@ -5,7 +5,7 @@ import { editProjectBody } from '../src/actions';
 import { EditProjectDialog } from '../src/components/EditProjectDialog';
 const samples = require('../src/data/sampleProjects.json');
 
-describe('EditProjectDialog Test Suite', () => {
+xdescribe('EditProjectDialog Test Suite', () => {
   let wrapper : any;
   const classes = {
     chip: 'chip',
