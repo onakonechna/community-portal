@@ -2,7 +2,6 @@ import * as React from "react";
 import Draft from 'react-wysiwyg-typescript';
 import {Theme, withStyles} from "@material-ui/core/styles";
 import {convertFromRaw, convertToRaw, EditorState} from 'draft-js';
-import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'; // eslint-disable-line no-unused-vars
 
 const styles = (theme: Theme) => ({
   editor: {
