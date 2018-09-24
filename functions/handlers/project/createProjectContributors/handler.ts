@@ -47,6 +47,16 @@ createProjectContributors.configure((req: Request, res: Response) => {
         })));
 
         return Promise.all(promises)
+            .then(() => {
+                let promises:any[] = [];
+
+                usersList.forEach((user:any) => promises.push(userResource.addProject({
+                    project_id: githubProjectId,
+                    user_id: user.get('user_id')
+                })));
+
+                return Promise.all(promises);
+            })
             .then(() => res.status(200).json({qwerty: {github_project_id: req.body.project_id}}))
             .catch((err:any) => console.log(err) ||
                 res.status(200).json({error:true, message: err}));
