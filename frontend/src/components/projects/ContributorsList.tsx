@@ -2,6 +2,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import * as React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { withRouter } from 'react-router-dom';
 
 export const styles = {
   contributorText: {
@@ -15,7 +16,7 @@ export const styles = {
 class ContributorsList extends React.Component<any, any> {
   toProfile(user_id:string, e: any) {
     e.stopPropagation();
-    this.props.history.push(`./profile/${user_id}`);
+    this.props.history.push(`/profile/${user_id}`);
   }
 
   countContributors(project: any) {
@@ -49,4 +50,4 @@ class ContributorsList extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(ContributorsList);
+export default withRouter<any>(withStyles(styles)(ContributorsList));

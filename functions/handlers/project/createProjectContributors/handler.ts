@@ -22,7 +22,8 @@ createProjectContributors.configure((req: Request, res: Response) => {
       usersList.forEach((user:any) => promises.push(projectResource.addContributor({
         project_id: projectId,
         user_id: user.get('user_id'),
-        avatar_url: user.get('avatar_url')
+        avatar_url: user.get('avatar_url'),
+        html_url: user.get('html_url')
       })));
 
       return Promise.all(promises);
@@ -43,7 +44,8 @@ createProjectContributors.configure((req: Request, res: Response) => {
         usersList.forEach((user:any) => promises.push(projectResource.addContributor({
             project_id: projectId,
             user_id: user.get('user_id'),
-            avatar_url: user.get('avatar_url')
+            avatar_url: user.get('avatar_url'),
+            html_url: user.get('html_url')
         })));
 
         return Promise.all(promises)
