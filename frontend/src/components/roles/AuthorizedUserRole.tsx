@@ -42,7 +42,7 @@ class AuthorizedUserRole extends React.Component<any, any> {
           <Dialog open={this.state.open}>
             <DialogContent>
               <Typography>
-                You should be authorized for this action
+                  Please sign in to perform this action.
               </Typography>
             </DialogContent>
             <DialogActions>
