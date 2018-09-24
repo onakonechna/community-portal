@@ -23,7 +23,7 @@ class ContributorsList extends React.Component<any, any> {
 
     switch (contributorsQuantity) {
       case 0:
-        return 'Nobody joined yet';
+        return '0 Contributors';
       case 1:
         return '1 Contributor';
       default:
