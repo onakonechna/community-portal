@@ -48,6 +48,17 @@ export default class DatabaseAdapter implements AdapterInterface {
     return this.db.put(params).promise();
   }
 
+    createIfNotExist(tableName: string, data: any, field:string, returnValues: string = 'ALL_OLD'): Promise<any> {
+        const params = {
+            TableName: tableName,
+            Item: data,
+            ConditionExpression: `attribute_not_exists(${field})`,
+            ReturnValues: returnValues,
+        };
+
+        return this.db.put(params).promise();
+    }
+
   addItems(query:any) {
     const params = {
       RequestItems: query

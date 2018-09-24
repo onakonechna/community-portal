@@ -1,0 +1,15 @@
+createProjectContributors:
+  name: ${self:provider.stage}-createProjectContributors
+  role: createProjectContributorsRole
+  handler: handlers/project/createProjectContributors/handler.handler
+  events:
+  - http:
+      path: /project/create-project-contributors
+      method: post
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token

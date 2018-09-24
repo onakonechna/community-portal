@@ -189,6 +189,15 @@ export default class UserResource implements UserResourceInterface {
     );
   }
 
+  saveUsers(userList:any[]): Promise<any> {
+    let promises:any[] = [];
+
+    userList.forEach((user:any) =>
+      promises.push(this.adapter.createIfNotExist(USERS_TABLE, user, 'user_id')));
+
+    return Promise.all(promises);
+  }
+
   addProject(data:any): Promise<any> {
     const project_id = data.project_id;
     const user_id = data.user_id;

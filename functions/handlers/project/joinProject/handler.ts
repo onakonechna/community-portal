@@ -20,7 +20,8 @@ joinProjectEndpoint.configure((req: Request, res: Response) => {
       projectResource.addContributor({
         project_id: project.get('project_id'),
         user_id: user.get('user_id'),
-        avatar_url: user.get('avatar_url')
+        avatar_url: user.get('avatar_url'),
+        html_url: user.get('html_url')
       }).then(() => project))
     .then((project:any) =>
       userResource.addProject({

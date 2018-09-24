@@ -197,14 +197,14 @@ export default class ProjectResource implements ProjectResourceInterface {
   }
 
   addContributor(data: any): Promise<any> {
-    const { project_id, user_id, avatar_url } = data;
+    const { project_id, user_id, avatar_url, html_url } = data;
 
     return this.adapter.addToMap(
       PROJECTS_TABLE,
       { project_id },
       'contributors',
       user_id,
-      { avatar_url },
+      { avatar_url, html_url },
     );
   }
 
