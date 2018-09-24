@@ -313,9 +313,9 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
                   <Typography className={classes.smallText}>
                     {openedFor}
                   </Typography>
-                  <Typography className={classes.smallText}>
+                  {/*<Typography className={classes.smallText}>
                     Size: {this.props.project.size}
-                  </Typography>
+                  </Typography>*/}
                 </div>
                 <Progress project={this.props.project} progressClass={this.props.classes.progressDiv} />
               </div>
