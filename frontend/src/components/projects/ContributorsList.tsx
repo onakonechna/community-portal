@@ -15,7 +15,7 @@ export const styles = {
 class ContributorsList extends React.Component<any, any> {
   toProfile(user_id:string, e: any) {
     e.stopPropagation();
-    this.props.history.push(`./profile/${user_id}`);
+    this.props.history.push(`/profile/${user_id}`);
   }
 
   countContributors(project: any) {

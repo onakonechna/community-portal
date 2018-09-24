@@ -280,9 +280,9 @@ export class ProjectCard extends React.Component<any, CardState>{
                 <Typography className={classes.smallText}>
                   {openedFor}
                 </Typography>
-                <Typography className={classes.smallText}>
-                  Size: {this.props.project.size}
-                </Typography>
+                {/*<Typography className={classes.smallText}>*/}
+                  {/*Size: {this.props.project.size}*/}
+                {/*</Typography>*/}
               </div>
               <Progress project={this.props.project} progressClass={this.props.classes.progressDiv} />
             </div>
