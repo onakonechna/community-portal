@@ -40,7 +40,7 @@ const styles = (theme: any) => ({
     },
   },
   card: {
-    'background-color': '#F2F3F3',
+    'background-color': '#f7f8f8',
     height: '30rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
