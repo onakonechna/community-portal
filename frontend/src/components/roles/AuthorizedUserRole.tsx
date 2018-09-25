@@ -47,7 +47,7 @@ class AuthorizedUserRole extends React.Component<any, any> {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.closeDialog}>Cancel</Button>
-              <Button onClick={this.login}>Signin</Button>
+              <Button onClick={this.login}>Sign In</Button>
             </DialogActions>
           </Dialog>
           <div onClickCapture={this.prevent(this.openDialog)}>
