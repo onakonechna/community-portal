@@ -103,13 +103,13 @@ jobs:
 
       - run: sleep 60
 
-      - run:
-          name: Insert user fixture data for Mae
-          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
-
-      - run:
-          name: Insert user fixture data for Xiya
-          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
+#      - run:
+#          name: Insert user fixture data for Mae
+#          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/mae.json --endpoint-url http://localhost:8000 --region us-east-1
+#
+#      - run:
+#          name: Insert user fixture data for Xiya
+#          command: ~/.local/bin/aws dynamodb put-item --table-name users-dev --item file://tests/dynamodb/fixtures/users/xiya.json --endpoint-url http://localhost:8000 --region us-east-1
 
       - run:
           name: Deploy application
