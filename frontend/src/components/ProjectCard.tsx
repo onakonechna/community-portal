@@ -198,7 +198,19 @@ export class ProjectCard extends React.Component<any, CardState>{
       case 0:
         return 'Opened yesterday';
       default:
-        return `Opened ${dateDifference + 1} days ago`;
+          var timestampDate = new Date(timestamp);
+          var year = midnight.getFullYear() - timestampDate.getFullYear();
+          var months = midnight.getMonth() - timestampDate.getMonth();
+          var yearLabel = (year == 1) ? 'year' : 'years';
+          var monthLabel = (months == 1) ? 'month' : 'months';
+
+          if (dateDifference < 30) {
+              return `Opened ${dateDifference + 1} days ago`;
+          } else if (year > 0) {
+              return 'Opened ' + year + ' ' + yearLabel + ' ' + months + ' ' + monthLabel + ' ago';
+          } else {
+              return 'Opened ' + months + ' ' + monthLabel + ' ago';
+          }
     }
   }
 
