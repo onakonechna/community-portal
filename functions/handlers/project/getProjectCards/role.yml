@@ -1,7 +1,7 @@
-getProjectCardsRole:
+getProjectRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: ${self:provider.stage}-getProjectCardsRole
+    RoleName: ${self:provider.stage}-getProjectRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -11,7 +11,7 @@ getProjectCardsRole:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: ${self:provider.stage}-getProjectCardsPolicy
+      - PolicyName: ${self:provider.stage}-getProjectRolePolicy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:

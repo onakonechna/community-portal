@@ -1,6 +1,6 @@
 getProjectCards:
   name: ${self:provider.stage}-getProjectCards
-  role: getProjectCardsRole
+  role: getProjectRole
   handler: handlers/project/getProjectCards/handler.handler
   events:
     - http:
