@@ -180,6 +180,7 @@ resources:
     getTeamRole: ${file(./handlers/partners/getTeam/role.yml):getTeamRole}
     verifyUserRole: ${file(./handlers/partners/verifyUser/role.yml):verifyUserRole}
     editTeamRole: ${file(./handlers/partners/editTeam/role.yml):editTeamRole}
+    githubPartnerTeamsIndexerRole: ${file(./handlers/githubPartnerTeamsIndexer/role.yml):githubPartnerTeamsIndexerRole}
     githubUsersIndexerRole: ${file(./handlers/githubUsersIndexer/role.yml):githubUsersIndexerRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
     getProjectRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectRole}
