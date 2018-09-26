@@ -32,7 +32,7 @@ getProjectsEndpoint.configure((req: Request, res: Response) => {
     .then((projects:any) => res.status(200).json({
       data: projects.map((project:any) => project.getData())
     }))
-    .catch((err:any) => console.log('err', err) || res.status(200).json({err: err, message: 'Cannot get projects'}))
+    .catch((err:any) => console.log('error', err) || res.status(200).json({err: err, message: 'Cannot get projects'}))
 });
 
 export const handler = getProjectsEndpoint.execute();
