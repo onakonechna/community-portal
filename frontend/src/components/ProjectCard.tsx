@@ -199,8 +199,10 @@ export class ProjectCard extends React.Component<any, CardState>{
         return 'Opened yesterday';
       default:
           var timestampDate = new Date(timestamp);
-          var year = midnight.getFullYear() - timestampDate.getFullYear();
-          var months = midnight.getMonth() - timestampDate.getMonth();
+          var year = Math.floor((midnight.getTime() - timestampDate.getTime()) / (1000 * 3600 * 24 * 365));
+          var months = (midnight.getMonth() + 12 * midnight.getFullYear()) - (timestampDate.getMonth() + 12 * timestampDate.getFullYear());
+          months = months%12;
+
           var yearLabel = (year == 1) ? 'year' : 'years';
           var monthLabel = (months == 1) ? 'month' : 'months';
 
