@@ -156,7 +156,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
         >
           {this.props.projects &&
             this.filter()
-              .sort((prev:any, next:any) => prev.created < next.created)
+              .sort((prev:any, next:any) => prev.upvotes < next.upvotes)
               .map((project: any) => (
                 <Grid item key={project.project_id}>
                   <ProjectCard
