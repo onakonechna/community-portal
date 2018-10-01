@@ -40,7 +40,7 @@ const styles = (theme: any) => ({
     },
   },
   card: {
-    'background-color': '#F2F3F3',
+    'background-color': '#f7f8f8',
     height: '30rem',
     [theme.breakpoints.down('md')]: {
       width: '20rem',
@@ -198,7 +198,21 @@ export class ProjectCard extends React.Component<any, CardState>{
       case 0:
         return 'Opened yesterday';
       default:
-        return `Opened ${dateDifference + 1} days ago`;
+          var timestampDate = new Date(timestamp);
+          var year = Math.floor((midnight.getTime() - timestampDate.getTime()) / (1000 * 3600 * 24 * 365));
+          var months = (midnight.getMonth() + 12 * midnight.getFullYear()) - (timestampDate.getMonth() + 12 * timestampDate.getFullYear());
+          months = months%12;
+
+          var yearLabel = (year == 1) ? 'year' : 'years';
+          var monthLabel = (months == 1) ? 'month' : 'months';
+
+          if (dateDifference < 30) {
+              return `Opened ${dateDifference + 1} days ago`;
+          } else if (year > 0) {
+              return 'Opened ' + year + ' ' + yearLabel + ' ' + months + ' ' + monthLabel + ' ago';
+          } else {
+              return 'Opened ' + months + ' ' + monthLabel + ' ago';
+          }
     }
   }
 
