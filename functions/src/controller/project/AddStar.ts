@@ -31,7 +31,7 @@ export default class AddStar implements IController {
 				this.projectEntity = this.projectFactory.create(project.get());
 
 				return Promise.all([
-					this.projectStar.add(this.projectEntity.getId(), req.tokenContents.id)
+					this.projectStar.add(this.projectEntity.getId(), req.tokenContents.id),
 					this.githubResource.addStar(
 						this.projectEntity.getOrganizationName(),
 						this.projectEntity.getRepositoryName(),
@@ -40,9 +40,9 @@ export default class AddStar implements IController {
 				])
 			})
 			.then(() => res.status(200).json({id: this.projectEntity.getId()}))
-			.catch((err: any) => console.log(err) || res.status(200).json({
-				error: true,
-				message: 'Cannot add star'
-			}));
+			.catch((err: any) => {
+				console.log(err);
+				res.status(200).json({error: true, message: 'Cannot add star'});
+			});
 	}
 }

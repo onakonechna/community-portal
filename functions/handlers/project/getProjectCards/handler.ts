@@ -1,6 +1,6 @@
 import { Request, Response } from "../../../config/Types";
 import Endpoint from './../../../src/EndpointWrapper';
-import ProjectsController from '../../../src/controller/Project/Projects';
+import ProjectsController from './../../../src/controller/Project/Projects';
 
 const getProjectsEndpoint = new Endpoint('/projects/', 'get');
 

@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import AddStarController from '../../../src/controller/Project/AddStar';
+import AddStarController from './../../../src/controller/Project/AddStar';
 
 const starProjectEndpoint = new Endpoint('/project/star', 'post');
 

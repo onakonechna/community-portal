@@ -31,7 +31,7 @@ export default class RemoveStar implements IController {
 				this.projectEntity = this.projectFactory.create(project.get());
 
 				return Promise.all([
-					this.projectStar.remove(this.projectEntity.getId(), req.tokenContents.id)
+					this.projectStar.remove(this.projectEntity.getId(), req.tokenContents.id),
 					this.githubResource.removeStar(
 						this.projectEntity.getOrganizationName(),
 						this.projectEntity.getRepositoryName(),
@@ -40,9 +40,12 @@ export default class RemoveStar implements IController {
 				])
 			})
 			.then(() => res.status(200).json({id: this.projectEntity.getId()}))
-			.catch((err: any) => console.log(err) || res.status(200).json({
-				error: true,
-				message: 'Cannot remove star'
-			}));
+			.catch((err: any) => {
+				console.log(err);
+				res.status(200).json({
+					error: true,
+					message: 'Cannot remove star'
+				});
+			});
 	}
 }

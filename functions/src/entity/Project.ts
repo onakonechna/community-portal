@@ -3,9 +3,7 @@ import * as _ from "lodash";
 export default class Project {
 	private data;
 
-	constructor(data:object) {
-		console.log(data);
-
+	constructor(data:any) {
 		this.data = {
 			id: data.id,
 			github_address: data.github_address || '',

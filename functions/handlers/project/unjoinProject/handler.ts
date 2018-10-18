@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import RemoveContributorController from '../../../src/controller/Project/RemoveContributor';
+import RemoveContributorController from './../../../src/controller/Project/RemoveContributor';
 
 const joinProjectEndpoint = new Endpoint('/project/join', 'delete');
 

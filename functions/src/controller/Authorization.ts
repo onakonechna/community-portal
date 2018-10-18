@@ -1,4 +1,5 @@
 import { Request, Response } from '../../config/Types';
+import * as _ from 'lodash';
 import IController from './IController';
 import Github from '../../src/resource/Github';
 import User from '../../src/model/User';
