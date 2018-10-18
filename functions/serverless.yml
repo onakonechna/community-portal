@@ -88,7 +88,6 @@ functions:
   - ${file(./handlers/partners/saveTeam/saveTeam.yml)}
   - ${file(./handlers/partners/getTeams/getTeams.yml)}
   - ${file(./handlers/partners/getTeam/getTeam.yml)}
-  - ${file(./handlers/partners/verifyUser/verifyUser.yml)}
   - ${file(./handlers/partners/editTeam/editTeam.yml)}
   - ${file(./handlers/githubUsersIndexer/githubUsersIndexer.yml)}
   - ${file(./handlers/githubPartnerTeamsIndexer/githubPartnerTeamsIndexer.yml)}
