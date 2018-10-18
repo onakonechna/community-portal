@@ -1,6 +1,6 @@
-import Endpoint from './../../../src/EndpointWrapper';
+import Endpoint from '../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import RemoveStarController from './../../../src/controller/Project/RemoveStar';
+import RemoveStarController from '../../../src/controller/project/RemoveStar';
 
 const unstarProjectEndpoint = new Endpoint('/project/star', 'delete');
 

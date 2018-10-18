@@ -1,6 +1,6 @@
-import Endpoint from './../../../src/EndpointWrapper';
+import Endpoint from '../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import AddContributorController from './../../../src/controller/Project/AddContributor';
+import AddContributorController from '../../../src/controller/project/AddContributor';
 
 const joinProjectEndpoint = new Endpoint('/project/join', 'post');
 
