@@ -144,5 +144,4 @@ resources:
 plugins:
   - serverless-domain-manager
   - serverless-webpack
-  - serverless-dynamodb-local
   - serverless-offline # serverless-offline needs to be last in the list
