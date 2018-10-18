@@ -97,7 +97,6 @@ functions:
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/editProject/editProject.yml)}
   - ${file(./handlers/project/joinProject/joinProject.yml)}
-  - ${file(./handlers/project/createProjectContributors/createProjectContributors.yml)}
   - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
   - ${file(./handlers/project/starProject/starProject.yml)}
   - ${file(./handlers/project/unstarProject/unstarProject.yml)}
@@ -123,7 +122,6 @@ resources:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
     joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
-    createProjectContributorsRole: ${file(./handlers/project/createProjectContributors/role.yml):createProjectContributorsRole}
     unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
     saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}

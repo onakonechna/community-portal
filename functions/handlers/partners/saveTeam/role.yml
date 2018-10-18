@@ -10,29 +10,3 @@ saveTeamRole:
             Service:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
-    Policies:
-      - PolicyName: saveTeamRole
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-                - dynamodb:PutItem
-                - dynamodb:UpdateItem
-                - dynamodb:Scan
-                - dynamodb:BatchWriteItem
-                - dynamodb:Query
-              Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAMS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAMS_TABLE}/index/${self:provider.environment.PARTNER_TEAMS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAMS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_LOGIN_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAM_MEMBERS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAM_MEMBERS_TABLE}/index/${self:provider.environment.PARTNER_TEAM_MEMBERS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.GITHUB_PARTNER_TEAMS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.GITHUB_PARTNER_TEAMS_TABLE}/index/${self:provider.environment.GITHUB_PARTNER_TEAMS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAM_OWNERS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARTNER_TEAM_OWNERS_TABLE}/index/${self:provider.environment.PARTNER_TEAM_OWNERS_INDEX}"
