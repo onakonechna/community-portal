@@ -15,11 +15,6 @@ getProjectRole:
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-                - dynamodb:Query
-              Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_GITHUB_ID_INDEX}"
+          - Effect: Allow
+            Action: "*"
+            Resource: "*"
