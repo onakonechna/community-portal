@@ -1,5 +1,6 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
+const externals = require('webpack-node-externals');
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -19,6 +20,7 @@ module.exports = {
     filename: '[name].js',
   },
   target: 'node',
+  externals: [externals()],
   module: {
     rules: [
       { test: /\.ts(x?)$/, loader: 'ts-loader' },
