@@ -93,17 +93,6 @@ jobs:
           command: ~/.local/bin/pip install awscli --upgrade --user
 
       - run:
-          name: Setup Local DynamoDB
-          command: node_modules/.bin/sls dynamodb install
-
-      - run:
-          name: Start Local DynamoDB
-          command: node_modules/.bin/sls offline start --stage=dev -r us-east-1
-          background: true
-
-      - run: sleep 60
-
-      - run:
           name: Deploy application
           command: |
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then

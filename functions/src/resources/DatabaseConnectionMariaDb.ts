@@ -21,7 +21,7 @@ class DatabaseConnection {
 	}
 
 	private productionConnect () {
-    return new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    return new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_USERPASSWORD, {
 			host: process.env.DB_HOST,
 			logging: console.log,
 			dialect: 'mysql',
