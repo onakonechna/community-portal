@@ -25,10 +25,13 @@ export default class Projects implements IController {
 			.then(() => this.getProjectStargazersQuantity(this.projectCollection))
 			.then((updatedProjects:object[]) => this.projectStars.updateList(updatedProjects))
 			.then(() => res.status(200).json({data: this.getProjectCollectionData()}))
-			.catch((err: any) => console.log(err) || res.status(200).json({
-				error: true,
-				message: 'Cannot get projects'
-			}));
+			.catch((err: any) => {
+				console.log(err);
+				res.status(200).json({
+					error: true,
+					message: 'Cannot get projects'
+				})
+			});
 	}
 
 	private getProjectCollectionData() {

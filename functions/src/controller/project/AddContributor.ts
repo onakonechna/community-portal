@@ -12,9 +12,12 @@ export default class AddContributor implements IController {
 	public execute(req: Request, res: Response) {
 		this.projectContributor.add(req.body.id, req.tokenContents.id)
 			.then(() => res.status(200).json({id: req.body.id}))
-			.catch((err: any) => console.log(err) || res.status(200).json({
-				error: true,
-				message: 'Cannot add contributor'
-			}));
+			.catch((err: any) => {
+				console.log(err);
+				res.status(200).json({
+					error: true,
+					message: 'Cannot add contributor'
+				})
+			});
 	}
 }
