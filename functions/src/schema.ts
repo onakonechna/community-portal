@@ -10,4 +10,5 @@ const project = Project(connection, databaseTypes);
 user.associate(project);
 project.associate(user);
 
-connection.sync({force:true});
+connection.sync({force:true})
+	.then(() => connection.close());
