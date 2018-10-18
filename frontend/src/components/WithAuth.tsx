@@ -20,7 +20,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
   class WithAuth extends React.Component<any, {}> {
     render() {
       const { scopes } = this.props.user;
-      const isAuthorized = !!this.props.user.user_id;
+      const isAuthorized = !!this.props.user.id;
 
       // do not render if user has no required scopes
       if (

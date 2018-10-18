@@ -40,6 +40,7 @@ class GithubAuthModal {
 
   open() {
     const { url, id, options } = this;
+    console.log(url);
     this.window = window.open(url, id, toQuery(options, ','));
   }
 

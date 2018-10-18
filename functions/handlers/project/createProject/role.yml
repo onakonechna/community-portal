@@ -10,19 +10,3 @@ createProjectRole:
             Service:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
-    Policies:
-      - PolicyName: ${self:provider.stage}-createProjectPolicy
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:PutItem
-              Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TO_INDEX_STARS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-              Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"

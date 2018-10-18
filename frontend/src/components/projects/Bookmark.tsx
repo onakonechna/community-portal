@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import compose from "recompose/compose";
 import * as React from "react";
-import * as _ from "lodash";
 import { withStyles } from '@material-ui/core/styles';
 import { bookmarkProject, unbookmarkProject } from '../../actions/project';
 import BookmarkButton from '../buttons/BookmarkButton';
@@ -53,8 +52,8 @@ class Bookmark extends React.Component<any, any> {
 
 const mapStateToProps = (state:any, props:any) => ({
   user: state.user,
-  isBookmarked: !!_.get(props, `project.bookmarked.${state.user.user_id}]`),
-  isAuthorized: !!state.user.user_id
+  isBookmarked: !!props.project.bookmarked.find((user:any) => user.id === state.user.id),
+  isAuthorized: !!state.user.id
 });
 
 export default compose<{}, any>(

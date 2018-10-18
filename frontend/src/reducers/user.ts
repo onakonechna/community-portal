@@ -2,14 +2,18 @@ import { TypeKeys } from '../actions';
 import * as _ from 'lodash';
 import { decode } from 'jsonwebtoken';
 import {
-  ADD_STARRED_PROJECT,
-  REMOVE_STARRED_PROJECT,
   LOAD_STARRED_PROJECTS_END,
   LOGIN_END,
   LOGOUT
 } from '../../types/user';
 
+import {
+  STAR_PROJECT_END,
+  UNSTAR_PROJECT_END
+} from "../../types/projectStars";
+
 const defaultUser = {
+  id: '',
   user_id: '',
   avatar_url: '',
   name: '',
@@ -42,27 +46,26 @@ export default function user(state = defaultUser, action:any) {
       return {};
     case LOGIN_END:
       window.localStorage.setItem('oAuth', JSON.stringify(action.token));
+      const user = decode(action.token) as any;
 
-      return {
-        ...decode(action.token) as any
-      };
+      return {...user, user_id: user.id.toString()};
     case LOAD_STARRED_PROJECTS_END:
       return {
         ...state,
         upvoted_projects: action.projects
       };
-    case ADD_STARRED_PROJECT:
+    case STAR_PROJECT_END:
       return {
         ...state,
         upvoted_projects: [
           ...state.upvoted_projects,
-          action.project
+          {id: action.project_id}
         ]
       };
-    case REMOVE_STARRED_PROJECT:
+    case UNSTAR_PROJECT_END:
       return {
         ...state,
-        upvoted_projects: _.filter(state.upvoted_projects, (project:any) => project.project_id !== action.github_id)
+        upvoted_projects: _.filter(state.upvoted_projects, (project:any) => project.id !== action.project_id)
       };
     case TypeKeys.LOAD_BOOKMARKED_PROJECTS:
       return Object.assign({}, state, {

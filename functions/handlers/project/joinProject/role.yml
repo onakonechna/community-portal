@@ -10,20 +10,3 @@ joinProjectRole:
             Service:
               - lambda.amazonaws.com
           Action: sts:AssumeRole
-    Policies:
-      - PolicyName: ${self:provider.stage}-joinProjectPolicy
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-                - dynamodb:GetItem
-                - dynamodb:DeleteItem
-                - dynamodb:UpdateItem
-                - dynamodb:PutItem
-              Resource:
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROJECTS_TABLE}/index/${self:provider.environment.PROJECTS_GITHUB_ID_INDEX}"
-                - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"

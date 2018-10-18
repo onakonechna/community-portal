@@ -7,6 +7,7 @@ const buildIAMPolicy = function (principalId: string,
                                  effect: string,
                                  resource: string,
                                  context: any) {
+
   const policy = {
     principalId,
     context: context,
@@ -44,7 +45,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
   try {
     // Verify JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const { user_id } = decoded;
+    const { id } = decoded;
 
     const effect = 'Allow';
     const authorizerContext = { user: JSON.stringify(decoded)};
@@ -56,7 +57,7 @@ module.exports.handler = function (event: CustomAuthorizerEvent,
     } else {
       resource = getUniversalPath(event.methodArn);
     }
-    const policyDocument = buildIAMPolicy(user_id, effect, resource, authorizerContext);
+    const policyDocument = buildIAMPolicy(id, effect, resource, authorizerContext);
 
     callback(null, policyDocument);
   } catch (e) {

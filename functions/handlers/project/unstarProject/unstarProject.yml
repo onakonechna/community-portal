@@ -1,11 +1,11 @@
-updateProjectStatus:
-  name: ${self:provider.stage}-updateProjectStatus
-  role: updateProjectStatusRole
-  handler: handlers/project/updateProjectStatus/handler.handler
+unstarProject:
+  name: ${self:provider.stage}-unstarProject
+  role: starProjectRole
+  handler: handlers/project/unstarProject/handler.handler
   events:
   - http:
-      path: /project/status
-      method: put
+      path: /project/star
+      method: delete
       cors: true
       authorizer:
         name: authorizer

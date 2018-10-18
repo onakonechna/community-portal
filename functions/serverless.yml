@@ -15,9 +15,6 @@ custom:
       github_client_secret: ${env:GITHUB_CLIENT_SECRET}
     client_id: ${self:custom.github.${opt:stage, 'dev'}.github_client_id} # github auth app client_id
     client_secret: ${self:custom.github.${opt:stage, 'dev'}.github_client_secret} # github auth app client_secret
-  dynamodb:
-    start:
-      migrate: true
   functions:
     # Add lambda functions for public endpoints here so Jest will not complain
     public:
@@ -52,37 +49,6 @@ provider:
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
-    PARTNER_TEAMS_TABLE: ${file(./schema.json):PartnerTeams.Properties.TableName}
-    PARTNER_TEAMS_INDEX: ${file(./schema.json):PartnerTeams.Properties.TableName}-index
-    PARTNER_TEAM_MEMBERS_TABLE: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}
-    PARTNER_TEAM_MEMBERS_INDEX: ${file(./schema.json):PartnerTeamMembers.Properties.TableName}-index
-    PARTNER_TEAM_OWNERS_TABLE: ${file(./schema.json):PartnerTeamOwners.Properties.TableName}
-    PARTNER_TEAM_OWNERS_INDEX: ${file(./schema.json):PartnerTeamOwners.Properties.TableName}-index
-    GITHUB_PARTNER_TEAMS_TABLE: ${file(./schema.json):GithubPartnerTeams.Properties.TableName}
-    GITHUB_PARTNER_TEAMS_INDEX: ${file(./schema.json):GithubPartnerTeams.Properties.TableName}-index
-    GITHUB_USERS_TABLE: ${file(./schema.json):GithubUsers.Properties.TableName}
-    GITHUB_USERS_INDEX: ${file(./schema.json):GithubUsers.Properties.TableName}-index
-    TEAMS_TO_USERS_INDEX: ${file(./schema.json):TeamsToUsersIndex.Properties.TableName}
-    PROJECTS_TO_INDEX_STARS_TABLE: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}
-    PROJECTS_TO_INDEX_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectsToIndexStars.Properties.TableName}-project-name-index
-    PROJECTS_STARS_TABLE: ${file(./schema.json):ProjectStars.Properties.TableName}
-    PROJECTS_STARS_USER_ID_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-user-id-index
-    PROJECTS_STARS_PROJECT_NAME_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-project-name-index
-    PROJECTS_STARS_USER_NAME_INDEX: ${file(./schema.json):ProjectStars.Properties.TableName}-user-name-index
-    PROJECTS_TABLE: ${file(./schema.json):Projects.Properties.TableName}
-    PROJECTS_INDEX: ${file(./schema.json):Projects.Properties.TableName}-index
-    PROJECTS_GITHUB_ID_INDEX: ${file(./schema.json):Projects.Properties.TableName}-github-id-index
-    USERS_TABLE: ${file(./schema.json):Users.Properties.TableName}
-    USERS_INDEX: ${file(./schema.json):Users.Properties.TableName}-index
-    USERS_LOGIN_INDEX: ${file(./schema.json):Users.Properties.TableName}-login-index
-    TAGS_TABLE: ${file(./schema.json):Tags.Properties.TableName}
-    SKILLS_TABLE: ${file(./schema.json):Skills.Properties.TableName}
-    PULL_REQUESTS_TABLE: ${file(./schema.json):PullRequests.Properties.TableName}
-    PULL_REQUESTS_INDEX: ${file(./schema.json):PullRequests.Properties.TableName}-index
-    EPICS_TABLE: ${file(./schema.json):Epics.Properties.TableName}
-    EPICS_INDEX: ${file(./schema.json):Epics.Properties.TableName}-index
-    ISSUES_TABLE: ${file(./schema.json):Issues.Properties.TableName}
-    ISSUES_INDEX: ${file(./schema.json):Issues.Properties.TableName}-index
     JWT_SECRET: ${self:custom.jwt.secret}
     JWT_EXPIRATION_TIME: ${self:custom.jwt.expiration_time}
     BASE_PATH: ${self:custom.domainNames.${opt:stage, 'dev'}.path}
@@ -133,8 +99,8 @@ functions:
   - ${file(./handlers/project/joinProject/joinProject.yml)}
   - ${file(./handlers/project/createProjectContributors/createProjectContributors.yml)}
   - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
-  - ${file(./handlers/project/updateProjectStatus/updateProjectStatus.yml)}
-  - ${file(./handlers/user/likeProject/likeProject.yml)}
+  - ${file(./handlers/project/starProject/starProject.yml)}
+  - ${file(./handlers/project/unstarProject/unstarProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
@@ -156,21 +122,6 @@ resources:
         ResponseTemplates:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
-    ProjectsTable: ${file(./schema.json):Projects}
-    TeamsToUsersIndexTable: ${file(./schema.json):TeamsToUsersIndex}
-    GithubPartnerTeamsTable: ${file(./schema.json):GithubPartnerTeams}
-    GithubUsersTable: ${file(./schema.json):GithubUsers}
-    PartnerTeamsTable: ${file(./schema.json):PartnerTeams}
-    PartnerTeamMembers: ${file(./schema.json):PartnerTeamMembers}
-    PartnerTeamOwners: ${file(./schema.json):PartnerTeamOwners}
-    UsersTable: ${file(./schema.json):Users}
-    TagsTable: ${file(./schema.json):Tags}
-    SkillsTable: ${file(./schema.json):Skills}
-    PullRequestsTable: ${file(./schema.json):PullRequests}
-    EpicsTable: ${file(./schema.json):Epics}
-    IssuesTable: ${file(./schema.json):Issues}
-    ProjectsToIndexStarsTable: ${file(./schema.json):ProjectsToIndexStars}
-    ProjectStarsTable: ${file(./schema.json):ProjectStars}
     joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
     createProjectContributorsRole: ${file(./handlers/project/createProjectContributors/role.yml):createProjectContributorsRole}
     unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
@@ -178,7 +129,6 @@ resources:
     saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}
     getTeamsRole: ${file(./handlers/partners/getTeams/role.yml):getTeamsRole}
     getTeamRole: ${file(./handlers/partners/getTeam/role.yml):getTeamRole}
-    verifyUserRole: ${file(./handlers/partners/verifyUser/role.yml):verifyUserRole}
     editTeamRole: ${file(./handlers/partners/editTeam/role.yml):editTeamRole}
     githubPartnerTeamsIndexerRole: ${file(./handlers/githubPartnerTeamsIndexer/role.yml):githubPartnerTeamsIndexerRole}
     githubUsersIndexerRole: ${file(./handlers/githubUsersIndexer/role.yml):githubUsersIndexerRole}
@@ -186,8 +136,8 @@ resources:
     getProjectRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectRole}
     getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
     editProjectRole: ${file(./handlers/project/editProject/role.yml):editProjectRole}
-    updateProjectStatusRole: ${file(./handlers/project/updateProjectStatus/role.yml):updateProjectStatusRole}
-    likeProjectRole: ${file(./handlers/user/likeProject/role.yml):likeProjectRole}
+    starProjectRole: ${file(./handlers/project/starProject/role.yml):starProjectRole}
+    unstarProjectRole: ${file(./handlers/project/unstarProject/role.yml):unstarProjectRole}
     bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
     unbookmarkProjectRole: ${file(./handlers/user/unbookmarkProject/role.yml):unbookmarkProjectRole}
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}

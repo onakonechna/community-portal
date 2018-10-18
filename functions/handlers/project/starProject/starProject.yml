@@ -1,10 +1,10 @@
-createProjectContributors:
-  name: ${self:provider.stage}-createProjectContributors
-  role: createProjectContributorsRole
-  handler: handlers/project/createProjectContributors/handler.handler
+starProject:
+  name: ${self:provider.stage}-starProject
+  role: starProjectRole
+  handler: handlers/project/starProject/handler.handler
   events:
   - http:
-      path: /project/create-project-contributors
+      path: /project/star
       method: post
       cors: true
       authorizer:

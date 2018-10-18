@@ -2,9 +2,7 @@ import { connect } from 'react-redux';
 import * as _ from "lodash";
 import * as React from "react";
 
-import { addStarredProject, removeStarredProject } from '../../actions/user';
-import { likeProject } from '../../actions';
-import { updateProjectStars } from '../../actions/project';
+import { starProject, unstarProject, updateProjectStars } from '../../actions/projectStars';
 import StarringProjectButton from '../buttons/StarringProjectButton';
 import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 
@@ -12,22 +10,16 @@ import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 class Stars extends React.Component<any, any> {
   handler = () => {
     this.props.loadingProcessStart('stars_project', true);
-    this.props.likeProject(this.props.project.github_project_id)
-      .then(() => {
-        let upvotes = this.props.project.upvotes;
-        this.props.loadingProcessEnd('stars_project');
+		let upvotes = this.props.project.stargazers_count;
 
-        if (this.props.isProjectStarred) {
-          --upvotes;
-          this.props.removeStarredProject(this.props.project.github_project_id);
-        } else {
-          ++upvotes;
-          this.props.addStarredProject({project_id: this.props.project.github_project_id});
-        }
+		const promise = this.props.isProjectStarred ?
+			--upvotes && this.props.unstarProject(this.props.project.id) :
+			++upvotes && this.props.starProject(this.props.project.id);
 
-        this.props.updateProjectStars(this.props.project.github_project_id, upvotes);
-      })
-      .catch(() => {});
+		promise.then(() => {
+			this.props.loadingProcessEnd('stars_project');
+			this.props.updateProjectStars(this.props.project.id, upvotes);
+		});
   };
 
   render() {
@@ -43,14 +35,13 @@ class Stars extends React.Component<any, any> {
 const mapStateToProps = (state:any, props:any) => ({
   isProjectStarred: !!_.find(
     state.user['upvoted_projects'],
-    (project:any) => project.project_id === props.project.github_project_id
+    (project:any) => project.id === props.project.id
   )
 });
 
 export default connect(mapStateToProps, {
-  addStarredProject,
-  removeStarredProject,
-  likeProject,
+	starProject,
+	unstarProject,
   updateProjectStars,
   loadingProcessStart,
   loadingProcessEnd

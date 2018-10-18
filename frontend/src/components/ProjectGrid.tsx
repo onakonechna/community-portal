@@ -117,13 +117,13 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     if (typeof this.props.filter !== 'undefined') {
       if (this.props.filter === 'userProjects') {
         return _filter(this.props.projects, (project: any) => {
-          return includes(Object.keys(project.contributors), this.props.user.user_id);
+          return includes(Object.keys(project.contributors), this.props.user.id);
         });
       }
 
       if (this.props.filter === 'bookmarkedProjects') {
         return _filter(this.props.projects, (project: any) => {
-          return includes(Object.keys(project.bookmarked), this.props.user.user_id);
+          return includes(Object.keys(project.bookmarked), this.props.user.id);
         });
       }
 
@@ -158,7 +158,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
             this.filter()
               .sort((prev:any, next:any) => prev.upvotes < next.upvotes)
               .map((project: any) => (
-                <Grid item key={project.project_id}>
+                <Grid item key={project.id}>
                   <ProjectCard
                     project={project}
                     handler={this.updateGrid}
@@ -178,7 +178,7 @@ const mapStateToProps = (state: any) => {
   return {
     projects: state.project,
     user: state.user,
-    authorized: state.user.user_id
+    authorized: state.user.id
   };
 };
 

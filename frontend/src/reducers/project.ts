@@ -1,13 +1,16 @@
 import { TypeKeys } from '../actions';
 import * as _ from 'lodash';
 import {
-  UPDATE_PROJECT_STARS,
   LOAD_PROJECT_END,
   JOIN_TO_PROJECT_CONTRIBUTORS_END,
   UNJOIN_TO_PROJECT_CONTRIBUTORS_END,
   BOOKMARK_PROJECT_END,
   UNBOOKMARK_PROJECT_END
 } from '../../types/project';
+
+import {
+	UPDATE_PROJECT_STARS
+} from '../../types/projectStars';
 
 const withoutProject = (state:any[], action:any) =>
   _.filter(state, (project:any) => project.project_id !== action.project.project_id);
@@ -24,38 +27,37 @@ export default function project(state = [], action:any) {
     case BOOKMARK_PROJECT_END:
       return [
         ...withoutProject(state, action),
-        {...action.project, bookmarked: {
-            ...action.project.bookmarked,
-            [action.user.user_id]: {user_id: action.user.user_id}}
-        }
+				{...action.project, bookmarked: [...action.project.bookmarked, action.user]}
       ];
     case UNBOOKMARK_PROJECT_END:
       return [
         ...withoutProject(state, action),
-        {...action.project, bookmarked: _.omit(action.project.bookmarked, [action.user.user_id])}
+        {
+          ...action.project,
+          bookmarked: action.project.bookmarked.filter((project:any) => project.id !== action.user.id)}
       ];
 
     case JOIN_TO_PROJECT_CONTRIBUTORS_END:
       return [
         ...withoutProject(state, action),
-        {...action.project, contributors: {
-          ...action.project.contributors,
-            [action.user.user_id]: {avatar_url: action.user.avatar_url}}
-        }
+				{...action.project, contributors: [...action.project.contributors, action.user]}
       ];
 
     case UNJOIN_TO_PROJECT_CONTRIBUTORS_END:
       return [
         ...withoutProject(state, action),
-        {...action.project, contributors: _.omit(action.project.contributors, [action.user.user_id])}
+        {
+          ...action.project,
+          contributors: action.project.contributors.filter((contributor:any) => contributor.id !== action.user.id)
+        }
       ];
 
     case UPDATE_PROJECT_STARS:
-      const project = _.find(state, _.matchesProperty('github_project_id', action.github_project_id));
+      const project = _.find(state, _.matchesProperty('id', action.id));
 
       return [
         ..._.without(state, project),
-        {...project, upvotes:  action.starsQuantity}
+        {...project, stargazers_count:  action.starsQuantity}
       ];
     case TypeKeys.ADD_PROJECT:
       return [

@@ -187,8 +187,9 @@ export class ProjectCard extends React.Component<any, CardState>{
   }
 
 
-  calculateOpenTime(timestamp: number) {
+  calculateOpenTime(date: number) {
     const midnight = new Date();
+    const timestamp = new Date(date).getTime();
     midnight.setHours(0, 0, 0, 0);
     const midnightStamp = +midnight;
     const dateDifference = Math.floor(((midnightStamp - timestamp) / 1000) / (3600 * 24));
@@ -258,7 +259,7 @@ export class ProjectCard extends React.Component<any, CardState>{
     const html = {
       __html: this.getHtml()
     };
-    const openedFor = this.calculateOpenTime(this.props.project.created);
+    const openedFor = this.calculateOpenTime(this.props.project.createdAt);
     return (
       <div>
         <EditProjectDialog
@@ -310,7 +311,7 @@ export class ProjectCard extends React.Component<any, CardState>{
             <AuthorizedUserRole requestLogin>
               <StartsProjectButton project={this.props.project}/>
             </AuthorizedUserRole>
-            <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
+            <Typography className={classes.upvotes}>{this.props.project.stargazers_count}</Typography>
           </CardActions>
         </Card>
         <Message

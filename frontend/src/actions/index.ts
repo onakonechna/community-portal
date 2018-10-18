@@ -96,7 +96,7 @@ export const editProjectBody = (project: any) => {
 };
 
 
-export const likeProject = (id: string) => {
+export const likeProject = (id: number) => {
   return (dispatch: Dispatch) => {
     return upvoteProject(id)
   };

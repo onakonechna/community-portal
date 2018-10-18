@@ -20,7 +20,7 @@ import { LoadUserAction } from "../actions";
 import { decode } from 'jsonwebtoken';
 import LoadingLine from './LoadingLine';
 
-const AddProject = WithAuth(['user', 'owner'], ['write:project'])(AddProjectDialog);
+const AddProject = WithAuth(['user', 'owner'], )(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
 const SideNav = WithAuth(['owner', 'user'])(SideBar);
 
@@ -86,7 +86,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
   toHome = () => this.props.history.push('/');
   toProjects = ()  => this.props.history.push('./user/projects');
   toCalendar = () => this.props.history.push('/community-calendar');
-  toProfile = () => this.props.history.push(`./profile/${this.props.user.user_id}`);
+  toProfile = () => this.props.history.push(`./profile/${this.props.user.id}`);
 
   render() {
     const { classes } = this.props;

@@ -66,7 +66,7 @@ class AuthorizedUserRole extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state:any) => ({
-  isAuthorized: !!state.user.user_id
+  isAuthorized: !!state.user.id
 });
 
 export default connect(mapStateToProps, {login})(AuthorizedUserRole)

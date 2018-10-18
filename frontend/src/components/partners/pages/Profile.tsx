@@ -134,7 +134,7 @@ class Profile extends React.Component<any, any> {
     return '';
   };
   verifyButtonHandler = () => {
-    this.props.verifyPartnerUser(this.props.user['user_id'])
+    this.props.verifyPartnerUser(this.props.user['id'])
       .then((data:any) => {
         if (data.payload.error) {
           this.props.addMessage({

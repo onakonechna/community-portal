@@ -345,7 +345,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
 
 const mapStateToProps = (state: any, props: any) => {
   return {
-    authorized: state.user.user_id,
+    authorized: state.user.id,
     project: state.project.find((project:any)=> project.project_id === props.project_id),
     user: state.user,
   };
