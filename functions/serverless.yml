@@ -60,9 +60,9 @@ provider:
     GITHUB_CLIENT_ID: ${self:custom.github.client_id}
     GITHUB_CLIENT_SECRET: ${self:custom.github.client_secret}
     GITHUB_USER_TOKEN: ${self:custom.github.user_token}
-    DB_NAME: ${self:custom.database.name},
-    DB_USERNAME: ${self:custom.database.username},
-    DB_USERPASSWORD: ${self:custom.database.userpassword},
+    DB_NAME: ${self:custom.database.name}
+    DB_USERNAME: ${self:custom.database.username}
+    DB_USERPASSWORD: ${self:custom.database.userpassword}
     DB_HOST: ${self:custom.database.host}
   iamRoleStatements:
       - Effect: Allow
