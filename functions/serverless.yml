@@ -102,6 +102,7 @@ functions:
   - ${file(./handlers/githubPartnerTeamsIndexer/githubPartnerTeamsIndexer.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
+  - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/editProject/editProject.yml)}
   - ${file(./handlers/project/joinProject/joinProject.yml)}
   - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
@@ -110,6 +111,7 @@ functions:
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
+  - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
 
 resources:
   Resources:
