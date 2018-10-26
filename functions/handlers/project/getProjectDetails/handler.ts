@@ -1,17 +1,13 @@
-import { Request, Response } from './../../../config/Types';
+import { Request, Response } from "../../../config/Types";
+import Endpoint from '../../../src/EndpointWrapper';
+import ProjectController from '../../../src/controller/project/Project';
 
-import PackageService from './../../../src/services/PackageService';
-import Endpoint from './../../../src/Endpoint';
-import { ProjectController, ProjectResource } from './../../../config/Components';
+const getProjectEndpoint = new Endpoint('/project/:id', 'get');
 
-const dataflows = [
-  {
-    controller: ProjectController,
-    method: 'getById',
-    target: ProjectResource,
-    validationMap: { getById: 'projectIdOnlySchema' },
-  },
-];
+getProjectEndpoint.configure((req: Request, res: Response) => {
+	const projectController = new ProjectController();
 
-const endpoint = new Endpoint('/project/:project_id', 'get', new PackageService(dataflows));
-export const handler = endpoint.execute();
+	projectController.execute(req, res);
+});
+
+export const handler = getProjectEndpoint.execute();

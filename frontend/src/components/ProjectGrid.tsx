@@ -8,9 +8,9 @@ import { withStyles, Theme } from '@material-ui/core/styles';
 
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
-import { loadProjects } from './../actions';
-import { loadStarredProjects } from './../actions/user';
-import { loadingProcessStart, loadingProcessEnd } from './../actions/loading';
+import { loadProjects } from '../actions';
+import { loadStarredProjects } from '../actions/user';
+import { loadingProcessStart, loadingProcessEnd } from '../actions/loading';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -115,17 +115,16 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
 
   filter() {
     if (typeof this.props.filter !== 'undefined') {
-      if (this.props.filter === 'userProjects') {
-        return _filter(this.props.projects, (project: any) => {
-          return includes(Object.keys(project.contributors), this.props.user.id);
-        });
-      }
 
-      if (this.props.filter === 'bookmarkedProjects') {
-        return _filter(this.props.projects, (project: any) => {
-          return includes(Object.keys(project.bookmarked), this.props.user.id);
-        });
-      }
+			if (this.props.filter === 'userProjects') {
+				return _filter(this.props.projects, (project: any) =>
+					!!project.contributors.find((user:any) => user.id === this.props.user.id));
+			}
+
+			if (this.props.filter === 'bookmarkedProjects') {
+				return _filter(this.props.projects, (project: any) =>
+          !!project.bookmarked.find((user:any) => user.id === this.props.user.id));
+			}
 
       if (typeof this.props.user === 'undefined' || !Array.isArray(this.props.user[this.props.filter])) {
         throw `The filter ${this.props.filter} must be an array in the user redux store`;
@@ -156,7 +155,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
         >
           {this.props.projects &&
             this.filter()
-              .sort((prev:any, next:any) => prev.upvotes < next.upvotes)
+              .sort((prev:any, next:any) => prev.stargazers_count < next.stargazers_count)
               .map((project: any) => (
                 <Grid item key={project.id}>
                   <ProjectCard

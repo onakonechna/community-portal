@@ -1,5 +1,4 @@
 import every from 'lodash/every';
-import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -31,7 +30,7 @@ const Authorization = (allowedRoles:any, compulsoryScopes?:any) => (WrappedCompo
         if (
           typeof scopes === 'undefined'
           || scopes.length === 0
-          || !every(compulsoryScopes, (scope: string) => includes(scopes, scope))
+          || !every(compulsoryScopes, (scope: string) => !!scopes.find((item:any) => item.scope === scope))
         ) {
           return null;
         }

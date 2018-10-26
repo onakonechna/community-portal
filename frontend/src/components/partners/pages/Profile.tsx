@@ -142,8 +142,8 @@ class Profile extends React.Component<any, any> {
             message: data.payload.message
           })
         } else {
-          this.props.LoadUserAction(decode(data.payload.data));
-          localStorage.setItem('oAuth', JSON.stringify(data.payload.data))
+          this.props.LoadUserAction(decode(data.data));
+          localStorage.setItem('oAuth', JSON.stringify(data.data))
         }
       })
   };

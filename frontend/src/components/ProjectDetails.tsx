@@ -185,8 +185,8 @@ const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
 export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   static defaultProps = {
     project: {
-      contributors: {},
-      bookmarked: {},
+      contributors: [],
+      bookmarked: [],
       estimated: 0,
       created: 0,
       technologies: [],
@@ -346,7 +346,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
 const mapStateToProps = (state: any, props: any) => {
   return {
     authorized: state.user.id,
-    project: state.project.find((project:any)=> project.project_id === props.project_id),
+    project: state.project.find((project:any)=> project.id === Number(props.project_id)),
     user: state.user,
   };
 };

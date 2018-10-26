@@ -21,10 +21,10 @@ export const loadProject = (project_id: string) => (dispatch:Dispatch) => {
   });
 
   return fetchProject(project_id)
-    .then((project: any) => {
+    .then((result: any) => {
       dispatch({
         type: LOAD_PROJECT_END,
-        project
+        project: result.data
       });
     });
 };

@@ -20,7 +20,7 @@ import { LoadUserAction } from "../actions";
 import { decode } from 'jsonwebtoken';
 import LoadingLine from './LoadingLine';
 
-const AddProject = WithAuth(['user', 'owner'], )(AddProjectDialog);
+const AddProject = WithAuth(['user', 'owner'], ['project:write'])(AddProjectDialog);
 const Login = WithAuth(['guest'])(withLogin(LoginButton));
 const SideNav = WithAuth(['owner', 'user'])(SideBar);
 
@@ -93,7 +93,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
     return (
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar id="toolbar">
-          {this.props.user.user_id
+          {this.props.user.id
             // render the button if the user is logged in
             ? this.props.location.pathname === '/'
               ? <IconButton

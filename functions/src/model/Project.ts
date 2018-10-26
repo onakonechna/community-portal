@@ -41,6 +41,20 @@ export default class Project {
 		return this.projectResource.findById(id);
 	}
 
+	public getProject(id:number) {
+		return this.projectResource.findById(id, {
+			include: [{
+				model: this.userResource,
+				as: 'bookmarked',
+				attributes: ['id']
+			}, {
+				model: this.userResource,
+				as: 'contributors',
+				attributes: ['name', 'login', 'id', 'avatar_url', 'url', 'location', 'company']
+			}]
+		});
+	}
+
 	public getList() {
 		return this.projectResource.findAll({
 			include: [{

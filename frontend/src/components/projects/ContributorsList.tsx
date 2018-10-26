@@ -36,13 +36,13 @@ class ContributorsList extends React.Component<any, any> {
     return (
       <div className={this.props.contributorsListClass}>
         {
-          Object.keys(this.props.project.contributors).length > 0 &&
-            Object.keys(this.props.project.contributors).slice(0, 5).map(userId => (
+          this.props.project.contributors.length > 0 &&
+            this.props.project.contributors.slice(0, 5).map((user:any) => {debugger; return(
               <Avatar
-                onClick={(e) => this.toProfile(userId, e)}
-                key={userId}
-                src={this.props.project.contributors[userId].avatar_url} />
-            ))
+                onClick={(e) => this.toProfile(user.id, e)}
+                key={user.id}
+                src={user.avatar_url} />
+            )})
         }
         <Typography className={this.props.classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
       </div>

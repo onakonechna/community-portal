@@ -1,5 +1,6 @@
 import UserResource from '../resource/User';
 import ProjectResource from '../resource/Project';
+import ScopeResource from '../resource/Scope';
 import databaseConnection, { databaseTypes } from "../resources/DatabaseConnectionMariaDb";
 
 export default class User {
@@ -8,14 +9,17 @@ export default class User {
 	private starredProjects;
 	private connection;
 	private projectResource;
+	private scopeResource;
 
 	constructor() {
 		this.userData = {};
 
 		this.connection = databaseConnection.connect();
 		this.projectResource = ProjectResource(this.connection, databaseTypes);
+		this.scopeResource = ScopeResource(this.connection, databaseTypes);
 		this.userResource = UserResource(this.connection, databaseTypes);
 		this.userResource.associate(this.projectResource);
+		this.userResource.associateScopes(this.scopeResource);
 	}
 
 	public setData(data:any) {
@@ -39,7 +43,13 @@ export default class User {
 	}
 
 	getById(id:number) {
-		return this.userResource.findById(id);
+		return this.userResource.findById(id, {
+			include: [{
+				model: this.scopeResource,
+				as: 'scopes',
+				attributes: ['scope', 'id']
+			}]
+		})
 	}
 
 	getTokenById(id:number) {

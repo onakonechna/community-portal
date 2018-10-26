@@ -97,7 +97,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     const currentUser = this.props.match.params.user_id;
     fetchUser(currentUser)
       .then((displayedUser: any) => {
-        this.setState({ displayedUser });
+        this.setState({ displayedUser: displayedUser.data });
       })
       .catch((err: Error) => {
         this.setState({ message: 'User not Found' });

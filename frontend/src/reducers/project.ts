@@ -12,8 +12,10 @@ import {
 	UPDATE_PROJECT_STARS
 } from '../../types/projectStars';
 
-const withoutProject = (state:any[], action:any) =>
-  _.filter(state, (project:any) => project.project_id !== action.project.project_id);
+const withoutProject = (state:any[], action:any) => {
+  console.log(state, action.project);
+  return _.filter(state, (project:any) => project.id !== action.project.id);
+}
 
 export default function project(state = [], action:any) {
   switch (action.type) {

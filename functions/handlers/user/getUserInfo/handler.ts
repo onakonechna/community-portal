@@ -1,17 +1,13 @@
-import { Request, Response } from './../../../config/Types';
+import Endpoint from './../../../src/EndpointWrapper';
+import { Request, Response } from "../../../config/Types";
+import UserController from '../../../src/controller/user/User'
 
-import PackageService from './../../../src/services/PackageService';
-import Endpoint from './../../../src/Endpoint';
-import { UserController, UserResource } from './../../../config/Components';
+const getUserEndpoint = new Endpoint('/user/:id', 'get');
 
-const dataflows = [
-  {
-    controller: UserController,
-    method: 'getById',
-    target: UserResource,
-    validationMap: { getById: 'userIdOnlySchema' },
-  },
-];
+getUserEndpoint.configure((req: Request, res: Response) => {
+	const userController = new UserController();
 
-const endpoint = new Endpoint('/user/:user_id', 'get', new PackageService(dataflows));
-export const handler = endpoint.execute();
+	userController.execute(req, res);
+});
+
+export const handler = getUserEndpoint.execute();

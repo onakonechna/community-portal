@@ -181,9 +181,7 @@ export class ProjectCard extends React.Component<any, CardState>{
 
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
-    this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
-    this.goDetail = this.goDetail.bind(this);
   }
 
 
@@ -217,10 +215,7 @@ export class ProjectCard extends React.Component<any, CardState>{
     }
   }
 
-  goDetail() {
-    const { project_id } = this.props.project;
-    this.props.history.push(`./project/${project_id}`);
-  }
+	goDetail = () => this.props.history.push(`./project/${this.props.project.id}`);
 
   toggleStatus(field: string) {
     this.setState((prevState: CardState) => ({
@@ -235,20 +230,8 @@ export class ProjectCard extends React.Component<any, CardState>{
     }));
   }
 
-
-  handleMessageChange(message: string) {
-    this.setState({
-      errorMessage: message,
-      messageOpen: true,
-    });
-  }
-
   handleMessageClose() {
     this.setState({messageOpen: false});
-  }
-
-  onFailure(error: Error) {
-    this.handleMessageChange(error.message);
   }
 
   getHtml = () => this.props.project.short_description?

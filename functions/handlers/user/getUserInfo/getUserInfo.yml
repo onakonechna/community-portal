@@ -5,6 +5,6 @@ getUserInfo:
   timeout: 10
   events:
   - http:
-      path: /user/{user_id}
+      path: /user/{id}
       method: get
       cors: true

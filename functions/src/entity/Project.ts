@@ -6,6 +6,7 @@ export default class Project {
 	constructor(data:any) {
 		this.data = {
 			id: data.id,
+			name: data.name,
 			github_address: data.github_address || '',
 			short_description: data.short_description || '',
 			technologies: data.technologies || '',

@@ -5,6 +5,8 @@ import Github from '../../src/resource/Github';
 import User from '../../src/model/User';
 import Project from '../../src/model/Project';
 import AuthorizationService from "../services/AuthorizationService";
+var fs = require('fs');
+
 
 export default class Authorization implements IController{
 	private authorizationService;
@@ -23,9 +25,12 @@ export default class Authorization implements IController{
 	public execute(req:Request, res:Response) {
 		this.githubResource.getToken(req.body.code)
 			.then((token:string) => this.collectData(token))
-			.then(([userData, emails, starredProjects, existingProjects, token]) => {
+			.then(([userData, ...props]) => this.user.getById(userData.id)
+				.then((user:any) => [userData, ...props, user]))
+			.then(([userData, emails, starredProjects, existingProjects, token, user]) => {
 				this.user.setStarredProjects(this.getStarredProjects(existingProjects, starredProjects));
 				this.user.setData({
+					...user.get(),
 					id: userData.id,
 					login: userData.login,
 					avatar_url: userData.avatar_url,
@@ -46,6 +51,14 @@ export default class Authorization implements IController{
 
 	private getResponseObject(user:any, authorizationService:any) {
 		const data = user.getData();
+
+		fs.writeFile("./tes111t.js", JSON.stringify(_.omit(data, 'access_token')), function(err) {
+			if(err) {
+				return console.log(err);
+			}
+
+			console.log("The file was saved!");
+		});
 
 		return {
 			user_id: data.id,
