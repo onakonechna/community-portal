@@ -9,7 +9,6 @@ const user = User(connection, databaseTypes);
 const project = Project(connection, databaseTypes);
 const scope = Scope(connection, databaseTypes);
 
-scope.associate(user);
 user.associate(project);
 user.associateScopes(scope);
 project.associate(user);
