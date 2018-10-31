@@ -108,14 +108,6 @@ service: community-portal
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
-  - ${file(./handlers/project/createProject/createProject.yml)}
-  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
-  - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
-  - ${file(./handlers/project/editProject/editProject.yml)}
-  - ${file(./handlers/project/joinProject/joinProject.yml)}
-  - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
-  - ${file(./handlers/project/starProject/starProject.yml)}
-  - ${file(./handlers/project/unstarProject/unstarProject.yml)}
 
 resources:
   Resources:
