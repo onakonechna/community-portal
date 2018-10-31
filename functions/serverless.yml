@@ -116,10 +116,6 @@ functions:
   - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
   - ${file(./handlers/project/starProject/starProject.yml)}
   - ${file(./handlers/project/unstarProject/unstarProject.yml)}
-  - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
-  - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
-  - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
-  - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
 
 resources:
   Resources:
