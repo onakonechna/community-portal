@@ -1,18 +1,18 @@
 custom:
   jwt:
-    secret: ${env:JWT_SECRET}
+    secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
     expiration_time: 20d
   database:
     dev:
-      name: ${env:DB_NAME_DEV}
-      host: ${env:DB_HOST_DEV}
-      username: ${env:DB_USERNAME_DEV}
-      userpassword: ${env:DB_USERPASSWORD_DEV}
+      name: ${env:DB_NAME}
+      host: ${env:DB_HOST}
+      username: ${env:DB_USERNAME}
+      userpassword: ${env:DB_USERPASSWORD}
     staging:
-      name: ${env:DB_NAME_STAGING}
-      host: ${env:DB_HOST_STAGING}
-      username: ${env:DB_USERNAME_STAGING}
-      userpassword: ${env:DB_USERPASSWORD_STAGING}
+      name: ${env:DB_NAME}
+      host: ${env:DB_HOST}
+      username: ${env:DB_USERNAME}
+      userpassword: ${env:DB_USERPASSWORD}
     production:
       name: ${env:DB_NAME}
       host: ${env:DB_HOST}
