@@ -108,13 +108,6 @@ service: community-portal
 functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
-  - ${file(./handlers/indexer/projectStars/projectStars.yml)}
-  - ${file(./handlers/partners/saveTeam/saveTeam.yml)}
-  - ${file(./handlers/partners/getTeams/getTeams.yml)}
-  - ${file(./handlers/partners/getTeam/getTeam.yml)}
-  - ${file(./handlers/partners/editTeam/editTeam.yml)}
-  - ${file(./handlers/githubUsersIndexer/githubUsersIndexer.yml)}
-  - ${file(./handlers/githubPartnerTeamsIndexer/githubPartnerTeamsIndexer.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
   - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
   - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
@@ -147,12 +140,6 @@ resources:
     joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
     unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
-    saveTeamRole: ${file(./handlers/partners/saveTeam/role.yml):saveTeamRole}
-    getTeamsRole: ${file(./handlers/partners/getTeams/role.yml):getTeamsRole}
-    getTeamRole: ${file(./handlers/partners/getTeam/role.yml):getTeamRole}
-    editTeamRole: ${file(./handlers/partners/editTeam/role.yml):editTeamRole}
-    githubPartnerTeamsIndexerRole: ${file(./handlers/githubPartnerTeamsIndexer/role.yml):githubPartnerTeamsIndexerRole}
-    githubUsersIndexerRole: ${file(./handlers/githubUsersIndexer/role.yml):githubUsersIndexerRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
     getProjectRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectRole}
     getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
