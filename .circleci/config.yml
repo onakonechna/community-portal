@@ -92,9 +92,9 @@ jobs:
           name: Install aws cli
           command: ~/.local/bin/pip install awscli --upgrade --user
 
-      - run:
-          name: Install database schema
-          command: node_modules/ts-node/dist/bin.js ./src/schema.ts
+      #- run:
+       #   name: Install database schema
+        #  command: node_modules/ts-node/dist/bin.js ./src/schema.ts
 
       - run:
           name: Deploy application

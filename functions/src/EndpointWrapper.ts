@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as _ from 'lodash';
 import { Callback, Request, Response } from './../config/Types';
 import { CustomAuthorizerEvent, APIGatewayEventRequestContext } from 'aws-lambda';
-import PackageService from './services/PackageService';
 
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
@@ -25,7 +24,6 @@ export default class Endpoint {
   private method: string;
   private app: any;
   private router: any;
-  private packageService: PackageService;
 
   constructor(url: string, method: string) {
     this.url = url;

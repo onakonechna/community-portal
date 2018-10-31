@@ -1,6 +1,0 @@
-projectStars:
-  name: ${self:provider.stage}-projectStars
-  role: projectStarsRole
-  handler: handlers/indexer/projectStars/handler.handler
-  events:
-  - schedule: rate(1 minute)

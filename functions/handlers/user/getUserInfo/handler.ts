@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import UserController from '../../../src/controller/user/User'
+import UserController from '../../../src/user/controller/User'
 
 const getUserEndpoint = new Endpoint('/user/:id', 'get');
 

@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import UnboookmarkProjectController from '../../../src/controller/user/UnbookmarkProject'
+import UnboookmarkProjectController from '../../../src/user/controller/UnbookmarkProject'
 
 const unbookmarkProjectEndpoint = new Endpoint('/user/bookmarkProject', 'delete');
 

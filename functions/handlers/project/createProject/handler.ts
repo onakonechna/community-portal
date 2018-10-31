@@ -1,6 +1,6 @@
 import { Request, Response } from "../../../config/Types";
 import Endpoint from '../../../src/EndpointWrapper';
-import ProjectSaveController from '../../../src/controller/project/Save';
+import ProjectSaveController from '../../../src/project/controller/Save';
 
 const projectCreateEndpoint = new Endpoint('/project', 'post');
 

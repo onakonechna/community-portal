@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import StarredProjectsController from "../../../src/controller/user/StarredProjects";
+import StarredProjectsController from "../../../src/user/controller/StarredProjects";
 
 const getStarredProjects = new Endpoint('/user/likedProjects', 'get');
 

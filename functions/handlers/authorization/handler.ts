@@ -1,6 +1,6 @@
 import { Request, Response } from '../../config/Types';
 import Endpoint from '../../src/EndpointWrapper';
-import AuthorizationController from '../../src/controller/Authorization';
+import AuthorizationController from '../../src/user/controller/Authorization';
 
 const authorizationEndpoint = new Endpoint('/authorize', 'post');
 

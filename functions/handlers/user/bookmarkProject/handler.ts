@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import BoookmarkProjectController from '../../../src/controller/user/BookmarkProject'
+import BoookmarkProjectController from '../../../src/user/controller/BookmarkProject'
 
 const bookmarkProjectEndpoint = new Endpoint('/user/bookmarkProject', 'post');
 

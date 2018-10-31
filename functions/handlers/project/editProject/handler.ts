@@ -20,9 +20,10 @@ projectEditEndpoint.configure((req: Request, res: Response) => {
 
   projectResource.edit(req.body)
     .then((result:any) => res.status(200).json({data: result.Attributes.project_id}))
-    .catch((err:any) =>
-      console.log(err) ||
-      res.status(200).json({error:true, message: 'Cannot edit project'}));
+    .catch((err:any) => {
+      console.log(err);
+      res.status(200).json({error:true, message: 'Cannot edit project'})
+    });
 });
 
 export const handler = projectEditEndpoint.execute();
