@@ -1,8 +1,8 @@
-import databaseConnection, { databaseTypes } from "./resources/DatabaseConnectionMariaDb";
+import databaseConnection, { databaseTypes } from "./DatabaseConnectionMariaDb";
 
-import User from './resource/User';
-import Project from './resource/Project';
-import Scope from './resource/Scope';
+import User from './user/resource/User';
+import Project from './project/resource/Project';
+import Scope from './scope/resource/Scope';
 
 const connection = databaseConnection.connect();
 const user = User(connection, databaseTypes);
