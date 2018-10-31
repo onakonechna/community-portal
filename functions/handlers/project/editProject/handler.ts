@@ -1,15 +1,15 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import DatabaseConnection from "../../../src/resources/DatabaseConnection";
-import ProjectResource from "../../../src/resources/ProjectResource/ProjectResource";
-import User from "../../../src/resources/UserResource/User";
+import DatabaseConnection from "../../../src/DatabaseConnectionMariaDb";
+import ProjectResource from "../../../src/project/resource/Project";
+import User from "../../../src/user/resource/User";
 
-const dbConnection = new DatabaseConnection();
-const projectResource = new ProjectResource(dbConnection);
+//const dbConnection = new DatabaseConnection();
+//const projectResource = new ProjectResource(dbConnection);
 const projectEditEndpoint = new Endpoint('/project', 'put');
 
 projectEditEndpoint.configure((req: Request, res: Response) => {
-  const user = new User(req.tokenContents);
+  /*const user = new User(req.tokenContents);
 
   if (!user.isScopeValid(user.get('scopes'), 'write:project')) {
     return res.status(401).json({payload: {
@@ -23,7 +23,7 @@ projectEditEndpoint.configure((req: Request, res: Response) => {
     .catch((err:any) => {
       console.log(err);
       res.status(200).json({error:true, message: 'Cannot edit project'})
-    });
+    });*/
 });
 
 export const handler = projectEditEndpoint.execute();
