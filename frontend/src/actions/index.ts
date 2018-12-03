@@ -90,7 +90,7 @@ export const editProjectBody = (project: any) => {
     return editProject(project)
       .then(() => {
         dispatch(loadProjects());
-        loadProject(project.project_id)
+        loadProject(project.id)
       });
   };
 };

@@ -37,12 +37,12 @@ class ContributorsList extends React.Component<any, any> {
       <div className={this.props.contributorsListClass}>
         {
           this.props.project.contributors.length > 0 &&
-            this.props.project.contributors.slice(0, 5).map((user:any) => {debugger; return(
+            this.props.project.contributors.slice(0, 5).map((user:any) => (
               <Avatar
                 onClick={(e) => this.toProfile(user.id, e)}
                 key={user.id}
                 src={user.avatar_url} />
-            )})
+            ))
         }
         <Typography className={this.props.classes.contributorText}>{this.countContributors(this.props.project)}</Typography>
       </div>
