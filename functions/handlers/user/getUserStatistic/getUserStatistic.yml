@@ -1,0 +1,10 @@
+getUserStatistic:
+  name: ${self:provider.stage}-getUserStatistic
+  role: getUserStatisticRole
+  handler: handlers/user/getUserStatistic/handler.handler
+  timeout: 10
+  events:
+  - http:
+      path: /user/statistic/{id}
+      method: get
+      cors: true
