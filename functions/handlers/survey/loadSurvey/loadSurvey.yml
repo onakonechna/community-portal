@@ -1,0 +1,16 @@
+load:
+  name: ${self:provider.stage}-loadSurvey
+  role: loadRole
+  handler: handlers/survey/loadSurvey/handler.handler
+  timeout: 10
+  events:
+  - http:
+      path: /survey/load/{id}/{pr_id}
+      method: get
+      cors: true
+      authorizer:
+        name: authorizer
+        resultTtlInSeconds: 300
+        identitySource: method.request.header.Authorization
+        identityValidationExpression: .*
+        type: token

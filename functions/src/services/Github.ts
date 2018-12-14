@@ -118,4 +118,17 @@ export default class Github {
 	public getRepositoryStarsQuantity(org:string, repos: string) {
 		return this.getRepository(org, repos).then((res:AxiosResponse) => res['stargazers_count'])
 	}
+
+	public getPullRequestDetails(org:string, repo:string, number:number, token:string) {
+        const options = {
+            method: 'GET',
+            url: `https://api.github.com/repos/${org}/${repo}/pulls/${number}`,
+            headers: {
+                'User-Agent': 'community-portal-app',
+                'Authorization': `token ${token}`
+            }
+        };
+
+        return axios(options).then((res: AxiosResponse) => res.data);
+    }
 }
