@@ -1,6 +1,6 @@
 load:
   name: ${self:provider.stage}-loadSurvey
-  role: loadRole
+  role: loadSurveyRole
   handler: handlers/survey/loadSurvey/handler.handler
   timeout: 10
   events:
