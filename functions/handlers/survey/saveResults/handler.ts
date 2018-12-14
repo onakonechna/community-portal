@@ -1,6 +1,6 @@
 import Endpoint from './../../../src/EndpointWrapper';
 import { Request, Response } from "../../../config/Types";
-import SaveResultsController from '../../../src/survey/controller/saveResults'
+import SaveResultsController from '../../../src/survey/controller/SaveResults'
 
 const saveResultsEndpoint = new Endpoint('/survey/results/save', 'post');
 
