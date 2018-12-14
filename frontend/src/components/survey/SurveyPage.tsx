@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {loadSurvey, saveResults, handleMessage} from "../../actions/survey";
+import { loadSurvey, saveResults, handleMessage, clearMessage } from "../../actions/survey";
 import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 import compose from "recompose/compose";
 import { connect } from 'react-redux';
@@ -83,24 +83,6 @@ const styles: any = (theme: any) => ({
         marginBottom: '0.25rem',
         color: 'red',
     },
-    // errorBlockIcon: {
-    //     display: "inline-block",
-    //     height: '2.1rem',
-    //     width: "5%",
-    //     color: 'red',
-    // },
-    // SuccessBlockIcon: {
-    //     display: "inline-block",
-    //     height: '2.1rem',
-    //     width: "5%",
-    //     color: 'green',
-    // },
-    // errorBlockText: {
-        // display: "inline-block",
-        // height: '2.5rem',
-        // width: "95%",
-        // verticalAlign: "middle",
-    // }
 });
 
 class SurveyPage extends React.Component<any, any> {
@@ -117,10 +99,21 @@ class SurveyPage extends React.Component<any, any> {
         let res = this.props.repo_details.split('-');
         if (this.props.survey_name == null || res.length < 3) {
             this.props.handleMessage('Your url is invalid, please, use correct one.', true);
-        } else {
+        } else if (this.props.authorized){
             this.props.loadingProcessStart('survey_load_project', true);
             this.props.loadSurvey(this.props.survey_name, this.props.repo_details)
                 .then(() => this.props.loadingProcessEnd('survey_load_project'));
+        } else if (!this.props.authorized) {
+            this.props.handleMessage('Please sign in to access the survey.', true);
+        }
+    }
+
+    componentWillReceiveProps(props:any) {
+        if (!this.props.authorized && props.authorized) {
+            this.props.loadingProcessStart('survey_load_project', true);
+            this.props.loadSurvey(this.props.survey_name, this.props.repo_details)
+                .then(() => this.props.loadingProcessEnd('survey_load_project'));
+            this.props.clearMessage();
         }
     }
 
@@ -212,6 +205,7 @@ const mapStateToProps = (state:any, props:any) => {
         surveyMessage: state.survey.surveyMessage || '',
         isSurveySaved: state.survey.isSaved || false,
         surveySaving: state.survey.surveySaving || false,
+        authorized: state.user.id,
     }
 };
 
@@ -219,6 +213,6 @@ export default compose<{}, any>(
     withStyles(styles, {name: 'Survey'}),
     connect<{}, any, any>(
         mapStateToProps,
-        {loadSurvey, saveResults, handleMessage,loadingProcessStart, loadingProcessEnd}
+        {loadSurvey, saveResults, handleMessage,loadingProcessStart, loadingProcessEnd, clearMessage}
     ),
 )(SurveyPage);

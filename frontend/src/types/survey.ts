@@ -3,3 +3,4 @@ export const LOAD_END = 'LOAD_END';
 export const RESULTS_SAVE_START = 'RESULTS_SAVE_START';
 export const RESULTS_SAVE_END = 'RESULTS_SAVE_END';
 export const HANDLE_MESSAGE = 'HANDLE_MESSAGE';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';

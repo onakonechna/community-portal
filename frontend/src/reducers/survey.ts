@@ -1,4 +1,11 @@
-import {LOAD_START, LOAD_END, RESULTS_SAVE_START, RESULTS_SAVE_END, HANDLE_MESSAGE} from '../types/survey';
+import {
+    LOAD_START,
+    LOAD_END,
+    RESULTS_SAVE_START,
+    RESULTS_SAVE_END,
+    HANDLE_MESSAGE,
+    CLEAR_MESSAGE
+} from '../types/survey';
 
 export default function project(state = [], action:any) {
     switch (action.type) {
@@ -29,6 +36,13 @@ export default function project(state = [], action:any) {
                 ...state,
                 surveyError: action.error,
                 surveyMessage: action.message,
+            };
+
+        case CLEAR_MESSAGE:
+            return {
+                ...state,
+                surveyError: false,
+                surveyMessage: null,
             };
         default:
             return state;

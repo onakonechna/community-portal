@@ -1,5 +1,12 @@
 import {Dispatch} from "redux";
-import {LOAD_START, LOAD_END, RESULTS_SAVE_START, RESULTS_SAVE_END, HANDLE_MESSAGE} from "../types/survey";
+import {
+    LOAD_START,
+    LOAD_END,
+    RESULTS_SAVE_START,
+    RESULTS_SAVE_END,
+    HANDLE_MESSAGE,
+    CLEAR_MESSAGE
+} from "../types/survey";
 import {API, headers, postHeaders, request} from "../api/Config";
 
 export const loadSurvey = (surveyId: string, scope: any) => (dispatch:Dispatch) => {
@@ -57,5 +64,11 @@ export const handleMessage = (message: string, isError: boolean) => (dispatch:Di
         type: HANDLE_MESSAGE,
         error: isError,
         message: message
+    });
+};
+
+export const clearMessage = () => (dispatch:Dispatch) => {
+    dispatch({
+        type: CLEAR_MESSAGE
     });
 };
