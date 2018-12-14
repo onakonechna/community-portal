@@ -1,18 +1,18 @@
 custom:
   jwt:
-    secret: Cg9UCqAlMNImL2tIgQPBoUlxL5PjHQGFg5pTujilUbE5IYqU31M5uLiYlk2TB3b
+    secret: ${env:JWT_SECRET}
     expiration_time: 20d
   database:
     dev:
-      name: ${env:DB_NAME}
-      host: ${env:DB_HOST}
-      username: ${env:DB_USERNAME}
-      userpassword: ${env:DB_USERPASSWORD}
+      name: ${env:DB_NAME_STAGING}
+      host: ${env:DB_HOST_STAGING}
+      username: ${env:DB_USERNAME_STAGING}
+      userpassword: ${env:DB_USERPASSWORD_STAGING}
     staging:
-      name: ${env:DB_NAME}
-      host: ${env:DB_HOST}
-      username: ${env:DB_USERNAME}
-      userpassword: ${env:DB_USERPASSWORD}
+      name: ${env:DB_NAME_STAGING}
+      host: ${env:DB_HOST_STAGING}
+      username: ${env:DB_USERNAME_STAGING}
+      userpassword: ${env:DB_USERPASSWORD_STAGING}
     production:
       name: ${env:DB_NAME}
       host: ${env:DB_HOST}
@@ -106,6 +106,7 @@ package:
 service: community-portal
 
 functions:
+  - ${file(./handlers/user/getUserStatistic/getUserStatistic.yml)}
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
@@ -139,6 +140,7 @@ resources:
         ResponseTemplates:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
+    getUserStatisticRole: ${file(./handlers/user/getUserStatistic/role.yml):getUserStatisticRole}
     joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
     unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
     projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}

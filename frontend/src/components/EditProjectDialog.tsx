@@ -37,6 +37,9 @@ const styles = (theme: Theme) => ({
   content: {
     margin: 'auto 1rem 1rem 1rem',
   },
+	hide: {
+    display: 'none',
+  },
   exitButton: {
     'line-height': '1rem',
     'margin-left': 'auto',
@@ -216,9 +219,9 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
   }
 
   handleSubmit() {
-    const { project_id } = this.props.project;
+    const { id } = this.props.project;
     const body = {
-      project_id,
+      id,
       name: this.state.name,
       description: this.state.description,
       short_description: this.state.short_description,

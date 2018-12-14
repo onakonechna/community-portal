@@ -1,14 +1,9 @@
-import Endpoint from './../../../src/EndpointWrapper';
-import { Request, Response } from "../../../config/Types";
-import DatabaseConnection from "../../../src/DatabaseConnectionMariaDb";
-import ProjectResource from "../../../src/project/resource/Project";
-import User from "../../../src/user/resource/User";
 
 //const dbConnection = new DatabaseConnection();
 //const projectResource = new ProjectResource(dbConnection);
-const projectEditEndpoint = new Endpoint('/project', 'put');
+//const projectEditEndpoint = new Endpoint('/project', 'put');
 
-projectEditEndpoint.configure((req: Request, res: Response) => {
+//projectEditEndpoint.configure((req: Request, res: Response) => {
   /*const user = new User(req.tokenContents);
 
   if (!user.isScopeValid(user.get('scopes'), 'write:project')) {
@@ -24,6 +19,20 @@ projectEditEndpoint.configure((req: Request, res: Response) => {
       console.log(err);
       res.status(200).json({error:true, message: 'Cannot edit project'})
     });*/
+//});
+
+//export const handler = projectEditEndpoint.execute();
+
+
+import { Request, Response } from "../../../config/Types";
+import Endpoint from '../../../src/EndpointWrapper';
+import ProjectUpdateController from '../../../src/project/controller/Update';
+
+const projectUpdateEndpoint = new Endpoint('/project', 'put');
+
+projectUpdateEndpoint.configure((req: Request, res: Response) => {
+	const projectSaveController = new ProjectUpdateController();
+	projectSaveController.execute(req, res);
 });
 
-export const handler = projectEditEndpoint.execute();
+export const handler = projectUpdateEndpoint.execute();

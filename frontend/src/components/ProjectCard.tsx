@@ -167,7 +167,7 @@ interface CardState {
   errorMessage: string;
 }
 
-const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
+const Edit = WithAuth(['owner', 'user'], ['project:write'])(EditButton);
 
 export class ProjectCard extends React.Component<any, CardState>{
 
