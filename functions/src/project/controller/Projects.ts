@@ -23,7 +23,11 @@ export default class Projects implements IController {
 	public execute(req: Request, res: Response) {
 		this.project.getList()
 			.then((projectEntities:IProjectEntity[]) => this.projectEntities = projectEntities)
-			.then(() => this.getProjectStargazersQuantity(this.projectEntities))
+			.then(() => {
+				console.log('this.getProjectStargazersQuantity');
+				return this.getProjectStargazersQuantity(this.projectEntities)}
+			)
+			.then((updatedProjects:object[]) => console.log(updatedProjects) || updatedProjects)
 			.then((updatedProjects:object[]) => this.projectStars.updateList(updatedProjects))
 			.then(() => res.status(200).json({data: this.getProjectCollectionData()}))
 			.catch((err: any) => {
@@ -41,6 +45,7 @@ export default class Projects implements IController {
 
 	private getProjectStargazersQuantity(projectCollection:any) {
 		return Promise.all(projectCollection.map((projectEntity:any) => {
+			console.log(`Get repository ${projectEntity.getOrganizationName()}/${projectEntity.getRepositoryName()}`);
 			return this.githubResource.getRepository(projectEntity.getOrganizationName(), projectEntity.getRepositoryName())
 				.then((repository:any) => ({id: projectEntity.getId(), stargazers_count: repository['stargazers_count']}))
 		}));

@@ -65,6 +65,7 @@ export default class Github {
 	public getRepository(org:string, repos: string) {
 		const options = {
 			method: 'GET',
+			timeout: 2000,
 			url: `https://api.github.com/repos/${org}/${repos}`,
 			headers: {
 				'User-Agent': 'community-portal-app',
