@@ -68,14 +68,9 @@ provider:
   region: us-east-1
   vpc:
     securityGroupIds:
-      - sg-038d5aa857fdd4fbb
+      - sg-0714df71446238929
     subnetIds:
-      - subnet-30f43857
-      - subnet-49b23b03
-      - subnet-57637f68
-      - subnet-6bfb6e64
-      - subnet-8655afda
-      - subnet-e3bd7acd
+      - subnet-0da659b4e43b9e9ca
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
