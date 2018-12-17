@@ -66,6 +66,16 @@ provider:
   runtime: nodejs8.10
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   region: us-east-1
+  vpc:
+    securityGroupIds:
+      - sg-038d5aa857fdd4fbb
+    subnetIds:
+      - subnet-30f43857
+      - subnet-49b23b03
+      - subnet-57637f68
+      - subnet-6bfb6e64
+      - subnet-8655afda
+      - subnet-e3bd7acd
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
@@ -95,6 +105,9 @@ provider:
         Action:
           - cloudwatch:*
           - logs:*
+          - ec2:CreateNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DeleteNetworkInterface
         Resource:
           - '*'
 package:
