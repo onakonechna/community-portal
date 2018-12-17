@@ -66,6 +66,16 @@ provider:
   runtime: nodejs8.10
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   region: us-east-1
+  vpc:
+    securityGroupIds:
+      - sg-038d5aa857fdd4fbb
+    subnetIds:
+      - subnet-30f43857
+      - subnet-49b23b03
+      - subnet-57637f68
+      - subnet-6bfb6e64
+      - subnet-8655afda
+      - subnet-e3bd7acd
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
@@ -121,6 +131,8 @@ functions:
   - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
+  - ${file(./handlers/survey/loadSurvey/loadSurvey.yml)}
+  - ${file(./handlers/survey/saveResults/saveResults.yml)}
 
 resources:
   Resources:
@@ -153,6 +165,8 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
+    loadSurveyRole: ${file(./handlers/survey/loadSurvey/role.yml):loadSurveyRole}
+    saveResultsRole: ${file(./handlers/survey/saveResults/role.yml):saveResultsRole}
 
 plugins:
   - serverless-domain-manager
