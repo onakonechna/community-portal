@@ -75,7 +75,7 @@ provider:
   region: us-east-1
   vpc:
     securityGroupIds: ${self:custom.vpc.${opt:stage, 'dev'}.securityGroups}
-    subnetIds: ${self:custom.${opt:stage, 'dev'}.subnets}
+    subnetIds: ${self:custom.vpc.${opt:stage, 'dev'}.subnets}
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
