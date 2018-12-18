@@ -47,12 +47,6 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
               aws s3 sync public/. s3://production.opensource.magento.com --acl public-read --delete
-            elif [ "${CIRCLE_BRANCH}" == "dev" ]; then
-              STAGE=dev npm run build:webpack
-              aws s3 sync public/. s3://dev.opensource.engcom.magento.com --acl public-read --delete  
-            else
-              STAGE=custom ENDPOINT_URL="$endpoint" FRONTEND="http://dev.opensource.engcom.magento.com.s3-website-us-east-1.amazonaws.com/$endpoint" npm run build:webpack
-              aws s3 sync public/. s3://dev.opensource.engcom.magento.com/${CIRCLE_BRANCH} --delete
             fi
 
   build_functions:
@@ -105,12 +99,6 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               node_modules/.bin/sls create_domain --stage production
               node_modules/.bin/sls deploy --stage production
-            elif [ "${CIRCLE_BRANCH}" == "sprint-dev" ]; then
-              node_modules/.bin/sls create_domain --stage dev
-              node_modules/.bin/sls deploy --stage dev   
-            else
-              node_modules/.bin/sls create_domain --stage dev
-              node_modules/.bin/sls deploy --stage dev
             fi
 
       - run:

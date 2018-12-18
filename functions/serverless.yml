@@ -60,6 +60,13 @@ custom:
    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
    stage: ${self:provider.stage} # Stage will be created for every branch
    createRoute53Record: false
+  vpc:
+    staging:
+      subnets: ${env:VPC_SUBNETS_STAGING}
+      securityGroups: ${env:VPC_SECURITY_GROUPS_STAGING}
+    production:
+      subnets: ${env:VPC_SUBNETS_PRODUCTION}
+      securityGroups: ${env:VPC_SECURITY_GROUPS_PRODUCTION}
 
 provider:
   name: aws
@@ -67,10 +74,8 @@ provider:
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   region: us-east-1
   vpc:
-    securityGroupIds:
-      - sg-0714df71446238929
-    subnetIds:
-      - subnet-0da659b4e43b9e9ca
+    securityGroupIds: ${self:custom.vpc.${opt:stage, 'dev'}.securityGroups}
+    subnetIds: ${self:custom.${opt:stage, 'dev'}.subnets}
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
