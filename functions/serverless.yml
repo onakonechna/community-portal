@@ -62,11 +62,13 @@ custom:
    createRoute53Record: false
   vpc:
     staging:
-      subnets: ${env:VPC_SUBNETS_STAGING}
-      securityGroups: ${env:VPC_SECURITY_GROUPS_STAGING}
+      subnetOne: ${env:VPC_SUBNET_ONE_STAGING}
+      subnetTwo: ${env:VPC_SUBNETS_TWO_STAGING}
+      securityGroup: ${env:VPC_SECURITY_GROUP_STAGING}
     production:
-      subnets: ${env:VPC_SUBNETS_PRODUCTION}
-      securityGroups: ${env:VPC_SECURITY_GROUPS_PRODUCTION}
+      subnetOne: ${env:VPC_SUBNET_ONE_PRODUCTION}
+      subnetTwo: ${env:VPC_SUBNET_TWO_PRODUCTION}
+      securityGroup: ${env:VPC_SECURITY_GROUP_PRODUCTION}
 
 provider:
   name: aws
@@ -74,8 +76,11 @@ provider:
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   region: us-east-1
   vpc:
-    securityGroupIds: ${self:custom.vpc.${opt:stage, 'dev'}.securityGroups}
-    subnetIds: ${self:custom.vpc.${opt:stage, 'dev'}.subnets}
+    securityGroupIds:
+     - ${self:custom.vpc.${opt:stage, 'dev'}.securityGroups}
+    subnetIds:
+     - ${self:custom.vpc.${opt:stage, 'dev'}.subnetOne}
+     - ${self:custom.vpc.${opt:stage, 'dev'}.subnetTwo}
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
