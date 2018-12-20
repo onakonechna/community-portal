@@ -22,7 +22,7 @@ const styles: any = (theme: any) => ({
     smileBlock: {
         display: "inline-block",
         height: '7rem',
-        width: '4rem',
+        width: '6rem',
         "margin-right": '4rem',
         "vertical-align": "top",
         "text-align": "center",
