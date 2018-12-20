@@ -38,7 +38,7 @@ export default class SaveResultsController implements IController {
             return res.status(200).json(
                 {
                     error: false,
-                    message: 'Your results successfully saved!'
+                    message: 'We received your feedback!'
                 });
         });
 

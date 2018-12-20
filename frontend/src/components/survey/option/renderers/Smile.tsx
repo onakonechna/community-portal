@@ -66,19 +66,19 @@ class Smile extends React.Component<any, any> {
     getLabelText(value: any) {
         switch (parseInt(value)) {
             case 1:
-                return 'Very bad';
+                return 'Not satisfied';
 
             case 2:
                 return 'Bad';
 
             case 3:
-                return 'Normal';
+                return 'Neutral';
 
             case 4:
                 return 'Good';
 
             case 5:
-                return 'Perfect';
+                return 'Satisfied';
 
             default:
                 return '';

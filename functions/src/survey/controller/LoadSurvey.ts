@@ -55,7 +55,7 @@ export default class LoadSurveyController implements IController {
                                     return res.status(200).json(
                                         {
                                             error: true,
-                                            message: 'Only pull request author have access to the survey.'
+                                            message: 'Only the pull request author has access to the survey'
                                         });
                                 }
                                 // Load survey and add to the response
@@ -85,7 +85,7 @@ export default class LoadSurveyController implements IController {
                             }).catch((error: any) => {
                                 return res.status(200).json({
                                     error: true,
-                                    message: 'Requested pull request not found.'
+                                    message: 'Survey not found. Please, check the link and try again.'
                                 });
                             });
                         });
