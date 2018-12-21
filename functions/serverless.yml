@@ -135,6 +135,8 @@ functions:
   - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
   - ${file(./handlers/user/getUserInfo/getUserInfo.yml)}
+  - ${file(./handlers/survey/loadSurvey/loadSurvey.yml)}
+  - ${file(./handlers/survey/saveResults/saveResults.yml)}
 
 resources:
   Resources:
@@ -166,6 +168,8 @@ resources:
     getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
+    loadSurveyRole: ${file(./handlers/survey/loadSurvey/role.yml):loadSurveyRole}
+    saveResultsRole: ${file(./handlers/survey/saveResults/role.yml):saveResultsRole}
 
 plugins:
   - serverless-domain-manager
