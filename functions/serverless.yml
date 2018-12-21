@@ -56,16 +56,31 @@ custom:
       path: ${opt:branch, ''}
       stage: ${opt:stage, ''}
   customDomain:
-   domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
-   basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
-   stage: ${self:provider.stage} # Stage will be created for every branch
-   createRoute53Record: false
+    domainName: ${self:custom.domainNames.${opt:stage, 'dev'}.name}
+    basePath: ${self:custom.domainNames.${opt:stage, 'dev'}.path} # If created by CircleCI prefix will correspond to the branch code is pushed to
+    stage: ${self:provider.stage} # Stage will be created for every branch
+    createRoute53Record: false
+  vpc:
+    staging:
+      subnetOne: ${env:VPC_SUBNET_ONE_STAGING}
+      subnetTwo: ${env:VPC_SUBNETS_TWO_STAGING}
+      securityGroup: ${env:VPC_SECURITY_GROUP_STAGING}
+    production:
+      subnetOne: ${env:VPC_SUBNET_ONE_PRODUCTION}
+      subnetTwo: ${env:VPC_SUBNET_TWO_PRODUCTION}
+      securityGroup: ${env:VPC_SECURITY_GROUP_PRODUCTION}
 
 provider:
   name: aws
   runtime: nodejs8.10
   stage: ${self:custom.domainNames.${opt:stage, 'dev'}.stage, 'dev'}
   region: us-east-1
+  vpc:
+    securityGroupIds:
+      - ${self:custom.vpc.${opt:stage, 'dev'}.securityGroup}
+    subnetIds:
+      - ${self:custom.vpc.${opt:stage, 'dev'}.subnetOne}
+      - ${self:custom.vpc.${opt:stage, 'dev'}.subnetTwo}
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
@@ -80,23 +95,23 @@ provider:
     DB_USERPASSWORD: ${self:custom.database.userpassword}
     DB_HOST: ${self:custom.database.host}
   iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - logs:*
-        Resource:
-          - 'Fn::Join':
-            - ':'
-            -
-              - 'arn:aws:logs'
-              - '*'
-              - '*'
-              - '*'
-      - Effect: Allow
-        Action:
-          - cloudwatch:*
-          - logs:*
-        Resource:
-          - '*'
+    - Effect: Allow
+      Action:
+        - logs:*
+      Resource:
+        - 'Fn::Join':
+          - ':'
+          -
+            - 'arn:aws:logs'
+            - '*'
+            - '*'
+            - '*'
+    - Effect: Allow
+      Action:
+        - cloudwatch:*
+        - logs:*
+      Resource:
+        - '*'
 package:
   individually: false
   exclude:
