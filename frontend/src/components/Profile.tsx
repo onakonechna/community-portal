@@ -15,12 +15,8 @@ import { Classes } from '../../node_modules/@types/jss';
 import { Dispatch } from '../../node_modules/redux';
 import fetchStatistic from '../api/FetchStatistic';
 import fetchUser from '../api/FetchUser';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import ContributionPointsWidget from './profile/widget/ContributionPoints';
+import ContritutionGraphWidget from './profile/widget/ContritutionGraphWidget';
 
 const styles = (theme: Theme) => ({
   avatar: {
@@ -65,6 +61,11 @@ const styles = (theme: Theme) => ({
     'margin-top': '5rem',
     'margin-left': '30rem',
   },
+	widgetContainer: {
+		'background-color': '#F2F3F3',
+		'margin': '20px auto',
+		'width': '98%'
+	},
   content: {
     'margin-left': '3rem',
     'margin-top': '3rem',
@@ -208,125 +209,25 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
 
     return (
       <div>
-        <Card className={classes.card}>
-          <CardContent className={classes.content}>
-            {cardContent}
-          </CardContent>
-          <CardActions>
-            <IconButton>
-              <Edit
-                className={classes.editButton}
-                onClick={this.toggleEditUser}
-              />
-            </IconButton>
-          </CardActions>
-        </Card>
-        <Card className={classes.statistic}>
+				<Card className={classes.widgetContainer}>
 					<CardContent className={classes.content}>
-						<div className={classes.table}>
-              <div className={classes.statisticTitle}>
-                Contributor statistic:
-              </div>
-              {
-                this.state.statistic.map((item:any) =>
-                  <div className={classes.row} key={item.repository}>
-                    <div className={classes.statisticHeader}>
-                        <a href={`https://github.com/${item.repository}`} target={'_blank'} className={classes.statisticHeaderLink}>{item.repository}</a>
-                        <div className={`${classes.table} ${classes.statisticContainer}`}>
-                          <div className={classes.row}>
-                            <div className={classes.cell}>Points:</div>
-                            <div className={classes.cell}>{item.points}</div>
-                          </div>
-													<div className={classes.row}>
-														<div className={classes.cell}>Achievements:</div>
-														<div className={classes.cell}>
-                              {Object.keys(item.achievements).map((achievement:string) =>
-                            <div key={achievement}>
-															{`${achievement}, ${item.achievements[achievement]} in total`}
-                            </div>)}</div>
-													</div>
-													<div className={classes.row}>
-														<div className={classes.cell}>Created:</div>
-														<div className={classes.cell}>{item.createdQuantity}</div>
-													</div>
-													<div className={`${classes.row} ${!item.closedQuantity && classes.lastChildBorder}`}>
-														<div className={`${classes.cell}`}>Merged:</div>
-														<div className={`${classes.cell} ${classes.cellButton}`} onClick={() => {this.handleClickOpen(`${item.repository}-merged`)}}>{item.mergedQuantity}</div>
-													</div>
-                          {!!item.closedQuantity && <div className={`${classes.row} ${classes.lastChildBorder}`}>
-														<div className={classes.cell}>Closed:</div>
-														<div className={`${classes.cell} ${classes.cellButton}`} onClick={() => {this.handleClickOpen(`${item.repository}-closed`)}}>{item.closedQuantity}</div>
-													</div>}
-                        </div>
-                      <Dialog
-												open={!!this.state[`${item.repository}-merged`]}
-												onClose={this.handleClose.bind(this, `${item.repository}-merged`)}
-												scroll={this.state.scroll}
-												aria-labelledby="scroll-dialog-title"
-											>
-												<DialogTitle id="scroll-dialog-title">Merged Pull Requests:</DialogTitle>
-												<DialogContent>
-													<DialogContentText>
-														<div className={classes.table}>
-															<div className={classes.row}>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Pull Request:</div>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Achievements:</div>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Points:</div>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Created:</div>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Merged:</div>
-															</div>
-															{item.merged.map((pr:any) =>
-																<div className={classes.row} key={`${pr.full}/${pr.pr_number}`}>
-                                  <div className={`${classes.cell} ${classes.detailsCell}`}><a target={'_blank'} href={`https://github.com/${pr.full}/pull/${pr.pr_number}`}>{`${pr.full}/${pr.pr_number}`}</a></div>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}>{pr.achievements}</div>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}>{pr.points}</div>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}>{new Date(pr.created_at).toLocaleDateString()}</div>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}>{new Date(pr.closed_at).toLocaleDateString()}</div>
-																</div>)}
-														</div>
-													</DialogContentText>
-												</DialogContent>
-												<DialogActions>
-													<Button onClick={this.handleClose.bind(this, `${item.repository}-merged`)} color="primary">
-														Close
-													</Button>
-												</DialogActions>
-											</Dialog>
-											<Dialog
-												open={!!this.state[`${item.repository}-closed`]}
-												onClose={this.handleClose.bind(this, `${item.repository}-closed`)}
-												scroll={this.state.scroll}
-												aria-labelledby="scroll-dialog-title"
-											>
-												<DialogTitle id="scroll-dialog-title">Closed Pull Requests:</DialogTitle>
-												<DialogContent>
-													<DialogContentText>
-														<div className={classes.table}>
-															<div className={classes.row}>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Pull Request:</div>
-																<div className={`${classes.cell} ${classes.detailsCell} ${classes.detailsCellHeader}`}>Created:</div>
-															</div>
-															{item.closed.map((pr:any) =>
-																<div className={classes.row} key={`${pr.full}/${pr.pr_number}`}>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}><a target={'_blank'} href={`https://github.com/${pr.full}/pull/${pr.pr_number}`}>{`${pr.full}/${pr.pr_number}`}</a></div>
-																	<div className={`${classes.cell} ${classes.detailsCell}`}>{new Date(pr.created_at).toLocaleDateString()}</div>
-																</div>)}
-														</div>
-													</DialogContentText>
-												</DialogContent>
-												<DialogActions>
-													<Button onClick={this.handleClose.bind(this, `${item.repository}-closed`)} color="primary">
-														Close
-													</Button>
-												</DialogActions>
-											</Dialog>
-                      </div>
-                  </div>
-                )
-              }
-            </div>
+						<Card className={classes.card}>
+							<CardContent className={classes.content}>
+								{cardContent}
+							</CardContent>
+							<CardActions>
+								<IconButton>
+									<Edit
+										className={classes.editButton}
+										onClick={this.toggleEditUser}
+									/>
+								</IconButton>
+							</CardActions>
+						</Card>
+						<ContributionPointsWidget statistic={this.state.statistic}/>
+						<ContritutionGraphWidget statistic={this.state.statistic}/>
 					</CardContent>
-        </Card>
+				</Card>
       </div>
     );
   }

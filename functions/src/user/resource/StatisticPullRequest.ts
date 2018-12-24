@@ -1,5 +1,9 @@
 export default (connection:any, databaseTypes:any) => {
 	const StatisticPullRequest = connection.define('statistic_contributor_prs', {
+		row_id: {
+			type: databaseTypes.INTEGER,
+			primaryKey: true
+		},
 		closed_at: databaseTypes.DATE,
 		created_at: databaseTypes.DATE,
 		repository: databaseTypes.STRING,
