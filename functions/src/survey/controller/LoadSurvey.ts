@@ -43,7 +43,7 @@ export default class LoadSurveyController implements IController {
                         }
 
                         this.user.getById(req.tokenContents.id).then((user) => {
-                            let repoDetails = req.params.scope.split('#');
+                            let repoDetails = req.params.scope.split('+');
                             this.gitHub.getPullRequestDetails(
                                 repoDetails[0],
                                 repoDetails[1],
