@@ -31,15 +31,16 @@ export default class SaveResultsController implements IController {
                     scope: req.body.scope,
                     value: value
                 });
-                self.surveyResults.save(row);
                 dataToSave.push(row);
             });
 
-            return res.status(200).json(
-                {
-                    error: false,
-                    message: 'We received your feedback!'
-                });
+            self.surveyResults.saveBulk(dataToSave).then(() => {
+                return res.status(200).json(
+                    {
+                        error: false,
+                        message: 'We received your feedback!'
+                    });
+            });
         });
 
 	}

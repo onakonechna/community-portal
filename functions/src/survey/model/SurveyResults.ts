@@ -2,6 +2,7 @@ import SurveyResultsResource from '../resource/SurveyResults';
 import SurveyResultsFactory from '../entity/SurveyResultsFactory';
 import databaseConnection, { databaseTypes } from "../../DatabaseConnectionMariaDb";
 import ISurveyResultsEntity from "../api/ISurveyResultsEntity";
+import * as _ from "lodash";
 
 export default class SurveyResults {
     private connection;
@@ -16,6 +17,14 @@ export default class SurveyResults {
 
     save(surveyResult:ISurveyResultsEntity):Promise<any> {
         return this.surveyResultsResource.create(surveyResult.getData()).then(() => surveyResult.getId());
+    }
+
+    saveBulk(surveyResultsBulk):Promise<any> {
+        let toSave = [];
+        _.map(surveyResultsBulk, function(value, index) {
+            toSave.push(value.getData());
+        });
+        return this.surveyResultsResource.bulkCreate(toSave).then((affectedRows) => affectedRows);
     }
 
     checkIfAlreadyCompleted(surveyId:string, scope:any):Promise<any> {
