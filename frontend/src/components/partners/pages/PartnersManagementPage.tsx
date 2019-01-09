@@ -19,7 +19,7 @@ const styles = (theme:any) => ({
       margin: '0 auto'
     },
     media: {
-        height: '200px',
+        height: '280px',
         width: '100%',
         background: '#e4e4e459',
         margin: '25px auto 0',
@@ -100,14 +100,14 @@ class PartnersManagementPage extends React.Component<any> {
                         <Card className={this.props.classes.card}>
                             <div className={this.props.classes.media}>
                               {
-                                team.logo && (
-                                  <img className={this.props.classes.mediaImage} src={team.logo} alt={team.name}/>
+                                team.avatar_url && (
+                                  <img className={this.props.classes.mediaImage} src={team.avatar_url} alt={team.name}/>
                                 )
                               }
                             </div>
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">
-                                    <a href={team.githubUrl}>{team.name}</a>
+                                    <a href={team.url}>{team.name}</a>
                                 </Typography>
                                 <Typography component="p" className={this.props.classes.description}>
                                     {team.description}
@@ -115,12 +115,12 @@ class PartnersManagementPage extends React.Component<any> {
                             </CardContent>
                             <CardActions className={this.props.classes.cardActions}>
                                 <Button size="small" color="primary" className={this.props.classes.cardActionsBtn}>
-                                    <Link className={this.props.classes.cardActionsLink} to={`/partners-management/view/${team.id}`}>View</Link>
+                                    <Link className={this.props.classes.cardActionsLink} to={`/partners-management/view/${team.row_id}`}>View</Link>
                                 </Button>
                                 <Button size="small" color="primary" className={this.props.classes.cardActionsBtn}>
-                                    <Link className={this.props.classes.cardActionsLink} to={`/partners-management/edit/${team.id}`}>Edit</Link>
+                                    <Link className={this.props.classes.cardActionsLink} to={`/partners-management/edit/${team.row_id}`}>Edit</Link>
                                 </Button>
-                                <Button size="small" color="primary" className={`${this.props.classes.cardActionsBtn} ${this.props.classes.cardActionsDelete}`} onClick={this.deleteTeamHandler.bind(team.id)}>
+                                <Button size="small" color="primary" className={`${this.props.classes.cardActionsBtn} ${this.props.classes.cardActionsDelete}`} onClick={this.deleteTeamHandler.bind(team.row_id)}>
                                     Delete
                                 </Button>
                             </CardActions>
