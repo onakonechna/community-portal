@@ -2,21 +2,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import UserAvatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { withStyles, Theme } from '@material-ui/core/styles';
-import ParnersProfile from './partners/pages/Profile';
-import Edit from '@material-ui/icons/Edit';
-import { Classes } from '../../node_modules/@types/jss';
-import { Dispatch } from '../../node_modules/redux';
+import { Classes } from 'node_modules/@types/jss';
 import fetchStatistic from '../api/FetchStatistic';
 import fetchUser from '../api/FetchUser';
 import ContributionPointsWidget from './profile/widget/ContributionPoints';
 import ContritutionGraphWidget from './profile/widget/ContritutionGraphWidget';
+import ProfileWidget from './profile/widget/ProfileWidget';
+import RateWidget from './profile/widget/RateWidget';
 
 const styles = (theme: Theme) => ({
   avatar: {
@@ -68,8 +63,13 @@ const styles = (theme: Theme) => ({
 		'min-width': '530px'
 	},
   content: {
-    'margin-left': '3rem',
     'margin-top': '3rem',
+    display: 'flex',
+    'flex-wrap': 'wrap',
+    'flex-direction': 'row',
+    'justify-content': 'center',
+    'align-items': 'auto',
+    'align-content': 'center',
   },
   nameText: {
     'margin-top': '1rem',
@@ -181,54 +181,19 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     }));
   }
 
-	handleClickOpen = (repositori:string) => {
-		this.setState({ [repositori]: true });
-	};
-
-	handleClose = (repositori:string) => {
-		this.setState({ [repositori]: false });
-	};
-
   render() {
     const { classes } = this.props;
-    const { displayedUser } = this.state;
-    const cardContent = displayedUser
-      ?
-        <span>
-          <UserAvatar className={classes.avatar} src={displayedUser.avatar_url} />
-          <Typography className={classes.nameText}>
-            {displayedUser.name}
-          </Typography>
-          <Typography className={classes.companyText}>
-            {displayedUser.company}
-          </Typography>
-          <ParnersProfile/>
-        </span>
-      : <Typography style={{ fontSize: '3rem', textAlign: 'center' }}>
-          {this.state.message}
-        </Typography>;
 
     return (
       <div>
-				<Card className={classes.widgetContainer}>
-					<CardContent className={classes.content}>
-						<Card className={classes.card}>
-							<CardContent className={classes.content}>
-								{cardContent}
-							</CardContent>
-							<CardActions>
-								<IconButton>
-									<Edit
-										className={classes.editButton}
-										onClick={this.toggleEditUser}
-									/>
-								</IconButton>
-							</CardActions>
-						</Card>
-						<ContributionPointsWidget statistic={this.state.statistic}/>
-						<ContritutionGraphWidget statistic={this.state.statistic}/>
-					</CardContent>
-				</Card>
+          <Card className={classes.widgetContainer}>
+              <CardContent className={classes.content}>
+										<ContributionPointsWidget statistic={this.state.statistic}/>
+										<ProfileWidget displayUser={this.state.displayedUser}/>
+										<ContritutionGraphWidget statistic={this.state.statistic}/>
+										<RateWidget statistic={this.state.statistic} user={this.props.user}/>
+              </CardContent>
+          </Card>
       </div>
     );
   }
@@ -241,13 +206,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-
-};
-
 export default compose<{}, ProfileProps>(
-  withStyles(styles, {
-    name: 'Profile',
-  }),
-  connect<ProfileMapProps, ProfileDispatchProps, ProfileProps>(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, {name: 'Profile'}),
+  connect<ProfileMapProps, ProfileDispatchProps, ProfileProps>(mapStateToProps, {}),
 )(Profile);
