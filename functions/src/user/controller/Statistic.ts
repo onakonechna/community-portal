@@ -11,7 +11,7 @@ export default class Statistic implements IController {
 
 	public execute(req: Request, res: Response) {
 		this.statistic.getByUserLogin(req.params.id)
-			.then((data:any) => res.status(200).json({data: this.prepareData(data), real: data}))
+			.then((data:any) => res.status(200).json({data: this.prepareData(data)}))
 			.catch((err: any) => {
 				console.log(err);
 				res.status(200).json({
