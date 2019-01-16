@@ -16,10 +16,12 @@ const styles = (theme:any) => ({
 	widgetCard: {
 		'background': '#fff',
 		'display': 'inline-block',
-		'width': '600px',
 		'font-family': 'system-ui',
 		'color': '#6b6868',
-		'font-size': '14px'
+		'font-size': '14px',
+		'margin': '10px',
+		'width': '800px',
+		'min-width': '530px',
 	},
 	widgetCardTitle: {
 		'font-size': '16px',
@@ -35,7 +37,24 @@ const styles = (theme:any) => ({
 		'font-family': 'system-ui',
 	},
 	widgetCardRange: {
-		display: 'flex'
+		display: 'flex',
+	},
+	rangeContainer: {
+		'width': '280px',
+		['@media (max-width: 686px)']: {
+			'width': '266px'
+		},
+		['@media (max-width: 661px)']: {
+			'margin-top': '10px',
+			'width': '100%',
+			'& > div': {
+				'width': '100%',
+				'& > div': {
+					'width': '100%'
+				}
+			}
+		}
+
 	},
 	textField: {
 		'width': '70px'
@@ -57,7 +76,8 @@ const styles = (theme:any) => ({
 		display: 'flex',
 		'justify-content': 'space-between',
 		'vertical-align': 'middle',
-		'align-items': 'center'
+		'align-items': 'center',
+		'flex-wrap': 'wrap'
 	},
 	redBox: {
 		height: '35px',
@@ -94,6 +114,19 @@ const styles = (theme:any) => ({
 		'width': '50%',
 		'overflow': 'hidden'
 	},
+	buttonsContainer: {
+			'min-width': '266px',
+			['@media (max-width: 661px)']: {
+				'justify-content': 'center',
+				'min-width': '100%',
+				'& > div': {
+					'width': '100%',
+					'& > button': {
+						'width': '25%'
+					}
+				}
+			}
+	},
 	inlineBlock: {
 		display: 'inline-block'
 	},
@@ -104,7 +137,10 @@ const styles = (theme:any) => ({
 	},
 	secondLine: {
 		'margin': '15px 0',
-		'padding-bottom': '0'
+		'padding-bottom': '0',
+		['@media (max-width: 661px)']: {
+			'justify-content': 'center'
+		}
 	},
 });
 
@@ -439,7 +475,7 @@ class ContributionPoints extends React.Component<any, any> {
 					<CardContent>
 						<div>
 							<div className={this.props.classes.header}>
-								<div className={this.props.classes.widgetCardTitle}>Contributor Points:</div>
+								<div className={this.props.classes.widgetCardTitle}>Contributor Points</div>
 								<div className={this.props.classes.widgetCardRange}>
 									<div
 										className={this.props.classes.redBox}>{this.getPoints(this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime()))}</div>
@@ -447,7 +483,7 @@ class ContributionPoints extends React.Component<any, any> {
 							</div>
 							<Divider/>
 							<div className={`${this.props.classes.header} ${this.props.classes.secondLine}`}>
-								<div className={this.props.classes.widgetCardRange}>
+								<div className={`${this.props.classes.buttonsContainer} ${this.props.classes.widgetCardRange}`}>
 									<ButtonsBar
 										custom
 										month
@@ -457,7 +493,7 @@ class ContributionPoints extends React.Component<any, any> {
 										onActiveChange={this.onPeriodTypeChange}
 									/>
 								</div>
-								<div className={this.props.classes.widgetCardRange}>
+								<div className={`${this.props.classes.rangeContainer} ${this.props.classes.widgetCardRange}`}>
 									{
 										!this.state.customRange ? <PeriodSelect
 												optionsList={this.state.selectList}

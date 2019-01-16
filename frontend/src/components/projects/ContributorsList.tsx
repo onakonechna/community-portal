@@ -39,7 +39,7 @@ class ContributorsList extends React.Component<any, any> {
           this.props.project.contributors.length > 0 &&
             this.props.project.contributors.slice(0, 5).map((user:any) => (
               <Avatar
-                onClick={(e) => this.toProfile(user.id, e)}
+                onClick={(e) => this.toProfile(user.login, e)}
                 key={user.id}
                 src={user.avatar_url} />
             ))

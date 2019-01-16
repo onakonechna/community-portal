@@ -19,20 +19,23 @@ const styles = (theme:any) => ({
 	repositorySelectWidth: {
 		'min-width': '150px'
 	},
+	graphWrapper: {},
 	widgetCard: {
 		'background': '#fff',
 		'display': 'inline-block',
-		'width': '600px',
 		'font-family': 'system-ui',
 		'color': '#6b6868',
-		'font-size': '14px'
+		'font-size': '14px',
+		'margin': '10px',
+		'width': '800px',
+		'min-width': '530px',
 	},
 	widgetCardTitle: {
 		'font-size': '16px',
 		'display': 'inline-block',
 		'color': '#6b6868',
 		'font-family': 'system-ui',
-		'font-weight': 'bold'
+		'font-weight': 'bold',
 	},
 	widgetCardPeriod: {
 		'font-size': '14px',
@@ -63,7 +66,8 @@ const styles = (theme:any) => ({
 		display: 'flex',
 		'justify-content': 'space-between',
 		'vertical-align': 'middle',
-		'align-items': 'center'
+		'align-items': 'center',
+		'flex-wrap': 'wrap'
 	},
 	redBox: {
 		height: '35px',
@@ -112,6 +116,22 @@ const styles = (theme:any) => ({
 		'margin': '15px 0',
 		'padding-bottom': '0'
 	},
+	mobileButtonContainer: {
+		['@media (max-width: 620px)']: {
+			'min-width': '100%'
+		}
+	},
+	mobileSelectsContainer: {
+		['@media (max-width: 620px)']: {
+			'min-width': '100%',
+			'& > div': {
+				width: '50%',
+				'& > div': {
+					width: '98%'
+				}
+			}
+		}
+	}
 });
 
 class ContritutionGraphWidget extends React.Component<any, any> {
@@ -632,11 +652,11 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 				<CardContent>
 					<div>
 						<div className={this.props.classes.header}>
-							<div className={this.props.classes.widgetCardTitle}>Pull Requests:</div>
+							<div className={this.props.classes.widgetCardTitle}>Pull Requests</div>
 						</div>
 						<Divider/>
 						<div className={`${this.props.classes.header} ${this.props.classes.secondLine}`}>
-							<div className={this.props.classes.widgetCardRange}>
+							<div className={`${this.props.classes.widgetCardRange} ${this.props.classes.mobileButtonContainer}`}>
 								<ButtonsBar
 									month
 									year
@@ -644,7 +664,7 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 									onActiveChange={this.onPeriodTypeChange}
 								/>
 							</div>
-							<div className={this.props.classes.widgetCardRange}>
+							<div className={`${this.props.classes.widgetCardRange} ${this.props.classes.mobileSelectsContainer}`}>
 								<MultipleSelect
 									defaultValue={this.repositories}
 									onChange={this.onRepositoryChange}
@@ -684,7 +704,8 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 							</div>
 						</div>
 						<Divider/>
-						<Line
+						<div className={this.props.classes.graphWrapper}>
+							<Line
 							data={{
 								labels: _.uniq(this.getLabels2().labels),
 								datasets: [
@@ -746,6 +767,7 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 							width={600}
 							height={300}
 						/>
+						</div>
 					</div>
 				</CardContent>
 			</Card>

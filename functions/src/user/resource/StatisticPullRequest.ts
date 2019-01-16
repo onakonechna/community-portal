@@ -14,6 +14,7 @@ export default (connection:any, databaseTypes:any) => {
 		user_id: databaseTypes.INTEGER,
 		points: databaseTypes.INTEGER,
 		pr_number: databaseTypes.INTEGER,
+		state: databaseTypes.STRING,
 		merged: databaseTypes.INTEGER,
 	}, {
 		timestamps: false

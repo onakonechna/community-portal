@@ -10,7 +10,7 @@ export default class Statistic implements IController {
 	}
 
 	public execute(req: Request, res: Response) {
-		this.statistic.getByUserId(req.params.id)
+		this.statistic.getByUserLogin(req.params.id)
 			.then((data:any) => res.status(200).json({data: this.prepareData(data), real: data}))
 			.catch((err: any) => {
 				console.log(err);
@@ -25,6 +25,7 @@ export default class Statistic implements IController {
 		const repositories = this.getRepositories(data);
 		const mergedPRsByRepository = this.getMergedByRepository(data, repositories);
 		const closedPRsByRepository = this.getClosedRepository(data, repositories);
+		const openPRsByRepository = this.getOpenedRepository(data, repositories);
 		const result:any[] = [];
 
 		repositories.forEach((repository:string) => {
@@ -33,18 +34,28 @@ export default class Statistic implements IController {
 			item.repository = repository;
 			item.merged = mergedPRsByRepository[repository];
 			item.closed = closedPRsByRepository[repository];
+			item.open = openPRsByRepository[repository];
 			item.mergedQuantity = item.merged.length;
 			item.closedQuantity = item.closed.length;
-			item.createdQuantity = item.closedQuantity + item.mergedQuantity;
-			item.points = item.merged.reduce((accumulator, currentValue) => Number.isInteger(accumulator) ?
-				accumulator + currentValue.points :
-				accumulator.points + currentValue.points);
+			item.openQuantity = item.open.length;
+			item.allQuantity = item.mergedQuantity + item.closedQuantity + item.openQuantity;
+			item.points = this.getPoints(item.merged);
 			item.achievements = this.getAchievements(item.merged);
 
 			result.push(item);
 		});
 
 		return result.sort((first, second) => second.points - first.points);
+	}
+
+	private getPoints(prsMerged) {
+		if (prsMerged.length) {
+			return prsMerged.reduce((accumulator, currentValue) => Number.isInteger(accumulator) ?
+				accumulator + currentValue.points :
+				accumulator.points + currentValue.points);
+		}
+
+		return 0;
 	}
 
 	private getAchievements(data:any[]) {
@@ -95,9 +106,20 @@ export default class Statistic implements IController {
 		const result = {};
 
 		repositories.forEach((repository:string) => {
-			result[repository] = data.filter(row => row.full === repository && row.merged === 0);
+			result[repository] = data.filter(row => row.full === repository && row.merged === 0 && row.state === 'closed');
 		});
 
 		return result;
 	}
+
+	private getOpenedRepository(data:any[], repositories:string[]) {
+		const result = {};
+
+		repositories.forEach((repository:string) => {
+			result[repository] = data.filter(row => row.full === repository && row.merged === 0 && row.state === 'open');
+		});
+
+		return result;
+	}
+
 }

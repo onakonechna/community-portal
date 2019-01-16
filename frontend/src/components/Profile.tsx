@@ -64,7 +64,8 @@ const styles = (theme: Theme) => ({
 	widgetContainer: {
 		'background-color': '#F2F3F3',
 		'margin': '20px auto',
-		'width': '98%'
+		'width': '98%',
+		'min-width': '530px'
 	},
   content: {
     'margin-left': '3rem',
@@ -159,7 +160,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
   }
 
   componentDidMount() {
-    const currentUser = this.props.match.params.user_id;
+    const currentUser = this.props.match.params.user_id || this.props.match.params.login;
 
     fetchUser(currentUser)
       .then((displayedUser: any) => {

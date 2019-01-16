@@ -26,7 +26,7 @@ const Routes = () => (
     <Route exact path="/survey/:survey_name/:repo_details" render={(props: any) =>
         <SurveyPage repo_details={props.match.params.repo_details} survey_name={props.match.params.survey_name}/>} />
     <Route exact path="/auth" component={Auth} />
-    <Route exact path="/profile/:user_id" component={Profile} />
+    <Route exact path="/profile/:login" component={Profile} />
     <Route exact path="/bookmarked" render={(props: any) => <ProjectGrid filter="bookmarkedProjects" {...props} />}/>
     <Route exact path="/user/projects" render={(props: any) => <ProjectGrid filter="userProjects" {...props} />}/>
     <Route exact path="/project/:project_id" component={(props: any) =>

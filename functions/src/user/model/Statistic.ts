@@ -12,6 +12,24 @@ export default class User {
 		this.cache = {};
 	}
 
+	getByUserLogin(login:string) {
+		if (this.cache[login]) {
+			return new Promise((resolve, reject) => {
+				resolve(this.cache[login]);
+			})
+		}
+
+		return this.statisticResource.findAll({
+			where: {
+				user_login: login
+			}
+		}).then((data:any) => {
+			this.cache[login] = data;
+
+			return this.cache[login];
+		})
+	}
+
 	getByUserId(id:number) {
 		if (this.cache[id]) {
 			return new Promise((resolve, reject) => {

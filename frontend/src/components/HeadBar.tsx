@@ -86,7 +86,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
   toHome = () => this.props.history.push('/');
   toProjects = ()  => this.props.history.push('./user/projects');
   toCalendar = () => this.props.history.push('/community-calendar');
-  toProfile = () => this.props.history.push(`./profile/${this.props.user.id}`);
+  toProfile = () => this.props.history.push(`./profile/${this.props.user.login}`);
 
   render() {
     const { classes } = this.props;

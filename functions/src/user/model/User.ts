@@ -33,6 +33,17 @@ export default class User {
 		}).then((resource:any) => this.userFactory.create(resource.get()))
 	}
 
+	getByLogin(login:string):Promise<IUserEntity> {
+		return this.userResource.findOne({
+			where: {login: login},
+			include: [{
+				model: this.scopeResource,
+				as: 'scopes',
+				attributes: ['scope', 'id']
+			}]
+		}).then((resource:any) => this.userFactory.create(resource.get()))
+	}
+
 	getTokenById(id:number):Promise<string> {
 		return this.userResource.findById(id, {
 			attributes: ['access_token']

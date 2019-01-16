@@ -4,9 +4,15 @@ import {withStyles} from "@material-ui/core/styles";
 
 const styles = (theme:any) => ({
 	buttonsBar: {
+		['@media (max-width: 620px)']: {
+			'width': '100%'
+		},
 		'border-radius': '4px',
 		'border': '1px solid #ccc',
 		'& button': {
+			['@media (max-width: 620px)']: {
+				'width': '50%'
+			},
 			'border-right': '1px solid #ccc',
 			'border-radius': '0',
 			'color': '#6b6868',
@@ -47,7 +53,7 @@ class ButtonsBar extends React.Component<any, any> {
 		return (
 			<div className={this.props.classes.buttonsBar}>
 				{this.props.month && <Button onClick={this.setActive('month')} className={this.state.active === 'month' ? this.props.classes.active : ''} size="small">Month</Button>}
-				{this.props.quorter && <Button onClick={this.setActive('quorter')} className={this.state.active === 'quorter' ? this.props.classes.active : ''} size="small">Quorter</Button>}
+				{this.props.quorter && <Button onClick={this.setActive('quorter')} className={this.state.active === 'quorter' ? this.props.classes.active : ''} size="small">Quarter</Button>}
 				{this.props.year && <Button onClick={this.setActive('year')} className={this.state.active === 'year' ? this.props.classes.active : ''} size="small">Year</Button>}
 				{this.props.custom && <Button onClick={this.setActive('custom')} className={this.state.active === 'custom' ? this.props.classes.active : ''} size="small">Custom</Button>}
 			</div>

@@ -11,7 +11,7 @@ export default class BookmarkProject implements IController {
 	}
 
 	public execute(req: Request, res: Response) {
-		this.user.getById(req.params.id)
+		this.user.getByLogin(req.params.id)
 			.then((userEntity:IUserEntity) => res.status(200).json({data: userEntity.getSecureData()}))
 			.catch((err: any) => {
 				console.log(err);
