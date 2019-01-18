@@ -243,7 +243,7 @@ class ProfileWidget extends React.Component {
                     </div>
 									  <div className={`${classes.width50} ${classes.leftContainer}`}>
 											<div className={classes.header}>
-												<div className={classes.widgetCardTitle}>Pull Requests Open</div>
+												<div className={classes.widgetCardTitle}>Open Pull Requests</div>
 											</div>
 											<Divider/>
                       <div className={`${classes.contentContainer} ${classes.mobileListContainer}`}>

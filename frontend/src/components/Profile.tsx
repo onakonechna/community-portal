@@ -63,13 +63,14 @@ const styles = (theme: Theme) => ({
 		'min-width': '530px'
 	},
   content: {
-    'margin-top': '3rem',
+		'margin': '3rem auto 0 auto',
     display: 'flex',
     'flex-wrap': 'wrap',
     'flex-direction': 'row',
     'justify-content': 'center',
     'align-items': 'auto',
     'align-content': 'center',
+		'max-width': '1650px'
   },
   nameText: {
     'margin-top': '1rem',
@@ -121,7 +122,13 @@ const styles = (theme: Theme) => ({
 	cellButton: {
     'text-decoration': 'underline',
     'cursor': 'pointer'
-  }
+  },
+	notFound: {
+  	'font-family': 'system-ui',
+		'font-size': '24px',
+		'color': '#5d5b5b',
+		'margin': '0'
+	}
 });
 
 interface ProfileProps {
@@ -150,7 +157,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     super(props);
     this.state = {
       editUserOpen: false,
-      displayedUser: null,
+      displayedUser: {},
       message: '',
       statistic: [],
 			scroll: 'paper',
@@ -164,10 +171,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
 
     fetchUser(currentUser)
       .then((displayedUser: any) => {
-        this.setState({ displayedUser: displayedUser.data });
-      })
-      .catch((err: Error) => {
-        this.setState({ message: 'User not Found' });
+        this.setState({ displayedUser: displayedUser.data || displayedUser });
       });
 
 		fetchStatistic(currentUser).then((data:any) => {
@@ -181,17 +185,39 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
     }));
   }
 
+  getContent = () => {
+  	if (this.state.displayedUser && this.state.displayedUser.error) {
+  		return (
+				<div className={`${this.props.classes.content} ${this.props.classes.notFound}`}>
+					User not Found
+				</div>
+			)
+		} else if (this.state.displayedUser && this.state.displayedUser.login) {
+  		return (
+				<div className={this.props.classes.content}>
+					<ContributionPointsWidget statistic={this.state.statistic}/>
+					<ProfileWidget displayUser={this.state.displayedUser}/>
+					<ContritutionGraphWidget statistic={this.state.statistic}/>
+					<RateWidget statistic={this.state.statistic} user={this.state.displayedUser}/>
+				</div>
+			)
+		}
+
+		return (
+			<div className={`${this.props.classes.content} ${this.props.classes.notFound}`}>
+				Loading...
+			</div>
+		);
+	};
+
   render() {
     const { classes } = this.props;
 
     return (
       <div>
           <Card className={classes.widgetContainer}>
-              <CardContent className={classes.content}>
-										<ContributionPointsWidget statistic={this.state.statistic}/>
-										<ProfileWidget displayUser={this.state.displayedUser}/>
-										<ContritutionGraphWidget statistic={this.state.statistic}/>
-										<RateWidget statistic={this.state.statistic} user={this.props.user}/>
+              <CardContent>
+								{this.getContent()}
               </CardContent>
           </Card>
       </div>

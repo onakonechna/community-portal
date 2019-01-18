@@ -18,6 +18,8 @@ export default class User implements IUserEntity  {
 			url: data.url || '',
 			scopes: data.scopes || '',
 			stars: data.stars || [],
+			bio: data.bio || '',
+			blog: data.blog || '',
 			createdAt: data.createdAt,
 			updatedAt: data.updatedAt
 		};

@@ -99,7 +99,7 @@ const styles = (theme:any) => ({
 		'vertical-align': 'middle',
 		'display': 'inline-block',
 		'margin': '5px',
-		'width': '45px',
+		'width': '83	px',
 		'text-align': 'center'
 	},
 	widgetRepositoryContainer: {
@@ -478,7 +478,7 @@ class ContributionPoints extends React.Component<any, any> {
 								<div className={this.props.classes.widgetCardTitle}>Contributor Points</div>
 								<div className={this.props.classes.widgetCardRange}>
 									<div
-										className={this.props.classes.redBox}>{this.getPoints(this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime()))}</div>
+										className={this.props.classes.redBox}>{this.getPoints(this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime()))} pts.</div>
 								</div>
 							</div>
 							<Divider/>
@@ -530,7 +530,7 @@ class ContributionPoints extends React.Component<any, any> {
 								{this.state.start_date && this.state.end_date && this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime())
 									.map((item: any) => item.points ? (
 										<div className={this.props.classes.widgetRepositoryItem} key={item.repository}>
-											<div className={this.props.classes.blueBox}>{item.points}</div>
+											<div className={this.props.classes.blueBox}>{item.points} pts.</div>
 											<div className={`${this.props.classes.inlineBlock} ${this.props.classes.underline}`}
 													 onClick={this.handleClickOpen.bind(this, item.repository)}>{item.repository}</div>
 											<PullRequestDialog

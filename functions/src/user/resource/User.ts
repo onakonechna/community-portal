@@ -8,6 +8,8 @@ export default (connection:any, databaseTypes:any) => {
 		company: databaseTypes.STRING,
 		email: databaseTypes.STRING,
 		location: databaseTypes.STRING,
+		bio: databaseTypes.STRING,
+		blog: databaseTypes.STRING,
 		name: databaseTypes.STRING,
 		two_factor_authentication: databaseTypes.BOOLEAN,
 		access_token: databaseTypes.STRING,

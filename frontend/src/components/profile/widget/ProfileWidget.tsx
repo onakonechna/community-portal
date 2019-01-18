@@ -4,6 +4,9 @@ import CardContent from "@material-ui/core/CardContent/CardContent";
 import Card from "@material-ui/core/Card/Card";
 import UserAvatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import MailIcon from '@material-ui/icons/MailOutline';
+import LinkIcon from '@material-ui/icons/Link';
 
 const styles = () => ({
     widgetCard: {
@@ -34,7 +37,8 @@ const styles = () => ({
     'containers': {
         'display': 'inline-block',
         'vertical-align': 'top',
-        'margin-right': '30px'
+        'margin-right': '30px',
+        'max-width': '290px'
     },
     'avatarBlock': {
         'width': '200px',
@@ -51,6 +55,17 @@ const styles = () => ({
         'font-size': '14px',
         'font-family': 'system-ui',
         'color': '#6b6868',
+        'display': 'flex'
+    },
+	  informationContainer: {
+        'margin': '15px 0'
+    },
+	  iconWrapper: {
+        'display': 'inline-block'
+    },
+    informationWrapper: {
+			  'margin': '0 10px',
+        'display': 'inline-block'
     }
 });
 
@@ -73,9 +88,39 @@ class ProfileWidget extends React.Component {
                             <Typography className={`${classes.widgetCardTitle}`}>
                                 {displayUser.name}
                             </Typography>
-                            <Typography className={`${classes.widgetCardText}`}>
-                                {displayUser.company}
-                            </Typography>
+                            <div className={classes.informationContainer}>
+                                {   displayUser.company &&
+                                    <Typography className={`${classes.widgetCardText}`}>
+                                        {displayUser.company}
+                                    </Typography>
+                                }
+                                {
+																	  displayUser.bio &&
+                                    <Typography className={`${classes.widgetCardText}`}>
+                                        {displayUser.bio}
+                                    </Typography>
+                                }
+                                <div className={classes.informationContainer}>
+                                    { displayUser.location &&
+                                        <Typography className={`${classes.widgetCardText}`}>
+                                            <span className={classes.iconWrapper}><LocationIcon/></span>
+                                            <span className={classes.informationWrapper}>{displayUser.location}</span>
+                                        </Typography>
+																		}
+																		{displayUser.email &&
+                                        <Typography className={`${classes.widgetCardText}`}>
+                                            <span className={classes.iconWrapper}><MailIcon/></span>
+                                            <span className={classes.informationWrapper}>{displayUser.email}</span>
+                                        </Typography>
+																		}
+                                    {displayUser.blog &&
+                                        <Typography className={`${classes.widgetCardText}`}>
+                                            <span className={classes.iconWrapper}><LinkIcon/></span>
+                                            <span className={classes.informationWrapper}>{displayUser.blog.replace(/\\/g, '')}</span>
+                                        </Typography>
+																		}
+																</div>
+														</div>
                         </div>
                     </div>
                 </CardContent>
