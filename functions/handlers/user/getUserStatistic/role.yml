@@ -10,7 +10,6 @@ getUserStatisticRole:
             Service:
               - lambda.amazonaws.com
           Action:
-            - sts:AssumeRole
             - ec2:CreateNetworkInterface
             - ec2:DescribeNetworkInterfaces
             - ec2:DeleteNetworkInterface
