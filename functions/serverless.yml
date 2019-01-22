@@ -1,7 +1,7 @@
 custom:
   jwt:
     secret: ${env:JWT_SECRET}
-    expiration_time: 20d
+    expiration_time: 320d
   database:
     dev:
       name: ${env:DB_NAME_STAGING}

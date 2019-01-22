@@ -90,7 +90,11 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     if (this.props.authorized) {
       this.props.loadingProcessStart('load_starred_projects', true);
       this.props.loadStarredProjects()
-        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'))
+        .catch((error) => {
+          this.props.loadingProcessEnd('load_starred_projects');
+          console.log(error);
+        });
     }
   }
 
@@ -98,7 +102,12 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     if (!this.props.authorized && props.authorized) {
       this.props.loadingProcessStart('load_starred_projects', true);
       this.props.loadStarredProjects()
-        .then(() => this.props.loadingProcessEnd('load_starred_projects'));
+        .then(() => this.props.loadingProcessEnd('load_starred_projects'))
+				.catch((error) => {
+					this.props.loadingProcessEnd('load_starred_projects');
+					console.log(error);
+				});
+
     }
   }
 
