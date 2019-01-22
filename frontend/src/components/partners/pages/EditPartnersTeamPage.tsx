@@ -2,7 +2,9 @@ import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import * as _ from 'lodash';
+import _filter from 'lodash/filter';
+import _without from 'lodash/without';
+import _isEmpty from 'lodash/isEmpty';
 import FieldWithChips from '../lib/FieldWithChips';
 import {getPartnerTeam, editTeam} from '../../../actions/partners';
 import {addMessage} from '../../../actions/messages';
@@ -65,11 +67,11 @@ class EditPartnersTeamPage extends React.Component<any, any> {
   }
 
   handleChipsObjectDelete = (collectionName: string) => (chips: any) => this.setState({
-    [collectionName]: _.filter(this.state[collectionName], (item:any) => item.login !== chips.login)
+    [collectionName]: _filter(this.state[collectionName], (item:any) => item.login !== chips.login)
   });
 
   handleChipsDelete = (collectionName: string) => (name: string) => this.setState({
-    [collectionName]: _.without(this.state[collectionName], name)
+    [collectionName]: _without(this.state[collectionName], name)
   });
 
   handleAddButtonClick = (name: string, collectionName: string) => () => {
@@ -149,7 +151,7 @@ class EditPartnersTeamPage extends React.Component<any, any> {
   isPartnerAdmin = (user:any) => user['partners_admin'];
   getUserIsOwnerTeams = (user:any) => user['partner_team_owner'];
   isPartnerOwnerActive = (user:any) => this.getUserIsOwnerTeams(user).status === 'active';
-  isPartnerOwner = (user:any) => !_.isEmpty(this.getUserIsOwnerTeams(user));
+  isPartnerOwner = (user:any) => !_isEmpty(this.getUserIsOwnerTeams(user));
 
   public render() {
     return (

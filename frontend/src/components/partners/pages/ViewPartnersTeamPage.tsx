@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import * as _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
+import _without from 'lodash/without';
+import _isUndefined from 'lodash/isUndefined';
+
 import { getPartnerTeam } from '../../../actions/partners';
 import { connect } from "react-redux";
 import { addMessage } from "../../../actions/messages";
@@ -152,7 +155,7 @@ class ViewPartnersTeamPage extends React.Component<any, any> {
   }
 
   handleChipsDelete = (collectionName: string) => (name: string) => this.setState({
-    [collectionName]: _.without(this.state[collectionName], name)
+    [collectionName]: _without(this.state[collectionName], name)
   });
 
 
@@ -172,8 +175,8 @@ class ViewPartnersTeamPage extends React.Component<any, any> {
   };
 
   isPartnerAdmin = (user:any) => user['partners_admin'];
-  isPartnerMember = (user:any) => !_.isEmpty(this.getUserIsMemberTeams(user));
-  isPartnerOwner = (user:any) => !_.isEmpty(this.getUserIsOwnerTeams(user));
+  isPartnerMember = (user:any) => !_isEmpty(this.getUserIsMemberTeams(user));
+  isPartnerOwner = (user:any) => !_isEmpty(this.getUserIsOwnerTeams(user));
   isPartnerUser = (user:any) => this.isPartnerOwner(user) || this.isPartnerMember(user);
   getUserIsMemberTeams = (user:any) => user['partner_team_member'];
   getUserIsOwnerTeams = (user:any) => user['partner_team_owner'];
@@ -182,7 +185,7 @@ class ViewPartnersTeamPage extends React.Component<any, any> {
       return <CheckCircleIcon className={this.props.classes.success}/>;
     }
 
-    if (_.isUndefined(this.getMembershipTeamData(user).emailVerified)) {
+    if (_isUndefined(this.getMembershipTeamData(user).emailVerified)) {
       return <Typography className={this.props.classes.displayTableTypography}>N/A</Typography>
     }
 
@@ -232,7 +235,7 @@ class ViewPartnersTeamPage extends React.Component<any, any> {
   };
 
   getTwoFactorAuthenticationStatus = (user:any) => {
-    if (_.isUndefined(user.two_factor_authentication)) {
+    if (_isUndefined(user.two_factor_authentication)) {
       return <Typography className={this.props.classes.displayTableTypography}>N/A</Typography>
     }
 

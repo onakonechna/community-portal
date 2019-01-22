@@ -6,7 +6,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import { v4 as uuid } from 'uuid';
-import * as _ from 'lodash';
+import _isEqual from 'lodash/isEqual';
+import _includes from 'lodash/includes';
+import _filter from 'lodash/filter';
+
 
 const styles = (theme:any) => ({
 	select: {
@@ -54,7 +57,7 @@ class MultipleSelect extends React.Component<any, any> {
 
 	componentWillReceiveProps(props:any) {
 		if (!this.props.defaultValue.length && props.defaultValue.length) {
-			if (_.isEqual(props.defaultValue, props.optionsList)) {
+			if (_isEqual(props.defaultValue, props.optionsList)) {
 				this.setState({
 					name: props.defaultValue,
 					selectAll: true
@@ -69,10 +72,10 @@ class MultipleSelect extends React.Component<any, any> {
 
 
 	private removePlaceholder = (value:string[]) =>
-		_.filter(value, (item:string) => item !== 'Select repositories');
+		_filter(value, (item:string) => item !== 'Select repositories');
 
 	handleChange = (event:any) => {
-		const includes = _.includes(event.target.value, 'all');
+		const includes = _includes(event.target.value, 'all');
 		const value:any = {};
 
 		if (includes && this.state.selectAll) {

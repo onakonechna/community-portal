@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import * as _ from "lodash";
+import _find from 'lodash/find';
 import * as React from "react";
 
 import { starProject, unstarProject, updateProjectStars } from '../../actions/projectStars';
@@ -33,7 +33,7 @@ class Stars extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state:any, props:any) => ({
-  isProjectStarred: !!_.find(
+  isProjectStarred: !!_find(
     state.user['upvoted_projects'],
     (project:any) => project.id === props.project.id
   )

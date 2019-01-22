@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import _isEmpty  from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
@@ -13,8 +13,8 @@ const PartnerRoute = ({ role, types, redirectTo, component: Component, ...rest }
 );
 
 function mapStateToProps(state:any) {
-  const isMember = !_.isEmpty(state.user['partner_team_member']);
-  const isOwner = !_.isEmpty(state.user['partner_team_owner']);
+  const isMember = !_isEmpty(state.user['partner_team_member']);
+  const isOwner = !_isEmpty(state.user['partner_team_owner']);
   const isAdmin = !!state.user['partners_admin'];
 
   return {

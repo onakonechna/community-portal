@@ -4,11 +4,12 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
-import * as _ from 'lodash';
 import FieldWithChips from '../lib/FieldWithChips';
 import {saveTeam} from '../../../actions/partners';
 import { connect } from "react-redux";
 import { addMessage, deleteMessage } from "../../../actions/messages";
+import _filter from 'lodash/filter';
+import _without from 'lodash/without';
 
 const styles = (theme: any) => ({
   'container': {
@@ -44,11 +45,11 @@ class CreatePartnersTeamPage extends React.Component<any, any> {
 
 
   handleChipsObjectDelete = (collectionName: string) => (chips: any) => this.setState({
-    [collectionName]: _.filter(this.state[collectionName], (item:any) => item.login !== chips.login)
+    [collectionName]: _filter(this.state[collectionName], (item:any) => item.login !== chips.login)
   });
 
   handleChipsDelete = (collectionName: string) => (name: string) => this.setState({
-    [collectionName]: _.without(this.state[collectionName], name)
+    [collectionName]: _without(this.state[collectionName], name)
   });
 
   handleAddButtonClick = (name: string, collectionName: string) => () => {

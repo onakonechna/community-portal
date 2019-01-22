@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import _without from 'lodash/without';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Message from './Message';
@@ -194,7 +194,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
 
   handleDelete(tech: string) {
     return () => {
-      const technologies = _.without(this.state.technologies, tech);
+      const technologies = _without(this.state.technologies, tech);
       this.setState({ technologies });
     };
   }

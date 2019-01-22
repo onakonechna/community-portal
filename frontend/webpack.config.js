@@ -1,52 +1,41 @@
 const path = require("path");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
+const HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-assets-extension-plugin')
+
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
-let public = '';
 let githubClientId = '';
+let public = '';
 
 switch(process.env.STAGE) {
     case "production":
         apiHost = JSON.stringify('https://api.opensource.magento.com');
         frontendHost = JSON.stringify('https://opensource.magento.com');
-        reactMode = "production"
+        reactMode = "production";
         githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID);
         break;
     case "qa":
         apiHost = JSON.stringify('https://api.opensource.engcom.magento.com');
         frontendHost = JSON.stringify('https://opensource.engcom.magento.com');
+        reactMode = "production";
         githubClientId = JSON.stringify(process.env.STAGING_GITHUB_CLIENT_ID);
         break;
-    case "dev":
-        apiHost = process.env.ENDPOINT_URL ?
-            JSON.stringify(process.env.ENDPOINT_URL) :
-            JSON.stringify('https://dev.api.opensource.engcom.magento.com');
-        frontendHost = "'https://dev.opensource.engcom.magento.com'";
-        githubClientId = JSON.stringify(process.env.DEV_GITHUB_CLIENT_ID);
-        break;
     case "local":
-        apiHost = JSON.stringify('http://localhost:3000')
+        apiHost = JSON.stringify('http://localhost:3000');
         frontendHost = JSON.stringify('http://localhost:8080');
-        githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)
-        break;
-    case "custom":
-        apiHost = process.env.ENDPOINT_URL ?
-            JSON.stringify(process.env.ENDPOINT_URL) :
-            JSON.stringify('http://localhost');
-        frontendHost = process.env.FRONTEND
-            ? JSON.stringify(process.env.FRONTEND)
-            : JSON.stringify('http://localhost:8080');
-            githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID)    
+        reactMode = "production";
+        githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID);
         break;
 }
 
 module.exports = {
     entry: "./src/index.tsx",
-    mode: 'development',
+    mode: 'production',
     output: {
         filename: "[name].bundle.[chunkhash].js",
         path: path.resolve(__dirname + "/public/dist"),
@@ -63,7 +52,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: '../index.html',
             template: 'src/assets/index.template.html',
+            jsExtension: '.gz'
         }),
+        new UglifyJsPlugin(),
+        new CompressionPlugin(),
+        new HtmlWebpackChangeAssetsExtensionPlugin()
     ],
 
     devServer: {

@@ -10,7 +10,10 @@ import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsPr
 import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
 import DatePicker from "material-ui-pickers/DatePicker/DatePickerWrapper";
 import MultipleSelect from './MultipleSelect'
-import * as _ from 'lodash';
+import _filter from 'lodash/filter';
+import _includes from 'lodash/includes';
+import _uniq from 'lodash/uniq';
+
 
 const styles = (theme:any) => ({
 	marginRight15: {
@@ -556,7 +559,7 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 		let previosClosed:number = 0;
 		let statistic:any[];
 
-		statistic = _.filter(this.props.statistic, (val:any) => _.includes(this.state.repository, val.repository));
+		statistic = _filter(this.props.statistic, (val:any) => _includes(this.state.repository, val.repository));
 
 		if (this.state.periodType === 'year') {
 			this.month.forEach((item:string, index:number) => {
@@ -707,7 +710,7 @@ class ContritutionGraphWidget extends React.Component<any, any> {
 						<div className={this.props.classes.graphWrapper}>
 							<Line
 							data={{
-								labels: _.uniq(this.getLabels2().labels),
+								labels: _uniq(this.getLabels2().labels),
 								datasets: [
 									{
 										label: 'Closed',

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -73,7 +73,7 @@ class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarS
     this.state = {sideBarOpen: false};
     this.toggleSideBar = this.toggleSideBar.bind(this);
     let user = getUserFromToken();
-    if (!_.isEmpty(user)) {props.LoadUserAction(user);}
+    if (!_isEmpty(user)) {props.LoadUserAction(user);}
   }
 
   toggleSideBar() {

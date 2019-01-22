@@ -4,7 +4,7 @@ import {
   DELETE_TEAM_START,
   SAVE_TEAM_END
 } from '../types/partners';
-import * as _ from 'lodash';
+import _reject from 'lodash/reject';
 
 
 const defaultState = {
@@ -21,12 +21,12 @@ export default (state = defaultState, action: any) => {
     case DELETE_TEAM_START:
       return {
         ...state,
-        teams: _.reject(state.teams, {id: action.id})
+        teams: _reject(state.teams, {id: action.id})
       };
     case GET_PARTNER_TEAM_END:
       return {
         ...state,
-        teams: [..._.reject(state.teams, {id: action.data.payload.data.id}), action.data.payload.data]
+        teams: [..._reject(state.teams, {id: action.data.payload.data.id}), action.data.payload.data]
       };
     case SAVE_TEAM_END:
       return {

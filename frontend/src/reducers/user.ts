@@ -1,5 +1,5 @@
 import { TypeKeys } from '../actions';
-import * as _ from 'lodash';
+import _filter from 'lodash/filter';
 import { decode } from 'jsonwebtoken';
 import {
   LOAD_STARRED_PROJECTS_END,
@@ -65,7 +65,7 @@ export default function user(state = defaultUser, action:any) {
     case UNSTAR_PROJECT_END:
       return {
         ...state,
-        upvoted_projects: _.filter(state.upvoted_projects, (project:any) => project.id !== action.project_id)
+        upvoted_projects: _filter(state.upvoted_projects, (project:any) => project.id !== action.project_id)
       };
     case TypeKeys.LOAD_BOOKMARKED_PROJECTS:
       return Object.assign({}, state, {

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import {connect} from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {withStyles} from "@material-ui/core/styles";
 import compose from "recompose/compose";
+import _isEmpty from 'lodash/isEmpty';
+import _filter from 'lodash/filter';
 
 const styles = (theme:any) => ({
   color: {
@@ -50,12 +51,12 @@ class LoadingLine extends React.Component<any, any> {
     }
   };
 
-  hasGlobal = () => !!_.filter(this.props.loading, value => value.global).length;
+  hasGlobal = () => !!_filter(this.props.loading, value => value.global).length;
 
-  showLoader = () => !_.isEmpty(this.props.loading) && !this.state.show && this.hasGlobal();
+  showLoader = () => !_isEmpty(this.props.loading) && !this.state.show && this.hasGlobal();
 
   progress(completed:any) {
-    if (_.isEmpty(this.props.loading)) {
+    if (_isEmpty(this.props.loading)) {
       this.setState({completed: 100});
       setTimeout(() => {
         this.setState({
@@ -64,7 +65,7 @@ class LoadingLine extends React.Component<any, any> {
         })
       }, 300);
       return;
-    } else if (completed >= 150 && !_.isEmpty(this.props.loading) && this.hasGlobal()) {
+    } else if (completed >= 150 && !_isEmpty(this.props.loading) && this.hasGlobal()) {
       completed = 0;
         this.setState({completed: completed});
         setTimeout(() => {

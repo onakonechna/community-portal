@@ -1,5 +1,9 @@
 import { TypeKeys } from '../actions';
-import * as _ from 'lodash';
+import _filter from 'lodash/filter';
+import _find from 'lodash/find';
+import _without from 'lodash/without';
+import _matchesProperty from 'lodash/matchesProperty';
+
 import {
   LOAD_PROJECT_END,
   JOIN_TO_PROJECT_CONTRIBUTORS_END,
@@ -13,7 +17,7 @@ import {
 } from '../../types/projectStars';
 
 const withoutProject = (state:any[], action:any) => {
-  return _.filter(state, (project:any) => project.id !== action.project.id);
+  return _filter(state, (project:any) => project.id !== action.project.id);
 };
 
 export default function project(state = [], action:any) {
@@ -54,10 +58,10 @@ export default function project(state = [], action:any) {
       ];
 
     case UPDATE_PROJECT_STARS:
-      const project = _.find(state, _.matchesProperty('id', action.id));
+      const project = _find(state, _matchesProperty('id', action.id));
 
       return [
-        ..._.without(state, project),
+        ..._without(state, project),
         {...project, stargazers_count:  action.starsQuantity}
       ];
     case TypeKeys.ADD_PROJECT:

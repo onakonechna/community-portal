@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from "react-redux";
-import * as _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -19,8 +19,8 @@ const styles = {
 
 class SideBar extends React.Component<any, any> {
   isPartnerAdmin = (user:any) => user['partners_admin'];
-  isPartnerMember = (user:any) => !_.isEmpty(this.getUserIsMemberTeams(user));
-  isPartnerOwner = (user:any) => !_.isEmpty(this.getUserIsOwnerTeams(user));
+  isPartnerMember = (user:any) => !_isEmpty(this.getUserIsMemberTeams(user));
+  isPartnerOwner = (user:any) => !_isEmpty(this.getUserIsOwnerTeams(user));
   isPartnerUser = (user:any) => this.isPartnerOwner(user) || this.isPartnerMember(user);
   getUserIsMemberTeams = (user:any) => user['partner_team_member'];
   getUserIsOwnerTeams = (user:any) => user['partner_team_owner'];

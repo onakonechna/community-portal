@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Slide from '@material-ui/core/Slide';
@@ -97,7 +97,7 @@ class MessageBar extends React.Component<any, any> {
 
     return (
       <Snackbar
-        open={!_.isEmpty(this.props.messages)}
+        open={!_isEmpty(this.props.messages)}
         onClose={this.handleClose}
         TransitionComponent={TransitionUp}
       >

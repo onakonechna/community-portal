@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _omit from 'lodash/omit';
 import {
   LOADING_PROCESS_START,
   LOADING_PROCESS_END,
@@ -15,7 +15,7 @@ export default (state = {}, action:any) => {
       };
     case LOADING_PROCESS_END:
       return {
-        ..._.omit(state, action.loading)
+        ..._omit(state, action.loading)
       };
     default:
       return state;
