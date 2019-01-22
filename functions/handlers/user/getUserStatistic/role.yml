@@ -6,11 +6,11 @@ getUserStatisticRole:
       Version: '2012-10-17'
       Statement:
       - Effect: Allow
-          Action:
+        Action:
           - ec2:CreateNetworkInterface
           - ec2:DescribeNetworkInterfaces
           - ec2:DeleteNetworkInterface
-          Resource: '*'
+        Resource: '*'
       - Effect: Allow
           Principal:
             Service:
