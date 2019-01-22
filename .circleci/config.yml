@@ -44,6 +44,7 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               STAGE=qa npm run build:webpack
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --acl public-read --delete
+              aws s3 cp --content-encoding 'gzip' --acl public-read s3://staging.opensource.engcom.magento.com/dist/main.bundle.js.gz --metadata-directive REPLACE
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
               STAGE=production npm run build:webpack
               aws s3 sync public/. s3://production.opensource.magento.com --acl public-read --delete

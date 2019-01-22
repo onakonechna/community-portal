@@ -37,7 +37,7 @@ module.exports = {
     entry: "./src/index.tsx",
     mode: 'production',
     output: {
-        filename: "[name].bundle.[chunkhash].js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname + "/public/dist"),
         publicPath: "/dist/"
     },
