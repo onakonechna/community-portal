@@ -12,7 +12,7 @@ getUserStatisticRole:
           - ec2:DeleteNetworkInterface
         Resource: '*'
       - Effect: Allow
-          Principal:
-            Service:
-              - lambda.amazonaws.com
-          Action: sts:AssumeRole
+        Principal:
+          Service:
+            - lambda.amazonaws.com
+        Action: sts:AssumeRole
