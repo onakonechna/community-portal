@@ -5,11 +5,14 @@ getUserStatisticRole:
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
-        - Effect: Allow
+      - Effect: Allow
+          Action:
+          - ec2:CreateNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DeleteNetworkInterface
+          Resource: '*'
+      - Effect: Allow
           Principal:
             Service:
               - lambda.amazonaws.com
-          Action:
-            - ec2:CreateNetworkInterface
-            - ec2:DescribeNetworkInterfaces
-            - ec2:DeleteNetworkInterface
+          Action: sts:AssumeRole
