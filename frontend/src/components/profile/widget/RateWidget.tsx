@@ -150,12 +150,25 @@ class ProfileWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            statistic: [],
+        let state = {
+					// @ts-ignore
+					statistic: [],
             total: 0,
             merged: 0
+        };
+
+			  // @ts-ignore
+			  if (this.props.statistic.length) {
+					// @ts-ignore
+					const { total, merged } = this.getTotalAndMerged(this.props.statistic);
+					// @ts-ignore
+					state.statistic = this.props.statistic;
+					state.total = total;
+					state.merged = merged;
         }
-    }
+
+        this.state = state;
+		}
 
     // @ts-ignore
     getSuccessPercent = () => parseInt(100/(this.state.total/this.state.merged)) || 0;

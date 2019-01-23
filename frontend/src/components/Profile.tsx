@@ -192,7 +192,7 @@ class Profile extends React.Component<ProfileProps & ProfileMapProps & ProfileDi
 					User not Found
 				</div>
 			)
-		} else if (this.state.displayedUser && this.state.displayedUser.login) {
+		} else if (this.state.displayedUser && this.state.displayedUser.login && this.state.statistic.length) {
   		return (
 				<div className={this.props.classes.content}>
 					<ContributionPointsWidget statistic={this.state.statistic}/>

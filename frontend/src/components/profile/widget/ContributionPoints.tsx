@@ -158,12 +158,24 @@ class ContributionPoints extends React.Component<any, any> {
 		this.quorters = ['Q1', 'Q2', 'Q3', 'Q4'];
 		this.month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-		this.state = {
+		let state:any = {
 			selectList: [],
 			selectValue: '',
 			customRange: false,
 			periodType: 'month'
+		};
+
+		if (this.props.statistic.length) {
+			this.range = this.getPeriodRange(this.props.statistic);
+			let selectValue = this.getSelectValue();
+			let {month, date, year} = this.getMonthPeriodData(selectValue);
+			state.selectList = this.getMonthList();
+			state.selectValue = selectValue;
+			state.start_date = date;
+			state.end_date = `${month + 1}/31/${year}`;
 		}
+
+		this.state = state;
 	}
 
 	getPeriodRange = (collection:any[]) => {
@@ -280,9 +292,11 @@ class ContributionPoints extends React.Component<any, any> {
 		return this.cache[start.toString() + end.toString()];
 	};
 
+	getSelectValue = () => `${this.range.month.end + 1}/01/${this.range.years.fullEnd.getFullYear()}`;
+
 	onPeriodTypeChange = (period:string) => {
 		if (period === 'month') {
-			const value = `${this.range.month.end + 1}/01/${this.range.years.fullEnd.getFullYear()}`;
+			const value = this.getSelectValue();
 
 			this.setState({
 				customRange: false,
@@ -330,10 +344,16 @@ class ContributionPoints extends React.Component<any, any> {
 		})
 	};
 
-	onActiveMonthPeriodChange = (value:string) => {
+	getMonthPeriodData = (value:string) => {
 		const date = new Date(value);
 		const year = date.getFullYear();
 		const month = date.getMonth();
+
+		return {date, year, month}
+	};
+
+	onActiveMonthPeriodChange = (value:string) => {
+		const {date, year, month} = this.getMonthPeriodData(value);
 
 		this.setState({
 			start_date: date,
