@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 import * as _ from 'lodash';
 import FieldWithChips from '../lib/FieldWithChips';
-import {getPartnerTeam, editTeam} from '../../../actions/partners';
+import {getPartnerTeam, saveTeam} from '../../../actions/partners';
 import {addMessage} from '../../../actions/messages';
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
@@ -47,20 +47,30 @@ class EditPartnersTeamPage extends React.Component<any, any> {
             members: [],
             allowedDomain: '',
             allowedDomains: [],
-            id: ''
+            row_id: ''
         };
 
         this.props.getPartnerTeam(props.match.params.id)
             .then((response: any) => {
-                // if (response.payload.error) {
-                //     this.props.addMessage({
-                //         type: 'error',
-                //         massage: response.payload.message
-                //     })
-                // }
+                if (response.error) {
+                    this.props.addMessage({
+                        type: 'error',
+                        massage: response.message
+                    })
+                }
 
-                const {name, avatar_url, githubTeamName, description, members, id} = response.data;
-                this.setState({name, avatar_url, githubTeamName, description, members, id});
+                const {name, avatar_url, githubTeamName, description, members, row_id, owners} = response;
+
+                let allowedDomains: any = [];
+                if (response.team_attributes) {
+                    response.team_attributes.map(function (value: any, index: any) {
+                        if (value.code == 'allowed_domains') {
+                            allowedDomains.push(value.value);
+                        }
+                    });
+                }
+
+                this.setState({name, avatar_url, githubTeamName, description, members, row_id, allowedDomains, owners});
             })
     }
 
@@ -111,7 +121,7 @@ class EditPartnersTeamPage extends React.Component<any, any> {
                 avatar_url: this.state.avatar_url,
                 description: this.state.description,
                 members: this.state.members,
-                id: this.state.name.toLowerCase().replace(' ', '-')
+                row_id: this.state.row_id
             }
         }
 
@@ -125,13 +135,13 @@ class EditPartnersTeamPage extends React.Component<any, any> {
                 owners: this.state.owners,
                 members: this.state.members,
                 allowedDomains: this.state.allowedDomains,
-                id: this.state.name.toLowerCase().replace(' ', '-')
+                row_id: this.state.row_id
             }
         }
 
-        this.props.editTeam(data)
+        this.props.saveTeam(data)
             .then((data: any) => {
-                if (!data.payload.error) {
+                if (!data.error) {
                     this.props.history.push('/partners-management');
                     this.props.addMessage({
                         type: 'success',
@@ -140,7 +150,7 @@ class EditPartnersTeamPage extends React.Component<any, any> {
                 } else {
                     this.props.addMessage({
                         type: 'error',
-                        massage: data.payload.message
+                        massage: data.message
                     })
                 }
             });
@@ -166,13 +176,8 @@ class EditPartnersTeamPage extends React.Component<any, any> {
         return isOwner;
     };
 
-    // isPartnerAdmin = (user:any) => user['partners_admin'];
-    // getUserIsOwnerTeams = (user:any) => user['partner_team_owner'];
-    // isPartnerOwnerActive = (user:any) => user.status === 'active';
-
     isPartnerOwnerActive = (user: any) => {
         let status = 'unverified';
-        console.log(user);
         user.attributes.map(function (value: any, index: any) {
             if (value.code == 'status') {
                 status = value.value;
@@ -181,8 +186,6 @@ class EditPartnersTeamPage extends React.Component<any, any> {
 
         return status;
     };
-
-    // isPartnerOwner = (user:any) => !_.isEmpty(this.getUserIsOwnerTeams(user));
 
     public render() {
         return (
@@ -296,7 +299,7 @@ const mapStateToProps = (state: any, props: any) => ({
 });
 
 export default connect<any>(mapStateToProps, {
-    editTeam,
+    saveTeam,
     addMessage,
     getPartnerTeam
 })(withStyles(styles)(EditPartnersTeamPage));

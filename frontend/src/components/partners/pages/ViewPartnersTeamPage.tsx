@@ -145,7 +145,7 @@ class ViewPartnersTeamPage extends React.Component<any, any> {
                         massage: response.message
                     })
                 }
-                const {name, avatar_url, members} = response.data;
+                const {name, avatar_url, members} = response;
                 this.setState({name, avatar_url, members});
             });
     }

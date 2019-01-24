@@ -154,9 +154,9 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => ({
 
-};
+});
 
 export default compose<{}, ProfileProps>(
   withStyles(styles, {

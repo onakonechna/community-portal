@@ -17,15 +17,17 @@ function mapStateToProps(state:any) {
         isOwner = false,
         isAdmin = false;
 
-    scopes.map(function (value: any, index: any) {
-        if (value.scope == 'partners_admin') {
-            isAdmin = true;
-        } else if (value.scope == 'partner_team_member') {
-            isMember = true;
-        } else if (value.scope == 'partner_team_owner') {
-            isOwner = true;
-        }
-    });
+    if (scopes) {
+        scopes.map(function (value: any, index: any) {
+            if (value.scope == 'partners_admin') {
+                isAdmin = true;
+            } else if (value.scope == 'partner_team_member') {
+                isMember = true;
+            } else if (value.scope == 'partner_team_owner') {
+                isOwner = true;
+            }
+        });
+    }
 
     return {
         types: {

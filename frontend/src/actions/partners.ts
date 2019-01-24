@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
-import {BACKEND_API as domain, request, headers} from '../api/Config';
+import {BACKEND_API as domain, request, headers, postHeaders} from '../api/Config';
+
 import {
     GET_PARTNER_TEAMS_LIST_START,
     GET_PARTNER_TEAMS_LIST_END,
@@ -37,7 +38,7 @@ export const verifyPartnerUser = (userId: string) => (dispatch: any) => {
         user_id: userId
     });
 
-    return axios.get(`${domain}/partners/user/verify/${userId}`)
+    return request(`${domain}/partners/user/verify/${userId}`, headers())
         .then((res: AxiosResponse) => {
             dispatch({
                 type: VERIFY_PARTNER_USER_END,
@@ -53,7 +54,7 @@ export const getPartnerTeam = (id: string) => (dispatch: any) => {
         type: GET_PARTNER_TEAM_START,
     });
 
-    return axios.get(`${domain}/partners/team/${id}`)
+    return request(`${domain}/partners/team/${id}`, headers())
         .then((res: AxiosResponse) => {
             dispatch({
                 type: GET_PARTNER_TEAM_END,
@@ -87,17 +88,16 @@ export const saveTeam = (data: any) => (dispatch: any) => {
         type: SAVE_TEAM_START
     });
 
-    return axios.post(`${domain}/partners/team/save`, data)
+    return request(`${domain}/partners/team/save`, postHeaders(data))
         .then((res: AxiosResponse) => {
             dispatch({
                 data,
                 type: SAVE_TEAM_END,
             });
 
-            return res.data;
+            return res;
         });
 };
-
 
 export const editTeam = (data: any) => (dispatch: any) => {
     dispatch({
@@ -105,7 +105,7 @@ export const editTeam = (data: any) => (dispatch: any) => {
         type: EDIT_TEAM_START
     });
 
-    return axios.post(`${domain}/partners/team/edit`, data)
+    return request(`${domain}/partners/team/edit`, postHeaders(data))
         .then((res: AxiosResponse) => {
             dispatch({
                 data,

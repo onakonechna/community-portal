@@ -25,133 +25,133 @@ const Login = WithAuth(['guest'])(withLogin(LoginButton));
 const SideNav = WithAuth(['owner', 'user'])(SideBar);
 
 const styles = (theme:any) => ({
-  appBar: {
-    'font-family': 'system-ui',
-    'box-shadow': 'none',
-  },
-  menuButton: {
-    'margin-right': '1rem',
-    [theme.breakpoints.down('sm')]: {
-      'margin-right': '0',
+    appBar: {
+        'font-family': 'system-ui',
+        'box-shadow': 'none',
     },
-  },
-  toolBar: {
-    [theme.breakpoints.down('sm')]: {
-      padding: '0',
+    menuButton: {
+        'margin-right': '1rem',
+        [theme.breakpoints.down('sm')]: {
+            'margin-right': '0',
+        },
     },
-  },
-  rightSide: {
-    display: 'flex',
-    'margin-left': 'auto',
-  },
+    toolBar: {
+        [theme.breakpoints.down('sm')]: {
+            padding: '0',
+        },
+    },
+    rightSide: {
+        display: 'flex',
+        'margin-left': 'auto',
+    },
 });
 
 interface HeadBarProps {
-  classes: any;
-  location?: any;
-  history?: any;
-  LoadUserAction?: any;
+    classes: any;
+    location?: any;
+    history?: any;
+    LoadUserAction?: any;
 }
 
 interface HeadBarStateProps {
-  user: any;
+    user: any;
 }
 
 interface HeadBarState {
-  sideBarOpen: boolean;
+    sideBarOpen: boolean;
 }
 
 const getUserFromToken = () => {
-  const token = window.localStorage.getItem('oAuth') || '';
-
-  return token ? decode(JSON.parse(token)) : {};
+    const token = window.localStorage.getItem('oAuth') || '';
+    return token ? decode(JSON.parse(token)) : {};
 };
 
 class HeadBar extends React.Component<HeadBarProps & HeadBarStateProps, HeadBarState> {
-  constructor(props: HeadBarProps & HeadBarStateProps & HeadBarState) {
-    super(props);
-    this.state = {sideBarOpen: false};
-    this.toggleSideBar = this.toggleSideBar.bind(this);
-    let user = getUserFromToken();
-    if (!_.isEmpty(user)) {props.LoadUserAction(user);}
-  }
+    constructor(props: HeadBarProps & HeadBarStateProps & HeadBarState) {
+        super(props);
+        this.state = {sideBarOpen: false};
+        this.toggleSideBar = this.toggleSideBar.bind(this);
+        let user = getUserFromToken();
+        if (!_.isEmpty(user)) {props.LoadUserAction(user);}
+    }
 
-  toggleSideBar() {
-    this.setState((prevState: HeadBarState) => ({
-      sideBarOpen: !prevState.sideBarOpen,
-    }));
-  }
+    toggleSideBar() {
+        this.setState((prevState: HeadBarState) => ({
+            sideBarOpen: !prevState.sideBarOpen,
+        }));
+    }
 
-  toBookMark= () => this.props.history.push('./bookmarked');
-  toHome = () => this.props.history.push('/');
-  toProjects = ()  => this.props.history.push('./user/projects');
-  toCalendar = () => this.props.history.push('/community-calendar');
-  toProfile = () => this.props.history.push(`./profile/${this.props.user.id}`);
+    toBookMark= () => this.props.history.push('./bookmarked');
+    toHome = () => this.props.history.push('/');
+    toProjects = ()  => this.props.history.push('./user/projects');
+    toCalendar = () => this.props.history.push('/community-calendar');
+    toProfile = () => this.props.history.push(`./profile/${this.props.user.id}`);
+    toPartners = () => this.props.history.push(`./partners-management`);
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <AppBar className={classes.appBar} position="static" color="secondary">
-        <Toolbar id="toolbar">
-          {this.props.user.id
-            // render the button if the user is logged in
-            ? this.props.location.pathname === '/'
-              ? <IconButton
-                  className={classes.menuButton}
-                  onClick={this.toggleSideBar}
-                  aria-label="Menu"
-                >
-                  <MenuIcon />
-                </IconButton>
-              : <IconButton
-                  className={classes.menuButton}
-                  onClick={this.toHome}
-                  aria-label="Home"
-                >
-                  <Home />
-                </IconButton>
-            //otherwise hide the button
-            : <IconButton
-                  className={classes.menuButton}
-                  onClick={this.toHome}
-                  aria-label="Home"
-                >
-                  <Home />
-              </IconButton>
-          }
-          <span>
+    render() {
+        const { classes } = this.props;
+        return (
+            <AppBar className={classes.appBar} position="static" color="secondary">
+                <Toolbar id="toolbar">
+                    {this.props.user.id
+                        // render the button if the user is logged in
+                        ? this.props.location.pathname === '/'
+                            ? <IconButton
+                                className={classes.menuButton}
+                                onClick={this.toggleSideBar}
+                                aria-label="Menu"
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            : <IconButton
+                                className={classes.menuButton}
+                                onClick={this.toHome}
+                                aria-label="Home"
+                            >
+                                <Home />
+                            </IconButton>
+                        //otherwise hide the button
+                        : <IconButton
+                            className={classes.menuButton}
+                            onClick={this.toHome}
+                            aria-label="Home"
+                        >
+                            <Home />
+                        </IconButton>
+                    }
+                    <span>
             <SideNav
-              open={this.state.sideBarOpen}
-              toggleSideBar={this.toggleSideBar}
-              toBookMark={this.toBookMark}
-              toProjects={this.toProjects}
-              toCalendar={this.toCalendar}
-              toProfile={this.toProfile}
+                open={this.state.sideBarOpen}
+                toggleSideBar={this.toggleSideBar}
+                toBookMark={this.toBookMark}
+                toProjects={this.toProjects}
+                toCalendar={this.toCalendar}
+                toProfile={this.toProfile}
             />
           </span>
-          <Logo />
-            <div className={classes.rightSide}>
-              <AddProject className={classes.addButton} />
-              <Login />
-            </div>
-        </Toolbar>
-        <LoadingLine/>
-      </AppBar>
-    );
-  }
+                    <Logo />
+                    <div className={classes.rightSide}>
+                        <AddProject className={classes.addButton} />
+                        <Login />
+                    </div>
+                </Toolbar>
+                <LoadingLine/>
+            </AppBar>
+        );
+    }
 }
 
 const mapStateToProps = (state: any) => {
-  return {
-    user: state.user,
-  };
+    return {
+        user: state.user,
+    };
 };
 
 export default compose<{}, HeadBarProps>(
-  withStyles(styles, {
-    name: 'HeadBar',
-  }),
-  connect<HeadBarStateProps, {}, HeadBarProps>(
-    mapStateToProps, { LoadUserAction },
-  ),
+    withStyles(styles, {
+        name: 'HeadBar',
+    }),
+    connect<HeadBarStateProps, {}, HeadBarProps>(
+        mapStateToProps, { LoadUserAction },
+    ),
 )(HeadBar);
