@@ -7,6 +7,7 @@ const HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-asse
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
+let backendHost = "http://api.portal.local";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 let githubClientId = '';
@@ -47,6 +48,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             API_ENDPOINT: apiHost,
+            BACKEND_HOST: backendHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
             GITHUB_CLIENT_ID: githubClientId,
