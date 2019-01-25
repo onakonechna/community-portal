@@ -7,6 +7,7 @@ const HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-asse
 
 let webpack = require("webpack");
 let apiHost = "'http://localhost:3000'";
+let backendHost = "http://api.portal.local";
 let frontendHost = "'http://localhost:8080'";
 let reactMode = "development";
 let githubClientId = '';
@@ -16,18 +17,21 @@ switch(process.env.STAGE) {
     case "production":
         apiHost = JSON.stringify('https://api.opensource.magento.com');
         frontendHost = JSON.stringify('https://opensource.magento.com');
+        backendHost = JSON.stringify('https://backend.opensource.engcom.magento.com');
         reactMode = "production";
         githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID);
         break;
     case "qa":
         apiHost = JSON.stringify('https://api.opensource.engcom.magento.com');
         frontendHost = JSON.stringify('https://opensource.engcom.magento.com');
+        backendHost = JSON.stringify('https://backend.staging.opensource.engcom.magento.com/');
         reactMode = "production";
         githubClientId = JSON.stringify(process.env.STAGING_GITHUB_CLIENT_ID);
         break;
     case "local":
         apiHost = JSON.stringify('http://localhost:3000');
         frontendHost = JSON.stringify('http://localhost:8080');
+        backendHost = JSON.stringify("http://api.portal.local");
         reactMode = "production";
         githubClientId = JSON.stringify(process.env.GITHUB_CLIENT_ID);
         break;
@@ -44,6 +48,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             API_ENDPOINT: apiHost,
+            BACKEND_HOST: backendHost,
             __FRONTEND__: frontendHost,
             NODE_ENV: JSON.stringify(reactMode),
             GITHUB_CLIENT_ID: githubClientId,
