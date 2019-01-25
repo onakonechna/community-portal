@@ -24,7 +24,7 @@ switch(process.env.STAGE) {
     case "qa":
         apiHost = JSON.stringify('https://api.opensource.engcom.magento.com');
         frontendHost = JSON.stringify('https://opensource.engcom.magento.com');
-        backendHost = JSON.stringify('https://backend.opensource.engcom.magento.com');
+        backendHost = JSON.stringify('http://backend.staging.opensource.engcom.magento.com/');
         reactMode = "production";
         githubClientId = JSON.stringify(process.env.STAGING_GITHUB_CLIENT_ID);
         break;
