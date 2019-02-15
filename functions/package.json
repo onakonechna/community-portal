@@ -4,7 +4,7 @@
   "description": "Front Page to the Community Projects to Contributors",
   "main": "index.js",
   "dependencies": {
-    "@types/sequelize": "^4.27.27",
+    "@types/sequelize": "^4.27.29",
     "ajv": "^6.5.1",
     "aws-sdk": "^2.249.1",
     "axios": "^0.18.0",

@@ -96,7 +96,7 @@ class SurveyPage extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        let res = this.props.repo_details.split('-');
+        let res = this.props.repo_details.split('+');
         if (this.props.survey_name == null || res.length < 3) {
             this.props.handleMessage('Your url is invalid, please, use correct one.', true);
         } else if (this.props.authorized){
