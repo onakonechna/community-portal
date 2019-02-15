@@ -22,10 +22,6 @@ jobs:
           name: Install dependencies
           command: npm install
 
-      - run:
-          name: Run frontend tests
-          command: npm test
-
       - save_cache:
           paths:
             - node_modules
@@ -42,11 +38,11 @@ jobs:
           command: |
             endpoint=$(cat ../functions/workspace/endpoint)
             if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              STAGE=qa npm run build:webpack
+              npm run build:prod
               aws s3 sync public/. s3://staging.opensource.engcom.magento.com --acl public-read --delete
               aws s3 cp --content-encoding 'gzip' --acl public-read public/dist/main.bundle.js.gz s3://staging.opensource.engcom.magento.com/dist/main.bundle.js.gz --metadata-directive REPLACE
             elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-              STAGE=production npm run build:webpack
+              npm run build:prod
               aws s3 sync public/. s3://production.opensource.magento.com --acl public-read --delete
               aws s3 cp --content-encoding 'gzip' --acl public-read public/dist/main.bundle.js.gz s3://production.opensource.magento.com/dist/main.bundle.js.gz --metadata-directive REPLACE
             fi

@@ -10,10 +10,8 @@ import getStarredProjects from '../api/GetLikedProjects';
 import GithubAuthModal, {toQuery} from "../components/GithubAuthModal";
 import {BACKEND_API, postHeaders, request} from "../api/Config";
 
-declare const __FRONTEND__: string;
-declare const GITHUB_CLIENT_ID: string;
-const gitId = GITHUB_CLIENT_ID;
-const frontEnd = __FRONTEND__;
+const gitId = process.env.GITHUB_CLIENT_ID;
+const frontEnd = process.env.FRONTEND_ENDPOINT_HOST;
 
 export const login = (type: any) => (dispatch:Dispatch) => {
     const scope = type == 'partner' ? 'user,admin:org,public_repo' : 'user:email,public_repo';

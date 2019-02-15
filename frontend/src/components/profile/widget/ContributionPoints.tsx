@@ -11,308 +11,103 @@ import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import PullRequestDialog from '../PullRequestDialog';
 import ButtonsBar from './ButtonsBar';
 import PeriodSelect from './PeriodSelect';
-
-const styles = (theme:any) => ({
-	widgetCard: {
-		'background': '#fff',
-		'display': 'inline-block',
-		'font-family': 'system-ui',
-		'color': '#6b6868',
-		'font-size': '14px',
-		'margin': '10px',
-		'width': '800px',
-		'min-width': '530px',
-	},
-	widgetCardTitle: {
-		'font-size': '16px',
-		'display': 'inline-block',
-		'color': '#6b6868',
-		'font-family': 'system-ui',
-		'font-weight': 'bold'
-	},
-	widgetCardPeriod: {
-		'font-size': '14px',
-		'display': 'inline-block',
-		'color': '#6b6868',
-		'font-family': 'system-ui',
-	},
-	widgetCardRange: {
-		display: 'flex',
-	},
-	rangeContainer: {
-		'width': '280px',
-		['@media (max-width: 686px)']: {
-			'width': '266px'
-		},
-		['@media (max-width: 661px)']: {
-			'margin-top': '10px',
-			'width': '100%',
-			'& > div': {
-				'width': '100%',
-				'& > div': {
-					'width': '100%'
-				}
-			}
-		}
-
-	},
-	textField: {
-		'width': '70px'
-	},
-	date: {
-		width: '73px',
-		cursor: 'pointer',
-		color: '#6b6868',
-		'font-size': '13px',
-		'&:before': {
-			bottom: '3px'
-		},
-		'&:after': {
-			bottom: '3px'
-		}
-	},
-	header: {
-		'padding-bottom': '10px',
-		display: 'flex',
-		'justify-content': 'space-between',
-		'vertical-align': 'middle',
-		'align-items': 'center',
-		'flex-wrap': 'wrap'
-	},
-	redBox: {
-		height: '35px',
-		color: '#fff',
-		padding: '10px',
-		background: '#ff5700',
-		'box-sizing': 'border-box',
-		'border-radius': '4px',
-		'font-weight': 'bold',
-		'vertical-align': 'middle'
-	},
-	blueBox: {
-		color: '#fff',
-		padding: '5px',
-		background: '#27a7ff',
-		'box-sizing': 'border-box',
-		'border-radius': '4px',
-		'font-weight': 'bold',
-		'vertical-align': 'middle',
-		'display': 'inline-block',
-		'margin': '5px',
-		'width': '83	px',
-		'text-align': 'center'
-	},
-	widgetRepositoryContainer: {
-		display: 'inline-block',
-		'vertical-align': 'middle',
-		'margin-top': '10px',
-		'width': '100%'
-	},
-	widgetRepositoryItem: {
-		display: 'inline-block',
-		'vertical-align': 'middle',
-		'width': '50%',
-		'overflow': 'hidden'
-	},
-	buttonsContainer: {
-			'min-width': '266px',
-			['@media (max-width: 661px)']: {
-				'justify-content': 'center',
-				'min-width': '100%',
-				'& > div': {
-					'width': '100%',
-					'& > button': {
-						'width': '25%'
-					}
-				}
-			}
-	},
-	inlineBlock: {
-		display: 'inline-block'
-	},
-	underline: {
-		'border-bottom': '1px solid #6b6868',
-		'padding-bottom': '3px',
-		cursor: 'pointer'
-	},
-	secondLine: {
-		'margin': '15px 0',
-		'padding-bottom': '0',
-		['@media (max-width: 661px)']: {
-			'justify-content': 'center'
-		}
-	},
-});
+import YearService from '../../../service/date/Year';
+import MonthService from '../../../service/date/Month';
+import QuarterService from '../../../service/date/Quarter';
+import getFromToRangeDate from '../../../command/date/getFromToRangeDate';
+import getFromToRangeData from '../../../command/date/getFromToRangeData';
+import getTimestamp from '../../../command/date/getTimestamp';
+import styles from './ContributionPoints.style';
 
 class ContributionPoints extends React.Component<any, any> {
-	private cache:any;
-	private quorters:string[];
-	private month:string[];
 	private range:any;
+	private yearService;
+	private quarterService;
+	private monthService;
 
 	constructor(props: any) {
 		super(props);
 
-		this.cache = {};
-		this.state = {};
-		this.quorters = ['Q1', 'Q2', 'Q3', 'Q4'];
-		this.month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const { start, end } = getFromToRangeDate(this.props.statistic);
 
-		let state:any = {
-			selectList: [],
-			selectValue: '',
-			customRange: false,
-			periodType: 'month'
-		};
+		this.yearService = new YearService();
+		this.quarterService = new QuarterService();
+		this.monthService = new MonthService();
 
-		if (this.props.statistic.length) {
-			this.range = this.getPeriodRange(this.props.statistic);
-			let selectValue = this.getSelectValue();
-			let {month, date, year} = this.getMonthPeriodData(selectValue);
-			state.selectList = this.getMonthList();
-			state.selectValue = selectValue;
-			state.start_date = date;
-			state.end_date = `${month + 1}/31/${year}`;
-		}
 
-		this.state = state;
+		this.range = this.getRange(start, end);
+		this.state = this.getState(this.range);
 	}
 
-	getPeriodRange = (collection:any[]) => {
-		let start = 0;
-		let end = 0;
+	getState = range => ({
+		selectList: this.getSelectMonthList(range.yearStart, range.yearEnd, range.monthStart, range.monthEnd) || [],
+		selectValue: this.toSelectValue(range.monthEnd, range.yearEnd) || '',
+		customRange: false,
+		periodType: 'month',
+		start_date: getTimestamp(1, range.monthEnd, range.yearEnd),
+		end_date: getTimestamp(this.monthService.getDaysQuantity(range.yearEnd, range.monthEnd), range.monthEnd, range.yearEnd)
+	});
 
-		collection.forEach((item:any) => {
-			let date;
+	getRange = (start, end) => ({
+		yearStart: this.yearService.getByTimestamp(start),
+		monthStart: this.monthService.getByTimestamp(start),
+		yearEnd: this.yearService.getByTimestamp(end),
+		monthEnd: this.monthService.getByTimestamp(end)
+	});
 
-			item.merged.forEach((el:any) => {
-				if (!el.points) {
-					return;
-				}
+	getSelectMonthList = (startYear, endYear, startMonth, endMonth) =>
+		this.monthService.getByRange(startYear, endYear, startMonth, endMonth).map(item => ({
+			label: `${item.name} ${item.year}`,
+			value: `${item.month}/01/${item.year}`
+		}));
 
-				date = new Date(el.closed_at).getTime();
+	getSelectQuarterList = (startYear, endYear, startMonth, endMonth) =>
+		this.quarterService.getByRange(startYear, endYear, startMonth, endMonth).map(item => ({
+			label: `${item.name} ${item.year}`,
+			value: `${item.quarter}/${item.year}`
+		}));
 
-				if (!start || start > date) {
-					start = date;
-				} else if (date > end) {
-					end = date;
-				}
-			})
-		});
+	getSelectYearList = (startYear, endYear) =>
+		this.yearService.getByRange(startYear, endYear).map(item => ({
+			label: item.year,
+			value: item.year
+		}));
 
-		const startDate = new Date(start);
-		const endDate = new Date(end);
-
-		return {
-			years: {
-				start,
-				end,
-				fullStart: startDate,
-				fullEnd: endDate
-			},
-			month: {
-				start: startDate.getMonth(),
-				end: endDate.getMonth()
-			},
-			quorter: {
-				start: this.getQuorterByMonth(startDate.getMonth()),
-				end: this.getQuorterByMonth(endDate.getMonth())
-			}
-		}
-	};
-
-	componentWillReceiveProps(props:any) {
-		if (!this.props.statistic.length && props.statistic.length) {
-			this.range = this.getPeriodRange(props.statistic);
-
-			this.onPeriodTypeChange(this.state.periodType);
-		}
-	}
-
-	getQuorterByMonth = (month:number) => {
-		if (month >= 0 && month <= 2) {
-			return 0;
-		}
-
-		if (month >= 3 && month <= 5) {
-			return 1;
-		}
-
-		if (month >= 6 && month <= 8) {
-			return 2;
-		}
-
-		return 3;
-	};
-
-	handleStartDateChange = (date:Date) => {
-		this.setState({
-			start_date: date
-		});
-	};
-
-	handleEndDateChange = (date:Date) => {
-		this.setState({
-			end_date: date
-		});
-	};
-
-	handleClickOpen = (repositori:string) => {
-		this.setState({ [repositori]: true });
-	};
-
-	handleClose = (repositori:string) => {
-		this.setState({ [repositori]: false });
-	};
-
-	getPoints = (collection:any[]) => {
-		let points = 0;
-
-		collection.forEach((item:any) => {
-			points += item.points;
-		});
-
-		return points;
-	};
-
-	filterPeriod = (start:number, end:number) => {
-		if (!this.cache[start.toString() + end.toString()]) {
-			this.cache[start.toString() + end.toString()] = this.props.statistic.map((item: any) => {
-				const data: any = {};
-
-				data.merged = item.merged.filter((el: any) => new Date(el.closed_at).getTime() >= start && new Date(el.closed_at).getTime() <= end);
-				data.points = 0;
-				data.merged.forEach((el: any) => data.points += el.points);
-				data.repository = item.repository;
-
-				return data;
-			});
-		}
-
-		return this.cache[start.toString() + end.toString()];
-	};
-
-	getSelectValue = () => `${this.range.month.end + 1}/01/${this.range.years.fullEnd.getFullYear()}`;
+	handleStartDateChange = (date:Date) => this.setState({start_date: this.getUtcAsLocal(date)});
+	handleEndDateChange = (date:Date) => this.setState({end_date: this.getUtcAsLocal(date)});
+	handleClickOpen = (repositori:string) => this.setState({ [repositori]: true });
+	handleClose = (repositori:string) => this.setState({ [repositori]: false });
+	getPoints = (collection:any[]) => collection.reduce((result, value) => result + value.points, 0);
+	getUtcAsLocal = date => date.getTime() - (date.getTimezoneOffset() * 60000);
 
 	onPeriodTypeChange = (period:string) => {
 		if (period === 'month') {
-			const value = this.getSelectValue();
+			const value = this.toSelectValue(this.range.monthEnd, this.range.yearEnd);
 
 			this.setState({
 				customRange: false,
-				selectList: this.getMonthList(),
-				selectValue: value
+				selectList: this.getSelectMonthList(
+					this.range.yearStart,
+					this.range.yearEnd,
+					this.range.monthStart,
+					this.range.monthEnd
+				),
 			});
 
 			this.onActiveMonthPeriodChange(value);
 		}
 
 		if (period === 'quorter') {
-			const value = `${this.getQuorterByMonth(this.range.month.end) + 1}/${this.range.years.fullEnd.getFullYear()}`
+			const value = `${this.quarterService.getIndexByMonth(this.range.monthEnd)}/${this.range.yearEnd}`;
 
 			this.setState({
 				customRange: false,
-				selectList: this.getQuortersList(),
+				selectList: this.getSelectQuarterList(
+					this.range.yearStart,
+					this.range.yearEnd,
+					this.range.monthStart,
+					this.range.monthEnd
+				),
 				selectValue: value
 			});
 
@@ -320,11 +115,11 @@ class ContributionPoints extends React.Component<any, any> {
 		}
 
 		if (period === 'year') {
-			const value = this.range.years.fullEnd.getFullYear();
+			const value = this.range.yearEnd;
 
 			this.setState({
 				customRange: false,
-				selectList: this.getYearsList(),
+				selectList: this.getSelectYearList(this.range.yearStart, this.range.yearEnd),
 				selectValue: value
 			});
 
@@ -334,8 +129,12 @@ class ContributionPoints extends React.Component<any, any> {
 		if (period === 'custom') {
 			this.setState({
 				customRange: true,
-				start_date:  this.range.years.start,
-				end_date: this.range.years.end
+				start_date:  getTimestamp(1, this.range.monthStart, this.range.yearStart),
+				end_date: getTimestamp(
+					this.monthService.getDaysQuantity(this.range.monthEnd, this.range.yearEnd),
+					this.range.monthEnd,
+					this.range.yearEnd
+				)
 			})
 		}
 		
@@ -344,20 +143,14 @@ class ContributionPoints extends React.Component<any, any> {
 		})
 	};
 
-	getMonthPeriodData = (value:string) => {
-		const date = new Date(value);
-		const year = date.getFullYear();
-		const month = date.getMonth();
-
-		return {date, year, month}
-	};
-
-	onActiveMonthPeriodChange = (value:string) => {
-		const {date, year, month} = this.getMonthPeriodData(value);
+	onActiveMonthPeriodChange = (value:any) => {
+		const timestamp = this.fromSelectValue(value);
+		const year = this.yearService.getByTimestamp(timestamp);
+		const month = this.monthService.getByTimestamp(timestamp);
 
 		this.setState({
-			start_date: date,
-			end_date: `${month + 1}/31/${year}`,
+			start_date: timestamp,
+			end_date: getTimestamp(this.monthService.getDaysQuantity(year, month), month, year),
 			selectValue: value
 		});
 	};
@@ -365,23 +158,27 @@ class ContributionPoints extends React.Component<any, any> {
 	onActiveQuorterPeriodChange = (value:string) => {
 		const quorter = value.split('/')[0];
 		const year = value.split('/')[1];
-		const startMonth = this.getFirstMonthInQuorter(quorter);
-		const endMonth = this.getLastMonthInQuorter(quorter);
+		const startMonth = this.quarterService.getFirstMonthIndex(quorter);
+		const endMonth = this.quarterService.getLastMonthIndex(quorter);
 
-		this.setState({
-			start_date: `${startMonth}/01/${year}`,
-			end_date: `${endMonth}/31/${year}`,
-			selectValue: value
-		});
+		this.setPeriodChangeState(value, 1, startMonth, endMonth, year);
 	};
 
-	onActiveYearPeriodChange = (value:string) => {
-		this.setState({
-			start_date: `01/01/${value}`,
-			end_date: `12/31/${value}`,
-			selectValue: value
-		});
+	onActiveYearPeriodChange = (value:string) => 	this.setPeriodChangeState(value, 1, 0, 11, value);
+
+	setPeriodChangeState = (value,day, startMonth, endMonth, year) => this.setState({
+		start_date: getTimestamp(day, startMonth, year),
+		end_date: getTimestamp(this.monthService.getDaysQuantity(year, endMonth), endMonth, year),
+		selectValue: value
+	});
+
+	fromSelectValue = value => {
+		const date = value.split('/');
+
+		return getTimestamp(date[1], date[0], date[2]);
 	};
+
+	toSelectValue = (month, year)  => `${month}/01/${year}`;
 
 	onActivePeriodChange = (event:any) => {
 		if (this.state.periodType === 'month') {
@@ -397,98 +194,6 @@ class ContributionPoints extends React.Component<any, any> {
 		}
 	};
 
-	getFirstMonthInQuorter = (quorter:string) => {
-		switch (quorter) {
-			case '1':
-				return 1;
-			case '2':
-				return 4;
-			case '3':
-				return 7;
-			case '4':
-				return 10;
-			default:
-				return 1;
-		}
-	};
-
-	getLastMonthInQuorter = (quorter:string) => {
-		switch (quorter) {
-			case '1':
-				return 3;
-			case '2':
-				return 6;
-			case '3':
-				return 9;
-			case '4':
-				return 12;
-			default:
-				return 3;
-		}
-	};
-
-		getYearsList = () => {
-			let yearStart = this.range.years.fullStart.getFullYear();
-			let yearEnd = this.range.years.fullEnd.getFullYear();
-			let firstIterator = yearStart;
-			let result: any[] = [];
-
-			for (firstIterator; firstIterator <= yearEnd; firstIterator++) {
-				result.unshift({
-					label: firstIterator,
-					value: firstIterator
-				})
-			}
-
-			return result;
-		};
-
-		getQuortersList = () => {
-			let yearStart = this.range.years.fullStart.getFullYear();
-			let yearEnd = this.range.years.fullEnd.getFullYear();
-			let firstIterator = yearStart;
-			let result: any[] = [];
-			let secondIterator;
-			let monthEnd;
-
-			for (firstIterator; firstIterator <= yearEnd; firstIterator++) {
-				secondIterator = firstIterator === yearStart ? this.getQuorterByMonth(this.range.month.start): 0;
-				monthEnd = firstIterator === yearEnd ? this.getQuorterByMonth(this.range.month.end) : this.quorters.length - 1;
-
-				for (secondIterator; secondIterator <= monthEnd; secondIterator++) {
-					result.unshift({
-						label: `${this.quorters[secondIterator]} ${firstIterator}`,
-						value: `${secondIterator + 1}/${firstIterator}`
-					})
-				}
-			}
-
-			return result;
-		};
-
-		getMonthList = () => {
-			let yearStart = this.range.years.fullStart.getFullYear();
-			let yearEnd = this.range.years.fullEnd.getFullYear();
-			let firstIterator = yearStart;
-			let result: any[] = [];
-			let secondIterator;
-			let monthEnd;
-
-			for (firstIterator; firstIterator <= yearEnd; firstIterator++) {
-				secondIterator = firstIterator === yearStart ? this.range.month.start : 0;
-				monthEnd = firstIterator === yearEnd ? this.range.month.end + 1 : this.month.length;
-
-				for (secondIterator; secondIterator < monthEnd; secondIterator++) {
-					result.unshift({
-						label: `${this.month[secondIterator]} ${firstIterator}`,
-						value: `${secondIterator + 1}/01/${firstIterator}`
-					})
-				}
-			}
-
-			return result;
-		};
-
 		render() {
 			return (
 				<Card className={this.props.classes.widgetCard}>
@@ -498,7 +203,7 @@ class ContributionPoints extends React.Component<any, any> {
 								<div className={this.props.classes.widgetCardTitle}>Contributor Points</div>
 								<div className={this.props.classes.widgetCardRange}>
 									<div
-										className={this.props.classes.redBox}>{this.getPoints(this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime()))} pts.</div>
+										className={this.props.classes.redBox}>{this.getPoints(getFromToRangeData(this.props.statistic, this.state.start_date, this.state.end_date))} pts.</div>
 								</div>
 							</div>
 							<Divider/>
@@ -547,7 +252,7 @@ class ContributionPoints extends React.Component<any, any> {
 							</div>
 							<Divider/>
 							<div className={this.props.classes.widgetRepositoryContainer}>
-								{this.state.start_date && this.state.end_date && this.filterPeriod(new Date(this.state.start_date).getTime(), new Date(this.state.end_date).getTime())
+								{this.state.start_date && this.state.end_date && getFromToRangeData(this.props.statistic, this.state.start_date, this.state.end_date)
 									.map((item: any) => item.points ? (
 										<div className={this.props.classes.widgetRepositoryItem} key={item.repository}>
 											<div className={this.props.classes.blueBox}>{item.points} pts.</div>

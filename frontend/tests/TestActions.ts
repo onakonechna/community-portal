@@ -6,8 +6,7 @@ import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-declare const API_ENDPOINT: string;
-const API = API_ENDPOINT;
+const API = process.env.API_ENDPOINT_HOST;
 
 xdescribe('test actions', () => {
   const projectList = [

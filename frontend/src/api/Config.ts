@@ -1,9 +1,7 @@
-declare const API_ENDPOINT: string;
-declare const BACKEND_HOST: string;
-export const API = API_ENDPOINT;
-export const BACKEND_API = BACKEND_HOST;
-
 import axios from 'axios';
+
+export const API = process.env.API_ENDPOINT_HOST;
+export const BACKEND_API = process.env.BACKEND_ENDPOINT_HOST;
 
 function getToken() {
     const localToken = localStorage.getItem('oAuth');
