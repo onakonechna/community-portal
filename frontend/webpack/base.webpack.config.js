@@ -14,7 +14,7 @@ module.exports = env => {
         prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
         return prev;
     }, {});
-
+    console.log(ENV_KEYS);
     return {
         entry: "./src/index.tsx",
         output: {

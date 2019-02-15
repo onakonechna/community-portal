@@ -39,7 +39,8 @@
   },
   "scripts": {
     "start:dev": "webpack-dev-server --env development --config webpack/development.webpack.config.js",
-    "build:prod": "webpack --env production --config webpack/production.webpack.config.js"
+    "build:prod": "webpack --env production --config webpack/production.webpack.config.js",
+    "build:staging": "webpack --env staging --config webpack/production.webpack.config.js"
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.24",
