@@ -17,7 +17,7 @@ import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
 import ContributorsList from './projects/ContributorsList';
 import BookmarkButton from './projects/Bookmark';
-import Progress from './projects/Progress';
+// import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
@@ -122,6 +122,7 @@ const styles: any = (theme:any) => ({
   smallText: {
     fontSize: '0.9rem',
     marginBottom: '0.25rem',
+    paddingLeft: '1.5rem'
   },
   upvotes: {
     'font-size': '1rem',
@@ -132,6 +133,15 @@ const styles: any = (theme:any) => ({
   description: {
     'font-size': '1rem',
     'font-family': 'system-ui',
+  },
+  contributorText: {
+    'padding-top': '5px',
+    'font-size': '0.8rem',
+},
+  topContributorText: {
+    'font-weight': 'bold',
+    'font-size': '1rem',
+    'padding-top': '15px',
   },
 });
 
@@ -205,8 +215,9 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
-  calculateOpenTime(timestamp: number) {
+  calculateOpenTime(date: number) {
     const midnight = new Date();
+    const timestamp = new Date(date).getTime();
     midnight.setHours(0, 0, 0, 0);
     const midnightStamp = +midnight;
     const dateDifference = Math.floor(((midnightStamp - timestamp) / 1000) / (3600 * 24));
@@ -216,7 +227,21 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
       case 0:
         return 'Opened yesterday';
       default:
-        return `Opened ${dateDifference + 1} days ago`;
+        var timestampDate = new Date(timestamp);
+        var year = Math.floor((midnight.getTime() - timestampDate.getTime()) / (1000 * 3600 * 24 * 365));
+        var months = (midnight.getMonth() + 12 * midnight.getFullYear()) - (timestampDate.getMonth() + 12 * timestampDate.getFullYear());
+        months = months%12;
+
+        var yearLabel = (year == 1) ? 'year' : 'years';
+        var monthLabel = (months == 1) ? 'month' : 'months';
+
+        if (dateDifference < 30) {
+          return `Opened ${dateDifference + 1} days ago`;
+        } else if (year > 0) {
+          return 'Opened ' + year + ' ' + yearLabel + ' ' + months + ' ' + monthLabel + ' ago';
+        } else {
+          return 'Opened ' + months + ' ' + monthLabel + ' ago';
+        }
     }
   }
 
@@ -268,7 +293,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
 
   render() {
     const { classes } = this.props;
-    const openedFor = this.calculateOpenTime(this.props.project.created);
+    const openedFor = this.calculateOpenTime(this.props.project.createdAt);
 
     const html = {
       __html: this.getHtml(),
@@ -297,6 +322,11 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <BookmarkButton project={this.props.project} bookmarkClass={classes.bookmark}/>
             </AuthorizedUserRole>
           </div>
+          <div className={classes.row}>
+            <Typography className={classes.smallText}>
+              {openedFor}
+            </Typography>
+          </div>
           <Card className={classes.card}>
             <CardContent className={classes.content}>
               <Typography
@@ -310,16 +340,15 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
                       <Chip className={classes.chip} key={technology} label={technology} />
                     ))}
                   </div>
-                  <Typography className={classes.smallText}>
-                    {openedFor}
-                  </Typography>
-                  {/*<Typography className={classes.smallText}>
-                    Size: {this.props.project.size}
-                  </Typography>*/}
                 </div>
-                <Progress project={this.props.project} progressClass={this.props.classes.progressDiv} />
               </div>
-              <ContributorsList project={this.props.project} contributorsListClass={this.props.classes.contributorDiv}/>
+              <ContributorsList
+                  project={this.props.project}
+                  contributorsListClass={this.props.classes.contributorDiv}
+                  numberOfContributors="18"
+                  contributorTextClass={this.props.classes.contributorText}
+                  topContributorTextClass={this.props.classes.topContributorText}
+              />
             </CardContent>
             <CardActions className={classes.cardAction}>
               <JoinProjectButton project={this.props.project} />

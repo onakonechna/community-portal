@@ -21,7 +21,7 @@ import StartsProjectButton from './projects/Stars';
 import JoinProjectButton from './projects/Join';
 import BookmarkButton from './projects/Bookmark';
 import ContributorsList from './projects/ContributorsList';
-import Progress from './projects/Progress';
+// import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
@@ -30,7 +30,7 @@ const styles = (theme: any) => ({
   contributorDiv: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '24rem',
+    top: '22rem',
   },
   bookmark: {
     'margin-left': 'auto',
@@ -99,7 +99,7 @@ const styles = (theme: any) => ({
   row: {
     display: 'flex',
     position: 'absolute' as 'absolute',
-    top: '18.5rem',
+    top: '3rem',
   },
   sidebar: {
     display: 'flex',
@@ -125,6 +125,19 @@ const styles = (theme: any) => ({
     color: '#27A2AA',
     position: 'relative' as 'relative',
     right: '0.5rem',
+  },
+  contributorText: {
+    'fontSize': '0.8rem',
+    'display': 'flex',
+    'position': 'absolute' as 'absolute',
+    'top': '25rem',
+  },
+  topContributorText: {
+    'fontSize': '0.8rem',
+    'display': 'flex',
+    'position': 'absolute' as 'absolute',
+    'top': '20.5rem',
+    'font-weight': 'bold'
   },
 });
 
@@ -264,6 +277,13 @@ export class ProjectCard extends React.Component<any, CardState>{
                 <BookmarkButton project={this.props.project} bookmarkClass={classes.bookmark}/>
               </AuthorizedUserRole>
             </div>
+            <div className={classes.row}>
+              <div className={classes.sidebar}>
+                <Typography className={classes.smallText}>
+                  {openedFor}
+                </Typography>
+              </div>
+            </div>
             <Typography
               dangerouslySetInnerHTML={html}
               className={classes.description}
@@ -273,18 +293,13 @@ export class ProjectCard extends React.Component<any, CardState>{
                 <Chip className={classes.chip} key={technology} label={technology} />
               ))}
             </div>
-            <div className={classes.row}>
-              <div className={classes.sidebar}>
-                <Typography className={classes.smallText}>
-                  {openedFor}
-                </Typography>
-                {/*<Typography className={classes.smallText}>*/}
-                  {/*Size: {this.props.project.size}*/}
-                {/*</Typography>*/}
-              </div>
-              <Progress project={this.props.project} progressClass={this.props.classes.progressDiv} />
-            </div>
-            <ContributorsList project={this.props.project} contributorsListClass={this.props.classes.contributorDiv}/>
+            <ContributorsList
+                project={this.props.project}
+                contributorsListClass={this.props.classes.contributorDiv}
+                numberOfContributors="10"
+                contributorTextClass={this.props.classes.contributorText}
+                topContributorTextClass={this.props.classes.topContributorText}
+            />
           </CardContent>
           <CardActions className={classes.cardAction}>
             <JoinProjectButton project={this.props.project} />
