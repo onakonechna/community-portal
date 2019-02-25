@@ -1,7 +1,7 @@
-import { API, headers, request } from './Config';
+import { BACKEND_API, headers, request } from './Config';
 
 const fetchProjects = () => {
-  return request(`${API}/projects`, headers());
+  return request(`${BACKEND_API}/projects`, headers());
 };
 
 export default fetchProjects;
