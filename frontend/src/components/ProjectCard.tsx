@@ -17,13 +17,13 @@ import Chip from '@material-ui/core/Chip';
 import LinesEllipsis from 'react-lines-ellipsis';
 import * as draftjsTohtml from "draftjs-to-html";
 
-import StartsProjectButton from './projects/Stars';
+import StarringProjectButton from './buttons/StarringProjectButton';
 import BookmarkButton from './projects/Bookmark';
 import ContributorsList from './projects/ContributorsList';
-// import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
+import _find from "lodash/find";
 
 const styles = (theme: any) => ({
   contributorDiv: {
@@ -236,6 +236,10 @@ export class ProjectCard extends React.Component<any, CardState>{
     }));
   }
 
+  isStarred = project => !!_find(
+		this.props.user['upvoted_projects'],
+		(starred:any) => starred.id == project.id);
+
   toggleEdit() {
     this.setState((prevState: CardState) => ({
       editOpen: !prevState.editOpen,
@@ -304,9 +308,7 @@ export class ProjectCard extends React.Component<any, CardState>{
             <GithubButton url={this.props.project.github_address}/>
             <SlackButton url={this.props.project.slack_channel} />
             <Edit handler={this.toggleEdit} />
-            <AuthorizedUserRole requestLogin>
-              <StartsProjectButton project={this.props.project}/>
-            </AuthorizedUserRole>
+						<StarringProjectButton url={this.props.project.github_address} starred={this.isStarred(this.props.project)}/>
             <Typography className={classes.upvotes}>{this.props.project.stargazers_count}</Typography>
           </CardActions>
         </Card>
@@ -320,6 +322,10 @@ export class ProjectCard extends React.Component<any, CardState>{
   }
 }
 
+const mapStateToProps = (state:any, props:any) => ({
+	user: state.user
+});
+
 export default compose<{}, any>(
   withStyles(styles, {name: 'ProjectCard'}),
-  connect<{}, {}, any>(null, {}))(ProjectCard);
+  connect<{}, {}, any>(mapStateToProps, {}))(ProjectCard);

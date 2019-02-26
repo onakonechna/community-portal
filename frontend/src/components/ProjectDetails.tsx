@@ -13,10 +13,8 @@ import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import StartsProjectButton from './projects/Stars';
 import ContributorsList from './projects/ContributorsList';
 import BookmarkButton from './projects/Bookmark';
-// import Progress from './projects/Progress';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
@@ -25,6 +23,8 @@ import * as draftjsTohtml from "draftjs-to-html";
 import { loadStarredProjects } from '../actions/user';
 import { loadingProcessStart, loadingProcessEnd } from '../actions/loading';
 import { loadProject } from '../actions/project';
+import StarringProjectButton from './buttons/StarringProjectButton';
+import _find from "lodash/find";
 
 const styles: any = (theme:any) => ({
   bookmark: {
@@ -351,11 +351,9 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
             </CardContent>
             <CardActions className={classes.cardAction}>
               <GithubButton url={this.props.project.github_address}/>
-              <SlackButton url={this.props.project.slack_channel} />
+              <SlackButton url={this.props.project.slack_channel}/>
               <Edit handler={this.toggleEdit} />
-              <AuthorizedUserRole requestLogin>
-                <StartsProjectButton project={this.props.project}/>
-              </AuthorizedUserRole>
+							<StarringProjectButton url={this.props.project.github_address} starred={this.props.isProjectStarred}/>
               <Typography className={classes.upvotes}>{this.props.project.upvotes}</Typography>
             </CardActions>
           </Card>
@@ -375,6 +373,10 @@ const mapStateToProps = (state: any, props: any) => {
     authorized: state.user.id,
     project: state.project.find((project:any)=> project.id === Number(props.project_id)),
     user: state.user,
+		isProjectStarred: !!_find(
+			state.user['upvoted_projects'],
+			(project:any) => project.id == props.project_id
+		)
   };
 };
 

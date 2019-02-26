@@ -6,7 +6,7 @@ import classnames from "classnames";
 
 interface StarringProjectProps {
   starred: boolean;
-  handler: any;
+	url: string;
   classes: any;
 }
 
@@ -24,18 +24,19 @@ const styles = (theme: Theme) => ({
 });
 
 const StarringProjectButton = (props: StarringProjectProps) => {
-  const { classes, starred } = props;
+  const { classes, starred, url } = props;
 
   return (
-    <IconButton
-      aria-label="star"
-      className={classes.Button}
-      onClick={props.handler}>
-      <Favorite className={classnames({
-        [classes.starredButton]: starred,
-        [classes.unstarredButton]: !starred
-      })}/>
-    </IconButton>
+    <a href={url} target="_blank">
+      <IconButton
+        aria-label="star"
+        className={classes.Button}>
+        <Favorite className={classnames({
+          [classes.starredButton]: starred,
+          [classes.unstarredButton]: !starred
+        })}/>
+      </IconButton>
+    </a>
   );
 };
 
