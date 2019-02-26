@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {withStyles} from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import compose from "recompose/compose";
 import _isEmpty from 'lodash/isEmpty';
 import _filter from 'lodash/filter';
@@ -70,14 +70,14 @@ class LoadingLine extends React.Component<any, any> {
         this.setState({completed: completed});
         setTimeout(() => {
           this.timer = setTimeout(
-            () => this.progress(Math.min(completed + (Math.random() * 30), 100)), 300);
+            () => this.progress(Math.min(completed + (Math.random() * 30), 100)), 50);
         }, 500);
       return;
     } else {
       this.setState({completed});
     }
 
-    this.timer = setTimeout(() => this.progress(Math.min(completed + (Math.random() * 20), 150)), 200);
+    this.timer = setTimeout(() => this.progress(Math.min(completed + (Math.random() * 20), 150)), 100);
   }
 
   render() {

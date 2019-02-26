@@ -17,15 +17,11 @@ class ContributorsList extends React.Component<any, any> {
   }
 
   countContributors(project: any) {
-    const contributorsQuantity = Object.keys(project.contributors).length;
-
-    switch (contributorsQuantity) {
+    switch (project.contributors_quantity) {
       case 0:
         return '0 Contributors';
-      case 1:
-        return '1 Contributor';
       default:
-        return `${contributorsQuantity} Contributors`;
+        return `${project.contributors_quantity} Contributors`;
     }
   }
 

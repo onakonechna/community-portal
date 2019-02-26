@@ -24,7 +24,7 @@ export const loadProject = (project_id: string) => (dispatch:Dispatch) => {
     .then((result: any) => {
       dispatch({
         type: LOAD_PROJECT_END,
-        project: result.data
+        project: result
       });
     });
 };
