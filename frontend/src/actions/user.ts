@@ -14,7 +14,7 @@ const gitId = process.env.GITHUB_CLIENT_ID;
 const frontEnd = process.env.FRONTEND_ENDPOINT_HOST;
 
 export const login = (type: any) => (dispatch:Dispatch) => {
-    const scope = type == 'partner' ? 'user,admin:org,public_repo' : 'user:email,public_repo';
+    const scope = type == 'partner' ? 'user,admin:org,public_repo' : 'user:email';
     const search = toQuery({
         client_id: gitId,
         redirect_uri: `${frontEnd}/auth`,
