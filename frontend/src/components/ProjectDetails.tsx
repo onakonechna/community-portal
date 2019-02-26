@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import StartsProjectButton from './projects/Stars';
-import JoinProjectButton from './projects/Join';
 import ContributorsList from './projects/ContributorsList';
 import BookmarkButton from './projects/Bookmark';
 // import Progress from './projects/Progress';
@@ -293,7 +292,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
 
   render() {
     const { classes } = this.props;
-    const openedFor = this.calculateOpenTime(this.props.project.createdAt);
+    const openedFor = this.calculateOpenTime(this.props.project.created_at);
 
     const html = {
       __html: this.getHtml(),
@@ -351,7 +350,6 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               />
             </CardContent>
             <CardActions className={classes.cardAction}>
-              <JoinProjectButton project={this.props.project} />
               <GithubButton url={this.props.project.github_address}/>
               <SlackButton url={this.props.project.slack_channel} />
               <Edit handler={this.toggleEdit} />

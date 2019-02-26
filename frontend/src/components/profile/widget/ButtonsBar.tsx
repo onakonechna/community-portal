@@ -1,6 +1,6 @@
 import Button from "@material-ui/core/Button/Button";
 import * as React from "react";
-import {withStyles} from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = (theme:any) => ({
 	buttonsBar: {

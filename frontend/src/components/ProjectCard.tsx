@@ -18,7 +18,6 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import * as draftjsTohtml from "draftjs-to-html";
 
 import StartsProjectButton from './projects/Stars';
-import JoinProjectButton from './projects/Join';
 import BookmarkButton from './projects/Bookmark';
 import ContributorsList from './projects/ContributorsList';
 // import Progress from './projects/Progress';
@@ -255,7 +254,7 @@ export class ProjectCard extends React.Component<any, CardState>{
     const html = {
       __html: this.getHtml()
     };
-    const openedFor = this.calculateOpenTime(this.props.project.createdAt);
+    const openedFor = this.calculateOpenTime(this.props.project.created_at);
     return (
       <div>
         <EditProjectDialog
@@ -302,7 +301,6 @@ export class ProjectCard extends React.Component<any, CardState>{
             />
           </CardContent>
           <CardActions className={classes.cardAction}>
-            <JoinProjectButton project={this.props.project} />
             <GithubButton url={this.props.project.github_address}/>
             <SlackButton url={this.props.project.slack_channel} />
             <Edit handler={this.toggleEdit} />

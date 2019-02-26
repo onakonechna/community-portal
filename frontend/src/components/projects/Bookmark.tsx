@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import compose from "recompose/compose";
 import * as React from "react";
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { bookmarkProject, unbookmarkProject } from '../../actions/project';
 import BookmarkButton from '../buttons/BookmarkButton';
 import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';

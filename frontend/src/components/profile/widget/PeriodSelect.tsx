@@ -1,5 +1,5 @@
 import * as React from "react";
-import {withStyles} from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Select from "@material-ui/core/Select/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { v4 as uuid } from 'uuid';

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withStyles } from '@material-ui/core/styles';
+import withStyles  from '@material-ui/core/styles/withStyles';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,7 +9,6 @@ import { v4 as uuid } from 'uuid';
 import _isEqual from 'lodash/isEqual';
 import _includes from 'lodash/includes';
 import _filter from 'lodash/filter';
-
 
 const styles = (theme:any) => ({
 	select: {
