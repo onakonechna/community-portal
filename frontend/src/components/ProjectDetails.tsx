@@ -375,7 +375,7 @@ const mapStateToProps = (state: any, props: any) => {
     user: state.user,
 		isProjectStarred: !!_find(
 			state.user['upvoted_projects'],
-			(project:any) => project.id === props.project.id
+			(project:any) => project.id == props.project_id
 		)
   };
 };

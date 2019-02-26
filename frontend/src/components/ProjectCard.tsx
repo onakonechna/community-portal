@@ -238,7 +238,7 @@ export class ProjectCard extends React.Component<any, CardState>{
 
   isStarred = project => !!_find(
 		this.props.user['upvoted_projects'],
-		(project:any) => project.id === project.id);
+		(starred:any) => starred.id == project.id);
 
   toggleEdit() {
     this.setState((prevState: CardState) => ({
