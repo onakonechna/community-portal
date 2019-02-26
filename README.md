@@ -26,7 +26,6 @@ System is written in TypeScript which is strictly-typed language compatible with
 - Serverless.js
 - TypeScript https://www.typescriptlang.org/
 - Nodejs V8.10
-- AWS DynamoDB
 - AWS Lambda
 - AWS API Gateway
 
