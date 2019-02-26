@@ -322,8 +322,8 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
             </AuthorizedUserRole>
           </div>
           <div className={classes.row}>
-            <Typography className={classes.smallText}>
-              {openedFor}
+						<Typography className={classes.smallText}>
+							{this.props.project.created_at ? (openedFor) : null}
             </Typography>
           </div>
           <Card className={classes.card}>
