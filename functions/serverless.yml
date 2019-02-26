@@ -39,8 +39,6 @@ custom:
     # Add lambda functions for public endpoints here so Jest will not complain
     public:
       - authorization
-      - getProjectCards
-      - getProjectDetails
       - getUserInfo
   domainNames:
     dev:
@@ -125,13 +123,7 @@ functions:
   - ${file(./handlers/authorizer/authorizer.yml)}
   - ${file(./handlers/authorization/authorization.yml)}
   - ${file(./handlers/project/createProject/createProject.yml)}
-  - ${file(./handlers/project/getProjectCards/getProjectCards.yml)}
-  - ${file(./handlers/project/getProjectDetails/getProjectDetails.yml)}
   - ${file(./handlers/project/editProject/editProject.yml)}
-  - ${file(./handlers/project/joinProject/joinProject.yml)}
-  - ${file(./handlers/project/unjoinProject/unjoinProject.yml)}
-  - ${file(./handlers/project/starProject/starProject.yml)}
-  - ${file(./handlers/project/unstarProject/unstarProject.yml)}
   - ${file(./handlers/user/bookmarkProject/bookmarkProject.yml)}
   - ${file(./handlers/user/unbookmarkProject/unbookmarkProject.yml)}
   - ${file(./handlers/user/getLikedProjects/getLikedProjects.yml)}
@@ -156,18 +148,10 @@ resources:
           application/json: "{\"error\": $context.error.messageString}"
     # Add references to defined tables and roles here before deployment
     getUserStatisticRole: ${file(./handlers/user/getUserStatistic/role.yml):getUserStatisticRole}
-    joinProjectRole: ${file(./handlers/project/joinProject/role.yml):joinProjectRole}
-    unjoinProjectRole: ${file(./handlers/project/unjoinProject/role.yml):unjoinProjectRole}
-    projectStarsRole: ${file(./handlers/indexer/projectStars/role.yml):projectStarsRole}
     createProjectRole: ${file(./handlers/project/createProject/role.yml):createProjectRole}
-    getProjectRole: ${file(./handlers/project/getProjectCards/role.yml):getProjectRole}
-    getProjectDetailsRole: ${file(./handlers/project/getProjectDetails/role.yml):getProjectDetailsRole}
     editProjectRole: ${file(./handlers/project/editProject/role.yml):editProjectRole}
-    starProjectRole: ${file(./handlers/project/starProject/role.yml):starProjectRole}
-    unstarProjectRole: ${file(./handlers/project/unstarProject/role.yml):unstarProjectRole}
     bookmarkProjectRole: ${file(./handlers/user/bookmarkProject/role.yml):bookmarkProjectRole}
     unbookmarkProjectRole: ${file(./handlers/user/unbookmarkProject/role.yml):unbookmarkProjectRole}
-    getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
     loadSurveyRole: ${file(./handlers/survey/loadSurvey/role.yml):loadSurveyRole}

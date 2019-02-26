@@ -1,9 +1,0 @@
-getProjectCards:
-  name: ${self:provider.stage}-getProjectCards
-  role: getProjectRole
-  handler: handlers/project/getProjectCards/handler.handler
-  events:
-    - http:
-        path: /projects
-        method: get
-        cors: true
