@@ -155,6 +155,7 @@ resources:
     getUserInfoRole: ${file(./handlers/user/getUserInfo/role.yml):getUserInfoRole}
     authorizationRole: ${file(./handlers/authorization/role.yml):authorizationRole}
     loadSurveyRole: ${file(./handlers/survey/loadSurvey/role.yml):loadSurveyRole}
+    getLikedProjectsRole: ${file(./handlers/user/getLikedProjects/role.yml):getLikedProjectsRole}
     saveResultsRole: ${file(./handlers/survey/saveResults/role.yml):saveResultsRole}
 
 plugins:
