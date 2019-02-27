@@ -344,7 +344,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
               <ContributorsList
                   project={this.props.project}
                   contributorsListClass={this.props.classes.contributorDiv}
-                  numberOfContributors="18"
+                  numberOfContributors="54"
                   contributorTextClass={this.props.classes.contributorText}
                   topContributorTextClass={this.props.classes.topContributorText}
               />

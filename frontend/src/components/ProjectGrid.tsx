@@ -1,4 +1,5 @@
 import _filter from 'lodash/filter';
+import _orderBy from 'lodash/orderBy';
 import includes from 'lodash/includes';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -114,6 +115,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
   constructor(props: GridProps & GridStateProps & DispatchProps) {
     super(props);
     this.updateGrid = this.updateGrid.bind(this);
+    this.updateGrid();
   }
 
   updateGrid() {
@@ -147,9 +149,17 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
     return this.props.projects;
   }
 
-  componentDidMount() {
-    this.updateGrid();
-  }
+  getProjects = () => {
+    return _orderBy(this.filter(), 'stargazers_count', 'desc')
+			.map((project: any) => (
+				<Grid item key={project.id}>
+					<ProjectCard
+						project={project}
+						history={this.props.history}
+					/>
+				</Grid>
+			))
+  };
 
   render() {
     const { classes } = this.props;
@@ -162,18 +172,7 @@ export class ProjectGrid extends React.Component<GridProps & GridStateProps & Di
           spacing={32}
           justify="center"
         >
-          {this.props.projects &&
-            this.filter()
-              .sort((prev:any, next:any) => prev.stargazers_count < next.stargazers_count)
-              .map((project: any) => (
-                <Grid item key={project.id}>
-                  <ProjectCard
-                    project={project}
-                    handler={this.updateGrid}
-                    history={this.props.history}
-                  />
-                </Grid>
-          ))}
+          {this.props.projects && this.getProjects()}
           {classes && <Grid item className={classes.hiddenGridSmall}><div className={classes.invisibleCard} /></Grid>}
           {classes && <Grid item className={classes.hiddenGridLarge}><div className={classes.invisibleCard} /></Grid>}
         </Grid>
