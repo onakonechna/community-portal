@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import MagentoLogoImage from '-!svg-react-loader!./../static/images/m-logo.svg';
 import MagentoLogoText from '-!svg-react-loader!././../static/images/magento-logo.svg';
 

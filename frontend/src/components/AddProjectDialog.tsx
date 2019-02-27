@@ -5,7 +5,7 @@ import { addProject } from '../actions';
 import AddProjectButton from './buttons/AddProjectButton';
 import Message from './Message';
 import { loadStarredProjects } from '../actions/user'
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -23,7 +23,7 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsPr
 import DatePicker from 'material-ui-pickers/DatePicker';
 import Editor from './editor/Editor';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   actions: {
 
   },

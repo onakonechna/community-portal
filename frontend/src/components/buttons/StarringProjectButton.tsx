@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Favorite from '@material-ui/icons/Star';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import classnames from "classnames";
 
 interface StarringProjectProps {
@@ -10,7 +10,7 @@ interface StarringProjectProps {
   classes: any;
 }
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   Button: {
     position: 'relative' as 'relative',
     bottom: '0.1rem',

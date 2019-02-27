@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { Classes } from 'node_modules/@types/jss';
 import fetchStatistic from '../api/FetchStatistic';
 import fetchUser from '../api/FetchUser';
@@ -13,7 +13,7 @@ import ContritutionGraphWidget from './profile/widget/ContritutionGraphWidget';
 import ProfileWidget from './profile/widget/ProfileWidget';
 import RateWidget from './profile/widget/RateWidget';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   avatar: {
     height: '10rem',
     width: '10rem',

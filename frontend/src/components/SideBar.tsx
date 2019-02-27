@@ -4,7 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import PartnersSideBarBlock from './partners/layout/SideBar';
 import AccountBox from '@material-ui/icons/AccountBox';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';

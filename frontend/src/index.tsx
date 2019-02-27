@@ -5,7 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createPalette, { Palette } from '@material-ui/core/styles/createPalette';
 import createTypography, { FontStyle } from '@material-ui/core/styles/createTypography';
 

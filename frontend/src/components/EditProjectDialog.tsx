@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import Message from './Message';
 import Editor from './editor/Editor';
 import { editProjectBody } from '../actions';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,7 +22,7 @@ import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   addButton: {
     'margin-left': 'auto',
   },

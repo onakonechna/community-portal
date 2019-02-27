@@ -1,9 +1,9 @@
 import * as React from "react";
 import Draft from 'react-wysiwyg-typescript';
-import {Theme, withStyles} from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import {convertFromRaw, convertToRaw, EditorState} from 'draft-js';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   editor: {
     'font-family': 'system-ui',
     'border': '1px solid #d9d9d9',

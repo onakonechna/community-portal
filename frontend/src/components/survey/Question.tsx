@@ -3,7 +3,7 @@ import Radio from './option/renderers/Radio';
 import Text from './option/renderers/Text';
 import Smile from './option/renderers/Smile';
 import Typography from "@material-ui/core/Typography/Typography";
-import {withStyles} from "@material-ui/core";
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const Option = ({type, values, index, onValueChange} : any) => {
     switch (type) {

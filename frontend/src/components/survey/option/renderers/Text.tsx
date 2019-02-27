@@ -1,6 +1,6 @@
 import * as React from "react";
 import compose from "recompose/compose";
-import {withStyles} from "@material-ui/core";
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles: any = (theme: any) => ({
     textArea: {

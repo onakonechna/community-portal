@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from "react-redux";
 import _isEmpty from 'lodash/isEmpty';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';

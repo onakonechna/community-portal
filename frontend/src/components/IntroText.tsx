@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   header: {
     'font-family': 'system-ui',
     'font-weight': '500',

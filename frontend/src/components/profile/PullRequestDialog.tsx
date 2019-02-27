@@ -5,10 +5,9 @@ import Button from "@material-ui/core/Button/Button";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import * as React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {Theme} from "@material-ui/core";
 
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
 	cell: {
 		display: 'table-cell',
 		'border-top': '1px solid lightgray'
