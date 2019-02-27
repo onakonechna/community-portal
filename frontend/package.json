@@ -5,10 +5,12 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "@types/chart.js": "^2.7.41",
     "@types/classnames": "^2.2.6",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/material-ui": "^0.21.5",
     "axios": "^0.18.0",
+    "chart.js": "^2.7.3",
     "date-fns": "^2.0.0-alpha.7",
     "draft-js": "^0.10.5",
     "draft-js-export-html": "^1.2.0",
