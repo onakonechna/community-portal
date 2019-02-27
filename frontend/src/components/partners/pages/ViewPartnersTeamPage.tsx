@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import _isEmpty from 'lodash/isEmpty';
 import _without from 'lodash/without';
 import _isUndefined from 'lodash/isUndefined';

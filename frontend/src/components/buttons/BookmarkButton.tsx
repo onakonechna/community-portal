@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Bookmark from '@material-ui/icons/Bookmark';
 
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 interface BookmarkProjectProps {
   bookmarked: boolean;
@@ -12,7 +12,7 @@ interface BookmarkProjectProps {
   className?: string;
 }
 
-const styles = (theme:Theme) => ({
+const styles = theme => ({
   bookmarked: {
     color: '#FF2B00',
   },

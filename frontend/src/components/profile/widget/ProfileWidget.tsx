@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {withStyles} from "@material-ui/core/styles";
+import withStyles from '@material-ui/core/styles/withStyles';
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Card from "@material-ui/core/Card/Card";
 import UserAvatar from '@material-ui/core/Avatar';

@@ -3,7 +3,7 @@ import { loadSurvey, saveResults, handleMessage, clearMessage } from "../../acti
 import { loadingProcessStart, loadingProcessEnd } from '../../actions/loading';
 import compose from "recompose/compose";
 import { connect } from 'react-redux';
-import {withStyles} from "@material-ui/core";
+import withStyles from '@material-ui/core/styles/withStyles';
 import Question from './Question';
 import SubmitButton from '../buttons/SubmitButton';
 import Typography from "@material-ui/core/Typography/Typography";

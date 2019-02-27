@@ -4,7 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import IntroText from './IntroText';
 import ProjectCard from './ProjectCard';
@@ -14,7 +14,7 @@ import { loadingProcessStart, loadingProcessEnd } from '../actions/loading';
 
 import Grid from '@material-ui/core/Grid';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   invisibleCard: {
     'background-color': '#FFFFFF',
     opacity: 0,

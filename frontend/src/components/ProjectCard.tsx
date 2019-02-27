@@ -7,8 +7,7 @@ import EditProjectDialog from './EditProjectDialog';
 import EditButton from './buttons/EditButton';
 import Message from './Message';
 
-import { withStyles } from '@material-ui/core/styles';
-
+import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';

@@ -8,8 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Home from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
-import { withStyles } from '@material-ui/core/styles';
-
+import withStyles from '@material-ui/core/styles/withStyles';
 import AddProjectDialog from './AddProjectDialog';
 import LoginButton from './buttons/LoginButton';
 import WithAuth from './WithAuth';

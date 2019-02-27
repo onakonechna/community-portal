@@ -3,9 +3,9 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Edit from '@material-ui/icons/Edit';
 
-import { withStyles, Theme } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-const styles = (theme: Theme) => ({
+const styles = theme => ({
   editButton: {
     color: '#27A2AA',
     position: 'relative' as 'relative',
