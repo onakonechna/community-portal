@@ -187,7 +187,7 @@ interface ProjectDetailsState {
   errorMessage: string;
 }
 
-const Edit = WithAuth(['owner', 'user'], ['write:project'])(EditButton);
+const Edit = WithAuth(['owner', 'user'], ['project:write'])(EditButton);
 
 export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   static defaultProps = {
@@ -299,7 +299,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
     return (
       <div>
         {
-          this.props.project.project_id &&
+          this.props.project.id &&
           <EditProjectDialog
             open={this.state.editOpen}
             toggleEdit={this.toggleEdit}
