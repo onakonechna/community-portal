@@ -21,6 +21,7 @@ module.exports = env => {
         entry: "./src/index.tsx",
         output: {
             filename: "bundle.js",
+            chunkFilename: '[name].bundle.js',
             path: path.resolve(__dirname + "/../public/dist"),
             publicPath: "/dist/"
         },

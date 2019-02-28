@@ -3,7 +3,6 @@ import _without from 'lodash/without';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Message from './Message';
-import Editor from './editor/Editor';
 import { editProjectBody } from '../actions';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -109,6 +108,7 @@ interface EditDialogProps {
 }
 
 interface EditDialogState {
+  Editor?: any;
   success: boolean;
   loading: boolean;
   technologies: string[];
@@ -155,6 +155,19 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
     this.handleTechChange = this.handleTechChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleMessageClose = this.handleMessageClose.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.open && this.props.open) {
+      this.loadEditor();
+    }
+  }
+
+  loadEditor() {
+    if (!this.state.Editor) {
+      import(/* webpackChunkName: "Editor" */ './editor/Editor')
+        .then(Editor => this.setState({ Editor: Editor.default }));
+    }
   }
 
   handleChange(field: string) {
@@ -281,6 +294,8 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
   render() {
     const { classes, open } = this.props;
     const { project_id } = this.props.project;
+    const { Editor } = this.state;
+
     return (
       <div>
         <Dialog
@@ -316,11 +331,11 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
               fullWidth
               />
             <Typography className={classes.label}>Short description</Typography>
-            <Editor content={this.props.project.short_description}
-                    onContentChange={this.updateShortDescription}/>
+            {Editor && <Editor content={this.props.project.short_description}
+                    onContentChange={this.updateShortDescription}/>}
             <Typography className={classes.label}>Description</Typography>
-            <Editor content={this.props.project.description}
-                    onContentChange={this.updateDescription}/>
+            {Editor && <Editor content={this.props.project.description}
+                    onContentChange={this.updateDescription}/>}
             <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
             {this.state.technologies.map((technology:any) => (
               <Chip
