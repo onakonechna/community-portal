@@ -35,7 +35,14 @@ const fontStyle: FontStyle = {
 const theme = createMuiTheme({
   palette,
   typography: createTypography(createPalette({}), fontStyle),
-});
+    overrides: {
+      MuiModal:{
+          root: {
+              zIndex: 999,
+          }
+      }
+    }
+  });
 
 ReactDOM.render(
   <Provider store={store}>

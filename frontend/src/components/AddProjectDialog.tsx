@@ -21,7 +21,6 @@ import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DatePicker from 'material-ui-pickers/DatePicker';
-import Editor from './editor/Editor';
 
 const styles = theme => ({
   actions: {
@@ -108,6 +107,7 @@ interface DialogProps {
 }
 
 interface DialogState {
+  Editor?: any;
   open: boolean;
   success: boolean;
   loading: boolean;
@@ -168,6 +168,13 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
     this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
+  loadEditor() {
+    if (!this.state.EditorModule) {
+      import(/* webpackChunkName: "Editor" */ './editor/Editor')
+        .then(Editor => this.setState({ Editor: Editor.default }));
+    }
+  }
+
   handleChange(field: string) {
     return (event: any) => {
       const newItem = event.target.value;
@@ -213,6 +220,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
   }
 
   handleClickOpen() {
+    this.loadEditor();
     this.setState({ open: true });
   }
 
@@ -314,7 +322,8 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
 
   render() {
     const { classes } = this.props;
-    const { loading, success } = this.state;
+    const { loading, success, Editor } = this.state;
+
     return (
       <div className={classes.addButton}>
         <AddProjectButton onClick={this.props.handler || this.handleClickOpen} />
@@ -322,6 +331,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
           open={this.state.open}
           onClose={this.handleClose}
           maxWidth={'md'}
+          disableEnforceFocus
         >
           <div className={classes.content}>
             <DialogTitle
@@ -350,11 +360,11 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
                 fullWidth
               />
               <Typography className={classes.label}>Short description</Typography>
-              <Editor content=""
-                      onContentChange={this.updateShortDescription}/>
+              {Editor && <Editor content=""
+                      onContentChange={this.updateShortDescription}/>}
               <Typography className={classes.label}>Description</Typography>
-              <Editor content=""
-                      onContentChange={this.updateDescription}/>
+              {Editor && <Editor content=""
+                      onContentChange={this.updateDescription}/>}
               <Typography className={classes.label}>Technologies (separated by Enter)</Typography>
               {this.state.technologies.map(technology => (
                 <Chip

@@ -18,8 +18,6 @@ import BookmarkButton from './projects/Bookmark';
 import GithubButton from './buttons/GithubButton';
 import SlackButton from './buttons/SlackButton';
 import AuthorizedUserRole from './roles/AuthorizedUserRole';
-import * as draftjsTohtml from "draftjs-to-html";
-
 import { loadStarredProjects } from '../actions/user';
 import { loadingProcessStart, loadingProcessEnd } from '../actions/loading';
 import { loadProject } from '../actions/project';
@@ -288,7 +286,7 @@ export class ProjectDetails extends React.Component<any, ProjectDetailsState> {
   }
 
   getHtml = () => this.props.project.description ?
-    draftjsTohtml(JSON.parse(this.props.project.description)) : '<b>Loading</b>';
+    this.props.project.description : '<b>Loading</b>';
 
   render() {
     const { classes } = this.props;

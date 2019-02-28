@@ -14,7 +14,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import LinesEllipsis from 'react-lines-ellipsis';
-import * as draftjsTohtml from "draftjs-to-html";
 
 import StarringProjectButton from './buttons/StarringProjectButton';
 import BookmarkButton from './projects/Bookmark';
@@ -250,7 +249,7 @@ export class ProjectCard extends React.Component<any, CardState>{
   }
 
   getHtml = () => this.props.project.short_description?
-    draftjsTohtml(JSON.parse(this.props.project.short_description)) : '<b>Loading</b>';
+   this.props.project.short_description : '<b>Loading</b>';
 
   render() {
     const { classes } = this.props;
