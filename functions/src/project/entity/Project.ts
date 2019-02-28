@@ -18,7 +18,6 @@ export default class Project implements IProjectEntity{
 			slack_channel: data.slack_channel || '',
 			bookmarked: data.bookmarked || [],
 			estimated: data.estimated || 0,
-			stargazers_count: data.stargazers_count || 0,
 			contributors: data.contributors || [],
 			ownerId: data.ownerId,
 			createdAt: data.createdAt,
