@@ -57,10 +57,10 @@ jobs:
       - checkout:
           path: ~/community-portal/
 
-      - restore_cache:
-          keys:
-            - dependencies-cache-{{ checksum "./package.json" }}
-            - dependencies-cache
+     # - restore_cache:
+      #    keys:
+       #     - dependencies-cache-{{ checksum "./package.json" }}
+        #    - dependencies-cache
       
       - run: mkdir -p workspace  
 
