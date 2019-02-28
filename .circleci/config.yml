@@ -10,10 +10,10 @@ jobs:
       - checkout:
           path: ~/community-portal/
 
-      #- restore_cache:
-       #   keys:
-        #    - dependencies-cache-{{ checksum "./package.json" }}
-         #   - dependencies-cache
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "./package.json" }}
+            - dependencies-cache
 
       - attach_workspace:
           at: ~/community-portal/functions/workspace
