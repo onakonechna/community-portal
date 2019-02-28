@@ -7,6 +7,10 @@ import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import List from '@ckeditor/ckeditor5-list/src/list';
+import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
+import Superscript from '@ckeditor/ckeditor5-basic-styles/src/superscript';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Table from '@ckeditor/ckeditor5-table/src/table';
@@ -48,9 +52,10 @@ export class Editor extends React.Component<any, any> {
                 config={{
                     language: 'en',
                     plugins: [Essentials, Link, Autoformat, 
-                        Heading, List, Paragraph, PasteFromOffice, Table, FontSize, FontFamily],
+                        Heading, List, Paragraph, PasteFromOffice,
+                        Table, FontSize, FontFamily, Bold, Italic, Strikethrough, Superscript],
                     toolbar: {
-                        items: ['undo', 'redo', 'fontFamily', 'fontSize', 
+                        items: ['undo', 'redo', 'bold', 'italic', 'strikethrough', 'superscript', 'fontFamily', 'fontSize',
                         'link', 'heading', 'numberedList', 'bulletedList', 
                         'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells']
                     }
