@@ -322,6 +322,7 @@ export class AddProjectDialog extends React.Component<DispatchProps & DialogProp
           open={this.state.open}
           onClose={this.handleClose}
           maxWidth={'md'}
+          disableEnforceFocus
         >
           <div className={classes.content}>
             <DialogTitle

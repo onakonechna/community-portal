@@ -287,6 +287,7 @@ export class EditProjectDialog extends React.Component<DispatchProps & EditDialo
           className={classes.dialog}
           open={open}
           maxWidth={'md'}
+          disableEnforceFocus
         >
          <div className={classes.content}>
           <DialogTitle

@@ -1,61 +1,65 @@
-import * as React from "react";
-import Draft from 'react-wysiwyg-typescript';
-import withStyles from "@material-ui/core/styles/withStyles";
-import {convertFromRaw, convertToRaw, EditorState} from 'draft-js';
-
-const styles = theme => ({
-  editor: {
-    'font-family': 'system-ui',
-    'border': '1px solid #d9d9d9',
-    'padding': '10px',
-    'min-height': '160px',
-    'box-sizing': 'border-box',
-    'border-radius': '2px',
-    'line-height': '21px',
-    'font-size': '14px'
-  },
-});
+import * as React from 'react';
+import sanitizeHtml from 'sanitize-html';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import FontSize from '@ckeditor/ckeditor5-font/src/font';
+import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily';
+import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
+import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+import List from '@ckeditor/ckeditor5-list/src/list';
+import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pasteFromOffice';
+import Table from '@ckeditor/ckeditor5-table/src/table';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+import Link from '@ckeditor/ckeditor5-link/src/link';
 
 export class Editor extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      editorState: EditorState.createEmpty(),
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            editorState: sanitizeHtml(props.content),
+        }
     }
-  }
-
-  componentDidMount() {
-    const { content } = this.props;
-    if (content) {
-      const editor = EditorState.createWithContent(convertFromRaw(JSON.parse(content)));
-      this.setState({
-        editorState: editor,
-      });
+    
+    componentDidMount() {
+        const { content } = this.props;
+        if (content) {
+            this.setState({
+                editorState: sanitizeHtml(content), 
+            });
+        }
     }
-  }
 
-  handleEditorStateChange = (editorState:any) => {
-    const contentState = editorState.getCurrentContent();
+    handleEditorStateChange = (event, editor: any) => {
+        const editorState = editor.getData();
+        if (editorState !== this.state.editorState) {
+            this.setState({
+                editorState,
+            });
+    
+            this.props.onContentChange(editorState); 
+        }
+    };
 
-    this.setState({
-      editorState,
-    });
-
-    this.props.onContentChange(JSON.stringify(convertToRaw(contentState)));
-  };
-
-  render() {
-    return (
-      <Draft
-        editorState={this.state.editorState}
-        editorClassName={this.props.classes.editor}
-        onEditorStateChange={this.handleEditorStateChange}
-        stripPastedStyles
-      />
-    );
-  }
+    render() {
+        return (
+            <CKEditor
+                data={this.state.editorState}
+                config={{
+                    language: 'en',
+                    plugins: [Essentials, Link, Autoformat, 
+                        Heading, List, Paragraph, PasteFromOffice, Table, FontSize, FontFamily],
+                    toolbar: {
+                        items: ['undo', 'redo', 'fontFamily', 'fontSize', 
+                        'link', 'heading', 'numberedList', 'bulletedList', 
+                        'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells']
+                    }
+                }}
+                editor={ClassicEditor}
+                onChange={this.handleEditorStateChange}
+            />
+        );
+    }
 }
 
-export default withStyles(styles, {
-  name: 'Editor',
-})(Editor);
+export default Editor;
