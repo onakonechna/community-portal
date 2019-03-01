@@ -15,7 +15,7 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import Link from '@ckeditor/ckeditor5-link/src/link';
+import LinkTarget from './LinkTargetPlugin';
 
 export class Editor extends React.Component<any, any> {
     constructor(props: any) {
@@ -51,7 +51,7 @@ export class Editor extends React.Component<any, any> {
                 data={this.state.editorState}
                 config={{
                     language: 'en',
-                    plugins: [Essentials, Link, Autoformat, 
+                    plugins: [Essentials, LinkTarget, Autoformat, 
                         Heading, List, Paragraph, PasteFromOffice,
                         Table, FontSize, FontFamily, Bold, Italic, Strikethrough, Superscript],
                     toolbar: {
